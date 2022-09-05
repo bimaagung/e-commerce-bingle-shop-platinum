@@ -20,9 +20,9 @@ app.get('/', function (req, res) {
 
 app.use('/product', productRouter)
 
-// const swaggerUi = require('swagger-ui-express')
-// const swaggerDocument = require('./docs/docs.json')
+const swaggerUi = require('swagger-ui-express')
+const swaggerDocument = require('./docs/docs.json')
 
-// app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 module.exports = app
