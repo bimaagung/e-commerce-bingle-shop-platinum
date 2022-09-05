@@ -1,0 +1,35 @@
+{
+  "name": "maju-jaya-platinum-kelompok-1-bej",
+  "version": "1.0.0",
+  "description": "1. Irvan Taufik -> Team Leader \r 2. Bena Maharani -> Project Manager\r 3. Bima Agung Setya Budi -> Developer\r 4. Zidan Hikmawan -> QA",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bimaagung/maju-jaya-platinum-kelompok-1-BEJ.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bimaagung/maju-jaya-platinum-kelompok-1-BEJ/issues"
+  },
+  "homepage": "https://github.com/bimaagung/maju-jaya-platinum-kelompok-1-BEJ#readme",
+  "dependencies": {
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "pg": "^8.8.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.21.4",
+    "swagger-autogen": "^2.21.5",
+    "swagger-ui-express": "^4.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19",
+    "sequelize-cli": "^6.4.1"
+  }
+}
