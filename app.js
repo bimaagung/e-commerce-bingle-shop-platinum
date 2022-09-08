@@ -18,7 +18,7 @@ app.get('/', function (req, res) {
   res.send('Hello Platinum Maju Jaya')
 })
 
-app.use('/product', productRouter)
+app.use('/get-product', productRouter)
 
 const swaggerUi = require('swagger-ui-express')
 const swaggerDocument = require('./docs/docs.json')
