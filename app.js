@@ -5,8 +5,10 @@ const ProductRepository = require('./repository/product')
 const ProductUseCase = require('./usecase/product')
 
 const productRouter = require('./routes/product')
+const adminRouter = require('./routes/admin')
 
-const productUC = new ProductUseCase(new ProductRepository())
+const productUC = new ProductUseCase(new ProductRepository()) //inisiasi module class
+
 
 app.use((req, res, next) => {
   req.productUC = productUC
@@ -18,7 +20,9 @@ app.get('/', function (req, res) {
   res.send('Hello Platinum Maju Jaya')
 })
 
-app.use('/get-product', productRouter)
+app.use('/product', productRouter)
+app.use('/admin', adminRouter)
+
 
 const swaggerUi = require('swagger-ui-express')
 const swaggerDocument = require('./docs/docs.json')
