@@ -17,7 +17,6 @@ module.exports = {
   },
   
   addProduct: async (req, res) => {
-    console.log(req)
     let product = {
       name: req.body.name,
       description: req.body.description,
@@ -54,9 +53,19 @@ module.exports = {
     let id = req.params.id
     let product = await req.productUC.deleteProduct(id)
     if (product == null) {
-      return res.status(400).json(null)
-    }
+  
+      return res.status(404).send({
+        message: 'Item gagal ditemukan.',
+        status: "ok",
+        message: "Berhasil menghapus product",
+        data: {
+                "is_success": true,
+                "product": 1
+                }
+        });
+       
+      }
     res.json(product)
   }
-}
 
+}
