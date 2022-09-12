@@ -29,6 +29,45 @@ class ProductRepository {
     }
     return data
   }
+  async addProduct(product) {
+    let data = null
+        try {
+          data = await this.ProductModel.create(product)
+        } catch (err) {
+          console.log(err)
+          return null
+        }
+        return data
+  }
+  async updateProduct(id, product) {
+    let data = null
+        try {
+          data = await this.ProductModel.update(product, 
+          { 
+            where: { id: id } 
+          })
+        } catch (err) {
+          console.log(err)
+          return null
+        }
+        return data
+  }
+  async deleteProduct(id) {
+    let data = null
+        try {
+          data = await this.ProductModel.destroy(
+          { 
+            where: { id: id } 
+          })
+        } catch (err) {
+          console.log(err)
+          return null
+        }
+        return data
+
+
+
+}
 }
 
 module.exports = ProductRepository
