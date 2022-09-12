@@ -1,6 +1,9 @@
 const express = require('express')
 const app = express()
 
+const UserRepository = require('./repository/user')
+const UserUseCase = require('./usecase/user')
+
 const ProductRepository = require('./repository/product')
 const ProductUseCase = require('./usecase/product')
 
@@ -8,12 +11,14 @@ const productRouter = require('./routes/product')
 const adminRouter = require('./routes/admin')
 
 const productUC = new ProductUseCase(new ProductRepository()) //inisiasi module class
+const userUC = new (new UserUseCase(new UserRepository)) //inisiasi module class
 
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
 app.use((req, res, next) => {
   req.productUC = productUC
+  req.userUC = userUC
   next()
 })
 
