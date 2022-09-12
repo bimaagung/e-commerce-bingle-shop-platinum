@@ -8,7 +8,7 @@ module.exports = {
         {
           province: 'Jawa Barat',
           city: 'Garut',
-          postal_code: 44151,
+          postal_code: "44151",
           detail: 'Jl.Pembangunan no 56 kec.Sukaregang',
           createdAt: new Date(),
           updatedAt: new Date(),

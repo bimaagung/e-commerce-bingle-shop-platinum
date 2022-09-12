@@ -18,7 +18,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       telp: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       is_admin: {
         type: Sequelize.BOOLEAN
