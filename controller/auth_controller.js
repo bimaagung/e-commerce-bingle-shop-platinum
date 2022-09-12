@@ -50,13 +50,8 @@ module.exports = {
             user.confrimPassword = confrimPassword
 
             let getUserUsername = await req.userUC.getUserByUsername(user.username)
-            if(getUserUsername !== null){
-                return res
-                .status(400)
-                .json(resData.failed('user already use',null))
-            }
             let getUserEmail = await req.userUC.getUserByEmail(user.email)
-            if(getUserEmail !== null){
+            if(getUserEmail !== null || getUserUsername !== null){
                 return res
                 .status(400)
                 .json(resData.failed('user already use',null))
