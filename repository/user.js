@@ -1,11 +1,11 @@
 const{User} =require ('../models')
-const {address} = require('../models')
+
 
 
 class UserRepository {
     constructor (){
         this.UserModel = User
-        this.AddressModel = address
+   
     }
     async getUserByUsername (username){
         let user = null

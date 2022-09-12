@@ -14,7 +14,6 @@ module.exports = {
           is_admin: true,
           email:'admin@mail.com',
           password: bcrypt.hashSync('123456', 10),
-          address_id:null,
           createdAt: new Date(),
           updatedAt: new Date(),
         },

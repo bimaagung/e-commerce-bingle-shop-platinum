@@ -6,8 +6,8 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
    
     static associate(models) {
-      this.belongsTo(models.address, {
-        foreignKey: { name: 'address_id', allowNull: false },
+      this.hasMany(models.address, {
+        foreignKey: { name: 'user_id', allowNull: false },
         as: 'address',
       });
     }
@@ -20,7 +20,6 @@ module.exports = (sequelize, DataTypes) => {
     is_admin: DataTypes.BOOLEAN,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
-    address_id: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'User',

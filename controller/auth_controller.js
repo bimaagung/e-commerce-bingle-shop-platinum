@@ -35,8 +35,7 @@ module.exports = {
                 telp : req.body.telp,
                 email : req.body.email,
                 password: req.body.password,
-                is_admin : false,
-                address_id : req.body.address_id
+                is_admin : false
             }
             
             if(req.body.password !== req.body.confrimPassword){
