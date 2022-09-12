@@ -5,9 +5,13 @@ class UserUC {
     async getUserByUsername(username){
         return await this.UserRepository.getUserByUsername(username)
     }
-    async getUserByID(id){
-        return await this.UserRepository.getUserByID(id)
+    async getUserByEmail(email){
+        return await this.UserRepository.getUserByEmail(email)
     }
+    async createUser(user){
+        return await this.UserRepository.createUser(user)
+    }
+    
 }
 
 
