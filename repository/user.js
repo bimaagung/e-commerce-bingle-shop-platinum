@@ -11,13 +11,8 @@ class UserRepository {
         let user = null
         try {
             user = await this.UserModel.findOne({
-                where : {username:username},
-                // include : [
-                //     {
-                //         model:this.AddressModel,
-                //         as: 'address'      
-                //     }
-                // ]
+                where : {username:username}
+               
             })
         } catch (e){
             console.log(e)
