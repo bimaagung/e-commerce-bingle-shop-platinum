@@ -25,5 +25,10 @@ module.exports = {
         } catch (e) {
             next(e)
         }
-    }
+    },
+    getuser :async (req, res, next)=>{
+        let id = req.params.id
+        let user = await req.userUC.getUserByID(id)
+        res.json(resData.success(user))
+      }
 }

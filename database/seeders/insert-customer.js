@@ -10,7 +10,7 @@ module.exports = {
           name: 'customer',
           username: 'customer',
           image: null,
-          telp: 082311111,
+          telp: 0823111111,
           is_admin: false,
           email:'customern@mail.com',
           password: bcrypt.hashSync('123456', 10),

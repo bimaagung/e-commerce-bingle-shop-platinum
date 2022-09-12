@@ -3,7 +3,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert(
-      'Addresses',
+      'addresses',
       [
         {
           province: 'Jawa Barat',
@@ -19,6 +19,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('Addresses', null, {})
+    await queryInterface.bulkDelete('addresses', null, {})
   },
 }

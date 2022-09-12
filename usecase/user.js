@@ -5,6 +5,9 @@ class UserUC {
     async getUserByUsername(username){
         return await this.UserRepository.getUserByUsername(username)
     }
+    async getUserByID(id){
+        return await this.UserRepository.getUserByID(id)
+    }
 }
 
 
