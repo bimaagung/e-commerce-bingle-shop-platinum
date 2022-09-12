@@ -15,7 +15,7 @@ module.exports = {
     }
     res.json(product)
   },
-  
+
   addProduct: async (req, res) => {
     console.log(req)
     let product = {
@@ -24,9 +24,9 @@ module.exports = {
       category_id: req.body.category_id,
       sold: req.body.sold,
       price: req.body.price,
-      stock: req.body.stock  
+      stock: req.body.stock,
     }
-    
+
     let createProductRes = await req.productUC.addProduct(product)
     if (createProductRes == null) {
       return res.status(400).json(null)
@@ -42,7 +42,7 @@ module.exports = {
       category_id: req.body.category_id,
       sold: req.body.sold,
       price: req.body.price,
-      stock: req.body.stock  
+      stock: req.body.stock,
     }
     let updateProductRes = await req.productUC.updateProduct(id, product)
     if (updateProductRes == null) {
@@ -57,6 +57,5 @@ module.exports = {
       return res.status(400).json(null)
     }
     res.json(product)
-  }
+  },
 }
-
