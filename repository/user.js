@@ -24,6 +24,18 @@ class UserRepository {
         }
         return user
     }
+
+    async getUserByUsername (username) {
+        let user = null
+        try {
+            user = await this.UserModel.findOne({
+                where:{username:username}
+            })
+        } catch (e) {
+            console.log(e)
+        }
+        return user
+    }
    
     async createUser(user) {
         let isSuccess = false
