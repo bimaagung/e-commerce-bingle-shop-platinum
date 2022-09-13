@@ -11,12 +11,12 @@ module.exports = {
             if (user == null) {
                 return res
                     .status(400)
-                    .json(resData.failed('username or password incorrect', null))
+                    .json(resData.failed('username or email unavailable', null))
             }
             if (bcrypt.compareSync(password, user.password) !== true) {
                 return res
                     .status(400)
-                    .json(resData.failed('username or password incorrect', null))
+                    .json(resData.failed('username or email unavailable', null))
             }
             const accessToken = jwt.sign(
                 {
@@ -60,11 +60,11 @@ module.exports = {
             user.password = password
             user.confrimPassword = confrimPassword
             
-            let userExist = await req.userUC.getUserExist(user.username, user.email, user.telp)    
-            if (userExist != null) {    
+            let checkUserExist = await req.userUC.getUserExist(user.username, user.email)    
+            if (checkUserExist != null) {    
                 return res
                     .status(400)
-                    .json(resData.failed('username already use', null))
+                    .json(resData.failed('username or email unavailable', null))
             }
             let addUser = await req.userUC.createUser(user)
             if (addUser.isSuccess !== true) {

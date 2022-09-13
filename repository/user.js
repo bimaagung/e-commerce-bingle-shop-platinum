@@ -7,15 +7,15 @@ class UserRepository {
         this.UserModel = User
 
     }
-    async getUserExist(username, email, telp) {
+    async getUserExist(username, email) {
         let user = null
         try {
             user = await this.UserModel.findOne({
                 where : {
                     [Op.or] : [
                         {username : username},
-                        {email : email},
-                        {telp : telp}
+                        {email : email}
+                     
                     ]
                 }
             })
