@@ -1,34 +1,15 @@
-const {Product} = require('../models')
-
-class ProductRepository {
-  constructor() {
-    this.ProductModel = Product
-  }
-
-  async getAllProduct(filters) {
-    if (filters != null) {
-      return await this.ProductModel.findAll({
-        where: filters,
-      })
-    }
-
-    return await this.ProductModel.findAll()
+class ProductUC {
+  constructor(productRepository) {
+    this.productRepository = productRepository
   }
 
   async getProductByID(id) {
-    let data = null
-    try {
-      data = await this.ProductModel.findOne({
-        where: {
-          id: id,
-        },
-      })
-    } catch (err) {
-      console.log(err)
-      return null
-    }
-    return data
+    return await this.productRepository.getProductByID(id)
+  }
+
+  async getAllProduct(filters) {
+    return await this.productRepository.getAllProduct(filters)
   }
 }
 
-module.exports = ProductRepository
+module.exports = ProductUC
