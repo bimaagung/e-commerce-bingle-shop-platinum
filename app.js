@@ -3,12 +3,10 @@ const app = express()
 
 const UserRepository = require('./repository/user')
 const UserUseCase = require('./usecase/user')
-
-const ProductRepository = require('./repository/product')
 const ProductUseCase = require('./usecase/product')
+const ProductRepository = require('./repository/product')
 
 const productRouter = require('./routes/product')
-const adminRouter = require('./routes/admin')
 const authRouter = require('./routes/auth')
 
 const productUC = new ProductUseCase(new ProductRepository()) //inisiasi module class
@@ -28,7 +26,7 @@ app.get('/', function (req, res) {
   res.send('Hello Platinum Maju Jaya')
 })
 
-app.use('/admin', adminRouter)
+
 app.use('/product', productRouter)
 app.use('/', authRouter)
 
