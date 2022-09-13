@@ -1,47 +1,31 @@
-const{User} =require ('../models')
-
+const { User } = require('../models')
+const {Op}= require('sequelize')
 
 
 class UserRepository {
-    constructor (){
+    constructor() {
         this.UserModel = User
+
+    }
+    async getUserExist(username, email, telp) {
+        let user = null
+        try {
+            user = await this.UserModel.findOne({
+                where : {
+                    [Op.or] : [
+                        {username : username},
+                        {email : email},
+                        {telp : telp}
+                    ]
+                }
+            })
+        } catch (e) {
+            console.log(e)
+        }
+        return user
+    }
    
-    }
-    async getUserByUsername (username){
-        let user = null
-        try {
-            user = await this.UserModel.findOne({
-                where : {username:username}
-               
-            })
-        } catch (e){
-            console.log(e)
-        }
-        return user
-    }
-    async getUserByEmail (email){
-        let user = null
-        try {
-            user = await this.UserModel.findOne({
-                where : {email:email}
-            })
-        } catch (e) {
-            console.log(e)
-        }
-        return user
-    }
-    async getUserByTelp (telp){
-        let user = null
-        try {
-            user = await this.UserModel.findOne({
-                where : {telp:telp}
-            })
-        } catch (e) {
-            console.log(e)
-        }
-        return user
-    }
-    async createUser(user){
+    async createUser(user) {
         let isSuccess = false
         try {
             user = await this.UserModel.create(user)
@@ -50,11 +34,11 @@ class UserRepository {
             console.log(e)
         }
         return {
-            isSuccess : isSuccess,
-            user : user
+            isSuccess: isSuccess,
+            user: user
         }
     }
-    
+
 }
 
-module.exports =UserRepository
+module.exports = UserRepository

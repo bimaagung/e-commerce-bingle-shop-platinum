@@ -59,25 +59,12 @@ module.exports = {
 
             user.password = password
             user.confrimPassword = confrimPassword
-
-            let getUserUsername = await req.userUC.getUserByUsername(user.username)
-            let getUserEmail = await req.userUC.getUserByEmail(user.email)
-            let getUserTelp = await req.userUC.getUserByTelp(user.telp)
             
-            if (getUserUsername !== null) {
+            let userExist = await req.userUC.getUserExist(user.username, user.email, user.telp)    
+            if (userExist != null) {    
                 return res
                     .status(400)
                     .json(resData.failed('username already use', null))
-            }
-            if (getUserEmail !== null) {
-                return res
-                    .status(400)
-                    .json(resData.failed('email already use', null))
-            }
-            if (getUserTelp !== null) {
-                return res
-                    .status(400)
-                    .json(resData.failed('number phone already use', null))
             }
             let addUser = await req.userUC.createUser(user)
             if (addUser.isSuccess !== true) {
