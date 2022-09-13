@@ -30,6 +30,17 @@ class UserRepository {
         }
         return user
     }
+    async getUserByTelp (telp){
+        let user = null
+        try {
+            user = await this.UserModel.findOne({
+                where : {telp:telp}
+            })
+        } catch (e) {
+            console.log(e)
+        }
+        return user
+    }
     async createUser(user){
         let isSuccess = false
         try {

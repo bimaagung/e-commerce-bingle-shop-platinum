@@ -62,10 +62,22 @@ module.exports = {
 
             let getUserUsername = await req.userUC.getUserByUsername(user.username)
             let getUserEmail = await req.userUC.getUserByEmail(user.email)
-            if (getUserEmail !== null || getUserUsername !== null) {
+            let getUserTelp = await req.userUC.getUserByTelp(user.telp)
+            
+            if (getUserUsername !== null) {
                 return res
                     .status(400)
-                    .json(resData.failed('user already use', null))
+                    .json(resData.failed('username already use', null))
+            }
+            if (getUserEmail !== null) {
+                return res
+                    .status(400)
+                    .json(resData.failed('email already use', null))
+            }
+            if (getUserTelp !== null) {
+                return res
+                    .status(400)
+                    .json(resData.failed('number phone already use', null))
             }
             let addUser = await req.userUC.createUser(user)
             if (addUser.isSuccess !== true) {
