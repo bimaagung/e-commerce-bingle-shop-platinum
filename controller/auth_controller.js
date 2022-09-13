@@ -1,4 +1,5 @@
 const bcrypt = require ('bcrypt')
+const jwt = require('jsonwebtoken')
 const resData = require('../helper/reponse')
 
 module.exports = {
@@ -17,11 +18,21 @@ module.exports = {
                     .status(400)
                     .json(resData.failed('username or password incorrect', null))
             }
-            user =user.toJSON()
-            delete user.password
-            
-             res.json(resData.success(user))
-     
+            const accessToken = jwt.sign(
+                { 
+                 id : user.id,
+                 username:user.username
+                },
+                process.env.JWT_KEY_SECRET,
+                {
+                    expiresIn : '6h'
+                }
+            )
+                res.json(resData.success({
+                    id:user.id,
+                    username: user.username,
+                    token : accessToken
+                }))
         } catch (e) {
             next(e)
         }
@@ -64,6 +75,7 @@ module.exports = {
             }
                 delete user.password
                 delete user.confrimPassword
+                delete user.is_admin
                 res.json(resData.success(user))
 
         } catch (e) {
