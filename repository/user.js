@@ -24,7 +24,7 @@ class UserRepository {
         }
         return user
     }
-
+   
     async getUserByUsername (username) {
         let user = null
         try {
@@ -36,7 +36,7 @@ class UserRepository {
         }
         return user
     }
-   
+
     async createUser(user) {
         let isSuccess = false
         try {
