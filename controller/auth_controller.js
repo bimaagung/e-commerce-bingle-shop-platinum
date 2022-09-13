@@ -28,9 +28,11 @@ module.exports = {
                     expiresIn: '6h'
                 }
             )
-            res.json(resData.success({
-                token: accessToken
-            }))
+            res.json({
+                status: "OK",
+                message: "success",
+                token : accessToken
+            })
         } catch (e) {
             next(e)
         }
