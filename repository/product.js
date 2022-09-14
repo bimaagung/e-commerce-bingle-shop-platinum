@@ -1,6 +1,6 @@
 const {Product} = require('../models')
 
-class productRepository {
+class ProductRepository {
   constructor() {
     this.productModel = Product
   }
@@ -9,7 +9,7 @@ class productRepository {
     let data = null
     try {
       
-      data =await this.productModel.findAll()
+      data =await this.ProductModel.findAll()
     } catch (e) {
       console.log(e)
       return null
@@ -72,4 +72,4 @@ class productRepository {
   }
 }
 
-module.exports = productRepository
+module.exports = ProductRepository
