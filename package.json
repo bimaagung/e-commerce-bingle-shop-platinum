@@ -21,8 +21,10 @@
   },
   "homepage": "https://github.com/bimaagung/maju-jaya-platinum-kelompok-1-BEJ#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "dotenv": "^16.0.2",
     "express": "^4.18.1",
+    "jsonwebtoken": "^8.5.1",
     "pg": "^8.8.0",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.21.4",
