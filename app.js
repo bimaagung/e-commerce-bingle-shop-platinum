@@ -1,15 +1,17 @@
 const express = require('express')
 const app = express()
 
-const ProductRepository = require('./repository/product')
-const ProductUseCase = require('./usecase/product')
+const CategoryRepository = require('./repository/category')
+const CategoryUseCase = require('./usecase/category')
 
-const productRouter = require('./routes/product')
+const AdminRouter = require('./routes/admin')
 
-const productUC = new ProductUseCase(new ProductRepository())
+const CategoryUC = new CategoryUseCase(new CategoryRepository())
+app.use(express.json())
+app.use(express.urlencoded({extended: false}))
 
 app.use((req, res, next) => {
-  req.productUC = productUC
+  req.categoryUC = CategoryUC
   next()
 })
 
@@ -18,7 +20,8 @@ app.get('/', function (req, res) {
   res.send('Hello Platinum Maju Jaya')
 })
 
-app.use('/product', productRouter)
+app.use('/admin', AdminRouter)
+
 
 const swaggerUi = require('swagger-ui-express')
 const swaggerDocument = require('./docs/docs.json')
