@@ -1,4 +1,4 @@
-const { DATE } = require("sequelize")
+
 
 module.exports = {
   getAllProduct: async (req, res) => {
