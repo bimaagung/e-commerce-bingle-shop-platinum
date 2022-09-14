@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const {Product} = require('../models')
 
 class ProductRepository {
@@ -15,61 +16,20 @@ class ProductRepository {
     }
 
     return await this.ProductModel.findAll()
+=======
+class ProductUC {
+  constructor(productRepository) {
+    this.productRepository = productRepository
+>>>>>>> 8c7fa5d130ad70f64ea99382671359ff2e9e7cc1
   }
 
   async getProductByID(id) {
-    let data = null
-    try {
-      data = await this.ProductModel.findOne({
-        where: {
-          id: id,
-        },
-      })
-    } catch (err) {
-      console.log(err)
-      return null
-    }
-    return data
+    return await this.productRepository.getProductByID(id)
   }
-  async addProduct(product) {
-    let data = null
-        try {
-          data = await this.ProductModel.create(product)
-        } catch (err) {
-          console.log(err)
-          return null
-        }
-        return data
+
+  async getAllProduct(filters) {
+    return await this.productRepository.getAllProduct(filters)
   }
-  async updateProduct(id, product) {
-    let data = null
-        try {
-          data = await this.ProductModel.update(product, 
-          { 
-            where: { id: id } 
-          })
-        } catch (err) {
-          console.log(err)
-          return null
-        }
-        return data
-  }
-  async deleteProduct(id) {
-    let data = null
-        try {
-          data = await this.ProductModel.destroy(
-          { 
-            where: { id: id } 
-          })
-        } catch (err) {
-          console.log(err)
-          return null
-        }
-        return data
-
-
-
-}
 }
 
-module.exports = ProductRepository
+module.exports = ProductUC
