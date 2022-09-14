@@ -5,10 +5,12 @@ class ProductRepository {
     this.ProductModel = Product
   }
 
-  async getAllProduct(filters) {
-    if (filters != null) {
+  async getAllProduct(category_id) {
+    if (category_id != null) {
       return await this.ProductModel.findAll({
-        where: filters,
+        where: {
+          category_id: category_id
+        },
       })
     }
 
