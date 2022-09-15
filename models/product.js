@@ -1,8 +1,7 @@
 'use strict'
 const {Model} = require('sequelize')
-const {nanoid} = require('nanoid')
 module.exports = (sequelize, DataTypes) => {
-  class OrderDetail extends Model {
+  class Product extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -12,18 +11,19 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  OrderDetail.init(
+  Product.init(
     {
-      user_id: DataTypes.INTEGER,
-      order_id: DataTypes.STRING(16),
-      product_id: DataTypes.INTEGER,
-      qty: DataTypes.INTEGER,
-      total_price: DataTypes.INTEGER,
+      name: DataTypes.STRING,
+      description: DataTypes.STRING,
+      category_id: DataTypes.INTEGER,
+      sold: DataTypes.INTEGER,
+      price: DataTypes.INTEGER,
+      stock: DataTypes.INTEGER,
     },
     {
       sequelize,
-      modelName: 'OrderDetail',
+      modelName: 'Product',
     },
   )
-  return OrderDetail
+  return Product
 }

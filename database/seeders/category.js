@@ -4,7 +4,12 @@ module.exports = {
       'Categories',
       [
         {
-          nama: 'Leptop',
+          nama: 'Laptop',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          nama: 'Smartphone',
           createdAt: new Date(),
           updatedAt: new Date(),
         },

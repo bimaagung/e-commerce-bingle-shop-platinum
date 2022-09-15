@@ -13,10 +13,10 @@ module.exports = {
         allowNull: false,
       },
       order_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING(16),
         allowNull: false,
       },
-      item_id: {
+      product_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },

@@ -1,7 +1,6 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+'use strict'
+const {Model} = require('sequelize')
+const {nanoid} = require('nanoid')
 module.exports = (sequelize, DataTypes) => {
   class Order extends Model {
     /**
@@ -13,12 +12,21 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Order.init({
-    user_id: DataTypes.INTEGER,
-    status: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Order',
-  });
-  return Order;
-};
+  Order.init(
+    {
+      id: {
+        allowNull: false,
+        primaryKey: true,
+        type: DataTypes.STRING(16),
+        defaultValue: nanoid(16),
+      },
+      user_id: DataTypes.INTEGER,
+      status: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: 'Order',
+    },
+  )
+  return Order
+}
