@@ -1,4 +1,5 @@
 const resData = require('../helper/response')
+const url =require('../libs/handle_Upload');
 
 module.exports = {
   getAllProduct: async (req, res) => {
@@ -28,10 +29,20 @@ module.exports = {
       sold: req.body.sold,
       price: req.body.price,
       stock: req.body.stock,
+      image: await url.uploadCloudinary(req.file.path)
     }
 
+    
+// async function  multipeUpload (){
+//   let urls = []
+//   for(const file of req.files){
+//     const url = await url.uploadCloudinary(file.path)
+//     urls.push(url)
+//   }
+// }
+
     // TODO Check category not null
-    let existCategory = await req.productUC.getCategoryById(id)
+    let existCategory = await req.categoryUC.getCategoryByID(product.category_id)
     if (existCategory == null) {
       return res
         .status(400)

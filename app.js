@@ -5,7 +5,7 @@ const CategoryUseCase = require('./usecase/category')
 
 const AdminRouter = require('./routes/admin')
 
-const CategoryUC = new CategoryUseCase(new CategoryRepository())
+const categoryUC = new CategoryUseCase(new CategoryRepository())
 const UserRepository = require('./repository/user')
 const UserUseCase = require('./usecase/user')
 const ProductUseCase = require('./usecase/product')
@@ -21,7 +21,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
 app.use((req, res, next) => {
-  req.categoryUC = CategoryUC
+  req.categoryUC = categoryUC
   req.productUC = productUC
   req.userUC = userUC
   next()
