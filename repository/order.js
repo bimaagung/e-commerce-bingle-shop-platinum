@@ -23,6 +23,10 @@ class OrderRepository {
       ],
     })
   }
+
+  async updateOrder(order_id, order) {
+    return await this.OrderModel.update(order, {where: {id: order_id}})
+  }
 }
 
 module.exports = OrderRepository

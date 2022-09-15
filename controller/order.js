@@ -14,9 +14,7 @@ module.exports = {
       if (getPendingOrder !== null) {
         return res
           .status(400)
-          .json(
-            resData.failed('user already has pending order', getPendingOrder),
-          )
+          .json(resData.failed('user already has pending order'))
       }
 
       // create a new order
@@ -57,6 +55,25 @@ module.exports = {
       }
 
       res.json(resData.success(order))
+    } catch (e) {
+      next(e)
+    }
+  },
+
+  changeStatusOrder: async (req, res, next) => {
+    try {
+      const order_id = req.params.id
+      const status_order = req.body.status
+      const updateStatusOrder = await req.orderUC.updateStatusOrder(
+        order_id,
+        status_order,
+      )
+
+      if (updateStatusOrder === null) {
+        return res.status(404).json(resData.failed('order not found'))
+      }
+
+      res.json(resData.success())
     } catch (e) {
       next(e)
     }

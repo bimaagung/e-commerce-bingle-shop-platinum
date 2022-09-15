@@ -7,7 +7,6 @@ class OrderUC {
   }
 
   async getPendingOrderByUserId(user_id) {
-    // TODO : mixing order detail and product in result object
     let orderPending = await this.orderRepository.getPendingOrderByUserId(
       user_id,
     )
@@ -128,6 +127,31 @@ class OrderUC {
     }
 
     return resultOrderDetail
+  }
+
+  async updateStatusOrder(order_id, status_order) {
+    let order = {}
+
+    if (status_order === 'ORDER_PROCESSED') {
+      order.status = 'PROCESSED'
+    } else if (status_order === 'ORDER_COMPLETED') {
+      order.status = 'COMPLETED'
+    } else if (status_order === 'ORDER_CANCELED') {
+      order.status = 'CANCELED'
+    } else {
+      order.status = null
+    }
+
+    let updateStatusOrder = await this.orderRepository.updateOrder(
+      order_id,
+      order,
+    )
+
+    if (updateStatusOrder === null) {
+      return null
+    }
+
+    return updateStatusOrder
   }
 }
 
