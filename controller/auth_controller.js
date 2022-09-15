@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const generateToken = require("../helper/jwt");
 const resData = require("../helper/response");
+const url = require('../libs/handle_upload')
 
 module.exports = {
   login: async (req, res, next) => {
@@ -32,7 +33,7 @@ module.exports = {
       let user = {
         name: req.body.name,
         username: req.body.username,
-        image: null,
+        image: await url.uploadCloudinary(req.file.path),
         telp: req.body.telp,
         email: req.body.email,
         password: req.body.password,

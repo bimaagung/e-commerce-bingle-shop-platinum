@@ -16,7 +16,7 @@ const authRouter = require('./routes/auth')
 
 const productUC = new ProductUseCase(new ProductRepository()) //inisiasi module class product
 const userUC = new UserUseCase(new UserRepository()) //inisiasi module class user
-
+app.use('/public', express.static('public'))
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
