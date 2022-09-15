@@ -1,17 +1,10 @@
-'use strict'
-
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert(
-      'Products',
+      'Category',
       [
         {
-          name: 'Macbook Pro M2',
-          description: 'Apple Macbook Pro 13 inch with Chip M2 2022',
-          category_id: 1,
-          sold: 0,
-          price: 23000000,
-          stock: 10,
+          name: 'Leptop',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -44,13 +37,13 @@ module.exports = {
           stock: 50,
           createdAt: new Date(),
           updatedAt: new Date(),
-        }
+        },
       ],
       {},
     )
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('Products', null, {})
+    await queryInterface.bulkDelete('Category', null, {})
   },
 }
