@@ -37,7 +37,7 @@ app.use('/admin', AdminRouter)
 app.use('/product', productRouter)
 app.use('/', authRouter)
 
-const swaggerUi = require('swagger-ui-express')
+const swaggerUi = require('swagger-ui-express') //import swagger
 const swaggerDocument = require('./docs/docs.json')
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))

@@ -1,15 +1,75 @@
-class ProductUC {
-  constructor(productRepository) {
-    this.productRepository = productRepository
+const {Product} = require('../models')
+
+class ProductRepository {
+  constructor() {
+    this.productModel = Product
   }
 
-  async getProductByID(id) {
-    return await this.productRepository.getProductByID(id)
+  async getAllproducts() {
+    let data = null
+    try {
+      
+      data =await this.ProductModel.findAll()
+    } catch (e) {
+      console.log(e)
+      return null
+    }
+    return data
   }
 
-  async getAllProduct(filters) {
-    return await this.productRepository.getAllProduct(filters)
+  async getproductByID(id) {
+    let data = null
+    try {
+      data = await this.productModel.findOne({
+        where: {
+          id: id,
+        },
+      })
+    } catch (err) {
+      console.log(err)
+      return null
+    }
+    return data
+  }
+
+  async addProduct(product) {
+    let data = null
+    try {
+      data = await this.productModel.create(product)
+    } catch (err) {
+      console.log(err)
+      return null
+    }
+    return data
+  }
+  async updateProduct(id,product) {
+    let data = null
+    try {
+      data = await this.productModel.update(product,{
+        where: {
+          id: id,
+        },
+      })
+    } catch (err) {
+      console.log(err)
+      return null
+    }
+    return data
+  }
+  async deleteProduct(id) {
+    let data = null
+    try {
+      data = await this.productModel.destroy({
+        where: {
+          id: id,
+        },
+      })
+    } catch (err) {
+      console.log(err)
+      return null
+    }
+    return data
   }
 }
 
-module.exports = ProductUC
+module.exports = ProductRepository
