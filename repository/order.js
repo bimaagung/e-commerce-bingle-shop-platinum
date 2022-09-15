@@ -1,4 +1,5 @@
-const {Order} = require('../models')
+const orderConstant = require('../internal/constant/order')
+const {Order, User, OrderDetail} = require('../models')
 
 class OrderRepository {
   constructor() {
@@ -12,7 +13,14 @@ class OrderRepository {
 
   async getPendingOrderByUserId(user_id) {
     return await this.OrderModel.findOne({
-      where: {user_id: user_id, status: 'PENDING'},
+      where: {user_id: user_id, status: orderConstant.ORDER_PENDING},
+      include: [
+        {
+          model: OrderDetail,
+          as: 'order_details',
+          attribute: ['id', 'product_id', 'qty', 'total_price'],
+        },
+      ],
     })
   }
 }

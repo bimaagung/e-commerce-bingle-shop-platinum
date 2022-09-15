@@ -1,3 +1,4 @@
+const orderConstant = require('../internal/constant/order')
 class OrderUC {
   constructor(orderRepository, orderDetailRepository, productRespository) {
     this.orderRepository = orderRepository
@@ -6,14 +7,35 @@ class OrderUC {
   }
 
   async getPendingOrderByUserId(user_id) {
-    return await this.orderRepository.getPendingOrderByUserId(user_id)
+    // TODO : mixing order detail and product in result object
+    let orderPending = await this.orderRepository.getPendingOrderByUserId(
+      user_id,
+    )
+
+    if (orderPending === null) {
+      return null
+    }
+
+    let productInOrderDetail = await this.getProductByOrderDetail(
+      orderPending.order_details,
+    )
+
+    let resultOrderDetail = {
+      id: orderPending.id,
+      status: orderPending.status,
+      created_at: orderPending.createdAt,
+      updated_at: orderPending.updatedAt,
+      products: productInOrderDetail,
+    }
+
+    return resultOrderDetail
   }
 
   async createOrder(user_id, order_id, products) {
     let orders = {
       id: order_id,
       user_id: user_id,
-      status: 'PENDING',
+      status: orderConstant.ORDER_PENDING,
     }
 
     // add each product in order detail
@@ -44,7 +66,7 @@ class OrderUC {
     for (let i = 0; i < products.length; i++) {
       // check qty product order customer
       if (products[i].qty < 1) {
-        return
+        continue
       }
 
       //check stock product if existing
@@ -53,7 +75,7 @@ class OrderUC {
       )
 
       if (getProductById.stock < 1) {
-        return
+        continue
       }
 
       // create object detail order per product
@@ -71,7 +93,7 @@ class OrderUC {
       )
 
       if (addOrderDetail === null) {
-        return
+        continue
       }
 
       // if success push to product_id
@@ -79,6 +101,33 @@ class OrderUC {
     }
 
     return OrderDetailByProductId
+  }
+
+  async getProductByOrderDetail(order_detail) {
+    let resultOrderDetail = []
+
+    for (let i = 0; i < order_detail.length; i++) {
+      let product = await this.productRespository.getproductByID(
+        order_detail[i].product_id,
+      )
+
+      if (product === null) {
+        continue
+      }
+
+      let resultProduct = {
+        id: product.id,
+        name: product.name,
+        category: product.category_id,
+        price: product.price,
+        qty: order_detail[i].qty,
+        total_price: order_detail[i].total_price,
+      }
+
+      resultOrderDetail.push(resultProduct)
+    }
+
+    return resultOrderDetail
   }
 }
 

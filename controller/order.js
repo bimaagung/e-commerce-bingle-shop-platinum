@@ -36,12 +36,27 @@ module.exports = {
           )
       }
 
-      return res.status(201).json(
+      res.status(201).json(
         resData.success({
           order_id: order_id,
           products: createOrder,
         }),
       )
+    } catch (e) {
+      next(e)
+    }
+  },
+
+  getPendingOrderByUserId: async (req, res, next) => {
+    try {
+      let user_id = req.user.id
+
+      let order = await req.orderUC.getPendingOrderByUserId(user_id)
+      if (order === null) {
+        return res.status(404).json(resData.failed('not found pending order'))
+      }
+
+      res.json(resData.success(order))
     } catch (e) {
       next(e)
     }
