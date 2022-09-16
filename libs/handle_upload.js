@@ -2,7 +2,8 @@ require("dotenv").config();
 const cloudinary = require('cloudinary').v2
 const multer = require('multer')
 const path = require('path')
-const fs = require('fs')
+const fs = require('fs');
+const { url } = require("inspector");
 
 const storage = multer.diskStorage({
     destination: (req ,file , cb)=>{
@@ -51,5 +52,13 @@ async function uploadCloudinary(filePath){
     }
 }
 
+async function multipeUpload(file){
+    let urls = []
+    for(const file of req.files){
+        url = await url.uploadCloudinary(req.file.path)
+        urls.push(url)
+    }
+}
 
-module.exports= {upload, uploadCloudinary}
+
+module.exports= {upload, uploadCloudinary, multipeUpload}

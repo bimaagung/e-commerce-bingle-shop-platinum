@@ -4,7 +4,7 @@ class ProductUC {
   }
   
   async getAllProducts(filters) {
-    return await this.itemRepository.getAllProducts(filters)
+    return await this.productRepository.getAllProducts(filters)
 }
   async getProductByID(id) {
     return await this.productRepository.getProductByID(id)

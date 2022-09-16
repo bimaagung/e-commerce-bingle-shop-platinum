@@ -12,7 +12,7 @@ router.put('/category/update/:id', categoryController.putCategory)
 router.delete('/category/delete/:id', categoryController.deleteCategory)
 
 // Product
-router.post('/product/add',handleUpload.upload.single('image'), productController.addProduct)
+router.post('/product/add',handleUpload.upload.single('image'), productController.createProudct)
 router.put('/product/update/:id', handleUpload.upload.array('image', 9),productController.updateProduct)
 router.delete('/product/delete/:id', productController.deleteProduct)
 
