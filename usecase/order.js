@@ -153,6 +153,17 @@ class OrderUC {
 
     return updateStatusOrder
   }
+
+  async updateStockProduct(status, order_detail) {
+    // reduce stock if submitted
+    if (status === 'ORDER_SUBMITTED') {
+    } else if (status === 'ORDER_CANCELED') {
+    } else {
+      return null
+    }
+
+    // add stock canceled
+  }
 }
 
 module.exports = OrderUC
