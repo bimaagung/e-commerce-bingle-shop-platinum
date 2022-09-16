@@ -3,15 +3,14 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert(
-      'Products',
+      'addresses',
       [
         {
-          name: 'Macbook Pro M1',
-          description: 'Apple Macbook Pro M1 2020',
-          category_id: 1,
-          sold: 0,
-          price: 23000000,
-          stock: 10,
+          province: 'Jawa Barat',
+          city: 'Garut',
+          postal_code: "44151",
+          detail: 'Jl.Pembangunan no 56 kec.Sukaregang',
+          user_id: 2,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -21,6 +20,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('Products', null, {})
+    await queryInterface.bulkDelete('addresses', null, {})
   },
 }
