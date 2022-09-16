@@ -33,12 +33,17 @@ module.exports = {
       let user = {
         name: req.body.name,
         username: req.body.username,
-        image: await url.uploadCloudinary(req.file.path),
+        image: null,
         telp: req.body.telp,
         email: req.body.email,
         password: req.body.password,
         is_admin: false,
       };
+      let image = null
+      if(req.file !== undefined ){
+        image = await url.uploadCloudinary(req.file.path)
+       } 
+     user.image = image
 
       if (req.body.password !== req.body.confrimPassword) {
         return res

@@ -3,7 +3,8 @@ const cloudinary = require('cloudinary').v2
 const multer = require('multer')
 const path = require('path')
 const fs = require('fs');
-const { url } = require("inspector");
+
+// cloudinary.url("sample.jpg", {width: 300, height: 100, crop: "scale",default_image: "avatar.png"})
 
 const storage = multer.diskStorage({
     destination: (req ,file , cb)=>{
@@ -39,6 +40,8 @@ cloudinary.config({
 
 
 async function uploadCloudinary(filePath){
+   
+    
     let result
     try {
         result = await cloudinary.uploader.upload(filePath, {
@@ -52,13 +55,8 @@ async function uploadCloudinary(filePath){
     }
 }
 
-async function multipeUpload(file){
-    let urls = []
-    for(const file of req.files){
-        url = await url.uploadCloudinary(req.file.path)
-        urls.push(url)
-    }
-}
 
 
-module.exports= {upload, uploadCloudinary, multipeUpload}
+
+
+module.exports= {upload, uploadCloudinary}

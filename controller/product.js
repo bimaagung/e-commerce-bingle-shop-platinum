@@ -1,5 +1,7 @@
 const resData = require("../helper/response");
 const url = require("../libs/handle_Upload");
+const path = require("path")
+
 
 module.exports = {
   getAllProduct: async (req, res) => {
@@ -30,9 +32,13 @@ module.exports = {
       sold: req.body.sold,
       price: req.body.price,
       stock: req.body.stock,
-      image: await url.uploadCloudinary(req.file.path),
+      image: null,
     };
-
+    let image = null
+    if(req.file !== undefined ){
+       image = await url.uploadCloudinary(req.file.path)
+      } 
+    product.image = image
     let existCategory = await req.categoryUC.getCategoryByID(
       product.category_id
     );
