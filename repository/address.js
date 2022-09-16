@@ -1,8 +1,8 @@
-const {Address} = require('../models')
+const {address} = require('../models')
 
 class AddressRepository {
   constructor() {
-    this.AddressModel = Address
+    this.AddressModel = address
   }
 
   async getAddressByID(id) {
