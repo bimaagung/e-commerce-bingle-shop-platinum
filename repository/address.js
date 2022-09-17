@@ -1,4 +1,5 @@
-const { address } = require('../models')
+// const product = require('../controller/product');
+const { address } = require('../models');
 
 class AddressRepository {
   constructor() {
@@ -36,20 +37,42 @@ class AddressRepository {
     try {
       data = await this.AddressModel.create(address);
     } catch (err) {
-      console.log(err)
-      return null
+      console.log(err);
+      return null;
     }
-    return data
+    return data;
+  };
+
+  async updateAddress(id, address) {
+    let data = null;
+    try {
+      data = await this.AddressModel.update(address, {
+        where: {
+          id: id,
+        },
+      })
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
+    return data;
+  };
+
+  async deleteAddress(id) {
+    let data = null
+    try {
+      data = await this.addressModel.destroy({
+        where: {
+          id: id,
+        },
+      })
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
+    return data;
   };
 }
 
-// async putAddress() {
-//   return await this.AddressModel.findAll({
-//   });
-// };
 
-// async deleteAddress() {
-//   return await this.AddressModel.findAll({
-//   });
-// };
 module.exports = AddressRepository

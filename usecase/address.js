@@ -15,8 +15,8 @@ class AddressUC {
       return await this.AddressRepository.addAddress()
     };
 
-    async putAddress(id) {
-      return await this.AddressRepository.editAddress(id)
+    async updateAddress(id, address) {
+      return await this.AddressRepository.updateAddress(id, address)
     };
 
     async deleteAddress(id) {

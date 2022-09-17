@@ -5,8 +5,8 @@ const address = require('../controller/address_controller');
 router.get('/:id', address.getAddressByID);
 router.get('/', address.getAllAddress);
 router.post('/create', address.addAddress);
-// router.put('/update/:id', address.editAddress);
-// router.delete('/delete/:id', address.deleteAddress);
+router.put('/update/:id', address.updateAddress);
+router.delete('/delete/:id', address.deleteAddress);
 
 
 module.exports = router;
