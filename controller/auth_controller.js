@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const generateToken = require("../helper/jwt");
-const resData = require("../helper/reponse");
+const resData = require("../helper/response");
 
 module.exports = {
   login: async (req, res, next) => {

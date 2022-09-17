@@ -2,31 +2,74 @@ const {Product} = require('../models')
 
 class ProductRepository {
   constructor() {
-    this.ProductModel = Product
+    this.productModel = Product
   }
 
-  async getAllProduct(category_id) {
-    if (category_id != null) {
-      return await this.ProductModel.findAll({
+  async getAllproducts() {
+    let data = null
+    try {
+      
+      data =await this.ProductModel.findAll()
+    } catch (e) {
+      console.log(e)
+      return null
+    }
+    return data
+  }
+
+  async getproductByID(id) {
+    let data = null
+    try {
+      data = await this.productModel.findOne({
         where: {
-          category_id: category_id
+          id: id,
         },
       })
+    } catch (err) {
+      console.log(err)
+      return null
     }
-
-    return await this.ProductModel.findAll()
-class ProductUC {
-  constructor(productRepository) {
-    this.productRepository = productRepository
+    return data
   }
 
-  async getProductByID(id) {
-    return await this.productRepository.getProductByID(id)
+  async addProduct(product) {
+    let data = null
+    try {
+      data = await this.productModel.create(product)
+    } catch (err) {
+      console.log(err)
+      return null
+    }
+    return data
   }
-
-  async getAllProduct(filters) {
-    return await this.productRepository.getAllProduct(filters)
+  async updateProduct(id,product) {
+    let data = null
+    try {
+      data = await this.productModel.update(product,{
+        where: {
+          id: id,
+        },
+      })
+    } catch (err) {
+      console.log(err)
+      return null
+    }
+    return data
+  }
+  async deleteProduct(id) {
+    let data = null
+    try {
+      data = await this.productModel.destroy({
+        where: {
+          id: id,
+        },
+      })
+    } catch (err) {
+      console.log(err)
+      return null
+    }
+    return data
   }
 }
 
-module.exports = ProductUC
+module.exports = ProductRepository
