@@ -5,5 +5,6 @@ const authorize = require('../middleware/jwt')
 const router = express.Router()
 router.post('/create', authorize, orderController.createOrder)
 router.get('/pending/', authorize, orderController.getPendingOrderByUserId)
+router.patch('/submit/', authorize, orderController.submitOrder)
 
 module.exports = router
