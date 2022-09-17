@@ -143,51 +143,65 @@ class OrderUC {
     return resultOrderDetail
   }
 
+  async updateOrderSubmitted(orderPending) {
+    let order = {
+      status: orderConstant.ORDER_SUBMITTED,
+      completed_date: null,
+    }
+
+    let reduceStock = await this.updateStockSoldProduct(
+      orderPending.id,
+      orderConstant.ORDER_SUBMITTED,
+    )
+
+    if (reduceStock.length !== orderPending.products.length) {
+      return null
+    }
+
+    return await this.orderRepository.updateOrder(orderPending.id, order)
+  }
+
   async updateStatusOrder(orderId, statusOrder) {
     let order = {}
 
     if (statusOrder === 'ORDER_PROCESSED') {
       order.status = orderConstant.ORDER_PROCESSED
+      order.completed_date = null
     } else if (statusOrder === 'ORDER_COMPLETED') {
       order.status = orderConstant.ORDER_COMPLETED
       order.completed_date = new Date()
     } else if (statusOrder === 'ORDER_CANCELED') {
       order.status = orderConstant.ORDER_CANCELED
       order.completed_date = null
-      await this.updateStockSoldProduct(orderId, order.status)
-    } else if (statusOrder === 'ORDER_CANCELED') {
-      order.status = orderConstant.ORDER_CANCELED
-      order.completed_date = null
+
       await this.updateStockSoldProduct(orderId, order.status)
     } else {
       order.status = null
     }
 
-    let updateStatusOrder = await this.orderRepository.updateOrder(
-      orderId,
-      order,
-    )
-
-    if (!updateStatusOrder) {
+    if (order.status === null) {
       return null
     }
 
-    return updateStatusOrder
+    return await this.orderRepository.updateOrder(orderId, order)
   }
 
   // update stock and sold in each product for part process submitted or canceled
   async updateStockSoldProduct(orderId, statusOrder) {
+    // array for tag success process stock and sold in product
+    let updateProduct = []
+
     // get order details
     let orderDetail = await this.orderDetailRepository.getOrderDetailById(
       orderId,
     )
 
     // process each product
-    orderDetail.forEach(async (product) => {
+    for (let i = 0; i < orderDetail.length; i++) {
       let calProduct = {}
 
       let getProductById = await this.productRespository.getproductByID(
-        product.product_id,
+        orderDetail[i].product_id,
       )
 
       if (statusOrder === orderConstant.ORDER_CANCELED) {
@@ -195,26 +209,45 @@ class OrderUC {
         Returning the stock of the product that was canceled 
         after the stock was reduced because it was submitted 
         */
-        calProduct.stock = getProductById.stock + product.qty
-        calProduct.sold = getProductById.sold - product.qty
+        calProduct.stock = getProductById.stock + orderDetail[i].qty
+        calProduct.sold = getProductById.sold - orderDetail[i].qty
 
-        await this.productRespository.updateProduct(
-          product.product_id,
-          calProduct,
-        )
-      } else if (statusOrder === 'ORDER_SUBMITTED') {
+        let updateStockSoldProduct =
+          await this.productRespository.updateProduct(
+            orderDetail[i].product_id,
+            calProduct,
+          )
+
+        if (!updateStockSoldProduct) {
+          continue
+        }
+        updateProduct.push(orderDetail[i].product_id)
+      } else if (statusOrder === orderConstant.ORDER_SUBMITTED) {
+        // check stock
+        if (getProductById.stock < orderDetail[i].qty) {
+          continue
+        }
+
         // Reduce product stock after submitted
-        calProduct.stock = getProductById.stock - product.qty
-        calProduct.sold = getProductById.sold + product.qty
+        calProduct.stock = getProductById.stock - orderDetail[i].qty
+        calProduct.sold = getProductById.sold + orderDetail[i].qty
+        let updateStockSoldProduct =
+          await this.productRespository.updateProduct(
+            orderDetail[i].product_id,
+            calProduct,
+          )
 
-        await this.productRespository.updateProduct(
-          product.product_id,
-          calProduct,
-        )
+        if (!updateStockSoldProduct) {
+          continue
+        }
+
+        updateProduct.push(orderDetail[i].product_id)
       } else {
-        return
+        continue
       }
-    })
+    }
+
+    return updateProduct
   }
 }
 

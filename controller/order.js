@@ -97,8 +97,29 @@ module.exports = {
     }
   },
 
-  submittedOrder: async (req, res, next) => {
+  submitOrder: async (req, res, next) => {
     try {
+      const userId = req.user.id
+
+      let orderPending = await req.orderUC.getPendingOrderByUserId(userId)
+
+      if (orderPending === null) {
+        return res.status(404).json(resData.failed('order not found'))
+      }
+
+      let order = await req.orderUC.updateOrderSubmitted(orderPending)
+
+      if (order === null) {
+        return res
+          .status(400)
+          .json(
+            resData.failed(
+              'recheck the product. make sure the product is still in stock',
+            ),
+          )
+      }
+
+      res.json(resData.success())
     } catch (e) {
       next(e)
     }
