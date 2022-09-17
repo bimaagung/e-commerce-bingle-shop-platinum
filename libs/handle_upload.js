@@ -6,6 +6,11 @@ const fs = require('fs');
 
 // cloudinary.url("sample.jpg", {width: 300, height: 100, crop: "scale",default_image: "avatar.png"})
 
+dirPath = './public'
+if(!fs.existsSync(dirPath)){
+    fs.mkdirSync(dirPath)
+}
+
 const storage = multer.diskStorage({
     destination: (req ,file , cb)=>{
         cb(null, path.join(__dirname, '../public'))
@@ -59,4 +64,4 @@ async function uploadCloudinary(filePath){
 
 
 
-module.exports= {upload, uploadCloudinary}
+module.exports= {upload, uploadCloudinary,dirPath}

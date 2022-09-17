@@ -40,11 +40,13 @@ module.exports = {
         is_admin: false,
       };
       let image = null
-      if(req.file !== undefined ){
+      if (req.file !== undefined) {
         image = await url.uploadCloudinary(req.file.path)
-       } 
-     user.image = image
-
+      } else {
+        image = process.env.PROFIL_URL
+      }
+      user.image = image
+  
       if (req.body.password !== req.body.confrimPassword) {
         return res
           .status(400)

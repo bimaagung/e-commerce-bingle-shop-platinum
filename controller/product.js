@@ -1,16 +1,16 @@
 const resData = require("../helper/response");
 const url = require("../libs/handle_Upload");
-const path = require("path")
+
 
 
 module.exports = {
   getAllProduct: async (req, res) => {
-  
+
     let product = await req.productUC.getAllProducts();
     if (product == null) {
       return res
-      .status(404)
-      .json(resData.failed("product not found", null))
+        .status(404)
+        .json(resData.failed("product not found", null))
     }
     res.status(200).json(resData.success(product))
   },
@@ -35,10 +35,13 @@ module.exports = {
       image: null,
     };
     let image = null
-    if(req.file !== undefined ){
-       image = await url.uploadCloudinary(req.file.path)
-      } 
+    if (req.file !== undefined) {
+      image = await url.uploadCloudinary(req.file.path)
+    } else {
+      image = process.env.ITEM_URL
+    }
     product.image = image
+
     let existCategory = await req.categoryUC.getCategoryByID(
       product.category_id
     );
@@ -61,11 +64,18 @@ module.exports = {
       name: req.body.name,
       description: req.body.description,
       category_id: req.body.category_id,
-      image: await url.uploadCloudinary(req.file.path),
+      image: req.file.path,
       sold: req.body.sold,
       price: req.body.price,
       stock: req.body.stock,
     };
+    let image = null
+    if (req.file !== undefined) {
+      image = await url.uploadCloudinary(req.file.path)
+    } else {
+      image = process.env.ITEM_URL
+    }
+    product.image = image
 
     let existProduct = await req.productUC.getProductByID(id);
     if (existProduct == null) {
