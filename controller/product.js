@@ -1,3 +1,4 @@
+const { success } = require('../helper/response')
 const resData = require('../helper/response')
 
 module.exports = {
@@ -6,18 +7,31 @@ module.exports = {
     let product = await req.productUC.getAllProduct(category_id)
 
     if (product == null) {
-      product = []
+      return res.status(400).json(resData.failed("list is empty", null))
     }
-    res.json(product)
+    res.status(200).json(
+      resData.success({
+      status: 'ok',
+      message: 'success',
+      data: product,
+    }),
+    )
+
   },
 
   getProductById: async (req, res) => {
     let id = req.params.id
     let product = await req.productUC.getProductByID(id)
     if (product == null) {
-      return res.status(400).json(null)
+      return res.status(400).json(resData.failed("product not found", null))
     }
-    res.json(product)
+    res.status(200).json(
+      resData.success({
+      status: 'ok',
+      message: 'success',
+      data: product,
+    }),
+    )
   },
 
   addProduct: async (req, res) => {
@@ -30,7 +44,7 @@ module.exports = {
       stock: req.body.stock,
     }
 
-    // TODO Check category not null
+    //Check category not null
     let existCategory = await req.productUC.getCategoryById(id)
     if (existCategory == null) {
       return res
@@ -38,15 +52,19 @@ module.exports = {
         .json(resData.failed('failed to add, category not found', null))
     }
 
-    let createProductRes = await req.productUC.addProduct(product)
-    if (createProductRes == null) {
-      return res.status(400).json(null)
+    let createProduct = await req.productUC.addProduct(product)
+    if (createProduct == null) {
+      return res
+      .status(400)
+      .json(resData.failed("failed to add, choose a product to add", null))
     }
-    res.status(200).send({
+    res.status(200).json(
+      resData.success({
       status: 'ok',
       message: 'success',
       data: product,
-    })
+    }),
+    )
   },
 
   updateProduct: async (req, res) => {
@@ -60,17 +78,27 @@ module.exports = {
       price: req.body.price,
       stock: req.body.stock,
     }
-    // cek produk ada tidak
+    // check product not null
     let existProduct = await req.productUC.getProductByID(id)
     if(existProduct == null){
-      return res.status(400).json(resData.failed("failed delete, product not found" , null))
+      return res
+      .status(400)
+      .json(resData.failed("failed delete, product not found" , null))
     }
     // end
-    let updateProductRes = await req.productUC.updateProduct(id, product)
-    if (updateProductRes == null) {
-      return res.status(400).json(resData.server_error())
+    let updateProduct = await req.productUC.updateProduct(id, product)
+    if (updateProduct == null) {
+      return res
+      .status(400)
+      .json(resData.server_error("internal server error", null))
     }
-    return res.status(200).json(resData.success(product))
+    res.status(200).json(
+      resData.success({
+      status: 'ok',
+      message: 'success',
+      data: product,
+    }),
+    )
   },
 
   deleteProduct: async (req, res) => {
@@ -78,21 +106,18 @@ module.exports = {
 
     let existProduct = await req.productUC.getProductByID(id)
     if (existProduct == null) {
-      return res.status(404).json({message: 'product not found'})
+      return res.status(400).json({message: 'product not found'})
     }
     let product = await req.productUC.deleteProduct(id)
     if (product == null) {
-      return res.status(404).json(null)
-<<<<<<< HEAD
-      }
-    return res.status(200).json(resData.success(product)); 
-  }
-=======
+      return res.status(400).json("add product to delete", null)
     }
-    res.status(200).send({
+    res.status(200).json(
+      resData.success({
       status: 'ok',
       message: 'success',
-    })
+      data: product,
+    }),
+    )
   },
->>>>>>> 4aa42f5976885bb4109cc4ad2fa7d42bbbfb70ab
 }
