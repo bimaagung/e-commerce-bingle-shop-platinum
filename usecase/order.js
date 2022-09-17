@@ -6,6 +6,20 @@ class OrderUC {
     this.productRespository = productRespository
   }
 
+  async getOrderById(orderId) {
+    return await this.orderRepository.getOrderById(orderId)
+  }
+
+  async getPendingOrderById(orderId) {
+    let order = await this.orderRepository.getOrderById(orderId)
+
+    if (order.status !== orderConstant.ORDER_PENDING) {
+      return null
+    }
+
+    return order
+  }
+
   async getPendingOrderByUserId(user_id) {
     let orderPending = await this.orderRepository.getPendingOrderByUserId(
       user_id,
@@ -129,40 +143,78 @@ class OrderUC {
     return resultOrderDetail
   }
 
-  async updateStatusOrder(order_id, status_order) {
+  async updateStatusOrder(orderId, statusOrder) {
     let order = {}
 
-    if (status_order === 'ORDER_PROCESSED') {
-      order.status = 'PROCESSED'
-    } else if (status_order === 'ORDER_COMPLETED') {
-      order.status = 'COMPLETED'
-    } else if (status_order === 'ORDER_CANCELED') {
-      order.status = 'CANCELED'
+    if (statusOrder === 'ORDER_PROCESSED') {
+      order.status = orderConstant.ORDER_PROCESSED
+    } else if (statusOrder === 'ORDER_COMPLETED') {
+      order.status = orderConstant.ORDER_COMPLETED
+      order.completed_date = new Date()
+    } else if (statusOrder === 'ORDER_CANCELED') {
+      order.status = orderConstant.ORDER_CANCELED
+      order.completed_date = null
+      await this.updateStockSoldProduct(orderId, order.status)
+    } else if (statusOrder === 'ORDER_CANCELED') {
+      order.status = orderConstant.ORDER_CANCELED
+      order.completed_date = null
+      await this.updateStockSoldProduct(orderId, order.status)
     } else {
       order.status = null
     }
 
     let updateStatusOrder = await this.orderRepository.updateOrder(
-      order_id,
+      orderId,
       order,
     )
 
-    if (updateStatusOrder === null) {
+    if (!updateStatusOrder) {
       return null
     }
 
     return updateStatusOrder
   }
 
-  async updateStockProduct(status, order_detail) {
-    // reduce stock if submitted
-    if (status === 'ORDER_SUBMITTED') {
-    } else if (status === 'ORDER_CANCELED') {
-    } else {
-      return null
-    }
+  // update stock and sold in each product for part process submitted or canceled
+  async updateStockSoldProduct(orderId, statusOrder) {
+    // get order details
+    let orderDetail = await this.orderDetailRepository.getOrderDetailById(
+      orderId,
+    )
 
-    // add stock canceled
+    // process each product
+    orderDetail.forEach(async (product) => {
+      let calProduct = {}
+
+      let getProductById = await this.productRespository.getproductByID(
+        product.product_id,
+      )
+
+      if (statusOrder === orderConstant.ORDER_CANCELED) {
+        /* 
+        Returning the stock of the product that was canceled 
+        after the stock was reduced because it was submitted 
+        */
+        calProduct.stock = getProductById.stock + product.qty
+        calProduct.sold = getProductById.sold - product.qty
+
+        await this.productRespository.updateProduct(
+          product.product_id,
+          calProduct,
+        )
+      } else if (statusOrder === 'ORDER_SUBMITTED') {
+        // Reduce product stock after submitted
+        calProduct.stock = getProductById.stock - product.qty
+        calProduct.sold = getProductById.sold + product.qty
+
+        await this.productRespository.updateProduct(
+          product.product_id,
+          calProduct,
+        )
+      } else {
+        return
+      }
+    })
   }
 }
 

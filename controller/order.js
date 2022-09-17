@@ -1,5 +1,6 @@
 const resData = require('../helper/response')
 const {nanoid} = require('nanoid')
+const orderConstant = require('../internal/constant/order')
 
 module.exports = {
   createOrder: async (req, res, next) => {
@@ -64,16 +65,40 @@ module.exports = {
     try {
       const order_id = req.params.id
       const status_order = req.body.status
+
+      //  check order
+      let orderById = await req.orderUC.getOrderById(order_id)
+
+      if (orderById === null) {
+        return res.status(404).json(resData.failed('order not found'))
+      }
+
+      let pendingOrderById = await req.orderUC.getPendingOrderById(order_id)
+
+      // check order pending
+      if (pendingOrderById > 0) {
+        return res.status(400).json(resData.failed('order still pending'))
+      }
+
       const updateStatusOrder = await req.orderUC.updateStatusOrder(
         order_id,
         status_order,
       )
 
       if (updateStatusOrder === null) {
-        return res.status(404).json(resData.failed('order not found'))
+        return res
+          .status(404)
+          .json(resData.failed('failed update status order'))
       }
 
       res.json(resData.success())
+    } catch (e) {
+      next(e)
+    }
+  },
+
+  submittedOrder: async (req, res, next) => {
+    try {
     } catch (e) {
       next(e)
     }

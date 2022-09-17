@@ -24,6 +24,12 @@ class OrderRepository {
     })
   }
 
+  async getOrderById(orderId) {
+    return await this.OrderModel.findOne({
+      where: {id: orderId},
+    })
+  }
+
   async updateOrder(order_id, order) {
     return await this.OrderModel.update(order, {where: {id: order_id}})
   }
