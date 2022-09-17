@@ -32,7 +32,7 @@ module.exports = {
       stock: req.body.stock  
     }
     // TODO Check category not null
-    let existCategory = await req.productUC.getCategoryById(id)
+    let existCategory = await req.categoryUC.getCategoryByID(id)
     if(existCategory == null){
       return res.status(400).json(resData.failed("failed to add, category not found" , null))
     }
@@ -65,10 +65,10 @@ module.exports = {
       stock: req.body.stock  
     }
     // cek produk ada tidak
-    /*let existProduct = await req.productUC.getProductByID(id)
+    let existProduct = await req.productUC.getProductByID(id)
     if(existProduct == null){
       return res.status(400).json(resData.failed("failed delete, product not found" , null))
-    }*/
+    }
     // end
     let updateProductRes = await req.productUC.updateProduct(id, product)
     if (updateProductRes == null) {
@@ -88,12 +88,7 @@ module.exports = {
     if (product == null) {
       return res.status(404).json(null)
       }
-    res.status(200).send({
-   
-        status: "ok",
-        message: "success",
-        
-    });
+    return res.status(200).json(resData.success(product)); 
   }
 }
 
