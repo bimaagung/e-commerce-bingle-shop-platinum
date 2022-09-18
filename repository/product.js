@@ -5,7 +5,7 @@ class ProductRepository {
     this.productModel = Product
   }
 
-  async getAllproducts() {
+  async getAllProducts() {
     let data = null
     try {
       
@@ -17,7 +17,7 @@ class ProductRepository {
     return data
   }
 
-  async getproductByID(id) {
+  async getProductByID(id) {
     let data = null
     try {
       data = await this.productModel.findOne({

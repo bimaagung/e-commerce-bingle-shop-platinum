@@ -1,20 +1,18 @@
-const { success } = require('../helper/response')
 const resData = require('../helper/response')
 
 module.exports = {
-  getAllProduct: async (req, res) => {
-    let category_id = req.query.category_id
-    let product = await req.productUC.getAllProduct(category_id)
+  getAllProducts: async (req, res) => {
+    let product = await req.productUC.getAllProducts()
 
     if (product == null) {
-      return res.status(400).json(resData.failed("list is empty", null))
+      return res
+      .status(400)
+      .json(resData.failed("list is empty", null))
     }
-    res.status(200).json(
-      resData.success({
-      status: 'ok',
-      message: 'success',
-      data: product,
-    }),
+    res
+    .status(200)
+    .json(
+      resData.success(product)
     )
 
   },
@@ -45,18 +43,18 @@ module.exports = {
     }
 
     //Check category not null
-    let existCategory = await req.productUC.getCategoryById(id)
+    /*let existCategory = await req.categoryUC.getCategoryByID(id)
     if (existCategory == null) {
       return res
         .status(400)
         .json(resData.failed('failed to add, category not found', null))
-    }
+    }*/
 
-    let createProduct = await req.productUC.addProduct(product)
-    if (createProduct == null) {
+    let createProductRes = await req.productUC.addProduct(product)
+    if (createProductRes.isSuccess != true) {
       return res
       .status(400)
-      .json(resData.failed("failed to add, choose a product to add", null))
+      .json(resData.server_error("failed to add, choose a product to add", null))
     }
     res.status(200).json(
       resData.success({
@@ -121,3 +119,4 @@ module.exports = {
     )
   },
 }
+
