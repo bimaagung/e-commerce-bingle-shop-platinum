@@ -4,7 +4,7 @@ class ProductUC {
   }
   
   async getAllProducts(filters) {
-    return await this.itemRepository.getAllProducts(filters)
+    return await this.productRepository.getAllProducts(filters)
 }
   async getProductByID(id) {
     return await this.productRepository.getProductByID(id)
@@ -13,8 +13,8 @@ class ProductUC {
    async addProduct(product) {
     return await this.productRepository.addProduct(product)
   } 
-   async updateProduct(product, id) {
-    return await this.productRepository.addProduct(product, id)
+   async updateProduct(id, product) {
+    return await this.productRepository.updateProduct(id, product)
   } 
   async deleteProduct(id) {
     return await this.productRepository.deleteProduct(id)
