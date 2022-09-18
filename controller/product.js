@@ -43,18 +43,18 @@ module.exports = {
     }
 
     //Check category not null
-    /*let existCategory = await req.categoryUC.getCategoryByID(id)
+    let existCategory = await req.categoryUC.getCategoryByID(product.category_id)
     if (existCategory == null) {
       return res
         .status(400)
         .json(resData.failed('failed to add, category not found', null))
-    }*/
+    }
 
     let createProductRes = await req.productUC.addProduct(product)
-    if (createProductRes.isSuccess != true) {
+    if (createProductRes === null ) {
       return res
       .status(400)
-      .json(resData.server_error("failed to add, choose a product to add", null))
+      .json(resData.failed("failed to add, choose a product to add", null))
     }
     res.status(200).json(
       resData.success({
@@ -76,6 +76,7 @@ module.exports = {
       price: req.body.price,
       stock: req.body.stock,
     }
+    console.log(product)
     // check product not null
     let existProduct = await req.productUC.getProductByID(id)
     if(existProduct == null){
@@ -85,18 +86,14 @@ module.exports = {
     }
     // end
     let updateProduct = await req.productUC.updateProduct(id, product)
+    console.log(updateProduct)
     if (updateProduct == null) {
       return res
       .status(400)
-      .json(resData.server_error("internal server error", null))
+      .json(resData.failed("failed to update product", null))
     }
-    res.status(200).json(
-      resData.success({
-      status: 'ok',
-      message: 'success',
-      data: product,
-    }),
-    )
+    res.status(200).json(resData.success(product))
+    
   },
 
   deleteProduct: async (req, res) => {

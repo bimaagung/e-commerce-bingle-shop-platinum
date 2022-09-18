@@ -2,10 +2,11 @@ const {Product} = require('../models')
 
 class ProductRepository {
   constructor() {
-    this.productModel = Product
+    this.ProductModel = Product
   }
 
   async getAllProducts() {
+    
     let data = null
     try {
       
@@ -20,7 +21,7 @@ class ProductRepository {
   async getProductByID(id) {
     let data = null
     try {
-      data = await this.productModel.findOne({
+      data = await this.ProductModel.findOne({
         where: {
           id: id,
         },
@@ -35,7 +36,7 @@ class ProductRepository {
   async addProduct(product) {
     let data = null
     try {
-      data = await this.productModel.create(product)
+      data = await this.ProductModel.create(product)
     } catch (err) {
       console.log(err)
       return null
@@ -43,9 +44,10 @@ class ProductRepository {
     return data
   }
   async updateProduct(id,product) {
+    console.log(Product)
     let data = null
     try {
-      data = await this.productModel.update(product,{
+      data = await this.ProductModel.update(product,{
         where: {
           id: id,
         },
@@ -59,7 +61,7 @@ class ProductRepository {
   async deleteProduct(id) {
     let data = null
     try {
-      data = await this.productModel.destroy({
+      data = await this.ProductModel.destroy({
         where: {
           id: id,
         },
