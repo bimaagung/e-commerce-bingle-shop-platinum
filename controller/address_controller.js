@@ -51,16 +51,16 @@ module.exports = {
                 city: req.body.city,
                 postal_code: req.body.postal_code,
                 detail: req.body.detail,
-                user_id: req.body.user_id
+                user_id: req.body.user_id,
             };
 
             // todo check user not null
-            let existUser = await req.addressUC.getUserById(address.user_id)
-            if (existUser == null) {
-                return res
-                    .status(400)
-                    .json(resData.failed('failed to add, user not found', null))
-            };
+            // let existUser = await req.addressUC.getUserById(address.user_id)
+            // if (existUser == null) {
+            //     return res
+            //         .status(400)
+            //         .json(resData.failed('failed to add, user not found', null))
+            // };
 
             let newAddress = await req.addressUC.addAddress(address)
             if (newAddress === null) {
@@ -100,9 +100,9 @@ module.exports = {
             let existAddress = await req.addressUC.getAddressByID(id)
             if (existAddress == null) {
                 return res.status(400)
-                    .json(resData.failed("failed delete, product not found", null))
+                    .json(resData.failed("failed delete, address not found", null))
             };
-
+            
             // end
             let updateAddress = await req.addressUC.updateAddress(id, address)
             if (updateAddress == null) {
@@ -110,6 +110,7 @@ module.exports = {
                     .status(400)
                     .json(resData.failed("failed to update address", null));
             };
+            
             return res.status(200).json(resData.success(address))
         } catch (error) {
             next(error)

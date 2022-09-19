@@ -32,7 +32,7 @@ class AddressRepository {
     return data;
   };
 
-  async addAddress() {
+  async addAddress(address) {
     let data = null;
     try {
       data = await this.AddressModel.create(address);
