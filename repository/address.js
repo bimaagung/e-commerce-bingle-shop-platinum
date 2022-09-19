@@ -61,7 +61,7 @@ class AddressRepository {
   async deleteAddress(id) {
     let data = null
     try {
-      data = await this.addressModel.destroy({
+      data = await this.AddressModel.destroy({
         where: {
           id: id,
         },
