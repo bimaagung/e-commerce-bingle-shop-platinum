@@ -1,27 +1,34 @@
 const resData = require("../helper/response");
 const url = require("../libs/handle_Upload");
-
-
-
 module.exports = {
-  getAllProduct: async (req, res) => {
+getAllProducts: async (req, res) => {
+    let product = await req.productUC.getAllProducts()
+
 
     let product = await req.productUC.getAllProducts();
     if (product == null) {
       return res
-        .status(404)
-        .json(resData.failed("product not found", null))
+       .status(400)
+      .json(resData.failed("list is empty", null))
     }
-    res.status(200).json(resData.success(product))
-  },
+    res
+    .status(200)
+    .json(resData.success(product))
+},
 
   getProductById: async (req, res) => {
     let id = req.params.id;
     let product = await req.productUC.getProductByID(id);
     if (product == null) {
-      return res.status(400).json(null);
+      return res.status(400).json(resData.failed("product not found", null))
     }
-    res.json(product);
+    res.status(200).json(
+      resData.success({
+      status: 'ok',
+      message: 'success',
+      data: product,
+    }),
+    )
   },
 
   createProudct: async (req, res) => {
@@ -41,21 +48,29 @@ module.exports = {
       image = process.env.ITEM_URL
     }
     product.image = image
-
-    let existCategory = await req.categoryUC.getCategoryByID(
-      product.category_id
-    );
+    
+    //Check category not null
+    let existCategory = await req.categoryUC.getCategoryByID(product.category_id)
     if (existCategory == null) {
       return res
         .status(400)
         .json(resData.failed("failed to add, category not found", null));
     }
 
-    let createProductRes = await req.productUC.addProduct(product);
-    if (createProductRes.isSuccess != true) {
-      return res.status(400).json(resData.server_error());
+    let createProductRes = await req.productUC.addProduct(product)
+    if (createProductRes === null ) {
+      return res
+      .status(400)
+      .json(resData.failed("failed to add, choose a product to add", null))
     }
-    res.json(resData.success(product));
+    res.status(200).json(
+      resData.success({
+      status: 'ok',
+      message: 'success',
+      data: product,
+    }),
+    )
+
   },
 
   updateProduct: async (req, res) => {
@@ -77,8 +92,6 @@ module.exports = {
       image = oldImage.image
     }
     product.image = image
-   
-
     let existCategory = await req.categoryUC.getCategoryByID(
       product.category_id
     );
@@ -87,32 +100,43 @@ module.exports = {
         .status(400)
         .json(resData.failed("failed to add, category not found", null));
     }
-
-    let existProduct = await req.productUC.getProductByID(id);
-    if (existProduct == null) {
+ // check product not null
+    let existProduct = await req.productUC.getProductByID(id)
+    if(existProduct == null){
       return res
-        .status(400)
-        .json(resData.failed("failed delete, product not found", null));
+      .status(400)
+      .json(resData.failed("failed delete, product not found" , null))
     }
+    // end
+    let updateProduct = await req.productUC.updateProduct(id, product)
+    console.log(updateProduct)
+    if (updateProduct == null) {
+      return res
+      .status(400)
+      .json(resData.failed("failed to update product", null))
+    }
+    res.status(200).json(resData.success(product))
 
-    let updateProductRes = await req.productUC.updateProduct(product ,id);
-    if (updateProductRes == null) {
-      return res.status(400).json(resData.server_error());
-    }
-    res.status(200).json(resData.success(product));
   },
 
   deleteProduct: async (req, res) => {
     let id = req.params.id;
-
     let existProduct = await req.productUC.getProductByID(id);
     if (existProduct == null) {
-      return res.status(404).json({ message: "product not found" });
+      return res.status(400).json({message: 'product not found'})
     }
     let product = await req.productUC.deleteProduct(id);
     if (product == null) {
-      return res.status(404).json(null);
+      return res.status(400).json("add product to delete", null)
     }
-    res.status(200).json(resData.success(product));
+    res.status(200).json(
+      resData.success({
+      status: 'ok',
+      message: 'success',
+      data: product,
+    }),
+    )
   },
-};
+}
+
+

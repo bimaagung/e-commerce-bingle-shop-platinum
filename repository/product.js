@@ -35,8 +35,9 @@ class ProductRepository {
   async addProduct(product) {
     let isSuccess = false
     try {
-      product = await this.ProductModel.create(product)
-      isSuccess = true
+
+      data = await this.ProductModel.create(product)
+
     } catch (err) {
       console.log(err)
       isSuccess = false
@@ -46,7 +47,10 @@ class ProductRepository {
       product : product
     }
   }
-  async updateProduct(product, id) {
+
+  async updateProduct(id,product) {
+    console.log(Product)
+
     let data = null
     try {
       data = await this.ProductModel.update(product,{
