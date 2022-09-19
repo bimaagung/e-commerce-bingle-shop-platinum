@@ -13,6 +13,7 @@ class ProductUC {
    async addProduct(product) {
     return await this.productRepository.addProduct(product)
   } 
+
    async updateProduct(id, product) {
     return await this.productRepository.updateProduct(id, product)
   } 
