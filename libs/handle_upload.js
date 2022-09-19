@@ -2,9 +2,7 @@ require("dotenv").config();
 const cloudinary = require('cloudinary').v2
 const multer = require('multer')
 const path = require('path')
-const fs = require('fs');
-
-// cloudinary.url("sample.jpg", {width: 300, height: 100, crop: "scale",default_image: "avatar.png"})
+const fs = require('fs')
 
 dirPath = './public'
 if(!fs.existsSync(dirPath)){
@@ -45,8 +43,6 @@ cloudinary.config({
 
 
 async function uploadCloudinary(filePath){
-   
-    
     let result
     try {
         result = await cloudinary.uploader.upload(filePath, {
@@ -61,7 +57,4 @@ async function uploadCloudinary(filePath){
 }
 
 
-
-
-
-module.exports= {upload, uploadCloudinary,dirPath}
+module.exports= {upload, uploadCloudinary}

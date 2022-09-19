@@ -17,7 +17,7 @@ class ProductRepository {
     return data
   }
 
-  async getproductByID(id) {
+  async getProductByID(id) {
     let data = null
     try {
       data = await this.ProductModel.findOne({
@@ -46,7 +46,7 @@ class ProductRepository {
       product : product
     }
   }
-  async updateProduct(id,product) {
+  async updateProduct(product, id) {
     let data = null
     try {
       data = await this.ProductModel.update(product,{

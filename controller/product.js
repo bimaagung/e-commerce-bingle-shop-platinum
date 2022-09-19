@@ -64,18 +64,29 @@ module.exports = {
       name: req.body.name,
       description: req.body.description,
       category_id: req.body.category_id,
-      image: req.file.path,
       sold: req.body.sold,
       price: req.body.price,
       stock: req.body.stock,
+      image: null,
     };
     let image = null
     if (req.file !== undefined) {
       image = await url.uploadCloudinary(req.file.path)
     } else {
-      image = process.env.ITEM_URL
+      oldImage =  await req.productUC.getProductByID(id)
+      image = oldImage.image
     }
     product.image = image
+   
+
+    let existCategory = await req.categoryUC.getCategoryByID(
+      product.category_id
+    );
+    if (existCategory == null) {
+      return res
+        .status(400)
+        .json(resData.failed("failed to add, category not found", null));
+    }
 
     let existProduct = await req.productUC.getProductByID(id);
     if (existProduct == null) {
@@ -84,7 +95,7 @@ module.exports = {
         .json(resData.failed("failed delete, product not found", null));
     }
 
-    let updateProductRes = await req.productUC.updateProduct(id, product);
+    let updateProductRes = await req.productUC.updateProduct(product ,id);
     if (updateProductRes == null) {
       return res.status(400).json(resData.server_error());
     }
