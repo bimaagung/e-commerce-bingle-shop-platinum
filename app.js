@@ -37,6 +37,7 @@ const orderUC = new OrderUseCase(
   new OrderRepository(),
   new OrderDetailRepository(),
   new ProductRepository(),
+)
 
 
 

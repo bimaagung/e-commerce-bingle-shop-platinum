@@ -11,12 +11,12 @@ class CategoryUC {
       return await this.categoryRepository.getAllCategory()
     }
 
-    async addCategory(){
-      return await this.categoryRepository.addCategory()
+    async addCategory(category){
+      return await this.categoryRepository.addCategory(category)
     }
 
-    async putCategory(id, category){
-      return await this.categoryRepository.putCategory(id, category)
+    async updateCategory(category, id){
+      return await this.categoryRepository.updateCategory(category, id)
     }
 
     async deleteCategory(id){

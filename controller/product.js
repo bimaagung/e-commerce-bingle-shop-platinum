@@ -2,9 +2,7 @@ const resData = require("../helper/response");
 const url = require("../libs/handle_Upload");
 module.exports = {
 getAllProducts: async (req, res) => {
-    let product = await req.productUC.getAllProducts()
-
-
+    
     let product = await req.productUC.getAllProducts();
     if (product == null) {
       return res
