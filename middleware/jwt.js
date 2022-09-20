@@ -1,36 +1,70 @@
-const jwt = require('jsonwebtoken')
-const resData = require('../helper/response')
+const jwt = require('jsonwebtoken');
+const resData = require('../helper/response');
 
-function getToken(auth_header) {
-  let splitHeader = auth_header.split(' ')
+function getToken(authHeader) {
+  let splitHeader = authHeader.split(' ');
 
   if (splitHeader.length > 1) {
-    return splitHeader[1]
+    return splitHeader[1];
   }
 
-  return splitHeader[0]
+  return splitHeader[0];
 }
 
-function authorize(req, res, next) {
-  if (typeof req.headers['authorization'] !== 'string') {
-    return res.status(401).json(resData.failed('unauthorized'))
+const authorized = (authorization, isAdmin) => {
+  if (authorization !== undefined && typeof authorization !== 'string') {
+    return null;
   }
-  let token = getToken(req.headers['authorization'])
-  let payload = null
+
+  let token = getToken(authorization);
+  let payload = null;
 
   try {
-    payload = jwt.verify(token, process.env.JWT_KEY_SECRET)
+    payload = jwt.verify(token, process.env.JWT_KEY_SECRET);
   } catch (err) {
-    return res.status(401).json(resData.failed('unauthorized'))
+    return null;
   }
 
-  req.user = {
+  if (payload.is_admin === isAdmin) {
+    return null;
+  }
+
+  const user = {
     id: payload.id,
     name: payload.name,
+    username: payload.username,
     emai: payload.emai,
+  };
+
+  return user;
+};
+
+const authorizedAdmin = (req, res, next) => {
+  const { authorization } = req.headers;
+  const admin = true;
+  const getAuthorization = authorized(authorization, admin);
+
+  if (getAuthorization === null) {
+    return res.status(401).json(resData.failed('unauthorized'));
   }
 
-  next()
-}
+  req.user = getAuthorization;
 
-module.exports = authorize
+  next();
+};
+
+const authorizedCustomer = (req, res, next) => {
+  const { authorization } = req.headers;
+  const admin = false;
+  const getAuthorization = authorized(authorization, admin);
+
+  if (getAuthorization === null) {
+    return res.status(401).json(resData.failed('unauthorized'));
+  }
+
+  req.user = getAuthorization;
+
+  next();
+};
+
+module.exports = { authorizedCustomer, authorizedAdmin };
