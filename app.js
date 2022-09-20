@@ -7,6 +7,9 @@ const CategoryRepository = require('./repository/category')
 const CategoryUseCase = require('./usecase/category')
 
 
+const AddressRepository = require('./repository/address')
+const AddressUseCase = require('./usecase/address')
+
 
 const categoryUC = new CategoryUseCase(new CategoryRepository())
 
@@ -23,6 +26,12 @@ const OrderDetailRepository = require('./repository/orderDetail')
 
 const productRouter = require('./routes/product')
 const authRouter = require('./routes/auth')
+
+const addressRouter = require('./routes/address')
+
+const productUC = new ProductUseCase(new ProductRepository()) //inisiasi module class product
+const userUC = new UserUseCase(new UserRepository()) //inisiasi module class user
+const addressUC = new AddressUseCase(new AddressRepository())
 const AdminRouter = require('./routes/admin')
 const orderRouter = require('./routes/order')
 
@@ -40,7 +49,6 @@ const orderUC = new OrderUseCase(
 )
 
 
-
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
@@ -48,6 +56,7 @@ app.use((req, res, next) => {
   req.categoryUC = categoryUC
   req.productUC = productUC
   req.userUC = userUC
+  req.addressUC = addressUC
   req.orderUC = orderUC
   next()
 })
@@ -60,10 +69,14 @@ app.get('/', function (req, res) {
 app.use('/', authRouter)
 app.use('/admin', AdminRouter)
 app.use('/product', productRouter)
+
+app.use('/address',addressRouter )
+
 app.use('/order', orderRouter)
 
 // handle server error
 app.use(serverError)
+
 
 const swaggerUi = require('swagger-ui-express') //import swagger
 const swaggerDocument = require('./docs/docs.json')
