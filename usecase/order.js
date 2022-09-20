@@ -1,5 +1,7 @@
 const orderConstant = require('../internal/constant/order')
+
 class OrderUC {
+
   constructor(orderRepository, orderDetailRepository, productRespository) {
     this.orderRepository = orderRepository
     this.orderDetailRepository = orderDetailRepository
@@ -20,9 +22,9 @@ class OrderUC {
     return order
   }
 
-  async getPendingOrderByUserId(user_id) {
+  async getPendingOrderByUserId(userId) {
     let orderPending = await this.orderRepository.getPendingOrderByUserId(
-      user_id,
+      userId,
     )
 
     if (orderPending === null) {
@@ -44,17 +46,17 @@ class OrderUC {
     return resultOrderDetail
   }
 
-  async createOrder(user_id, order_id, products) {
+  async createOrder(userId, orderId, products) {
     let orders = {
-      id: order_id,
-      user_id: user_id,
+      id: orderId,
+      user_id: userId,
       status: orderConstant.ORDER_PENDING,
     }
 
     // add each product in order detail
     let orderDetail = await this.addProductInDetailOrder(
-      user_id,
-      order_id,
+      userId,
+      orderId,
       products,
     )
 
@@ -72,7 +74,7 @@ class OrderUC {
     return orderDetail
   }
 
-  async addProductInDetailOrder(user_id, order_id, products) {
+  async addProductInDetailOrder(userId, orderId, products) {
     // save product id if success process add order detail
     let OrderDetailByProductId = []
 
@@ -93,8 +95,8 @@ class OrderUC {
 
       // create object detail order per product
       let orderDetail = {
-        user_id: user_id,
-        order_id: order_id,
+        user_id: userId,
+        order_id: orderId,
         product_id: products[i].id,
         qty: products[i].qty,
         total_price: getProductById.price * products[i].qty,

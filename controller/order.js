@@ -1,16 +1,15 @@
 const resData = require('../helper/response')
-const {nanoid} = require('nanoid')
-const orderConstant = require('../internal/constant/order')
+const { nanoid } = require('nanoid')
 
 module.exports = {
   createOrder: async (req, res, next) => {
     try {
-      let order_id = nanoid(16)
-      let user_id = req.user.id
+      let orderId = nanoid(16)
+      let userId = req.user.id
       let products = req.body.products
 
       // check user have pending order
-      const getPendingOrder = await req.orderUC.getPendingOrderByUserId(user_id)
+      const getPendingOrder = await req.orderUC.getPendingOrderByUserId(userId)
 
       if (getPendingOrder !== null) {
         return res
@@ -20,8 +19,8 @@ module.exports = {
 
       // create a new order
       const createOrder = await req.orderUC.createOrder(
-        user_id,
-        order_id,
+        userId,
+        orderId,
         products,
       )
 
@@ -37,7 +36,7 @@ module.exports = {
 
       res.status(201).json(
         resData.success({
-          order_id: order_id,
+          order_id: orderId,
           products: createOrder,
         }),
       )
@@ -48,9 +47,9 @@ module.exports = {
 
   getPendingOrderByUserId: async (req, res, next) => {
     try {
-      let user_id = req.user.id
+      let userId = req.user.id
 
-      let order = await req.orderUC.getPendingOrderByUserId(user_id)
+      let order = await req.orderUC.getPendingOrderByUserId(userId)
       if (order === null) {
         return res.status(404).json(resData.failed('not found pending order'))
       }
@@ -63,17 +62,17 @@ module.exports = {
 
   changeStatusOrder: async (req, res, next) => {
     try {
-      const order_id = req.params.id
+      const orderId = req.params.id
       const status_order = req.body.status
 
       //  check order
-      let orderById = await req.orderUC.getOrderById(order_id)
+      let orderById = await req.orderUC.getOrderById(orderId)
 
       if (orderById === null) {
         return res.status(404).json(resData.failed('order not found'))
       }
 
-      let pendingOrderById = await req.orderUC.getPendingOrderById(order_id)
+      let pendingOrderById = await req.orderUC.getPendingOrderById(orderId)
 
       // check order pending
       if (pendingOrderById > 0) {
@@ -81,7 +80,7 @@ module.exports = {
       }
 
       const updateStatusOrder = await req.orderUC.updateStatusOrder(
-        order_id,
+        orderId,
         status_order,
       )
 
