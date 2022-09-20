@@ -8,8 +8,8 @@ const serverError = require('./middleware/serverError');
 const CategoryRepository = require('./repository/category');
 const CategoryUseCase = require('./usecase/category');
 
-const UserRepository = require('./repository/user');
-const UserUseCase = require('./usecase/user');
+const AddressRepository = require('./repository/address');
+const AddressUseCase = require('./usecase/address');
 
 const ProductUseCase = require('./usecase/product');
 const ProductRepository = require('./repository/product');
@@ -19,6 +19,9 @@ const OrderUseCase = require('./usecase/order');
 const OrderRepository = require('./repository/order');
 const OrderDetailRepository = require('./repository/orderDetail');
 
+const UserRepository = require('./repository/user');
+const UserUseCase = require('./usecase/user');
+
 const productRouter = require('./routes/product');
 const authRouter = require('./routes/auth');
 const AdminRouter = require('./routes/admin');
@@ -26,6 +29,11 @@ const orderRouter = require('./routes/order');
 
 app.use('/public', express.static('public'));
 
+const addressRouter = require('./routes/address');
+
+app.use('/public', express.static('public'));
+
+const addressUC = new AddressUseCase(new AddressRepository());
 const categoryUC = new CategoryUseCase(new CategoryRepository());
 const productUC = new ProductUseCase(new ProductRepository());
 const userUC = new UserUseCase(new UserRepository());
@@ -42,6 +50,7 @@ app.use((req, res, next) => {
   req.categoryUC = categoryUC;
   req.productUC = productUC;
   req.userUC = userUC;
+  req.addressUC = addressUC;
   req.orderUC = orderUC;
   next();
 });
@@ -54,6 +63,9 @@ app.get('/', (req, res) => {
 app.use('/', authRouter);
 app.use('/admin', AdminRouter);
 app.use('/product', productRouter);
+
+app.use('/address', addressRouter);
+
 app.use('/order', orderRouter);
 
 // handle server error
