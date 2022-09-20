@@ -6,7 +6,7 @@ function generateAccessToken(data) {
     name: data.name,
     username: data.username,
     email: data.email,
-    admin: data.is_admin,
+    is_admin: data.is_admin,
   };
 
   const accessToken = jwt.sign(

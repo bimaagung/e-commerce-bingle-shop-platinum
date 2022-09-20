@@ -1,10 +1,10 @@
-const express = require('express')
-const orderController = require('../controller/order')
-const authorize = require('../middleware/jwt')
+const express = require('express');
+const orderController = require('../controller/order');
+const authorized = require('../middleware/jwt');
 
-const router = express.Router()
-router.post('/create', authorize, orderController.createOrder)
-router.get('/pending/', authorize, orderController.getPendingOrderByUserId)
-router.patch('/submit/', authorize, orderController.submitOrder)
+const router = express.Router();
+router.post('/create', authorized.customer, orderController.createOrder);
+router.get('/pending/', authorized.customer, orderController.getPendingOrderByUserId);
+router.patch('/submit/', authorized.customer, orderController.submitOrder);
 
-module.exports = router
+module.exports = router;

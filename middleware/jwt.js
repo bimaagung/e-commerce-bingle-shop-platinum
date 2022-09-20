@@ -25,7 +25,7 @@ const authorized = (authorization, isAdmin) => {
     return null;
   }
 
-  if (payload.is_admin === isAdmin) {
+  if (payload.is_admin !== isAdmin) {
     return null;
   }
 
@@ -39,10 +39,10 @@ const authorized = (authorization, isAdmin) => {
   return user;
 };
 
-const authorizedAdmin = (req, res, next) => {
+const admin = (req, res, next) => {
   const { authorization } = req.headers;
-  const admin = true;
-  const getAuthorization = authorized(authorization, admin);
+  const isAdmin = true;
+  const getAuthorization = authorized(authorization, isAdmin);
 
   if (getAuthorization === null) {
     return res.status(401).json(resData.failed('unauthorized'));
@@ -53,10 +53,10 @@ const authorizedAdmin = (req, res, next) => {
   next();
 };
 
-const authorizedCustomer = (req, res, next) => {
+const customer = (req, res, next) => {
   const { authorization } = req.headers;
-  const admin = false;
-  const getAuthorization = authorized(authorization, admin);
+  const isAdmin = false;
+  const getAuthorization = authorized(authorization, isAdmin);
 
   if (getAuthorization === null) {
     return res.status(401).json(resData.failed('unauthorized'));
@@ -67,4 +67,4 @@ const authorizedCustomer = (req, res, next) => {
   next();
 };
 
-module.exports = { authorizedCustomer, authorizedAdmin };
+module.exports = { customer, admin };
