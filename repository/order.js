@@ -1,19 +1,19 @@
-const orderConstant = require('../internal/constant/order')
-const {Order, User, OrderDetail} = require('../models')
+const orderConstant = require('../internal/constant/order');
+const { Order, OrderDetail } = require('../models');
 
 class OrderRepository {
   constructor() {
-    this.OrderModel = Order
+    this.OrderModel = Order;
   }
 
-  async createOrder(order) {
-    console.log(order)
-    return await this.OrderModel.create(order)
+  async createOrder(orders) {
+    const order = await this.OrderModel.create(orders);
+    return order;
   }
 
-  async getPendingOrderByUserId(user_id) {
-    return await this.OrderModel.findOne({
-      where: {user_id: user_id, status: orderConstant.ORDER_PENDING},
+  async getPendingOrderByUserId(userId) {
+    const order = await this.OrderModel.findOne({
+      where: { user_id: userId, status: orderConstant.ORDER_PENDING },
       include: [
         {
           model: OrderDetail,
@@ -21,18 +21,23 @@ class OrderRepository {
           attribute: ['id', 'product_id', 'qty', 'total_price'],
         },
       ],
-    })
+    });
+
+    return order;
   }
 
   async getOrderById(orderId) {
-    return await this.OrderModel.findOne({
-      where: {id: orderId},
-    })
+    const order = await this.OrderModel.findOne({
+      where: { id: orderId },
+    });
+
+    return order;
   }
 
-  async updateOrder(order_id, order) {
-    return await this.OrderModel.update(order, {where: {id: order_id}})
+  async updateOrder(orderId, orders) {
+    const order = await this.OrderModel.update(orders, { where: { id: orderId } });
+    return order;
   }
 }
 
-module.exports = OrderRepository
+module.exports = OrderRepository;
