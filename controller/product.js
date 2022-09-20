@@ -1,92 +1,140 @@
-const resData = require('../helper/response')
-
+const resData = require("../helper/response");
+const url = require("../libs/handle_Upload");
 module.exports = {
-  getAllProduct: async (req, res) => {
-    let category_id = req.query.category_id
-    let product = await req.productUC.getAllProduct(category_id)
-
+getAllProducts: async (req, res) => {
+    
+    let product = await req.productUC.getAllProducts();
     if (product == null) {
-      product = []
+      return res
+       .status(400)
+      .json(resData.failed("list is empty", null))
     }
-    res.json(product)
-  },
+    res
+    .status(200)
+    .json(resData.success(product))
+},
 
   getProductById: async (req, res) => {
-    let id = req.params.id
-    let product = await req.productUC.getProductByID(id)
+    let id = req.params.id;
+    let product = await req.productUC.getProductByID(id);
     if (product == null) {
-      return res.status(400).json(null)
+      return res.status(400).json(resData.failed("product not found", null))
     }
-    res.json(product)
-  },
-
-  addProduct: async (req, res) => {
-    let product = {
-      name: req.body.name,
-      description: req.body.description,
-      category_id: req.body.category_id,
-      sold: req.body.sold,
-      price: req.body.price,
-      stock: req.body.stock,
-    }
-
-    // TODO Check category not null
-    let existCategory = await req.productUC.getCategoryById(id)
-    if (existCategory == null) {
-      return res
-        .status(400)
-        .json(resData.failed('failed to add, category not found', null))
-    }
-
-    let createProductRes = await req.productUC.addProduct(product)
-    if (createProductRes == null) {
-      return res.status(400).json(null)
-    }
-    res.status(200).send({
+    res.status(200).json(
+      resData.success({
       status: 'ok',
       message: 'success',
       data: product,
-    })
+    }),
+    )
   },
 
-  updateProduct: async (req, res) => {
-    let id = req.params.id
+  createProudct: async (req, res) => {
     let product = {
       name: req.body.name,
       description: req.body.description,
       category_id: req.body.category_id,
-      //image: req.body.image,
       sold: req.body.sold,
       price: req.body.price,
       stock: req.body.stock,
+      image: null,
+    };
+    let image = null
+    if (req.file !== undefined) {
+      image = await url.uploadCloudinary(req.file.path)
+    } else {
+      image = process.env.ITEM_URL
     }
-    // cek produk ada tidak
-    /*let existProduct = await req.productUC.getProductByID(id)
+    product.image = image
+    
+    //Check category not null
+    let existCategory = await req.categoryUC.getCategoryByID(product.category_id)
+    if (existCategory == null) {
+      return res
+        .status(400)
+        .json(resData.failed("failed to add, category not found", null));
+    }
+
+    let createProductRes = await req.productUC.addProduct(product)
+    if (createProductRes === null ) {
+      return res
+      .status(400)
+      .json(resData.failed("failed to add, choose a product to add", null))
+    }
+    res.status(200).json(
+      resData.success({
+      status: 'ok',
+      message: 'success',
+      data: product,
+    }),
+    )
+
+  },
+
+  updateProduct: async (req, res) => {
+    let id = req.params.id;
+    let product = {
+      name: req.body.name,
+      description: req.body.description,
+      category_id: req.body.category_id,
+      sold: req.body.sold,
+      price: req.body.price,
+      stock: req.body.stock,
+      image: null,
+    };
+    let image = null
+    if (req.file !== undefined) {
+      image = await url.uploadCloudinary(req.file.path)
+    } else {
+      oldImage =  await req.productUC.getProductByID(id)
+      image = oldImage.image
+    }
+    product.image = image
+    let existCategory = await req.categoryUC.getCategoryByID(
+      product.category_id
+    );
+    if (existCategory == null) {
+      return res
+        .status(400)
+        .json(resData.failed("failed to add, category not found", null));
+    }
+ // check product not null
+    let existProduct = await req.productUC.getProductByID(id)
     if(existProduct == null){
-      return res.status(400).json(resData.failed("failed delete, product not found" , null))
-    }*/
-    // end
-    let updateProductRes = await req.productUC.updateProduct(id, product)
-    if (updateProductRes == null) {
-      return res.status(400).json(resData.server_error())
+      return res
+      .status(400)
+      .json(resData.failed("failed delete, product not found" , null))
     }
-    return res.status(200).json(resData.success(product))
+    // end
+    let updateProduct = await req.productUC.updateProduct(id, product)
+    console.log(updateProduct)
+    if (updateProduct == null) {
+      return res
+      .status(400)
+      .json(resData.failed("failed to update product", null))
+    }
+    res.status(200).json(resData.success(product))
+
   },
 
   deleteProduct: async (req, res) => {
-    let id = req.params.id
-
-    let existProduct = await req.productUC.getProductByID(id)
+    let id = req.params.id;
+    let existProduct = await req.productUC.getProductByID(id);
     if (existProduct == null) {
-      return res.status(404).json({message: 'product not found'})
+      return res.status(400).json({message: 'product not found'})
     }
-    let product = await req.productUC.deleteProduct(id)
+    let product = await req.productUC.deleteProduct(id);
     if (product == null) {
-      return res.status(404).json(null)
+      return res.status(400).json("add product to delete", null)
     }
-    res.status(200).send({
+    res.status(200).json(
+      resData.success({
       status: 'ok',
       message: 'success',
-    })
+      data: product,
+    }),
+    )
   },
 }
+
+

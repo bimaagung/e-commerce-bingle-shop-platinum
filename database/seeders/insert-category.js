@@ -19,7 +19,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          name: 'AirPods',
+          name: 'Game Console',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
