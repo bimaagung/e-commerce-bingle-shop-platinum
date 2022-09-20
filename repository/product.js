@@ -1,83 +1,41 @@
-const {Product} = require('../models')
+const { Product } = require('../models');
 
 class ProductRepository {
   constructor() {
-    this.ProductModel = Product
+    this.ProductModel = Product;
   }
 
   async getAllProducts() {
-    let data = null
-    try {
-      
-      data =await this.ProductModel.findAll()
-    } catch (e) {
-      console.log(e)
-      return null
-    }
-    return data
+    return await this.ProductModel.findAll();
   }
 
   async getProductByID(id) {
-    let data = null
-    try {
-      data = await this.ProductModel.findOne({
-        where: {
-          id: id,
-        },
-      })
-    } catch (err) {
-      console.log(err)
-      return null
-    }
-    return data
+    return await this.ProductModel.findOne({
+      where: {
+        id,
+      },
+    });
   }
 
   async addProduct(product) {
-    let isSuccess = false
-    try {
-
-      data = await this.ProductModel.create(product)
-
-    } catch (err) {
-      console.log(err)
-      isSuccess = false
-    }
-    return {
-      isSuccess : isSuccess,
-      product : product
-    }
+    return await this.ProductModel.create(product);
   }
 
-  async updateProduct(id,product) {
-    console.log(Product)
-
-    let data = null
-    try {
-      data = await this.ProductModel.update(product,{
-        where: {
-          id: id,
-        },
-      })
-    } catch (err) {
-      console.log(err)
-      return null
-    }
-    return data
+  async updateProduct(id, product) {
+    return await this.ProductModel.update(product, {
+      where: {
+        id,
+      },
+    });
   }
+
   async deleteProduct(id) {
-    let data = null
-    try {
-      data = await this.ProductModel.destroy({
-        where: {
-          id: id,
-        },
-      })
-    } catch (err) {
-      console.log(err)
-      return null
-    }
-    return data
+    return await this.ProductModel.destroy({
+      where: {
+        id,
+      },
+    });
   }
 }
 
-module.exports = ProductRepository
+module.exports = ProductRepository;

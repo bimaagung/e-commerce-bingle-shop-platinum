@@ -1,0 +1,88 @@
+/* eslint-disable prefer-regex-literals */
+const Joi = require('joi');
+const resData = require('../helper/response');
+
+module.exports = {
+  register: async (req, res, next) => {
+    const response = Joi.object({
+      name: Joi.string().required(),
+      username: Joi.string().required(),
+      telp: Joi.number().required(),
+      email: Joi.string().email().required(),
+      password: Joi.string().min(6),
+      confrimPassword: Joi.ref('password'),
+    }).validate(req.body);
+
+    if (response.error) {
+      return res.status(400).json(resData.failed(response.error.details[0].message));
+    }
+
+    next();
+  },
+
+  login: async (req, res, next) => {
+    const response = Joi.object({
+      username: Joi.string().required(),
+      password: Joi.string().min(6),
+    }).validate(req.body);
+
+    if (response.error) {
+      return res.status(400).json(resData.failed(response.error.details[0].message));
+    }
+
+    next();
+  },
+
+  order: async (req, res, next) => {
+    const response = Joi.object({
+      products: Joi.array().required(),
+    }).validate(req.body);
+
+    if (response.error) {
+      return res.status(400).json(resData.failed(response.error.details[0].message));
+    }
+
+    next();
+  },
+
+  statusOrder: async (req, res, next) => {
+    const response = Joi.object({
+      status: Joi.string().required(),
+    }).validate(req.body);
+
+    if (response.error) {
+      return res.status(400).json(resData.failed(response.error.details[0].message));
+    }
+
+    next();
+  },
+
+  product: async (req, res, next) => {
+    const response = Joi.object({
+      name: Joi.string().required(),
+      description: Joi.string(),
+      category_id: Joi.number().required(),
+      price: Joi.number().required(),
+      stock: Joi.number().required(),
+    }).validate(req.body);
+
+    if (response.error) {
+      return res.status(400).json(resData.failed(response.error.details[0].message));
+    }
+
+    next();
+  },
+
+  category: async (req, res, next) => {
+    const response = Joi.object({
+      name: Joi.string().required(),
+    }).validate(req.body);
+
+    if (response.error) {
+      return res.status(400).json(resData.failed(response.error.details[0].message));
+    }
+
+    next();
+  },
+
+};

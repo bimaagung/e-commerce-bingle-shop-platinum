@@ -15,6 +15,7 @@
         "no-continue":"off",
         "prefer-const":"off",
         "consistent-return":"off",
-        "linebreak-style":"off"
+        "linebreak-style":"off",
+        "no-return-await":"off"
     }
 }
