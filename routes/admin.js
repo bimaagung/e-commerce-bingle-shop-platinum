@@ -2,6 +2,7 @@ const express = require('express');
 const categoryController = require('../controller/category');
 const productController = require('../controller/product');
 const orderController = require('../controller/order');
+const productImage = require('../controller/product_image')
 const authorized = require('../middleware/jwt');
 const validation = require('../middleware/formValidation');
 
@@ -21,4 +22,6 @@ router.delete('/product/delete/:id', authorized.admin, productController.deleteP
 // Order
 router.patch('/order/update-status/:id', authorized.admin, orderController.changeStatusOrder);
 
+//image
+router.post('/product/image',handleUpload.upload.single('url') ,productImage.addimage)
 module.exports = router;

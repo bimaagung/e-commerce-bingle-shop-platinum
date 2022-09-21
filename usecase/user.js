@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken')
+
 class UserUC {
   constructor(UserRepository) {
     this.UserRepository = UserRepository

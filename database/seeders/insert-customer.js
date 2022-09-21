@@ -9,7 +9,6 @@ module.exports = {
         {
           name: 'customer',
           username: 'customer',
-          image: null,
           telp: "0823111111",
           is_admin: false,
           email:'customern@mail.com',

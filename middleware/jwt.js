@@ -33,7 +33,7 @@ const authorized = (authorization, isAdmin) => {
     id: payload.id,
     name: payload.name,
     username: payload.username,
-    emai: payload.emai,
+    email: payload.email,
   };
 
   return user;
