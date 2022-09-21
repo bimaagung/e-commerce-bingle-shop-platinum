@@ -39,7 +39,58 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"username\": \"{{$randomUserName}}\",\r\n    \"telp\": \"{{$randomPhoneNumber}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"{{NewPassword}}\",\r\n    \"confrimPassword\": \"{{NewConfirmPassword}}\"\r\n}",
+							"raw": "{\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"username\": \"{{$randomUserName}}\",\r\n    \"telp\": \"085676897365\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"{{NewPassword}}\",\r\n    \"confrimPassword\": \"{{NewConfirmPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register With Invalid Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response body data should message invalid request\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.ownProperty('status');\r",
+									"    pm.expect(jsonData.status).to.equals('failed');\r",
+									"    pm.expect(jsonData).to.ownProperty('message');\r",
+									"    pm.expect(jsonData.message).to.be.an('string');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": null,\r\n    \"username\": \"{{$randomUserName}}\",\r\n    \"telp\": \"085676897365\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"{{NewPassword}}\",\r\n    \"confrimPassword\": \"{{NewConfirmPassword}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -96,6 +147,58 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"username\": \"{{usernameLogin}}\",\r\n    \"password\": \"{{passwordLogin}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login With Invalid Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response body data should contains login\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(jsonData).to.ownProperty('status');\r",
+									"    pm.expect(jsonData.status).to.equals('failed');\r",
+									"    pm.expect(jsonData).to.ownProperty('message');\r",
+									"    pm.expect(jsonData.message).to.be.an('string');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{usernameLogin}}\",\r\n    \"password\": null\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
