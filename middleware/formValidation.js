@@ -85,4 +85,19 @@ module.exports = {
     next();
   },
 
+  address: async (req, res, next) => {
+    const response = Joi.object({
+      province: Joi.string().required(),
+      city: Joi.string().required(),
+      postal_code: Joi.number().required(),
+      detail: Joi.string().required(),
+    }).validate(req.body);
+
+    if (response.error) {
+      return res.status(400).json(resData.failed(response.error.details[0].message));
+    }
+
+    next();
+  },
+
 };

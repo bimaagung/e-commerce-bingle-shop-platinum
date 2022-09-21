@@ -1,143 +1,108 @@
-const resData = require('../helper/response')
-
+const resData = require('../helper/response');
 
 module.exports = {
-    getAddressByID: async (req, res, next) => {
-        try {
+  getAddressByID: async (req, res, next) => {
+    try {
+      let { id } = req.params;
 
-            let id = req.params.id
-            let address = await req.addressUC.getAddressByID(id)
-            if (address == null) {
-                return res.status(404).json({
-                    message: "failed",
-                    data: null
-                });
-            } res.status(200).json({
-                status: "OK",
-                message: "success",
-                data: address
+      let address = await req.addressUC.getAddressByID(id);
 
-            });
-        } catch (error) {
-            next(error)
-        };
-    },
-    // todo get all address
-    getAllAddress: async (req, res, next) => {
-        try {
-            //your code here
-            let address = await req.addressUC.getAllAddress()
-            if (address == null) {
-                return res.status(404).json({
-                    message: "failed",
-                    data: null
-                });
-            } res.status(200).json({
-                status: "OK",
-                message: "success",
-                data: address
+      if (address == null) {
+        return res.status(404).json(resData.failed('address not found'));
+      }
 
-            });
-        } catch (error) {
-            next(error)
-        };
-    },
-    // todo create address
-    addAddress: async (req, res, next) => {
-        try {
+      res.json(resData.success(address));
+    } catch (error) {
+      next(error);
+    }
+  },
 
-            let address = {
-                province: req.body.province,
-                city: req.body.city,
-                postal_code: req.body.postal_code,
-                detail: req.body.detail,
-                user_id: req.body.user_id,
-            };
+  getAllAddress: async (req, res, next) => {
+    try {
+      let userId = req.user.id;
 
-            // todo check user not null
-            // let existUser = await req.addressUC.getUserById(address.user_id)
-            // if (existUser == null) {
-            //     return res
-            //         .status(400)
-            //         .json(resData.failed('failed to add, user not found', null))
-            // };
+      let address = await req.addressUC.getAllAddress(userId);
 
-            let newAddress = await req.addressUC.addAddress(address)
-            if (newAddress === null) {
-                return res.status(400).json(null)
-            };
-            res.status(200).send({
-                status: 'ok',
-                message: 'success',
-                data: address,
-            });
-        } catch (error) {
-            next(error)
-        };
-    },
+      if (address == null) {
+        return res.status(404).json(resData('empty address', []));
+      }
 
-    // todo update address
-    // updateAddress: async()
-    // addres field
-    // province: "abc",
-    // city: "abc",
-    // postal_code: "41232",
-    // detail: "jl. abc kec abc",
-    // user_id : 2
-    updateAddress: async (req, res, next) => {
-        try {
+      res.json(resData.success(address));
+    } catch (error) {
+      next(error);
+    }
+  },
 
-            let id = req.params.id
-            let address = {
-                province: req.body.province,
-                city: req.body.city,
-                postal_code: req.body.postal_code,
-                detail: req.body.detail,
-                user_id: req.body.user_id
-            };
+  addAddress: async (req, res, next) => {
+    try {
+      let address = {
+        province: req.body.province,
+        city: req.body.city,
+        postal_code: req.body.postal_code,
+        detail: req.body.detail,
+        user_id: req.user.id,
+      };
 
-            // check address not null
-            let existAddress = await req.addressUC.getAddressByID(id)
-            if (existAddress == null) {
-                return res.status(400)
-                    .json(resData.failed("failed delete, address not found", null))
-            };
-            
-            // end
-            let updateAddress = await req.addressUC.updateAddress(id, address)
-            if (updateAddress == null) {
-                return res
-                    .status(400)
-                    .json(resData.failed("failed to update address", null));
-            };
-            
-            return res.status(200).json(resData.success(address))
-        } catch (error) {
-            next(error)
-        };
+      let newAddress = await req.addressUC.addAddress(address);
 
-    },
+      if (newAddress === null) {
+        return res.status(400).json(resData.failed('failed add address'));
+      }
 
-    // todo delete address
-    deleteAddress: async (req, res, next) => {
-        try {
-            let id = req.params.id
+      res.status(201).json(resData.success(newAddress));
+    } catch (error) {
+      next(error);
+    }
+  },
 
-            let existAddress = await req.addressUC.getAddressByID(id)
-            if (existAddress == null) {
-                return res.status(404).json({ message: 'address not found' })
-            };
-            let address = await req.addressUC.deleteAddress(id)
-            if (address == null) {
-                return res.status(404).json(null)
-            };
-            res.status(200).send({
-                status: 'ok',
-                message: 'success',
-            });
-        } catch (error) {
-            next(error)
-        };
-    },
-}
+  updateAddress: async (req, res, next) => {
+    try {
+      let { id } = req.params;
+      let address = {
+        province: req.body.province,
+        city: req.body.city,
+        postal_code: req.body.postal_code,
+        detail: req.body.detail,
+        user_id: req.body.user_id,
+      };
 
+      // check address not null
+      let existAddress = await req.addressUC.getAddressByID(id);
+      if (existAddress == null) {
+        return res.status(404)
+          .json(resData.failed('address not found', null));
+      }
+
+      // end
+      let updateAddress = await req.addressUC.updateAddress(id, address);
+      if (updateAddress == null) {
+        return res
+          .status(400)
+          .json(resData.failed('failed to update address', null));
+      }
+
+      res.json(resData.success(address));
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  // todo delete address
+  deleteAddress: async (req, res, next) => {
+    try {
+      let { id } = req.params;
+
+      let existAddress = await req.addressUC.getAddressByID(id);
+
+      if (existAddress == null) {
+        return res.status(404).json(resData.failed('address not found', null));
+      }
+
+      await req.addressUC.deleteAddress(id);
+
+      res.json(resData.success());
+    } catch (error) {
+      next(error);
+    }
+  },
+};

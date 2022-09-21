@@ -31,8 +31,6 @@ const addressRouter = require('./routes/address');
 
 app.use('/public', express.static('public'));
 
-app.use('/public', express.static('public'));
-
 const addressUC = new AddressUseCase(new AddressRepository());
 const categoryUC = new CategoryUseCase(new CategoryRepository());
 const productUC = new ProductUseCase(new ProductRepository());

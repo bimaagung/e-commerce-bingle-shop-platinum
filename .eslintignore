@@ -1,3 +1,5 @@
 /database
 /models
 /node_modules
+/docs
+swagger.js

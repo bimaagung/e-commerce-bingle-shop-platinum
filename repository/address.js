@@ -1,78 +1,41 @@
-// const product = require('../controller/product');
 const { address } = require('../models');
 
 class AddressRepository {
   constructor() {
-    this.AddressModel = address
-  };
+    this.AddressModel = address;
+  }
 
   async getAddressByID(id) {
-    let data = null
-    try {
-      data = await this.AddressModel.findOne({
-        where: {
-          id: id,
-        }
-      });
-    } catch (err) {
-      console.log(err);
-      return null;
-    };
-    return data
-  };
+    return await this.AddressModel.findOne({
+      where: {
+        id,
+      },
+    });
+  }
 
-  async getAllAddress() {
-    let data = null;
-    try {
-      data = await this.AddressModel.findAll()
-    } catch (err) {
-      console.log(err);
-      return null;
-    }
-    return data;
-  };
+  async getAllAddress(userId) {
+    return await this.AddressModel.findAll({ where: { user_id: userId } });
+  }
 
-  async addAddress(address) {
-    let data = null;
-    try {
-      data = await this.AddressModel.create(address);
-    } catch (err) {
-      console.log(err);
-      return null;
-    }
-    return data;
-  };
+  async addAddress(reqAddress) {
+    return await this.AddressModel.create(reqAddress);
+  }
 
-  async updateAddress(id, address) {
-    let data = null;
-    try {
-      data = await this.AddressModel.update(address, {
-        where: {
-          id: id,
-        },
-      })
-    } catch (err) {
-      console.log(err);
-      return null;
-    }
-    return data;
-  };
+  async updateAddress(id, reqAddress) {
+    return await this.AddressModel.update(reqAddress, {
+      where: {
+        id,
+      },
+    });
+  }
 
   async deleteAddress(id) {
-    let data = null
-    try {
-      data = await this.AddressModel.destroy({
-        where: {
-          id: id,
-        },
-      })
-    } catch (err) {
-      console.log(err);
-      return null;
-    }
-    return data;
-  };
+    return await this.AddressModel.destroy({
+      where: {
+        id,
+      },
+    });
+  }
 }
 
-
-module.exports = AddressRepository
+module.exports = AddressRepository;
