@@ -21,7 +21,7 @@ module.exports = {
             }
             res.status(200).json(resData.success(image))
         } catch (e) {
-            next(next)
+            next(e)
         }
     }
 }

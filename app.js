@@ -57,6 +57,7 @@ app.use((req, res, next) => {
   req.userUC = userUC;
   req.addressUC = addressUC;
   req.productImageUC = productImageUC
+  // console.log(req.productImageUC)
   req.orderUC = orderUC;
   next();
 });

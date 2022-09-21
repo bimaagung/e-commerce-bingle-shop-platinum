@@ -9,8 +9,8 @@ class ProductImageUC {
   async createImageProduct(imageData) {
     let is_success = false;
     let image = null;
-    product = await this.productRespository.getProductByID(imageData.product_id);
-    if (image == null) {
+    let product = await this.productRespository.getProductByID(imageData.product_id);
+    if (product == null) {
       return {
         is_success: is_success,
         image: image,
