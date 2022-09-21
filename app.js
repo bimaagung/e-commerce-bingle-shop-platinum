@@ -26,9 +26,7 @@ const productRouter = require('./routes/product');
 const authRouter = require('./routes/auth');
 const AdminRouter = require('./routes/admin');
 const orderRouter = require('./routes/order');
-
-app.use('/public', express.static('public'));
-
+const categoryRouter = require('./routes/category');
 const addressRouter = require('./routes/address');
 
 app.use('/public', express.static('public'));
@@ -63,9 +61,8 @@ app.get('/', (req, res) => {
 app.use('/', authRouter);
 app.use('/admin', AdminRouter);
 app.use('/product', productRouter);
-
+app.use('/category', categoryRouter);
 app.use('/address', addressRouter);
-
 app.use('/order', orderRouter);
 
 // handle server error
