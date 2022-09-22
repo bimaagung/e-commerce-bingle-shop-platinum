@@ -5,14 +5,14 @@ module.exports = {
     addimage : async (req, res, next)=>{
         try {
             let dataImage = ({
-                url : {},
+                url : null,
                 product_id : req.body.product_id
             })
             let urls = []
             for (let i = 0; i <req.files.length; i++){
-                urls.push(await url.uploadCloudinary(req.files[i].path))
+              urls.push(await url.uploadCloudinary(req.files[i].path))
             }
-            console.log(urls)
+            dataImage.url = JSON.stringify(urls)
             
             let image = await req.productImageUC.createImageProduct(dataImage)
             if(!image.is_success){
@@ -20,7 +20,12 @@ module.exports = {
                 .status(400)
                 .json(resData.failed(image.message))
             }
-            res.status(200).json(resData.success(image))
+            res.json(
+                resData.success({
+                 url : dataImage.url,
+                 product_id : dataImage.product_id
+                }),
+              );
         } catch (e) {
             next(e)
         }
