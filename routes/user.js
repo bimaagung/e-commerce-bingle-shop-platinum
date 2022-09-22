@@ -1,10 +1,24 @@
 const express = require ('express')
 const router = express.Router()
-const productImage = require('../controller/image')
+const image = require('../controller/image')
+const user = require('../controller/user_controller')
 const handleUpload = require('../libs/handle_upload');
 
+// user
+router.get('/:id',user.getOneUser)
 
-router.post('/add-image',handleUpload.upload.single('url') ,productImage.addProductImage)
-router.put('/update-image/:id',handleUpload.upload.single('url') ,productImage.updateImageProduct)
-router.delete('/delete-image/:id',productImage.deleteImageProduct)
+
+
+
+// image
+router.post('/add-image/product',handleUpload.upload.single('url') ,image.addProductImage)
+router.put('/update-image/product/:id',handleUpload.upload.single('url') ,image.updateImageProduct)
+router.delete('/delete-image/product/:id',image.deleteImageProduct)
+
+router.post('/add-image/user',handleUpload.upload.single('url') ,image.addUserImage)
+router.put('/update-image/user/:id',handleUpload.upload.single('url') ,image.updateImageUser)
+router.delete('/delete-image/user/:id', image.updateImageUser)
+
+
+
 module.exports = router;
