@@ -17,7 +17,7 @@ router.delete('/delete-image/product/:id',image.deleteImageProduct)
 
 router.post('/add-image/user',handleUpload.upload.single('url') ,image.addUserImage)
 router.put('/update-image/user/:id',handleUpload.upload.single('url') ,image.updateImageUser)
-router.delete('/delete-image/user/:id', image.updateImageUser)
+router.delete('/delete-image/user/:id', image.deleteImageUser)
 
 
 

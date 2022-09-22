@@ -110,11 +110,11 @@ module.exports = {
             next(e)
         }
     },
-    deleteImageProduct : async (req, res,next)=>{
+    deleteImageUser : async (req, res,next)=>{
         try {
             let id = req.params.id
     
-            let image = await req.userImageUC.deleteImageAvatar(id)
+            let image = await req.userImageUC.deleteImageUser(id)
             if(!image.is_success){
                 return res
                 .status(400)
