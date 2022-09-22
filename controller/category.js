@@ -1,49 +1,95 @@
-const resData = require('../helper/response')
+const resData = require('../helper/response');
+
 module.exports = {
-    
-  getAllCategory: async (req, res) => {
-    let category = await req.categoryUC.getAllCategory(null)
-    if (category == null) {
-     return res.status(404).json(resData.failed("failed, category not found", null))
-    }
-    return res.status(200).json(resData.success(category))
-  },
+  getAllCategory: async (req, res, next) => {
+    try {
+      let category = await req.categoryUC.getAllCategory(null);
 
-  getCategoryById: async (req, res) => {
-    let id = req.params.id
-    let category = await req.categoryUC.getCategoryByID(id)
-    if (category == null) {
-      return res.status(400).json(resData.failed("failed, category not found", null))
-    }
-    return res.status(200).json(resData.success(category))
-    
-  },
-    addCategory: async (req, res) => {
-      let category = req.body.name
-      let update_category = await req.categoryUC.addCategory(category)
-      if (update_category == null) {
-        return res.status(400).json(resData.failed("failed, category not found", null))
-      }
-      return res.status(200).json(resData.success(category))
-    },
-
-    putCategory: async (req, res) => {
-      let category = req.body.name
-      let id = req.params.id
-      let update_category = await req.CategoryUC.putCategory(id,category)
-      if (update_category == null) {
-        return res.status(400).json(resData.failed("failed, category not found", null))
-      }
-      return res.status(200).json(resData.success(category))
-    },
-
-    deleteCategory: async (req, res) => {
-      let id = req.params.id
-      let category = await req.CategoryUC.deleteCategory(id)
       if (category == null) {
-        return res.status(400).json(resData.failed("failed, category not found", null))
+        return res
+          .status(404)
+          .json(resData.failed('category not found', null));
       }
-      return res.status(200).json(resData.success(category))
-    },
-  }
-  
+
+      return res.json(resData.success(category));
+    } catch (e) {
+      next(e);
+    }
+  },
+
+  getCategoryById: async (req, res, next) => {
+    try {
+      let { id } = req.params;
+
+      let category = await req.categoryUC.getCategoryByID(id);
+
+      if (category == null) {
+        return res
+          .status(404)
+          .json(resData.failed('category not found', null));
+      }
+
+      return res.json(resData.success(category));
+    } catch (e) {
+      next(e);
+    }
+  },
+
+  addCategory: async (req, res, next) => {
+    try {
+      let category = req.body;
+
+      let addCategory = await req.categoryUC.addCategory(category);
+
+      if (addCategory == null) {
+        return res
+          .status(404)
+          .json(resData.failed('category not found', category));
+      }
+      return res.status(201).json(resData.success(addCategory));
+    } catch (e) {
+      next(e);
+    }
+  },
+
+  putCategory: async (req, res, next) => {
+    try {
+      let { id } = req.params;
+      let category = req.body;
+
+      let categoryById = await req.categoryUC.getCategoryByID(id);
+
+      if (categoryById == null) {
+        return res
+          .status(404)
+          .json(resData.failed('category not found', null));
+      }
+
+      await req.categoryUC.updateCategory(category, id);
+
+      res.json(resData.success(category));
+    } catch (e) {
+      next(e);
+    }
+  },
+
+  deleteCategory: async (req, res, next) => {
+    try {
+      let { id } = req.params;
+
+      let category = await req.categoryUC.getCategoryByID(id);
+
+      if (category === null) {
+        return res
+          .status(404)
+          .json(resData.failed('category not found', null));
+      }
+
+      await req.categoryUC.deleteCategory(id);
+
+      res.json(resData.success('success delete category'));
+    } catch (e) {
+      next(e);
+    }
+  },
+};

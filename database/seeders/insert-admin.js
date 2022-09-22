@@ -9,7 +9,7 @@ module.exports = {
         {
           name: 'admin',
           username: 'admin',
-          image: null,
+          image: 'https://res.cloudinary.com/dnvltueqb/image/upload/v1663376529/profile_kdnkg8.png',
           telp: null,
           is_admin: true,
           email:'admin@mail.com',
