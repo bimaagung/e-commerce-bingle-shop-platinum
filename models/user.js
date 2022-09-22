@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: {name: 'user_id', allowNull: false},
         as: 'orders',
       })
+      this.hasOne(models.UserImage, {
+        foreignKey : {name: 'user_id', allowNull:false}
+      })
+    
     }
   }
   User.init(

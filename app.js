@@ -25,6 +25,9 @@ const UserUseCase = require('./usecase/user');
 const ProductImageRepository = require('./repository/product_image');
 const ProductImageUseCase = require('./usecase/product_image');
 
+const UserImageRepository = require('./repository/user_image');
+const UserImageUseCase = require('./usecase/user_image');
+
 const productRouter = require('./routes/product');
 const authRouter = require('./routes/auth');
 const adminRouter = require('./routes/admin');
@@ -39,6 +42,10 @@ const addressUC = new AddressUseCase(new AddressRepository());
 const categoryUC = new CategoryUseCase(new CategoryRepository());
 const productUC = new ProductUseCase(new ProductRepository());
 const userUC = new UserUseCase(new UserRepository());
+const userImageUC = new UserImageUseCase(
+  new UserImageRepository(),
+  new UserRepository()
+  )
 const productImageUC = new ProductImageUseCase(
   new ProductImageRepository(),
   new ProductRepository()
@@ -58,7 +65,7 @@ app.use((req, res, next) => {
   req.userUC = userUC;
   req.addressUC = addressUC;
   req.productImageUC = productImageUC
-  // console.log(req.productImageUC)
+  req.userImageUC = userImageUC
   req.orderUC = orderUC;
   next();
 });

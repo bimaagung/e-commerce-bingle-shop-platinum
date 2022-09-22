@@ -18,6 +18,11 @@ class ProductImageRepository {
       where : {id},
     })
   }
+  async deleteImage(id){
+    return await this.productImageModel.destroy({
+      where : {id},
+    })
+  }
 }
 
 module.exports = ProductImageRepository

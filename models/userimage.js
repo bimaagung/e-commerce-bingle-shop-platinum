@@ -10,12 +10,14 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      this.hasOne(models.User, {
+        foreignKey : {name: 'user_id', allowNull:false}
+      })
     }
   }
   UserImage.init({
     url: DataTypes.STRING,
-    product_id: DataTypes.INTEGER
+    user_id: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'UserImage',
