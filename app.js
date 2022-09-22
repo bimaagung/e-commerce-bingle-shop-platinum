@@ -27,10 +27,11 @@ const ProductImageUseCase = require('./usecase/product_image');
 
 const productRouter = require('./routes/product');
 const authRouter = require('./routes/auth');
-const AdminRouter = require('./routes/admin');
+const adminRouter = require('./routes/admin');
 const orderRouter = require('./routes/order');
 const categoryRouter = require('./routes/category');
 const addressRouter = require('./routes/address');
+const userRouter = require('./routes/user');
 
 app.use('/public', express.static('public'));
 
@@ -68,11 +69,12 @@ app.get('/', (req, res) => {
 });
 
 app.use('/', authRouter);
-app.use('/admin', AdminRouter);
+app.use('/admin', adminRouter);
 app.use('/product', productRouter);
 app.use('/category', categoryRouter);
 app.use('/address', addressRouter);
 app.use('/order', orderRouter);
+app.use('/user', userRouter);
 
 // handle server error
 app.use(serverError);

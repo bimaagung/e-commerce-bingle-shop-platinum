@@ -47,20 +47,8 @@ module.exports = {
         sold: 0,
         price: req.body.price,
         stock: req.body.stock,
-        image: null,
       };
 
-      let image = null;
-
-      if (req.file !== undefined) {
-        image = await url.uploadCloudinary(req.file.path);
-      } else {
-        image = process.env.ITEM_URL;
-      }
-
-      product.image = image;
-
-      // Check category not null
       let existCategory = await req.categoryUC.getCategoryByID(product.category_id);
 
       if (existCategory == null) {
@@ -97,24 +85,7 @@ module.exports = {
         sold: req.body.sold,
         price: req.body.price,
         stock: req.body.stock,
-        image: null,
       };
-      let image = null;
-
-      if (req.file !== undefined) {
-        image = await url.uploadCloudinary(req.file.path);
-      } else {
-        let oldImage = await req.productUC.getProductByID(id);
-
-        if (oldImage === null) {
-          image = process.env.ITEM_URL;
-        } else {
-          image = oldImage.image;
-        }
-      }
-
-      product.image = image;
-
       let existCategory = await req.categoryUC.getCategoryByID(
         product.category_id,
       );

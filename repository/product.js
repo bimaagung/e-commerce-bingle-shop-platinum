@@ -16,7 +16,6 @@ class ProductRepository {
       }, include: [
         {
           model: ProductImage,
-          // as: 'order_details',
           attributes: ['id','url'],
         },
       ],
