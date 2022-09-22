@@ -23,5 +23,5 @@ router.delete('/product/delete/:id', authorized.admin, productController.deleteP
 router.patch('/order/update-status/:id', authorized.admin, orderController.changeStatusOrder);
 
 //image
-router.post('/product/image',handleUpload.upload.array('url', 8) ,productImage.addimage)
+router.post('/product/image',handleUpload.upload.single('url') ,productImage.addimage)
 module.exports = router;
