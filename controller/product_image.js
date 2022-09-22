@@ -4,15 +4,16 @@ const url = require('../libs/handle_upload')
 module.exports = {
     addimage : async (req, res, next)=>{
         try {
-            let dataImage = {
-                url : await url.uploadCloudinary(req.file.path),
+            let dataImage = ({
+                url : {},
                 product_id : req.body.product_id
+            })
+            let urls = []
+            for (let i = 0; i <req.files.length; i++){
+                urls.push(await url.uploadCloudinary(req.files[i].path))
             }
-            // let urls = []
-            // for (let i = 0; i <req.file.length; i++){
-            //     urls.push(await url.uploadCloudinary(req.file[i].path))
-            // }
-            // dataImage.url = urls
+            console.log(urls)
+            
             let image = await req.productImageUC.createImageProduct(dataImage)
             if(!image.is_success){
                 return res
