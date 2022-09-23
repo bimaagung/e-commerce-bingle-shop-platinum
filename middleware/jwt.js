@@ -12,6 +12,8 @@ function getToken(authHeader) {
 }
 
 const authorized = (authorization, isAdmin) => {
+  try {
+    
   if (authorization !== undefined && typeof authorization !== 'string') {
     return null;
   }
@@ -19,11 +21,9 @@ const authorized = (authorization, isAdmin) => {
   let token = getToken(authorization);
   let payload = null;
 
-  try {
+  
     payload = jwt.verify(token, process.env.JWT_KEY_SECRET);
-  } catch (err) {
-    return null;
-  }
+  
 
   if (payload.is_admin !== isAdmin) {
     return null;
@@ -33,10 +33,14 @@ const authorized = (authorization, isAdmin) => {
     id: payload.id,
     name: payload.name,
     username: payload.username,
-    email: payload.email,
+    emai: payload.emai,
   };
 
   return user;
+
+  } catch (err) {
+    return null;
+  }
 };
 
 const admin = (req, res, next) => {

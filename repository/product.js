@@ -6,7 +6,13 @@ class ProductRepository {
   }
 
   async getAllProducts() {
-    return await this.ProductModel.findAll();
+    return await this.ProductModel.findAll({
+      include: [
+      {
+        model: ProductImage,
+        attributes: ['id','url'],
+      },
+    ]});
   }
 
   async getProductByID(id) {

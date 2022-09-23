@@ -75,6 +75,7 @@ class ProductImageUC {
         message: "internal server error",
       };
     }
+    
     is_success = true;
     return {
       is_success: is_success,

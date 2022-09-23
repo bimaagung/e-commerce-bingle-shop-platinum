@@ -9,6 +9,7 @@ module.exports = {
         {
           name: 'admin',
           username: 'admin',
+          image: process.env.PROFIL_URL,
           telp: null,
           is_admin: true,
           email:'admin@mail.com',

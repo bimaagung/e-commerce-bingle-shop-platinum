@@ -1,4 +1,4 @@
-const { User, UserImage } = require("../models");
+const { User } = require("../models");
 const { Op } = require("sequelize");
 const bcrypt = require("bcrypt");
 
@@ -63,13 +63,7 @@ class UserRepository {
   }
   async getUserByID(id) {
     return await this.UserModel.findOne({
-      where: { id },
-      include: [
-        {
-          model: UserImage,
-          attributes: ["id", "url"],
-        },
-      ],
+      where: { id }, attributes: {exclude: ['password' , 'is_admin']}
     });
   }
 }
