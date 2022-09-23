@@ -21,7 +21,6 @@ router.delete('/product/delete/:id', authorized.admin, productController.deleteP
 // Order
 router.patch('/order/update-status/:id', authorized.admin, orderController.changeStatusOrder);
 
-// User 
-router.get('/user/:id', authorized.admin, userController.updateUser);
+
 
 module.exports = router;
