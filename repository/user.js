@@ -66,6 +66,12 @@ class UserRepository {
       where: { id }, attributes: {exclude: ['password' , 'is_admin']}
     });
   }
+  async updateUser(user, id){
+    return await this.UserModel.update(user ,{
+      where :{id}
+    })
+  }
 }
+
 
 module.exports = UserRepository;

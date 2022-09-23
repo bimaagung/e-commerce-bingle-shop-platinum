@@ -1,5 +1,4 @@
 const resData = require('../helper/response');
-const url = require('../libs/handle_upload');
 
 module.exports = {
   getAllProducts: async (req, res, next) => {
@@ -8,7 +7,7 @@ module.exports = {
 
       if (product == null) {
         return res
-          .status(400)
+          .status(200)
           .json(resData.failed('list is empty', null));
       }
 
@@ -23,10 +22,10 @@ module.exports = {
       let { id } = req.params;
 
       let product = await req.productUC.getProductByID(id);
-
       if (product == null) {
-        return res.status(404).json(resData.failed('product not found', null));
+        return res.status(200).json(resData.failed('product not found', null));
       }
+     
 
       res.status(200).json(
         resData.success(
