@@ -2,6 +2,7 @@ const express = require('express');
 
 const app = express();
 const swaggerUi = require('swagger-ui-express'); // import swagger
+var morgan = require('morgan')
 
 const serverError = require('./middleware/serverError');
 
@@ -21,6 +22,8 @@ const OrderDetailRepository = require('./repository/orderDetail');
 
 const UserRepository = require('./repository/user');
 const UserUseCase = require('./usecase/user');
+
+app.use(morgan('dev'));
 
 const productRouter = require('./routes/product');
 const authRouter = require('./routes/auth');
