@@ -49,6 +49,9 @@ class UserUC {
     }
 
   }
+  async getUserById(id) {
+    return await this.UserRepository.getUserById(id)
+  }
 
 }
 
