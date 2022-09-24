@@ -36,6 +36,18 @@ class UserRepository {
         }
     }
 
+    async getUserById (id) {
+        try {
+            return await this.UserModel.findOne({
+                where: {id: id},
+            })       
+        } catch (e) {
+            console.log(e)
+            return null
+        }
+    }
+    
+
     async registerUser(user_data) {
         user_data.password = bcrypt.hashSync(user_data.password, 10)
         user_data.is_admin = false
