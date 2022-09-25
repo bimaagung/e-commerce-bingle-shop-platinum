@@ -53,6 +53,11 @@ class UserUC {
     return await this.UserRepository.getUserById(id)
   }
 
+  async updateUser(id) {
+    return await this.UserRepository.updateUser(id)
+  };
+
+
 }
 
 module.exports = UserUC

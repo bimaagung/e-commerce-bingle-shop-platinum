@@ -1,5 +1,5 @@
 const { User } = require('../models')
-const {Op}= require('sequelize')
+const { Op } = require('sequelize')
 const bcrypt = require('bcrypt');
 
 class UserRepository {
@@ -11,11 +11,11 @@ class UserRepository {
         let user = null
         try {
             user = await this.UserModel.findOne({
-                where : {
-                    [Op.or] : [
-                        {username : username},
-                        {email : email}
-                     
+                where: {
+                    [Op.or]: [
+                        { username: username },
+                        { email: email }
+
                     ]
                 }
             })
@@ -24,11 +24,11 @@ class UserRepository {
         }
         return user
     }
-   
-    async getUserByUsername (username) {
+
+    async getUserByUsername(username) {
         try {
             return await this.UserModel.findOne({
-                where:{username:username}
+                where: { username: username }
             })
         } catch (e) {
             console.log(e)
@@ -36,17 +36,17 @@ class UserRepository {
         }
     }
 
-    async getUserById (id) {
+    async getUserById(id) {
         try {
             return await this.UserModel.findOne({
-                where: {id: id},
-            })       
+                where: { id: id },
+            })
         } catch (e) {
             console.log(e)
             return null
         }
     }
-    
+
 
     async registerUser(user_data) {
         user_data.password = bcrypt.hashSync(user_data.password, 10)
@@ -62,21 +62,33 @@ class UserRepository {
 
         return user
     }
-    async loginUser(username, password){
+    async loginUser(username, password) {
         let user = null
         try {
             user = await this.getUserByUsername(username)
-            if(user === null){
+            if (user === null) {
                 return user
             }
         } catch (e) {
             console.log(e)
             return null
         }
-        if(!bcrypt.compareSync(password, user.password)){
+        if (!bcrypt.compareSync(password, user.password)) {
             return null
         }
         return user
+    }
+    async updateUser(id, user) {
+        try {
+            return await this.UserModel.update(user, {
+                where: {
+                    id,
+                },
+            });
+        } catch (e) {
+            console.log(e)
+            return null
+        }
     }
 
 }
