@@ -1,0 +1,60 @@
+version: '3.2'
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.3
+    volumes:
+      - ./vendor/apm-elk/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - elasticsearch:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx512m -Xms512m"
+      ELASTIC_PASSWORD: elastic1234
+      discovery.type: single-node
+    networks:
+      - elk
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "200m"
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.17.3
+    volumes:
+      - ./vendor/apm-elk/kibana.yml:/usr/share/kibana/config/kibana.yml
+    ports:
+      - "5601:5601"
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "200m"
+  
+  pm-server:
+    image: docker.elastic.co/apm/apm-server:7.17.3
+    command:
+      - --strict.perms=false
+    volumes:
+      - ./vendor/apm-elk/apm-server.yml:/usr/share/apm-server/apm-server.yml
+    ports:
+      - '8200:8200'
+    environment:
+      ELASTIC_PASSWORD: elastic1234
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+
+networks:
+  elk:
+    driver: bridge
+
+volumes:
+  elasticsearch:

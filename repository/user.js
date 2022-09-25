@@ -6,6 +6,7 @@ class UserRepository {
   constructor() {
     this.UserModel = User;
   }
+
   async getUserExist(username, email) {
     let user = null;
     try {
@@ -31,9 +32,20 @@ class UserRepository {
     }
   }
 
-  async registerUser(user_data) {
-    user_data.password = bcrypt.hashSync(user_data.password, 10);
-    user_data.is_admin = false;
+    async getUserById (id) {
+        try {
+            return await this.UserModel.findOne({
+                where: {id: id},
+            })       
+        } catch (e) {
+            console.log(e)
+            return null
+        }
+    }
+    
+    async registerUser(user_data) {
+        user_data.password = bcrypt.hashSync(user_data.password, 10)
+        user_data.is_admin = false
 
     let user = null;
     try {
@@ -45,6 +57,7 @@ class UserRepository {
 
     return user;
   }
+  
   async loginUser(username, password) {
     let user = null;
     try {
@@ -61,11 +74,13 @@ class UserRepository {
     }
     return user;
   }
+
   async getUserByID(id) {
     return await this.UserModel.findOne({
       where: { id }, attributes: {exclude: ['password' , 'is_admin']}
     });
   }
+
   async updateUser(user, id){
     return await this.UserModel.update(user ,{
       where :{id}

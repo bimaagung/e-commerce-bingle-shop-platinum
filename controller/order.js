@@ -114,7 +114,7 @@ module.exports = {
           .status(400)
           .json(
             resData.failed(
-              'recheck the product. make sure the product is still in stock',
+              'recheck the product, make sure the product is still in stock',
             ),
           );
       }
