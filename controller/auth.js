@@ -40,7 +40,7 @@ module.exports = {
 
       let image = null;
       if (req.file !== undefined) {
-        image = await url.uploadCloudinary(req.file.path);
+        image = await url.uploadCloudinaryAvatar(req.file.path);
       } else {
         image = process.env.PROFIL_URL;
       }

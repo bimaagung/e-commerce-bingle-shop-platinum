@@ -13,6 +13,9 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.Category, {
         foreignKey: {name : 'category_id', allowNull:false}
       })
+      this.hasMany(models.ProductImage, {
+        foreignKey: {name : 'product_id', allowNull:false}
+      })
     }
   }
   Product.init({
@@ -22,7 +25,6 @@ module.exports = (sequelize, DataTypes) => {
     sold: DataTypes.INTEGER,
     price: DataTypes.INTEGER,
     stock: DataTypes.INTEGER,
-    image: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Product',

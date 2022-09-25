@@ -19,12 +19,12 @@ module.exports = {
 
   getAllAddress: async (req, res, next) => {
     try {
-      let userId = req.user.id;
+    
 
-      let address = await req.addressUC.getAllAddress(userId);
+      let address = await req.addressUC.getAllAddress();
 
       if (address == null) {
-        return res.status(404).json(resData('empty address', []));
+        return res.status(200).json(resData.success(address));
       }
 
       res.json(resData.success(address));
