@@ -2,91 +2,93 @@ class UserUC {
   constructor(UserRepository) {
     this.UserRepository = UserRepository;
   }
+
   async register(user_data) {
     let is_success = false;
     let user = null;
     if (
-      typeof user_data.password !== "string" ||
-      typeof user_data.username !== "string" ||
-      typeof user_data.email !== "string"
+      typeof user_data.password !== 'string'
+      || typeof user_data.username !== 'string'
+      || typeof user_data.email !== 'string'
     ) {
       return return_data;
     }
     user = await this.UserRepository.getUserExist(
       user_data.username,
-      user_data.email
+      user_data.email,
     );
     if (user !== null) {
       return {
-        is_success: is_success,
-        user: user,
-        message: "username or email not aviable",
+        is_success,
+        user,
+        message: 'username or email not aviable',
       };
     }
     user = await this.UserRepository.registerUser(user_data);
     if (user == null) {
       return {
-        is_success: is_success,
-        user: user,
-        message: "internal server error",
+        is_success,
+        user,
+        message: 'internal server error',
       };
     }
     is_success = true;
     return {
-      is_success: is_success,
-      user: user,
+      is_success,
+      user,
     };
   }
+
   async login(username, password) {
     let is_success = false;
     let user = null;
     user = await this.UserRepository.loginUser(username, password);
     if (user == null) {
       return {
-        is_success: is_success,
-        user: user,
-        message: "incorect username or password",
+        is_success,
+        user,
+        message: 'incorect username or password',
       };
     }
     is_success = true;
     return {
-      is_success: is_success,
-      user: user,
+      is_success,
+      user,
     };
   }
+
   async getUserByID(id) {
     return await this.UserRepository.getUserByID(id);
   }
+
   async updateUserProfile(userData, id) {
     let is_success = false;
     let user = null;
     user = await this.UserRepository.getUserByID(id);
     if (user == null) {
       return {
-        is_success: is_success,
-        user: user,
-        message: "user not found",
+        is_success,
+        user,
+        message: 'user not found',
       };
     }
     user = await this.UserRepository.updateUser(userData, id);
     if (user == null) {
       return {
-        is_success: is_success,
-        user: user,
-        message: "internal server error",
+        is_success,
+        user,
+        message: 'internal server error',
       };
     }
     is_success = true;
     return {
-      is_success: is_success,
-      user: user,
+      is_success,
+      user,
     };
   }
 
   async updateUser(id) {
-    return await this.UserRepository.updateUser(id)
-  };
-
-
+    return await this.UserRepository.updateUser(id);
+  }
 }
 module.exports = UserUC;

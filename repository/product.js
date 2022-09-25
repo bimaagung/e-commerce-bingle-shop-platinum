@@ -1,4 +1,4 @@
-const { Product , ProductImage } = require('../models');
+const { Product, ProductImage } = require('../models');
 
 class ProductRepository {
   constructor() {
@@ -8,24 +8,26 @@ class ProductRepository {
   async getAllProducts() {
     return await this.ProductModel.findAll({
       include: [
-      {
-        model: ProductImage,
-        attributes: ['id','url'],
-      },
-    ]});
+        {
+          model: ProductImage,
+          attributes: ['id', 'url'],
+        },
+      ],
+    });
   }
 
   async getProductByID(id) {
     return await this.ProductModel.findOne({
       where: {
         id,
-      }, include: [
+      },
+      include: [
         {
           model: ProductImage,
-          attributes: ['id','url'],
+          attributes: ['id', 'url'],
         },
       ],
-      
+
     });
   }
 

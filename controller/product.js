@@ -25,7 +25,6 @@ module.exports = {
       if (product == null) {
         return res.status(200).json(resData.failed('product not found', null));
       }
-     
 
       res.status(200).json(
         resData.success(
@@ -48,25 +47,17 @@ module.exports = {
         stock: req.body.stock,
       };
 
-      let existCategory = await req.categoryUC.getCategoryByID(product.category_id);
+      let productUC = await req.productUC.addProduct(product);
 
-      if (existCategory == null) {
+      if (productUC.isSuccess === false) {
         return res
           .status(400)
-          .json(resData.failed('failed to add, category not found', null));
-      }
-
-      let createProductRes = await req.productUC.addProduct(product);
-
-      if (createProductRes === null) {
-        return res
-          .status(400)
-          .json(resData.failed('failed to add, choose a product to add', null));
+          .json(resData.failed(productUC.reason, productUC.data));
       }
 
       res.status(201).json(
         resData.success(
-          createProductRes,
+          productUC.data,
         ),
       );
     } catch (e) {

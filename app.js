@@ -1,19 +1,18 @@
-var apm = require('elastic-apm-node')
+// let apm = require('elastic-apm-node');
 
-apm.start({
-  serviceName: process.env.PLATINUM_MAJU_JAYA,
-  secretToken: '',
-  //serverUrl: 'http://YOUR IP:8200',
-  serverUrl: 'http://192.168.201.155:8200',
-  environment: 'development',
-})
+// apm.start({
+//   serviceName: process.env.PLATINUM_MAJU_JAYA,
+//   secretToken: '',
+//   // serverUrl: 'http://YOUR IP:8200',
+//   serverUrl: 'http://192.168.201.155:8200',
+//   environment: 'development',
+// });
 
 const express = require('express');
 
 const app = express();
 const swaggerUi = require('swagger-ui-express'); // import swagger
-var morgan = require('morgan')
-
+let morgan = require('morgan');
 
 const serverError = require('./middleware/serverError');
 
@@ -39,7 +38,6 @@ app.use(morgan('dev'));
 const ProductImageRepository = require('./repository/product_image');
 const ProductImageUseCase = require('./usecase/product_image');
 
-
 const productRouter = require('./routes/product');
 const authRouter = require('./routes/auth');
 const adminRouter = require('./routes/admin');
@@ -52,13 +50,13 @@ app.use('/public', express.static('public'));
 
 const addressUC = new AddressUseCase(new AddressRepository());
 const categoryUC = new CategoryUseCase(new CategoryRepository());
-const productUC = new ProductUseCase(new ProductRepository());
+const productUC = new ProductUseCase(new ProductRepository(), new CategoryRepository());
 const userUC = new UserUseCase(new UserRepository());
 
 const productImageUC = new ProductImageUseCase(
   new ProductImageRepository(),
-  new ProductRepository()
-  ); 
+  new ProductRepository(),
+);
 const orderUC = new OrderUseCase(
   new OrderRepository(),
   new OrderDetailRepository(),
@@ -73,7 +71,7 @@ app.use((req, res, next) => {
   req.productUC = productUC;
   req.userUC = userUC;
   req.addressUC = addressUC;
-  req.productImageUC = productImageUC
+  req.productImageUC = productImageUC;
   req.orderUC = orderUC;
   next();
 });
@@ -97,6 +95,5 @@ app.use(serverError);
 const swaggerDocument = require('./docs/docs.json');
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
 
 module.exports = app;

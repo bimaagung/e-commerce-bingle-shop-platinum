@@ -1,6 +1,6 @@
-const { User } = require("../models");
-const { Op } = require("sequelize");
-const bcrypt = require("bcrypt");
+const { Op } = require('sequelize');
+const bcrypt = require('bcrypt');
+const { User } = require('../models');
 
 class UserRepository {
   constructor() {
@@ -12,7 +12,7 @@ class UserRepository {
     try {
       user = await this.UserModel.findOne({
         where: {
-          [Op.or]: [{ username: username }, { email: email }],
+          [Op.or]: [{ username }, { email }],
         },
       });
     } catch (e) {
@@ -24,7 +24,7 @@ class UserRepository {
   async getUserByUsername(username) {
     try {
       return await this.UserModel.findOne({
-        where: { username: username },
+        where: { username },
       });
     } catch (e) {
       console.log(e);
@@ -32,32 +32,31 @@ class UserRepository {
     }
   }
 
-    async getUserById (id) {
-        try {
-            return await this.UserModel.findOne({
-                where: {id: id},
-            })       
-        } catch (e) {
-            console.log(e)
-            return null
-        }
+  async getUserById(id) {
+    try {
+      return await this.UserModel.findOne({
+        where: { id },
+      });
+    } catch (e) {
+      console.log(e);
+      return null;
     }
-    
-    async registerUser(user_data) {
-        user_data.password = bcrypt.hashSync(user_data.password, 10)
-        user_data.is_admin = false
+  }
+
+  async registerUser(userData) {
+    userData.password = bcrypt.hashSync(userData.password, 10);
+    userData.is_admin = false;
 
     let user = null;
     try {
-      user = await this.UserModel.create(user_data);
+      user = await this.UserModel.create(userData);
     } catch (e) {
-      console.error(e);
       return null;
     }
 
     return user;
   }
-  
+
   async loginUser(username, password) {
     let user = null;
     try {
@@ -77,16 +76,15 @@ class UserRepository {
 
   async getUserByID(id) {
     return await this.UserModel.findOne({
-      where: { id }, attributes: {exclude: ['password' , 'is_admin']}
+      where: { id }, attributes: { exclude: ['password', 'is_admin'] },
     });
   }
 
-  async updateUser(user, id){
-    return await this.UserModel.update(user ,{
-      where :{id}
-    })
+  async updateUser(user, id) {
+    return await this.UserModel.update(user, {
+      where: { id },
+    });
   }
 }
-
 
 module.exports = UserRepository;
