@@ -82,5 +82,11 @@ class UserUC {
       user: user,
     };
   }
+
+  async updateUser(id) {
+    return await this.UserRepository.updateUser(id)
+  };
+
+
 }
 module.exports = UserUC;

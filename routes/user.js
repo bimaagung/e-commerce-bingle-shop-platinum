@@ -8,8 +8,8 @@ const user = require('../controller/user_controller')
 router.get('/:id',user.getOneUser)
 router.put('/update-image/:id',handleUpload.upload.single('image'),user.updateAvatar)
 
-
-
+router.get('/', authorized.customer, userController.getUserById);
+router.put('/update/:id', authorized.customer, userController.updateUser);
 
 
 module.exports = router;
