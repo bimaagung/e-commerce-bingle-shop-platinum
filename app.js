@@ -1,8 +1,19 @@
+var apm = require('elastic-apm-node')
+
+apm.start({
+  serviceName: process.env.PLATINUM_MAJU_JAYA,
+  secretToken: '',
+  //serverUrl: 'http://YOUR IP:8200',
+  serverUrl: 'http://192.168.201.155:8200',
+  environment: 'development',
+})
+
 const express = require('express');
 
 const app = express();
 const swaggerUi = require('swagger-ui-express'); // import swagger
 var morgan = require('morgan')
+
 
 const serverError = require('./middleware/serverError');
 
@@ -74,5 +85,6 @@ app.use(serverError);
 const swaggerDocument = require('./docs/docs.json');
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 
 module.exports = app;
