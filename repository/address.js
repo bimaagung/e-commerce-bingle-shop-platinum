@@ -13,8 +13,8 @@ class AddressRepository {
     });
   }
 
-  async getAllAddress(userId) {
-    return await this.AddressModel.findAll({ where: { user_id: userId } });
+  async getAllAddress() {
+    return await this.AddressModel.findAll();
   }
 
   async addAddress(reqAddress) {
