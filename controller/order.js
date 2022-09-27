@@ -8,38 +8,42 @@ module.exports = {
       const userId = req.user.id;
       const { products } = req.body;
 
-      // check user have pending order
-      const getPendingOrder = await req.orderUC.getPendingOrderByUserId(userId);
-
-      if (getPendingOrder !== null) {
-        return res
-          .status(400)
-          .json(resData.failed('user already has pending order'));
-      }
-
       // create a new order
-      const createOrder = await req.orderUC.createOrder(
+      const order = await req.orderUC.createOrder(
         userId,
         orderId,
         products,
       );
 
-      if (createOrder === null) {
+      if (!order.isSuccess) {
         return res
           .status(400)
           .json(
             resData.failed(
-              'can\'t process the order, please check each product in order',
+              order.reason,
             ),
           );
       }
 
       res.status(201).json(
-        resData.success({
-          order_id: orderId,
-          products: createOrder,
-        }),
+        resData.success(order.data),
       );
+    } catch (e) {
+      next(e);
+    }
+  },
+
+  getListOrder: async (req, res, next) => {
+    try {
+      const { status } = req.query;
+
+      const order = await req.orderUC.getListOrder(status);
+
+      if (order.data.length < 0) {
+        return res.json(order.reason);
+      }
+
+      return res.json(resData.success(order.data));
     } catch (e) {
       next(e);
     }
@@ -114,7 +118,7 @@ module.exports = {
           .status(400)
           .json(
             resData.failed(
-              'recheck the product. make sure the product is still in stock',
+              'recheck the product, make sure the product is still in stock',
             ),
           );
       }

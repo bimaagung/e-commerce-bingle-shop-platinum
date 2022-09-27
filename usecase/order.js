@@ -9,6 +9,54 @@ class OrderUC {
     this.productRespository = productRespository;
   }
 
+  async getListOrder(status) {
+    let result = {
+      isSuccess: true,
+      reason: null,
+      data: [],
+    };
+
+    let filter = {
+      where: {
+        status: null,
+      },
+    };
+
+    let listOrder = [];
+
+    // check there is a query
+    if (status !== undefined) {
+      const statusUpperCase = status.toUpperCase();
+      const splitStatus = statusUpperCase.split(',');
+      let multipleStatus = [];
+
+      // check single or multiple query status
+      if (splitStatus.length < 2) {
+        filter.where.status = splitStatus[0].toString();
+        listOrder = await this.orderRepository.getListOrder(filter);
+      }
+
+      splitStatus.forEach((data) => {
+        multipleStatus.push({ status: data.toUpperCase() });
+      });
+
+      listOrder = await this.orderRepository.getListOrderMultipleQuery(multipleStatus);
+    } else {
+      // get all order in db
+      listOrder = await this.orderRepository.getListOrder();
+    }
+
+    // check order is existing
+    if (listOrder.length < 1) {
+      result.reason = 'empty order';
+      return result;
+    }
+
+    result.data = listOrder;
+
+    return result;
+  }
+
   async getOrderById(orderId) {
     const order = await this.orderRepository.getOrderById(orderId);
     return order;
@@ -49,11 +97,25 @@ class OrderUC {
   }
 
   async createOrder(userId, orderId, products) {
+    let result = {
+      isSuccess: false,
+      reason: null,
+      data: null,
+    };
+
     const orders = {
       id: orderId,
       user_id: userId,
       status: orderConstant.ORDER_PENDING,
     };
+
+    // check user have pending order
+    const getPendingOrder = await this.getPendingOrderByUserId(userId);
+
+    if (getPendingOrder !== null) {
+      result.reason = 'user already has pending order';
+      return result;
+    }
 
     // add each product in order detail
     const orderDetail = await this.addProductInDetailOrder(
@@ -62,18 +124,22 @@ class OrderUC {
       products,
     );
 
+    // check stock product
     if (orderDetail.length < 1) {
-      return null;
+      result.reason = 'can\'t process the order, please check each product in order';
+      return result;
     }
 
     // create a new order user
-    const createOrder = await this.orderRepository.createOrder(orders);
+    await this.orderRepository.createOrder(orders);
 
-    if (!createOrder) {
-      return null;
-    }
+    result.isSuccess = true;
+    result.data = {
+      order_id: orderId,
+      products: orderDetail,
+    };
 
-    return orderDetail;
+    return result;
   }
 
   async addProductInDetailOrder(userId, orderId, products) {

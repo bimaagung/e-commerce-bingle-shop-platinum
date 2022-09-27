@@ -13,7 +13,7 @@ module.exports = {
           .status(400)
           .json(resData.failed(user.message));
       }
-      
+
       res.json({
         status: 'ok',
         message: 'success',
@@ -25,7 +25,6 @@ module.exports = {
   },
 
   register: async (req, res, next) => {
-
     try {
       let user = {
         name: req.body.name,
@@ -40,7 +39,7 @@ module.exports = {
 
       let image = null;
       if (req.file !== undefined) {
-        image = await url.uploadCloudinary(req.file.path);
+        image = await url.uploadCloudinaryAvatar(req.file.path);
       } else {
         image = process.env.PROFIL_URL;
       }
@@ -51,10 +50,9 @@ module.exports = {
           .status(400)
           .json(resData.failed('password and confrim password not match', null));
       }
-      let resUser = await req.userUC.register(user)
+      let resUser = await req.userUC.register(user);
       if (resUser.is_success != true) {
-
-        return res.status(400).json(resData.failed(resUser.message))
+        return res.status(400).json(resData.failed(resUser.message));
       }
       res.json(
         resData.success({
