@@ -3,56 +3,52 @@ class UserUC {
     this.UserRepository = UserRepository;
   }
 
-  async register(user_data) {
-    let is_success = false;
+  async register(userData) {
+    let isSuccess = false;
     let user = null;
     if (
-      typeof user_data.password !== 'string'
-      || typeof user_data.username !== 'string'
-      || typeof user_data.email !== 'string'
+      typeof userData.password !== 'string'
+      || typeof userData.username !== 'string'
+      || typeof userData.email !== 'string'
     ) {
-      return return_data;
+      return {isSuccess , user}
     }
     user = await this.UserRepository.getUserExist(
-      user_data.username,
-      user_data.email,
+      userData.username,
+      userData.email,
     );
     if (user !== null) {
       return {
-        is_success,
-        user,
         message: 'username or email not aviable',
       };
     }
-    user = await this.UserRepository.registerUser(user_data);
+    user = await this.UserRepository.registerUser(userData);
     if (user == null) {
       return {
-        is_success,
-        user,
         message: 'internal server error',
       };
     }
-    is_success = true;
+    isSuccess = true;
     return {
-      is_success,
+      isSuccess,
       user,
     };
   }
 
   async login(username, password) {
-    let is_success = false;
+    let isSuccess = false;
     let user = null;
     user = await this.UserRepository.loginUser(username, password);
     if (user == null) {
       return {
-        is_success,
+        isSuccess,
         user,
         message: 'incorect username or password',
       };
     }
-    is_success = true;
+    isSuccess = true;
     return {
-      is_success,
+      isSuccess,
       user,
     };
   }
@@ -62,27 +58,23 @@ class UserUC {
   }
 
   async updateUserProfile(userData, id) {
-    let is_success = false;
+    let isSuccess = false;
     let user = null;
     user = await this.UserRepository.getUserByID(id);
     if (user == null) {
       return {
-        is_success,
-        user,
         message: 'user not found',
       };
     }
     user = await this.UserRepository.updateUser(userData, id);
     if (user == null) {
       return {
-        is_success,
-        user,
         message: 'internal server error',
       };
     }
-    is_success = true;
+    isSuccess = true;
     return {
-      is_success,
+      isSuccess,
       user,
     };
   }
