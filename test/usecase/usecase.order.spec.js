@@ -1,49 +1,6 @@
 const OrderUseCase = require('../../usecase/order');
+const mockOrderRepo = require('../mock/repository.order.mock') 
 require('dotenv').config();
-
-
-const mockOrderRepo = (
-    {
-        returnGetListOrder = null, 
-        returnGetListOrderMultipleQuery = null, 
-        returnGetOrderById = null,
-        returnGetPendingOrderByUserId = null,
-    }
-) => {
-  const repo = {};
-
-  repo.getListOrder = jest.fn().mockReturnValue(
-    returnGetListOrder
-  );
-
-  repo.getListOrderMultipleQuery = jest.fn().mockReturnValue(
-    returnGetListOrderMultipleQuery
-  );
-
-  repo.getOrderById = jest.fn().mockReturnValue(
-    returnGetOrderById
-  );
-
-  repo.getPendingOrderByUserId = jest.fn().mockReturnValue(
-    returnGetPendingOrderByUserId
-  );
-
-  return repo;
-};
-
-const mockProductRepo = (
-    {
-        returnGetProductByID = null, 
-    }
-) => {
-  const repo = {};
-
-  repo.getProductByID = jest.fn().mockReturnValue(
-    returnGetProductByID
-  );
-
-  return repo;
-};
 
 const orderRepo = mockOrderRepo({
     returnGetListOrder :  [
@@ -119,7 +76,22 @@ const orderRepo = mockOrderRepo({
             },
         ]
     },
+    returnUpdateOrder: true
 });
+
+const mockProductRepo = (
+    {
+        returnGetProductByID = null, 
+    }
+) => {
+  const repo = {};
+
+  repo.getProductByID = jest.fn().mockReturnValue(
+    returnGetProductByID
+  );
+
+  return repo;
+};
 
 const productRepo = mockProductRepo({
     returnGetProductByID : 
@@ -286,6 +258,31 @@ describe('get order pending by user id test', () => {
     expect(typeof res.data).toEqual('object')
     expect(Array.isArray(res.data.products)).toBeTruthy();
         
+  });
+
+  test('get order pending by user id with status false and message order pending not found', async () => {
+    const repo = mockOrderRepo({ 
+        returnGetPendingOrderByUserId: null,
+        returnGetProductByID: null
+    });
+
+    const orderUC = new OrderUseCase(repo);
+
+    let res = await orderUC.getPendingOrderByUserId(10);
+
+    expect(res.isSuccess).toBeFalsy();
+    expect(res.reason).toEqual('order not found');
+    expect(res.data).toEqual(null);
+  });
+
+});
+
+describe('update order submitted test', () => {
+
+  test('update order submitted should  success is true', async () => {
+    let res = await orderUC.updateOrderSubmitted(1);
+
+    expect(res.isSuccess).toBeTruthy();
   });
 
   test('get order pending by user id with status false and message order pending not found', async () => {
