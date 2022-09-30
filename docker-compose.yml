@@ -60,7 +60,7 @@ services:
         max-file: "1"
         max-size: "200m"
   
-  pm-server:
+  apm-server:
     image: docker.elastic.co/apm/apm-server:7.17.3
     command:
       - --strict.perms=false
