@@ -3,7 +3,6 @@ apm-server:
 
 output:
   elasticsearch:
-    # hosts: ['http://elasticsearch:9200']
-    hosts: ['192.168.201.155:9200'] #['YOUR IP:9200']
+    hosts: ['${SERVER_URL}:9200']
     username: elastic
     password: elastic1234
