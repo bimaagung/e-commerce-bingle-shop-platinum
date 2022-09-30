@@ -4,7 +4,8 @@ apm.start({
   serviceName: process.env.PLATINUM_MAJU_JAYA,
   secretToken: '',
   // serverUrl: 'http://YOUR IP:8200',
-  serverUrl: 'http://192.168.201.155:8200',
+  // serverUrl: 'http://192.168.201.155:8200',
+  serverUrl: `http://${process.env.SERVER_URL}:8200`,
   environment: 'development',
 });
 
