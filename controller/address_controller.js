@@ -23,9 +23,7 @@ module.exports = {
 
       let address = await req.addressUC.getAllAddress(userId);
 
-      if (address == null) {
-        return res.status(404).json(resData('empty address', []));
-      }
+      
 
       res.json(resData.success(address));
     } catch (error) {
