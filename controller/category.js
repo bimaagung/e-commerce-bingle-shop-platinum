@@ -5,13 +5,7 @@ module.exports = {
     try {
       let category = await req.categoryUC.getAllCategory(null);
 
-      if (category == null) {
-        return res
-          .status(404)
-          .json(resData.failed('category not found', null));
-      }
-
-      return res.json(resData.success(category));
+      return res.json(resData.success(category.data));
     } catch (e) {
       next(e);
     }
@@ -23,13 +17,14 @@ module.exports = {
 
       let category = await req.categoryUC.getCategoryByID(id);
 
-      if (category == null) {
+      if (category.isSuccess === false) {
         return res
           .status(404)
-          .json(resData.failed('category not found', null));
+          .json(resData.failed( category.reason, category.data));
       }
 
-      return res.json(resData.success(category));
+      return res.json(resData.success(category.data));
+
     } catch (e) {
       next(e);
     }
@@ -41,12 +36,12 @@ module.exports = {
 
       let addCategory = await req.categoryUC.addCategory(category);
 
-      if (addCategory == null) {
+      if (addCategory.isSuccess === false) {
         return res
           .status(404)
-          .json(resData.failed('category not found', category));
+          .json(resData.failed(category.reason, category.data));
       }
-      return res.status(201).json(resData.success(addCategory));
+      return res.status(201).json(resData.success(addCategory.data));
     } catch (e) {
       next(e);
     }
@@ -59,15 +54,13 @@ module.exports = {
 
       let categoryById = await req.categoryUC.getCategoryByID(id);
 
-      if (categoryById == null) {
+      if (categoryById.isSuccess === false) {
         return res
           .status(404)
-          .json(resData.failed('category not found', null));
+          .json(resData.failed(category.reason, category.data));
       }
 
-      await req.categoryUC.updateCategory(category, id);
-
-      res.json(resData.success(category));
+      return res.json(resData.success(category.data));
     } catch (e) {
       next(e);
     }
@@ -82,12 +75,10 @@ module.exports = {
       if (category === null) {
         return res
           .status(404)
-          .json(resData.failed('category not found', null));
+          .json(resData.failed( category.reason, category.data));
       }
 
-      await req.categoryUC.deleteCategory(id);
-
-      res.json(resData.success('success delete category'));
+      return res.json(resData.success(category.data));
     } catch (e) {
       next(e);
     }
