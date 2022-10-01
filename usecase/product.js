@@ -20,15 +20,14 @@ class ProductUC {
       data: null,
     };
 
-    // check category misal tidak ada
-    // let existCategory = await this.categoryRepository.getCategoryByID(product.category_id);
+    // to check whether the category exists
     let existCategory = await this.categoryRepository.getCategoryByID(product.category_id);
 
     if (existCategory == null) {
       result.reason = 'category not found';
     }
 
-    // memasukkan product ke database
+    // to add product to database
     let addProduct = await this.productRepository.addProduct(product);
 
     result.isSuccess = true;
