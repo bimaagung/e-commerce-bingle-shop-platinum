@@ -3,15 +3,19 @@ const resData = require('../helper/response');
 module.exports = {
   getAllProducts: async (req, res, next) => {
     try {
-      let product = await req.productUC.getAllProducts();
+      let getAllProduct = await req.productUC.getAllProducts();
 
-      if (product == null) {
+      if (product.isSuccess === false) {
         return res
-          .status(200)
-          .json(resData.failed('list is empty', null));
+          .status(404)
+          .json(resData.failed(getAllProduct.reason, getAllProduct.data));
       }
 
-      res.json(resData.success(product));
+      res.status(200).json(
+        resData.success(
+          getAllProduct.data,
+          ),
+        );
     } catch (e) {
       next(e);
     }
@@ -22,13 +26,13 @@ module.exports = {
       let { id } = req.params;
 
       let product = await req.productUC.getProductByID(id);
-      if (product == null) {
-        return res.status(200).json(resData.failed('product not found', null));
+      if (product.isSuccess === false) {
+        return res.status(404).json(resData.failed(product.reason, product.data));
       }
 
       res.status(200).json(
         resData.success(
-          product,
+          product.data,
         ),
       );
     } catch (e) {
@@ -36,7 +40,7 @@ module.exports = {
     }
   },
 
-  createProudct: async (req, res, next) => {
+  addProduct: async (req, res, next) => {
     try {
       let product = {
         name: req.body.name,

@@ -6,11 +6,36 @@ class ProductUC {
   }
 
   async getAllProducts(filters) {
-    return await this.productRepository.getAllProducts(filters);
+    let result = {
+      isSuccess: false,
+      reason: '',
+      data: null,
+    }
+    let getAllProducts = await this.productRepository.getAllProducts(filters);
+    if (getAllProducts == null) {
+      result.reason = 'list is empty';
+      return result;
+    }
+    result.isSuccess = true;
+    result.data = getAllProducts  
+    return result;
   }
 
   async getProductByID(id) {
-    return await this.productRepository.getProductByID(id);
+    let result = {
+       isSuccess: false,
+       reason: '',
+       data: null,
+    }
+    let getProductByID = await this.productRepository.getProductByID(id);
+    if (getProductByID == null) {
+      result.reason = 'product not found';
+      return result;
+    }
+    result.isSuccess = true,
+    result.data = getProductByID
+    return result;
+
   }
 
   async addProduct(product) {
@@ -25,6 +50,7 @@ class ProductUC {
 
     if (existCategory == null) {
       result.reason = 'category not found';
+      return result;
     }
 
     // to add product to database
