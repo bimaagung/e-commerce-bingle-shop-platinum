@@ -46,10 +46,10 @@ class CategoryUC {
       data: null,
     };
 
-    const category = await this.categoryRepository.getCategoryByID(id);
+    const addCategory = await this.categoryRepository.addCategory(category);
 
     result.isSuccess = true
-    result.data = category
+    result.data = addCategory
 
     return result
   }
