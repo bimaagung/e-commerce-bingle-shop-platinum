@@ -4,7 +4,8 @@ const mockOrderRepo = (
         returnGetListOrderMultipleQuery, 
         returnGetOrderById,
         returnGetPendingOrderByUserId,
-        returnUpdateOrder
+        returnUpdateOrderSubmited,
+        returnUpdateOrder,
     }
 ) => {
   const repo = {};
@@ -76,17 +77,15 @@ const mockOrderRepo = (
                 qty: 10,
                 total_price: 23000000,
             },
-             {
-                id: 1,
-                product_id: 2,
-                qty: 10,
-                total_price: 23000000,
-            },
         ]
     },
   );
 
   repo.updateOrderSubmitted = jest.fn().mockReturnValue(
+    returnUpdateOrderSubmited !== true ?  returnUpdateOrderSubmited : true
+  );
+
+  repo.updateOrder = jest.fn().mockReturnValue(
     returnUpdateOrder !== true ?  returnUpdateOrder : true
   );
 

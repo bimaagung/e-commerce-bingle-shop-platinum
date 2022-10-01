@@ -379,14 +379,12 @@ class OrderUC {
         if (!updateStockSoldProduct) {
           continue;
         }
-
         fixUpdateProduct.push(orderDetail[i].product_id);
       } else {
         return;
       }
     }
 
-    console.log(fixUpdateProduct);
     return fixUpdateProduct;
   }
 }
