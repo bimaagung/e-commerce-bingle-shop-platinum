@@ -41,7 +41,6 @@ describe('get list order test', () => {
 
    test('get list order should success is true and type data is array', async () => {
     let res = await orderUC.getListOrder();
-    console.log(res.data);
 
     expect(res.isSuccess).toBeTruthy();
     expect(Array.isArray(res.data)).toBeTruthy();

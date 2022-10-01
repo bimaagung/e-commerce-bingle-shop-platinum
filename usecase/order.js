@@ -270,7 +270,7 @@ class OrderUC {
       completed_date: null,
     };
 
-    const orderPending = await this.getPendingOrderByUserId(userId);
+    const orderPending = await this.orderRepository.getPendingOrderByUserId(userId);
 
     if (orderPending === null) {
       result.reason = 'order not found';
@@ -282,7 +282,7 @@ class OrderUC {
       orderConstant.ORDER_SUBMITTED,
     );
 
-    if (reduceStock.length !== orderPending.products.length) {
+    if (reduceStock.length !== orderPending.order_details.length) {
       result.reason = 'recheck the product, make sure the product is still in stock';
       result.statusCode = 400;
       return result;
@@ -386,6 +386,7 @@ class OrderUC {
       }
     }
 
+    console.log(fixUpdateProduct);
     return fixUpdateProduct;
   }
 }
