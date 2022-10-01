@@ -257,11 +257,25 @@ class OrderUC {
     return resultOrderDetail;
   }
 
-  async updateOrderSubmitted(orderPending) {
+  async updateOrderSubmitted(userId) {
+    let result = {
+      isSuccess: false,
+      reason: null,
+      data: null,
+      statusCode: 404,
+    };
+
     const order = {
       status: orderConstant.ORDER_SUBMITTED,
       completed_date: null,
     };
+
+    const orderPending = await this.getPendingOrderByUserId(userId);
+
+    if (orderPending === null) {
+      result.reason = 'order not found';
+      return result;
+    }
 
     const reduceStock = await this.updateStockSoldProduct(
       orderPending.id,
@@ -269,11 +283,17 @@ class OrderUC {
     );
 
     if (reduceStock.length !== orderPending.products.length) {
-      return null;
+      result.reason = 'recheck the product, make sure the product is still in stock';
+      result.statusCode = 400;
+      return result;
     }
 
-    const updateStatusOrder = await this.orderRepository.updateOrder(orderPending.id, order);
-    return updateStatusOrder;
+    await this.orderRepository.updateOrder(orderPending.id, order);
+
+    result.isSuccess = true;
+    result.statusCode = 200;
+
+    return result;
   }
 
   async updateStatusOrder(orderId, statusOrder) {
