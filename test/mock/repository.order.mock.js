@@ -10,16 +10,18 @@ const mockOrderRepo = (
   const repo = {};
 
   repo.getListOrder = jest.fn().mockReturnValue(
-    returnGetListOrder !== undefined ?  returnGetListOrder :   {
+    returnGetListOrder !== true ?  returnGetListOrder : [
+      {
         id: 1,
         user_id: 2,
         status: 'PENDING',
         complete_date: null,
-      },
+      }
+    ],
   );
 
   repo.getListOrderMultipleQuery = jest.fn().mockReturnValue(
-    returnGetListOrderMultipleQuery !== undefined ? returnGetListOrderMultipleQuery : [
+    returnGetListOrderMultipleQuery !== true ? returnGetListOrderMultipleQuery : [
       {
         id: 1,
         user_id: 2,
@@ -36,7 +38,7 @@ const mockOrderRepo = (
   );
 
   repo.getOrderById = jest.fn().mockReturnValue(
-    returnGetOrderById !== undefined ?  returnGetOrderById : {
+    returnGetOrderById !== true ?  returnGetOrderById : {
         id: 1,
         user_id: 2,
         status: 'PENDING',
@@ -60,9 +62,9 @@ const mockOrderRepo = (
   );
 
   repo.getPendingOrderByUserId = jest.fn().mockReturnValue(
-    returnGetPendingOrderByUserId !== undefined ?  returnGetPendingOrderByUserId : {
+    returnGetPendingOrderByUserId !== true ?  returnGetPendingOrderByUserId : {
         id: 1,
-        user_id: 2,
+        user_id: 1,
         status: 'PENDING',
         complete_date: null,
         createdAt: "12-09-2022 23:30:00",
@@ -85,7 +87,7 @@ const mockOrderRepo = (
   );
 
   repo.updateOrderSubmitted = jest.fn().mockReturnValue(
-    returnUpdateOrder !== undefined ?  returnUpdateOrder : true
+    returnUpdateOrder !== true ?  returnUpdateOrder : true
   );
 
   return repo;

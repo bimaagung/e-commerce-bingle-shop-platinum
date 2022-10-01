@@ -1,42 +1,53 @@
 const OrderUseCase = require('../../usecase/order');
 const mockOrderRepo = require('../mock/repository.order.mock') 
 const mockProductRepo = require('../mock/repository.product.mock') 
+const mockOrderDetailRepo = require('../mock/respository.order_detail.mock') 
 require('dotenv').config();
 
 
 
 const orderRepo = mockOrderRepo({
-        returnGetListOrder:undefined, 
-        returnGetListOrderMultipleQuery:undefined, 
-        returnGetOrderById:undefined,
-        returnGetPendingOrderByUserId:undefined,
-        returnUpdateOrder:undefined
-    })
+    returnGetListOrder:true, 
+    returnGetListOrderMultipleQuery:true, 
+    returnGetOrderById:true,
+    returnGetPendingOrderByUserId:true,
+    returnUpdateOrder:true
+})
 
 const productRepo = mockProductRepo({
-  returnGetProductByID : undefined
+  returnGetProductByID : true
+})
+
+const orderDetailRepo = mockOrderDetailRepo({
+  returnGetOrderDetailById : true,
+  returnUpdateProduct: true
 })
 
 
-const orderUC = new OrderUseCase(orderRepo,null,productRepo);
+const orderUC = new OrderUseCase(orderRepo,orderDetailRepo,productRepo);
 
 describe('get list order test', () => {
-  test('get list order with single query is success', async () => {
+  test('get list order with single query shoud success is true and type data is array', async () => {
     let res = await orderUC.getListOrder('pending');
-    expect(res.isSuccess).toEqual(true);
+    expect(res.isSuccess).toBeTruthy();
+    expect(Array.isArray(res.data)).toBeTruthy();
   });
 
-  test('get list order multiple query is  success', async () => {
+  test('get list order multiple query should success is true and type data is array ', async () => {
     let res = await orderUC.getListOrder('pending, completed, submitted');
-    expect(res.isSuccess).toEqual(true);
+    expect(res.isSuccess).toBeTruthy();
+    expect(Array.isArray(res.data)).toBeTruthy();
   });
 
-   test('get list order is success', async () => {
+   test('get list order should success is true and type data is array', async () => {
     let res = await orderUC.getListOrder();
-    expect(res.isSuccess).toEqual(true);
+    console.log(res.data);
+
+    expect(res.isSuccess).toBeTruthy();
+    expect(Array.isArray(res.data)).toBeTruthy();
   });
 
-   test('get list order is empty', async () => {
+   test('get list order should type data is array and result = []', async () => {
 
     const repo = mockOrderRepo({
     returnGetListOrder :  [],
@@ -45,7 +56,10 @@ describe('get list order test', () => {
     const orderUC = new OrderUseCase(repo);
 
     let res = await orderUC.getListOrder();
-    expect(res.isSuccess).toEqual(true);
+
+    expect(res.isSuccess).toBeTruthy();
+    expect(Array.isArray(res.data)).toBeTruthy();
+    expect(res.data.length).toBe(0);
   });
 });
 
@@ -165,7 +179,7 @@ describe('get order pending by id test', () => {
 describe('get order pending by user id test', () => {
 
   test('get order pending by user id with return status true and data object', async () => {
-    let res = await orderUC.getPendingOrderByUserId(12);
+    let res = await orderUC.getPendingOrderByUserId(1);
 
     expect(res.isSuccess).toBeTruthy();
     expect(typeof res.data).toEqual('object')
@@ -198,7 +212,20 @@ describe('update order submitted test', () => {
     expect(res.isSuccess).toBeTruthy();
   });
 
-  test('get order pending by user id with status false and message order pending not found', async () => {
+  test("update order submitted should  message is 'order not found'", async () => {
+    const orderRepo = mockOrderRepo({ 
+        getPendingOrderByUserId: null,
+    });
+
+    const orderUC = new OrderUseCase(orderRepo,orderDetailRepo,productRepo);
+
+    let res = await orderUC.updateOrderSubmitted(2);
+
+    expect(res.isSuccess).toBeFalsy();
+    expect(res.reason).toEqual('order not found');
+  });
+
+  test("update order submitted should message is 'recheck the product, make sure the product is still in stock'", async () => {
     const repo = mockOrderRepo({ 
         returnGetPendingOrderByUserId: null,
         returnGetProductByID: null
@@ -206,11 +233,10 @@ describe('update order submitted test', () => {
 
     const orderUC = new OrderUseCase(repo);
 
-    let res = await orderUC.getPendingOrderByUserId(10);
+    let res = await orderUC.updateOrderSubmitted(10);
 
     expect(res.isSuccess).toBeFalsy();
-    expect(res.reason).toEqual('order not found');
-    expect(res.data).toEqual(null);
+    expect(res.reason).toEqual('recheck the product, make sure the product is still in stock');
   });
 
 });
