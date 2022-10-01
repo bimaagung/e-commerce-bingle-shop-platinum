@@ -1,7 +1,8 @@
 /* eslint-disable no-return-await */
 class ProductUC {
-  constructor(productRepository) {
+  constructor(productRepository, categoryRepository) {
     this.productRepository = productRepository;
+    this.categoryRepository = categoryRepository;
   }
 
   async getAllProducts(filters) {
@@ -13,7 +14,27 @@ class ProductUC {
   }
 
   async addProduct(product) {
-    return await this.productRepository.addProduct(product);
+    let result = {
+      isSuccess: false,
+      reason: '',
+      data: null,
+    };
+
+    // check category misal tidak ada
+    // let existCategory = await this.categoryRepository.getCategoryByID(product.category_id);
+    let existCategory = await this.categoryRepository.getCategoryByID(product.category_id);
+
+    if (existCategory == null) {
+      result.reason = 'category not found';
+    }
+
+    // memasukkan product ke database
+    let addProduct = await this.productRepository.addProduct(product);
+
+    result.isSuccess = true;
+    result.data = addProduct;
+
+    return result;
   }
 
   async updateProduct(id, product) {

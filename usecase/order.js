@@ -9,28 +9,113 @@ class OrderUC {
     this.productRespository = productRespository;
   }
 
+  async getListOrder(status) {
+    let result = {
+      isSuccess: true,
+      reason: null,
+      data: [],
+    };
+
+    let filter = {
+      where: {
+        status: null,
+      },
+    };
+
+    let listOrder = [];
+
+    // check there is a query
+    if (status !== undefined) {
+      const statusUpperCase = status.toUpperCase();
+      const splitStatus = statusUpperCase.split(',');
+      let multipleStatus = [];
+
+      // check single or multiple query status
+      if (splitStatus.length < 2) {
+        filter.where.status = splitStatus[0].toString();
+        listOrder = await this.orderRepository.getListOrder(filter);
+      }
+
+      splitStatus.forEach((data) => {
+        multipleStatus.push({ status: data.toUpperCase() });
+      });
+
+      listOrder = await this.orderRepository.getListOrderMultipleQuery(multipleStatus);
+    } else {
+      // get all order in db
+      listOrder = await this.orderRepository.getListOrder();
+    }
+
+    // check order is existing
+    if (listOrder.length < 1) {
+      result.reason = 'empty order';
+      return result;
+    }
+
+    result.data = listOrder;
+
+    return result;
+  }
+
   async getOrderById(orderId) {
+    let result = {
+      isSuccess: false,
+      reason: null,
+      data: null,
+    };
+
     const order = await this.orderRepository.getOrderById(orderId);
-    return order;
+
+    if (order === null) {
+      result.reason = 'order not found';
+      return result;
+    }
+
+    result.isSuccess = true;
+    result.data = order;
+
+    return result;
   }
 
   async getPendingOrderById(orderId) {
+    let result = {
+      isSuccess: false,
+      reason: null,
+      data: null,
+    };
+
     const order = await this.orderRepository.getOrderById(orderId);
 
-    if (order.status !== orderConstant.ORDER_PENDING) {
-      return null;
+    if (order === null) {
+      result.reason = 'order not found';
+      return result;
     }
 
-    return order;
+    if (order.status !== orderConstant.ORDER_PENDING) {
+      result.reason = 'order not found';
+      return result;
+    }
+
+    result.isSuccess = true;
+    result.data = order;
+
+    return result;
   }
 
   async getPendingOrderByUserId(userId) {
+    let result = {
+      isSuccess: false,
+      reason: null,
+      data: null,
+    };
+
     const orderPending = await this.orderRepository.getPendingOrderByUserId(
       userId,
     );
 
     if (orderPending === null) {
-      return null;
+      result.reason = 'order not found';
+      return result;
     }
 
     const productInOrderDetail = await this.getProductByOrderDetail(
@@ -45,15 +130,32 @@ class OrderUC {
       products: productInOrderDetail,
     };
 
-    return resultOrderDetail;
+    result.isSuccess = true;
+    result.data = resultOrderDetail;
+
+    return result;
   }
 
   async createOrder(userId, orderId, products) {
+    let result = {
+      isSuccess: false,
+      reason: null,
+      data: null,
+    };
+
     const orders = {
       id: orderId,
       user_id: userId,
       status: orderConstant.ORDER_PENDING,
     };
+
+    // check user have pending order
+    const getPendingOrder = await this.getPendingOrderByUserId(userId);
+
+    if (getPendingOrder !== null) {
+      result.reason = 'user already has pending order';
+      return result;
+    }
 
     // add each product in order detail
     const orderDetail = await this.addProductInDetailOrder(
@@ -62,18 +164,22 @@ class OrderUC {
       products,
     );
 
+    // check stock product
     if (orderDetail.length < 1) {
-      return null;
+      result.reason = 'can\'t process the order, please check each product in order';
+      return result;
     }
 
     // create a new order user
-    const createOrder = await this.orderRepository.createOrder(orders);
+    await this.orderRepository.createOrder(orders);
 
-    if (!createOrder) {
-      return null;
-    }
+    result.isSuccess = true;
+    result.data = {
+      order_id: orderId,
+      products: orderDetail,
+    };
 
-    return orderDetail;
+    return result;
   }
 
   async addProductInDetailOrder(userId, orderId, products) {
@@ -151,11 +257,25 @@ class OrderUC {
     return resultOrderDetail;
   }
 
-  async updateOrderSubmitted(orderPending) {
+  async updateOrderSubmitted(userId) {
+    let result = {
+      isSuccess: false,
+      reason: null,
+      data: null,
+      statusCode: 404,
+    };
+
     const order = {
       status: orderConstant.ORDER_SUBMITTED,
       completed_date: null,
     };
+
+    const orderPending = await this.getPendingOrderByUserId(userId);
+
+    if (orderPending === null) {
+      result.reason = 'order not found';
+      return result;
+    }
 
     const reduceStock = await this.updateStockSoldProduct(
       orderPending.id,
@@ -163,11 +283,17 @@ class OrderUC {
     );
 
     if (reduceStock.length !== orderPending.products.length) {
-      return null;
+      result.reason = 'recheck the product, make sure the product is still in stock';
+      result.statusCode = 400;
+      return result;
     }
 
-    const updateStatusOrder = await this.orderRepository.updateOrder(orderPending.id, order);
-    return updateStatusOrder;
+    await this.orderRepository.updateOrder(orderPending.id, order);
+
+    result.isSuccess = true;
+    result.statusCode = 200;
+
+    return result;
   }
 
   async updateStatusOrder(orderId, statusOrder) {

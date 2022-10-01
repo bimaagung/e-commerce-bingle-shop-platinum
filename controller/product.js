@@ -1,5 +1,4 @@
 const resData = require('../helper/response');
-const url = require('../libs/handle_upload');
 
 module.exports = {
   getAllProducts: async (req, res, next) => {
@@ -8,7 +7,7 @@ module.exports = {
 
       if (product == null) {
         return res
-          .status(400)
+          .status(200)
           .json(resData.failed('list is empty', null));
       }
 
@@ -23,9 +22,8 @@ module.exports = {
       let { id } = req.params;
 
       let product = await req.productUC.getProductByID(id);
-
       if (product == null) {
-        return res.status(404).json(resData.failed('product not found', null));
+        return res.status(200).json(resData.failed('product not found', null));
       }
 
       res.status(200).json(
@@ -47,39 +45,19 @@ module.exports = {
         sold: 0,
         price: req.body.price,
         stock: req.body.stock,
-        image: null,
       };
 
-      let image = null;
+      let productUC = await req.productUC.addProduct(product);
 
-      if (req.file !== undefined) {
-        image = await url.uploadCloudinary(req.file.path);
-      } else {
-        image = process.env.ITEM_URL;
-      }
-
-      product.image = image;
-
-      // Check category not null
-      let existCategory = await req.categoryUC.getCategoryByID(product.category_id);
-
-      if (existCategory == null) {
+      if (productUC.isSuccess === false) {
         return res
           .status(400)
-          .json(resData.failed('failed to add, category not found', null));
-      }
-
-      let createProductRes = await req.productUC.addProduct(product);
-
-      if (createProductRes === null) {
-        return res
-          .status(400)
-          .json(resData.failed('failed to add, choose a product to add', null));
+          .json(resData.failed(productUC.reason, productUC.data));
       }
 
       res.status(201).json(
         resData.success(
-          createProductRes,
+          productUC.data,
         ),
       );
     } catch (e) {
@@ -97,24 +75,7 @@ module.exports = {
         sold: req.body.sold,
         price: req.body.price,
         stock: req.body.stock,
-        image: null,
       };
-      let image = null;
-
-      if (req.file !== undefined) {
-        image = await url.uploadCloudinary(req.file.path);
-      } else {
-        let oldImage = await req.productUC.getProductByID(id);
-
-        if (oldImage === null) {
-          image = process.env.ITEM_URL;
-        } else {
-          image = oldImage.image;
-        }
-      }
-
-      product.image = image;
-
       let existCategory = await req.categoryUC.getCategoryByID(
         product.category_id,
       );

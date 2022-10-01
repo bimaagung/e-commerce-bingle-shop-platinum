@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const orderConstant = require('../internal/constant/order');
 const { Order, OrderDetail } = require('../models');
 
@@ -31,6 +32,20 @@ class OrderRepository {
       where: { id: orderId },
     });
 
+    return order;
+  }
+
+  async getListOrder(filter) {
+    const order = await this.OrderModel.findAll(filter);
+    return order;
+  }
+
+  async getListOrderMultipleQuery(multipleStatus) {
+    const order = await this.OrderModel.findAll({
+      where: {
+        [Op.or]: multipleStatus,
+      },
+    });
     return order;
   }
 

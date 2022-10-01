@@ -1,7 +1,17 @@
+let apm = require('elastic-apm-node');
+
+apm.start({
+  serviceName: process.env.PLATINUM_MAJU_JAYA,
+  secretToken: '',
+  serverUrl: `http://${process.env.SERVER_URL}:8200`,
+  environment: 'development',
+});
+
 const express = require('express');
 
 const app = express();
 const swaggerUi = require('swagger-ui-express'); // import swagger
+let morgan = require('morgan');
 
 const serverError = require('./middleware/serverError');
 
@@ -22,19 +32,30 @@ const OrderDetailRepository = require('./repository/orderDetail');
 const UserRepository = require('./repository/user');
 const UserUseCase = require('./usecase/user');
 
+app.use(morgan('dev'));
+
+const ProductImageRepository = require('./repository/product_image');
+const ProductImageUseCase = require('./usecase/product_image');
+
 const productRouter = require('./routes/product');
 const authRouter = require('./routes/auth');
-const AdminRouter = require('./routes/admin');
+const adminRouter = require('./routes/admin');
 const orderRouter = require('./routes/order');
 const categoryRouter = require('./routes/category');
 const addressRouter = require('./routes/address');
+const userRouter = require('./routes/user');
 
 app.use('/public', express.static('public'));
 
 const addressUC = new AddressUseCase(new AddressRepository());
 const categoryUC = new CategoryUseCase(new CategoryRepository());
-const productUC = new ProductUseCase(new ProductRepository());
+const productUC = new ProductUseCase(new ProductRepository(), new CategoryRepository());
 const userUC = new UserUseCase(new UserRepository());
+
+const productImageUC = new ProductImageUseCase(
+  new ProductImageRepository(),
+  new ProductRepository(),
+);
 const orderUC = new OrderUseCase(
   new OrderRepository(),
   new OrderDetailRepository(),
@@ -49,6 +70,7 @@ app.use((req, res, next) => {
   req.productUC = productUC;
   req.userUC = userUC;
   req.addressUC = addressUC;
+  req.productImageUC = productImageUC;
   req.orderUC = orderUC;
   next();
 });
@@ -59,11 +81,12 @@ app.get('/', (req, res) => {
 });
 
 app.use('/', authRouter);
-app.use('/admin', AdminRouter);
+app.use('/admin', adminRouter);
 app.use('/product', productRouter);
 app.use('/category', categoryRouter);
 app.use('/address', addressRouter);
 app.use('/order', orderRouter);
+app.use('/user', userRouter);
 
 // handle server error
 app.use(serverError);
