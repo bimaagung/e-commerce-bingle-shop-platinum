@@ -66,6 +66,23 @@ class UserRepository {
         }
         return user
     }
+    async updatePassword (password) {
+        let password = null
+        try {
+            password = await this.updatePassword(password)
+            if(password === null) {
+                return user
+            }
+        } catch (e) {
+            console.log(e)
+            return null
+        }
+        if (req.body.password !== req.body.confrimPassword) {
+            return res
+              .status(400)
+              .json(resData.failed('password and confrim password not match', null));
+          }
+    }
 
 }
 
