@@ -3,21 +3,21 @@ class AddressUC {
     this.AddressRepository = addressRepository;
   }
 
-  async getAllAddress(id) {
+  async getAddressByID(id) {
     let result = {
       isSuccess: false,
       reason: '',
       data: null,
     };
 
-    let getAllAddress = await this.AddressRepository.getAllAddress(id);
+    let getAddressByID = await this.AddressRepository.getAddressByID(id);
 
-    if (getAllAddress == null) {
+    if (getAddressByID == null) {
       result.reason = 'list is empty';
     };
 
     result.isSuccess = true;
-    result.data = getAllAddress;
+    result.data = getAddressByID;
 
     return result;
   }
