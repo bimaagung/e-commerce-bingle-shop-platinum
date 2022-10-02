@@ -5,17 +5,17 @@ module.exports = {
     try {
       let getAllProduct = await req.productUC.getAllProducts();
 
-      if (product.isSuccess === false) {
+      if (getAllProduct.isSuccess === false) {
         return res
           .status(404)
           .json(resData.failed(getAllProduct.reason, getAllProduct.data));
       }
 
-      res.status(201).json(
+      res.json(
         resData.success(
           getAllProduct.data,
-          ),
-        );
+        ),
+      );
     } catch (e) {
       next(e);
     }
@@ -30,7 +30,7 @@ module.exports = {
         return res.status(404).json(resData.failed(product.reason, product.data));
       }
 
-      res.status(201).json(
+      res.json(
         resData.success(
           product.data,
         ),
@@ -103,8 +103,8 @@ module.exports = {
       let deleteProduct = await req.productUC.deleteProduct(id);
       if (deleteProduct.isSuccess === false) {
         return res
-        .status(404)
-        .json(resData.failed(deleteProduct.reason, deleteProduct.data));
+          .status(404)
+          .json(resData.failed(deleteProduct.reason, deleteProduct.data));
       }
 
       res.status(200).json(

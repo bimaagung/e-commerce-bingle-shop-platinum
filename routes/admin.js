@@ -15,7 +15,7 @@ router.put('/category/update/:id', authorized.admin, validation.category, catego
 router.delete('/category/delete/:id', authorized.admin, categoryController.deleteCategory);
 
 // Product
-router.post('/product/add', authorized.admin, validation.product, productController.createProudct);
+router.post('/product/add', authorized.admin, validation.product, productController.addProduct);
 router.put('/product/update/:id', authorized.admin, validation.product, productController.updateProduct);
 router.delete('/product/delete/:id', authorized.admin, productController.deleteProduct);
 

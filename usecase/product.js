@@ -10,32 +10,32 @@ class ProductUC {
       isSuccess: false,
       reason: '',
       data: null,
-    }
+    };
     let getAllProducts = await this.productRepository.getAllProducts(filters);
     if (getAllProducts == null) {
       result.reason = 'list is empty';
       return result;
     }
     result.isSuccess = true;
-    result.data = getAllProducts  
+    result.data = getAllProducts;
     return result;
   }
 
   async getProductByID(id) {
     let result = {
-       isSuccess: false,
-       reason: '',
-       data: null,
-    }
+      isSuccess: false,
+      reason: '',
+      data: null,
+    };
+
     let getProductByID = await this.productRepository.getProductByID(id);
     if (getProductByID == null) {
       result.reason = 'product not found';
       return result;
     }
-    result.isSuccess = true,
-    result.data = getProductByID
+    result.isSuccess = true;
+    result.data = getProductByID;
     return result;
-
   }
 
   async addProduct(product) {
@@ -49,7 +49,7 @@ class ProductUC {
     let existCategory = await this.categoryRepository.getCategoryByID(product.category_id);
 
     if (existCategory == null) {
-      result.reason = 'category not found';
+      result.reason = 'failed to add, category not found';
       return result;
     }
 
@@ -67,18 +67,19 @@ class ProductUC {
       isSuccess: false,
       reason: '',
       data: null,
-    }
+    };
+
     // check product not null
     let existProduct = await this.productRepository.getProductByID(id);
 
     if (existProduct === null) {
-      result.reason = 'product not found'
-      return result 
+      result.reason = 'product not found';
+      return result;
     }
-    await this.productRepository.updateProduct(id, product)
+    await this.productRepository.updateProduct(id, product);
 
     result.isSuccess = true;
-    return result
+    return result;
   }
 
   async deleteProduct(id) {
@@ -86,13 +87,13 @@ class ProductUC {
       isSuccess: false,
       reason: '',
       data: null,
-    }
+    };
     let existProduct = await this.productRepository.getProductByID(id);
 
-      if (existProduct === null) {
-        result.reason = 'product not found'
-        return result
-      }
+    if (existProduct === null) {
+      result.reason = 'product not found';
+      return result;
+    }
 
     return await this.productRepository.deleteProduct(id);
   }
