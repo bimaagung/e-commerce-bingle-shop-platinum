@@ -71,7 +71,7 @@ class AddressUC {
       data: null,
     };
 
-    let existAddress = await req.addressUC.getAddressByID(id);
+    let existAddress = await this.AddressRepository.getAddressByID(id);
 
     if (existAddress == null) {
       result.reason = 'address id not found';
@@ -91,7 +91,7 @@ class AddressUC {
       data: null,
     };
 
-    let existAddress = await req.addressUC.getAddressByID(id);
+    let existAddress = await this.AddressRepository.getAddressByID(id);
 
     if (existAddress == null) {
       result.reason = 'address id not found';
