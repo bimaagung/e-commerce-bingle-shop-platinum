@@ -6,6 +6,7 @@ const mockOrderRepo = (
         returnGetPendingOrderByUserId,
         returnUpdateOrderSubmited,
         returnUpdateOrder,
+        returnCreateOrder
     }
 ) => {
   const repo = {};
@@ -87,6 +88,10 @@ const mockOrderRepo = (
 
   repo.updateOrder = jest.fn().mockReturnValue(
     returnUpdateOrder !== true ?  returnUpdateOrder : true
+  );
+
+  repo.createOrder = jest.fn().mockReturnValue(
+    returnCreateOrder !== true ?  returnCreateOrder : true
   );
 
   return repo;

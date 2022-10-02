@@ -150,7 +150,7 @@ class OrderUC {
     };
 
     // check user have pending order
-    const getPendingOrder = await this.getPendingOrderByUserId(userId);
+    const getPendingOrder = await this.orderRepository.getPendingOrderByUserId(userId);
 
     if (getPendingOrder !== null) {
       result.reason = 'user already has pending order';

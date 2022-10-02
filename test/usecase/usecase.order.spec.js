@@ -17,6 +17,7 @@ describe('orders', () => {
       returnGetPendingOrderByUserId: true,
       returnUpdateOrderSubmited: true,
       returnUpdateOrder: true,
+      returnCreateOrder: true
     }
 
     productValues = {
@@ -26,6 +27,7 @@ describe('orders', () => {
 
     orderDetailValues = {
       returnGetOrderDetailById : true,
+      returnAddOrderDetails: true
     }
 
     orderUC = new OrderUseCase(mockOrderRepo(orderValues),mockOrderDetailRepo(orderDetailValues),mockProductRepo(productValues));
@@ -249,13 +251,8 @@ describe('orders', () => {
 
   describe('create order test', () => {
 
+
     test('return should success is true and type data is object', async () => {
-      let res = await orderUC.createOrder();
-
-      expect(res.isSuccess).toBeTruthy();
-    });
-
-    test("return should message is 'order not found'", async () => {
       orderValues.returnGetPendingOrderByUserId = null
       orderUC = new OrderUseCase(
         mockOrderRepo(orderValues),
@@ -263,25 +260,37 @@ describe('orders', () => {
         mockProductRepo(productValues)
       );
 
-      let res = await orderUC.updateOrderSubmitted(2);
+      let res = await orderUC.createOrder(1,1, [{ id:1, qty: 1}]);
 
-      expect(res.isSuccess).toBeFalsy();
-      expect(res.reason).toEqual('order not found');
+      expect(res.isSuccess).toBeTruthy();
+      expect(typeof res.data === 'object').toBeTruthy();
     });
 
-    test("update order submitted should message is 'recheck the product, make sure the product is still in stock'", async () => {
-      productValues.returnGetProductByID = null
+    test("return should message is 'user already has pending order'", async () => {
       orderUC = new OrderUseCase(
         mockOrderRepo(orderValues),
         mockOrderDetailRepo(orderDetailValues), 
         mockProductRepo(productValues)
       );
 
-
-      let res = await orderUC.updateOrderSubmitted(10);
+      let res = await orderUC.createOrder(1,1, [{ id:1, qty: 1}]);
 
       expect(res.isSuccess).toBeFalsy();
-      expect(res.reason).toEqual('recheck the product, make sure the product is still in stock');
+      expect(res.reason).toEqual('user already has pending order');
+    });
+
+    test("update order submitted should message is 'can\'t process the order, please check each product in order'", async () => {
+      orderValues.returnGetPendingOrderByUserId = null
+      productValues.returnGetProductByID = null
+      orderUC = new OrderUseCase(
+        mockOrderRepo(orderValues),
+        mockOrderDetailRepo(orderDetailValues), 
+        mockProductRepo(productValues)
+      );
+      let res = await orderUC.createOrder(1,1, [{ id:1, qty: 1}]);
+
+      expect(res.isSuccess).toBeFalsy();
+      expect(res.reason).toEqual('can\'t process the order, please check each product in order');
     });
 
   });

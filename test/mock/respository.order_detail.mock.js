@@ -1,6 +1,7 @@
 const mockOrderDetailRepo = (
     {
-        returnGetOrderDetailById, 
+        returnGetOrderDetailById,
+        returnAddOrderDetails
     }
 ) => {
   const repo = {};
@@ -15,6 +16,10 @@ const mockOrderDetailRepo = (
             total_price: 43000000,
         }
     ]
+  );
+
+  repo.addOrderDetails = jest.fn().mockReturnValue(
+    returnAddOrderDetails !== true ? returnAddOrderDetails : true
   );
 
   return repo;
