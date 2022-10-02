@@ -63,10 +63,37 @@ class ProductUC {
   }
 
   async updateProduct(id, product) {
-    return await this.productRepository.updateProduct(id, product);
+    let result = {
+      isSuccess: false,
+      reason: '',
+      data: null,
+    }
+    // check product not null
+    let existProduct = await this.productRepository.getProductByID(id);
+
+    if (existProduct === null) {
+      result.reason = 'product not found'
+      return result 
+    }
+    await this.productRepository.updateProduct(id, product)
+
+    result.isSuccess = true;
+    return result
   }
 
   async deleteProduct(id) {
+    let result = {
+      isSuccess: false,
+      reason: '',
+      data: null,
+    }
+    let existProduct = await this.productRepository.getProductByID(id);
+
+      if (existProduct === null) {
+        result.reason = 'product not found'
+        return result
+      }
+
     return await this.productRepository.deleteProduct(id);
   }
 }
