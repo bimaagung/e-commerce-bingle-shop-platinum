@@ -6,7 +6,8 @@ const mockOrderRepo = (
         returnGetPendingOrderByUserId,
         returnUpdateOrderSubmited,
         returnUpdateOrder,
-        returnCreateOrder
+        returnCreateOrder,
+        returnVerifyOrderWithoutStatusPending,
     }
 ) => {
   const repo = {};
@@ -44,6 +45,30 @@ const mockOrderRepo = (
         id: 1,
         user_id: 2,
         status: 'PENDING',
+        complete_date: null,
+        qty: 1,
+        total_prize: 23000000,
+        user: {
+            id: 1,
+            name: 'Bima'
+        },
+        order_details: [
+            {
+                id: 1,
+                name: 'Iphone 14 Pro',
+                category: 'Smarphone',
+                prize: 23000000,
+                stock: 10,
+            }
+        ]
+    },
+  );
+
+  repo.verifyOrderWithoutStatusPending = jest.fn().mockReturnValue(
+    returnVerifyOrderWithoutStatusPending !== true ?  returnVerifyOrderWithoutStatusPending : {
+        id: 1,
+        user_id: 2,
+        status: 'PROCESSED',
         complete_date: null,
         qty: 1,
         total_prize: 23000000,

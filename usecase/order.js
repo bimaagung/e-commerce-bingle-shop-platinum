@@ -302,6 +302,7 @@ class OrderUC {
       reason: null,
       data: null,
     };
+
     let order = {};
 
     if (statusOrder === 'ORDER_PROCESSED') {
@@ -318,6 +319,15 @@ class OrderUC {
     } else {
       order.status = null;
       result.reason = 'request status outside the specified options';
+
+      return result;
+    }
+
+    // check order except status order pending is existing
+    const getOrderById = await this.orderRepository.verifyOrderWithoutStatusPending(orderId);
+
+    if (getOrderById === null) {
+      result.reason = 'orders without pending status not found';
       return result;
     }
 

@@ -17,7 +17,8 @@ describe('orders', () => {
       returnGetPendingOrderByUserId: true,
       returnUpdateOrderSubmited: true,
       returnUpdateOrder: true,
-      returnCreateOrder: true
+      returnCreateOrder: true,
+      returnVerifyOrderWithoutStatusPending: true,
     }
 
     productValues = {
@@ -319,18 +320,18 @@ describe('orders', () => {
         expect(res.isSuccess).toBeTruthy();
       });
 
-      test("return should reason is 'user already has pending order'", async () => {
-        orderValues.returnGetPendingOrderByUserId = null;
+      test("return should reason is 'orders without pending status not found'", async () => {
+        orderValues.returnVerifyOrderWithoutStatusPending = null;
         orderUC = new OrderUseCase(
           mockOrderRepo(orderValues),
           mockOrderDetailRepo(orderDetailValues), 
           mockProductRepo(productValues)
         );
 
-        let res = await orderUC.createOrder(1,1, [{ id:1, qty: 1}]);
+        let res = await orderUC.updateStatusOrder(2,'ORDER_PROCESSED');
 
         expect(res.isSuccess).toBeFalsy();
-        expect(res.reason).toEqual('user already has pending order');
+        expect(res.reason).toEqual('orders without pending status not found');
       });
 
       test("return should reason is 'request status outside the specified options'", async () => {
