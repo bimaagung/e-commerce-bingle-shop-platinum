@@ -4,23 +4,92 @@ class CategoryUC {
   }
 
   async getCategoryByID(id) {
-    return await this.categoryRepository.getCategoryByID(id);
+    let result = {
+      isSuccess: false,
+      reason: null,
+      data: null,
+    };
+
+    const category = await this.categoryRepository.getCategoryByID(id);
+
+    if (category === null) {
+      result.reason = 'category not found';
+      return result;
+    }
+
+    result.isSuccess = true
+    result.data = category
+
+    return result
+   
   }
 
   async getAllCategory() {
-    return await this.categoryRepository.getAllCategory();
+    let result = {
+      isSuccess: false,
+      reason: null,
+      data: [],
+    };
+
+    const category = await this.categoryRepository.getCategoryByID(id);
+
+    result.isSuccess = true
+    result.data = category
+
+    return result
   }
 
   async addCategory(category) {
-    return await this.categoryRepository.addCategory(category);
+    let result = {
+      isSuccess: false,
+      reason: null,
+      data: null,
+    };
+
+    const addCategory = await this.categoryRepository.addCategory(category);
+
+    result.isSuccess = true
+    result.data = addCategory
+
+    return result
   }
 
   async updateCategory(category, id) {
-    return await this.categoryRepository.updateCategory(category, id);
+    let result = {
+      isSuccess: false,
+      reason: null,
+      data: null,
+    };
+
+    const cekCategory = await this.categoryRepository.getCategoryByID(id)
+    if ( cekCategory === null) {
+      result.reason = 'category not found'
+      return result
+    }
+    const updateCategory = await this.categoryRepository.updateCategory(category,id);
+
+    result.isSuccess = true
+    result.data = updateCategory
+
+    return result
   }
 
   async deleteCategory(id) {
-    return await this.categoryRepository.deleteCategory(id);
+    let result = {
+      isSuccess: false,
+      reason: null,
+      data: null,
+    };
+
+    const category = await this.categoryRepository.getCategoryByID(id);
+    if ( category === null) {
+      result.reason = 'category not found'
+      return result
+    }
+    const deleteCategory = await this.categoryRepository.deleteCategory(id);
+
+    result.isSuccess = true
+    return result 
   }
 }
 
