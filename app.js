@@ -1,3 +1,4 @@
+/*
 let apm = require('elastic-apm-node');
 
 apm.start({
@@ -6,6 +7,7 @@ apm.start({
   serverUrl: `http://${process.env.SERVER_URL}:8200`,
   environment: 'development',
 });
+*/
 
 const express = require('express');
 
