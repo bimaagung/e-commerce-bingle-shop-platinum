@@ -150,7 +150,7 @@ class OrderUC {
     };
 
     // check user have pending order
-    const getPendingOrder = await this.getPendingOrderByUserId(userId);
+    const getPendingOrder = await this.orderRepository.getPendingOrderByUserId(userId);
 
     if (getPendingOrder !== null) {
       result.reason = 'user already has pending order';
@@ -270,7 +270,7 @@ class OrderUC {
       completed_date: null,
     };
 
-    const orderPending = await this.getPendingOrderByUserId(userId);
+    const orderPending = await this.orderRepository.getPendingOrderByUserId(userId);
 
     if (orderPending === null) {
       result.reason = 'order not found';
@@ -282,7 +282,7 @@ class OrderUC {
       orderConstant.ORDER_SUBMITTED,
     );
 
-    if (reduceStock.length !== orderPending.products.length) {
+    if (reduceStock.length !== orderPending.order_details.length) {
       result.reason = 'recheck the product, make sure the product is still in stock';
       result.statusCode = 400;
       return result;
@@ -297,6 +297,12 @@ class OrderUC {
   }
 
   async updateStatusOrder(orderId, statusOrder) {
+    let result = {
+      isSuccess: false,
+      reason: null,
+      data: null,
+    };
+
     let order = {};
 
     if (statusOrder === 'ORDER_PROCESSED') {
@@ -312,15 +318,25 @@ class OrderUC {
       await this.updateStockSoldProduct(orderId, order.status);
     } else {
       order.status = null;
+      result.reason = 'request status outside the specified options';
+
+      return result;
     }
 
-    if (order.status === null) {
-      return null;
+    // check order except status order pending is existing
+    const getOrderById = await this.orderRepository.verifyOrderWithoutStatusPending(orderId);
+
+    if (getOrderById === null) {
+      result.reason = 'orders without pending status not found';
+      return result;
     }
 
     const updateStatusOrder = await this.orderRepository.updateOrder(orderId, order);
 
-    return updateStatusOrder;
+    result.isSuccess = true;
+    result.data = updateStatusOrder;
+
+    return result;
   }
 
   // update stock and sold in each product for part process submitted or canceled
@@ -379,7 +395,6 @@ class OrderUC {
         if (!updateStockSoldProduct) {
           continue;
         }
-
         fixUpdateProduct.push(orderDetail[i].product_id);
       } else {
         return;

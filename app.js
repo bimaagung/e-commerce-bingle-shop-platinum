@@ -1,13 +1,12 @@
-/*
-let apm = require('elastic-apm-node');
+// let apm = require('elastic-apm-node');
 
-apm.start({
-  serviceName: process.env.PLATINUM_MAJU_JAYA,
-  secretToken: '',
-  serverUrl: `http://${process.env.SERVER_URL}:8200`,
-  environment: 'development',
-});
-*/
+// apm.start({
+//   serviceName: process.env.PLATINUM_MAJU_JAYA,
+//   secretToken: '',
+//   serverUrl: `http://${process.env.SERVER_URL}:8200`,
+//   environment: 'development',
+// });
+
 const express = require('express');
 
 const app = express();
@@ -48,7 +47,7 @@ const userRouter = require('./routes/user');
 
 app.use('/public', express.static('public'));
 
-const addressUC = new AddressUseCase(new AddressRepository());
+const addressUC = new AddressUseCase(new AddressRepository(), new UserRepository());
 const categoryUC = new CategoryUseCase(new CategoryRepository());
 const productUC = new ProductUseCase(new ProductRepository(), new CategoryRepository());
 const userUC = new UserUseCase(new UserRepository());
