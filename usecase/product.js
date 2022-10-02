@@ -9,10 +9,11 @@ class ProductUC {
     let result = {
       isSuccess: false,
       reason: '',
-      data: null,
+      data: [],
     };
     let getAllProducts = await this.productRepository.getAllProducts(filters);
-    if (getAllProducts == null) {
+
+    if (getAllProducts === null) {
       result.reason = 'list is empty';
       return result;
     }

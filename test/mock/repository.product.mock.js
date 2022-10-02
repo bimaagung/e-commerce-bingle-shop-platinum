@@ -2,6 +2,7 @@ const mockProductRepo = (
     {
         returnGetProductByID, 
         returnUpdateProduct,
+        returnGetAllProducts,
     }
 ) => {
   const repo = {};
@@ -22,6 +23,20 @@ const mockProductRepo = (
   repo.updateProduct = jest.fn().mockReturnValue(
     returnUpdateProduct !== true ? returnUpdateProduct : true
   );
+
+  repo.getAllProducts = jest.fn().mockReturnValue(
+    returnGetAllProducts !== true ?  returnGetAllProducts : [
+      {
+        name: 'Iphone 14 Pro',
+        description: 'this is product',
+        category_id: 1,
+        sold: 1,
+        price: 23000000,
+        stock: 10,
+      }
+    ]
+  );
+
 
   return repo;
 };
