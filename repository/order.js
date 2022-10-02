@@ -35,6 +35,14 @@ class OrderRepository {
     return order;
   }
 
+  async verifyOrderWithoutStatusPending(orderId) {
+    const order = await this.OrderModel.findOne({
+      where: { id: orderId, status: { [Op.not]: 'PENDING' } },
+    });
+
+    return order;
+  }
+
   async getListOrder(filter) {
     const order = await this.OrderModel.findAll(filter);
     return order;

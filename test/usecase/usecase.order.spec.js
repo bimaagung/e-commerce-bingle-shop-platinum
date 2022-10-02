@@ -17,7 +17,8 @@ describe('orders', () => {
       returnGetPendingOrderByUserId: true,
       returnUpdateOrderSubmited: true,
       returnUpdateOrder: true,
-      returnCreateOrder: true
+      returnCreateOrder: true,
+      returnVerifyOrderWithoutStatusPending: true,
     }
 
     productValues = {
@@ -30,7 +31,7 @@ describe('orders', () => {
       returnAddOrderDetails: true
     }
 
-    orderUC = new OrderUseCase(mockOrderRepo(orderValues),mockOrderDetailRepo(orderDetailValues),mockProductRepo(productValues));
+   orderUC = new OrderUseCase(mockOrderRepo(orderValues),mockOrderDetailRepo(orderDetailValues),mockProductRepo(productValues));
   })
 
   describe('get list order test', () => {
@@ -280,8 +281,13 @@ describe('orders', () => {
     });
 
     test("update order submitted should message is 'can\'t process the order, please check each product in order'", async () => {
-      orderValues.returnGetPendingOrderByUserId = null
-      productValues.returnGetProductByID = null
+      orderValues.returnGetPendingOrderByUserId = null;
+      productValues.returnGetProductByID = null;
+      productValues = {
+      returnGetProductByID: null,
+      returnUpdateProduct: true
+      }
+
       orderUC = new OrderUseCase(
         mockOrderRepo(orderValues),
         mockOrderDetailRepo(orderDetailValues), 
@@ -295,7 +301,52 @@ describe('orders', () => {
 
   });
 
-  
+  describe('update status order for admin test', () => {
+      test('param status is processed return should success is true', async () => {
+        let res = await orderUC.updateStatusOrder(1,'ORDER_PROCESSED');
+
+        expect(res.isSuccess).toBeTruthy();
+      });
+
+      test('param status is processed return should success is true', async () => {
+        let res = await orderUC.updateStatusOrder(1,'ORDER_COMPLETED');
+
+        expect(res.isSuccess).toBeTruthy();
+      });
+
+      test('param status is canceled return should success is true and updated return stock', async () => {
+        let res = await orderUC.updateStatusOrder(1,'ORDER_CANCELED');
+
+        expect(res.isSuccess).toBeTruthy();
+      });
+
+      test("return should reason is 'orders without pending status not found'", async () => {
+        orderValues.returnVerifyOrderWithoutStatusPending = null;
+        orderUC = new OrderUseCase(
+          mockOrderRepo(orderValues),
+          mockOrderDetailRepo(orderDetailValues), 
+          mockProductRepo(productValues)
+        );
+
+        let res = await orderUC.updateStatusOrder(2,'ORDER_PROCESSED');
+
+        expect(res.isSuccess).toBeFalsy();
+        expect(res.reason).toEqual('orders without pending status not found');
+      });
+
+      test("return should reason is 'request status outside the specified options'", async () => {
+        orderUC = new OrderUseCase(
+          mockOrderRepo(orderValues),
+          mockOrderDetailRepo(orderDetailValues), 
+          mockProductRepo(productValues)
+        );
+
+        let res = await orderUC.updateStatusOrder(1,'WAITING');
+
+        expect(res.isSuccess).toBeFalsy();
+        expect(res.reason).toEqual('request status outside the specified options');
+      });
+  });
 });
 
 

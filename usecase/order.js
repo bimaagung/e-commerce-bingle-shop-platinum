@@ -297,6 +297,12 @@ class OrderUC {
   }
 
   async updateStatusOrder(orderId, statusOrder) {
+    let result = {
+      isSuccess: false,
+      reason: null,
+      data: null,
+    };
+
     let order = {};
 
     if (statusOrder === 'ORDER_PROCESSED') {
@@ -312,15 +318,25 @@ class OrderUC {
       await this.updateStockSoldProduct(orderId, order.status);
     } else {
       order.status = null;
+      result.reason = 'request status outside the specified options';
+
+      return result;
     }
 
-    if (order.status === null) {
-      return null;
+    // check order except status order pending is existing
+    const getOrderById = await this.orderRepository.verifyOrderWithoutStatusPending(orderId);
+
+    if (getOrderById === null) {
+      result.reason = 'orders without pending status not found';
+      return result;
     }
 
     const updateStatusOrder = await this.orderRepository.updateOrder(orderId, order);
 
-    return updateStatusOrder;
+    result.isSuccess = true;
+    result.data = updateStatusOrder;
+
+    return result;
   }
 
   // update stock and sold in each product for part process submitted or canceled
