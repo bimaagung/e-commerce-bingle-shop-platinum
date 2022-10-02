@@ -1,4 +1,4 @@
-mockProductRepo = (
+const mockProductRepo = (
     {
         returnGetProductByID, 
         returnUpdateProduct,
