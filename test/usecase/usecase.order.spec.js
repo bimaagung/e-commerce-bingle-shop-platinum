@@ -35,26 +35,26 @@ describe('orders', () => {
   })
 
   describe('get list order test', () => {
-    test('get list order with single query shoud success is true and type data is array', async () => {
+    test('with single query return shoud success is true and type data is array', async () => {
       let res = await orderUC.getListOrder('pending');
       expect(res.isSuccess).toBeTruthy();
       expect(Array.isArray(res.data)).toBeTruthy();
     });
 
-    test('get list order multiple query should success is true and type data is array ', async () => {
+    test('with multiple query return should success is true and type data is array ', async () => {
       let res = await orderUC.getListOrder('pending, completed, submitted');
       expect(res.isSuccess).toBeTruthy();
       expect(Array.isArray(res.data)).toBeTruthy();
     });
 
-    test('get list order should success is true and type data is array', async () => {
+    test('without query return should success is true and type data is array', async () => {
       let res = await orderUC.getListOrder();
 
       expect(res.isSuccess).toBeTruthy();
       expect(Array.isArray(res.data)).toBeTruthy();
     });
 
-    test('get list order should type data is array and result = []', async () => {
+    test('return should type data is array and result = []', async () => {
 
       const repo = mockOrderRepo({
       returnGetListOrder :  [],
@@ -72,7 +72,7 @@ describe('orders', () => {
 
   describe('get order by id test', () => {
 
-    test('get order by is success', async () => {
+    test('return should success is true and data match value', async () => {
       let res = await orderUC.getOrderById(12);
       expect(res.isSuccess).toBeTruthy();
       expect(res.data).toMatchObject({
@@ -98,7 +98,7 @@ describe('orders', () => {
       })
     });
 
-    test('get order by id with order is not found', async () => {
+    test("should status is false and reason 'order is not found'", async () => {
       const repo = mockOrderRepo({returnGetOrderById : null});
       const orderUC = new OrderUseCase(repo);
 
@@ -112,7 +112,7 @@ describe('orders', () => {
 
   describe('get order pending by id test', () => {
 
-    test('get order pending by id is success is true and data is return value true', async () => {
+    test('return should success is true and data is return value true', async () => {
       let res = await orderUC.getPendingOrderById(12);
       expect(res.isSuccess).toBeTruthy();
       expect(res.data).toMatchObject({
