@@ -1642,7 +1642,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"{{$randomProductName}}\",\r\n    \"description\": \"this is product\",\r\n    \"category_id\": 1,\r\n    \"price\": 100000,\r\n    \"stock\": 20\r\n}",
+							"raw": "{\r\n    \"name\": \"{{$randomProductName}}\",\r\n    \"description\": \"this is product\",\r\n    \"category_id\": 66,\r\n    \"price\": 100000,\r\n    \"stock\": 20\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1671,8 +1671,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 400\", function () {\r",
-									"    pm.response.to.have.status(400);\r",
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
 									"});\r",
 									"\r",
 									"pm.test(\"response body data should contains message category not found\", function () {\r",
@@ -1996,8 +1996,6 @@
 									"    pm.expect(jsonData.status).to.equals('ok');\r",
 									"    pm.expect(jsonData).to.ownProperty('message');\r",
 									"    pm.expect(jsonData.message).to.equals('success');\r",
-									"    pm.expect(jsonData).to.ownProperty('data');\r",
-									"    pm.expect(jsonData.data).to.be.an('object');\r",
 									"    \r",
 									"});"
 								],
@@ -2100,69 +2098,6 @@
 								"product",
 								"update",
 								"9238927"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Add Product with Category Not Available Copy",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 400\", function () {\r",
-									"    pm.response.to.have.status(400);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"response body data should contains message category not found\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"\r",
-									"    pm.expect(jsonData).to.ownProperty('status');\r",
-									"    pm.expect(jsonData.status).to.equals('failed');\r",
-									"    pm.expect(jsonData).to.ownProperty('message');\r",
-									"    pm.expect(jsonData.message).to.equals('failed to add, category not found');\r",
-									"    \r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessTokenAdmin}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"{{$randomProductName}}\",\r\n    \"description\": \"this is product updated\",\r\n    \"category_id\": 1000,\r\n    \"price\": 100000,\r\n    \"stock\": 20\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "localhost:3000/admin/product/update/{{productId}}",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"admin",
-								"product",
-								"update",
-								"{{productId}}"
 							]
 						}
 					},
@@ -2484,6 +2419,69 @@
 								],
 								"type": "text/javascript"
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Membuat owner User\r",
+									"const getProduct = {\r",
+									"    url: 'http://localhost:3000/product',\r",
+									"    method: 'GET',\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json',\r",
+									"    },\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(getProduct, (error, response) => {\r",
+									"    console.log(error ? error : response);\r",
+									"\r",
+									"    let responseJson = response.json().data;\r",
+									"\r",
+									"    let productArray = []\r",
+									"    responseJson.forEach((data)=>{\r",
+									"        let product = {\r",
+									"            id: data.id,\r",
+									"            qty: 1\r",
+									"        }\r",
+									"\r",
+									"        productArray.push(product);\r",
+									"    });\r",
+									"\r",
+									"    console.log(productArray);\r",
+									"    pm.environment.set('productOrder', JSON.stringify(productArray));\r",
+									"    //console.log(response.json().data);\r",
+									"    \r",
+									"\r",
+									"    // Setelah mendaftar, login dengan Owner User\r",
+									"\r",
+									"    // const loginOwnerUserRequest = {\r",
+									"    //     url: 'localhost:5000/authentications',\r",
+									"    //     method: 'POST',\r",
+									"    //     header: {\r",
+									"    //         'Content-Type': 'application/json',\r",
+									"    //     },\r",
+									"    //      body : {\r",
+									"    //         mode: 'raw',\r",
+									"    //         raw: JSON.stringify({\r",
+									"    //             username: 'owner_user',\r",
+									"    //             password: 'secret'\r",
+									"    //         }),\r",
+									"    //     },\r",
+									"    // };\r",
+									"\r",
+									"    // pm.sendRequest(loginOwnerUserRequest, (error, response) =>{\r",
+									"    //    if(!error) {\r",
+									"    //        // memasukkan access token Owner User ke environment variabel\r",
+									"    //        const { data: { accessToken } } = response.json()\r",
+									"    //        pm.environment.set('ownerAccessToken', accessToken);\r",
+									"    //    }\r",
+									"    // })\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
 						}
 					],
 					"request": {
@@ -2501,7 +2499,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"products\":[\r\n        {\r\n            \"id\": 2,\r\n            \"qty\":1\r\n        },\r\n         {\r\n            \"id\": 8,\r\n            \"qty\":1\r\n        },\r\n        {\r\n            \"id\": 4,\r\n            \"qty\":1\r\n        },\r\n        {\r\n            \"id\": 7,\r\n            \"qty\":1\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"products\":{{productOrder}}\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2573,6 +2571,186 @@
 								"order",
 								"pending",
 								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get List Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response body data should contains true\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(jsonData).to.ownProperty('status');\r",
+									"    pm.expect(jsonData.status).to.equals('ok');\r",
+									"    pm.expect(jsonData).to.ownProperty('message');\r",
+									"    pm.expect(jsonData.message).to.equals('success');\r",
+									"    pm.expect(jsonData).to.ownProperty('data');\r",
+									"    pm.expect(jsonData.data).to.be.an('array');\r",
+									"    pm.expect(jsonData.data).lengthOf.at.least(1);\r",
+									"    \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenAdmin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/admin/order",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"admin",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get List Order With Query Status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response body data should contains true\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(jsonData).to.ownProperty('status');\r",
+									"    pm.expect(jsonData.status).to.equals('ok');\r",
+									"    pm.expect(jsonData).to.ownProperty('message');\r",
+									"    pm.expect(jsonData.message).to.equals('success');\r",
+									"    pm.expect(jsonData).to.ownProperty('data');\r",
+									"    pm.expect(jsonData.data).to.be.an('array');\r",
+									"    pm.expect(jsonData.data).lengthOf.at.least(1);\r",
+									"    \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenAdmin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/admin/order?status=pending",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"admin",
+								"order"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "pending"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get List Order With Multipe Query Status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response body data should contains true\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(jsonData).to.ownProperty('status');\r",
+									"    pm.expect(jsonData.status).to.equals('ok');\r",
+									"    pm.expect(jsonData).to.ownProperty('message');\r",
+									"    pm.expect(jsonData.message).to.equals('success');\r",
+									"    pm.expect(jsonData).to.ownProperty('data');\r",
+									"    pm.expect(jsonData.data).to.be.an('array');\r",
+									"    pm.expect(jsonData.data).lengthOf.at.least(2);\r",
+									"    \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenAdmin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/admin/order?status=pending,completed",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"admin",
+								"order"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "pending,completed"
+								}
 							]
 						}
 					},
