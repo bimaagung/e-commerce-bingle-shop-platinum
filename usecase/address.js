@@ -1,6 +1,7 @@
 class AddressUC {
-  constructor(addressRepository) {
+  constructor(addressRepository, UserRepository) {
     this.AddressRepository = addressRepository;
+    this.UserRepository = UserRepository;
   }
 
   async getAddressByID(id) {

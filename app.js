@@ -47,7 +47,7 @@ const userRouter = require('./routes/user');
 
 app.use('/public', express.static('public'));
 
-const addressUC = new AddressUseCase(new AddressRepository());
+const addressUC = new AddressUseCase(new AddressRepository(),new UserRepository());
 const categoryUC = new CategoryUseCase(new CategoryRepository());
 const productUC = new ProductUseCase(new ProductRepository(), new CategoryRepository());
 const userUC = new UserUseCase(new UserRepository());
