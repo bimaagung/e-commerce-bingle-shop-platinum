@@ -7,7 +7,7 @@ require('dotenv').config();
 let orderValues, productValues, orderDetailValues = {}
 let orderUC = null
 
-describe.skip('orders', () => {
+describe('orders', () => {
 
   beforeEach(() => {
     orderValues = {

@@ -55,11 +55,10 @@ module.exports = {
 
       const order = await req.orderUC.getPendingOrderByUserId(userId);
 
-      if (order === null) {
-        return res.status(404).json(resData.failed('not found pending order'));
+      if (order.isSuccess === false) {
+        return res.status(404).json(resData.failed(order.reason));
       }
-
-      res.json(resData.success(order));
+      res.status(200).json(resData.success(order.data));
     } catch (e) {
       next(e);
     }

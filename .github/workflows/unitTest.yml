@@ -1,0 +1,33 @@
+name: Unit Test
+
+on:
+    push:
+        branches: ["dev"]
+    pull_request:
+        branches: ["dev"]
+
+env:
+    APP_NAME:PLATINUM_MAJU_JAYA
+    VERSION:1.0.0
+    PORT:3000
+    HOST:localhost
+    JWT_KEY_SECRET:JHJH768tnjsl%^%&^567565HGHf87GJsdHGHJ
+    SERVER_URL:192.168.201.155
+    USERNAME_APM:elastic
+    PASSWORD_APM:elastic12345
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Nodejs CI Script For Akainu
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{matrix.node-version}}
+          cache: 'npm'
+      - run: npm ci
+      - run: npm test
