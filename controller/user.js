@@ -1,21 +1,22 @@
-const resData = require('../helper/response')
+const resData = require("../helper/response");
+const url = require("../libs/handle_upload");
 
 module.exports = {
-  getUserById: async (req, res, next) => {
+  getOneUser: async (req, res, next) => {
     try {
-      const id = req.user.id;
-      const user = await req.userUC.getUserById(id);
+      let id = req.params.id;
+      let user = await req.userUC.getUserByID(id);
 
       if (user == null) {
-        return res.status(404).json(resData.failed('User not found', null));
-
+        return res.status(400).json(resData.failed("list is empty", null));
       }
-      res.json(resData.success(user))
+
+      res.json(resData.success(user));
     } catch (e) {
       next(e);
     }
   },
-
+  
   updateUser: async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -50,6 +51,29 @@ module.exports = {
     } catch (error) {
       next(error);
     }
-  }
+  },
 
-}
+  updateAvatar: async (req, res, next) => {
+    try {
+      let id = req.params.id;
+      let user = {
+        image:null,
+      };
+      let image = null;
+      if (req.file !== undefined) {
+        image = await url.uploadCloudinaryAvatar(req.file.path);
+      } else {
+        image = process.env.PROFIL_URL;
+      }
+      user.image = image;
+
+      let updateAvatar = await req.userUC.updateUserProfile(user, id);
+      if (updateAvatar.is_success != true) {
+        return res.status(400).json(resData.failed(updateAvatar.message));
+      }
+      res.status(200).json(resData.success());
+    } catch (e) {
+      next(e);
+    }
+  },
+};
