@@ -5,31 +5,41 @@ module.exports = {
     try {
       let { id } = req.params;
 
-      let address = await req.addressUC.getAddressByID(id);
+      let addressUC = await req.addressUC.getAddressByID(id);
 
-      if (address == null) {
-        return res.status(404).json(resData.failed('address not found'));
-      }
+      if (addressUC.isSuccess === false) {
+        return res
+          .status(400)
+          .json(resData.failed(addressUC.reason, addressUC.data));
+      };
 
-      res.json(resData.success(address));
-    } catch (error) {
-      next(error);
+      res.status(201).json(
+        resData.success(
+          addressUC.data,
+        ),
+      );
+    } catch (e) {
+      next(e);
     }
   },
 
   getAllAddress: async (req, res, next) => {
     try {
-    
+      let addressUC = await req.addressUC.getAllAddress();
 
-      let address = await req.addressUC.getAllAddress();
+      if (addressUC.isSuccess === false) {
+        return res
+          .status(400)
+          .json(resData.failed(addressUC.reason, addressUC.data));
+      };
 
-      if (address == null) {
-        return res.status(200).json(resData.success(address));
-      }
-
-      res.json(resData.success(address));
-    } catch (error) {
-      next(error);
+      res.status(201).json(
+        resData.success(
+          addressUC.data,
+        ),
+      );
+    } catch (e) {
+      next(e);
     }
   },
 
@@ -43,21 +53,28 @@ module.exports = {
         user_id: req.user.id,
       };
 
-      let newAddress = await req.addressUC.addAddress(address);
+      let addressUC = await req.addressUC.addAddress(address);
 
-      if (newAddress === null) {
-        return res.status(400).json(resData.failed('failed add address'));
-      }
+      if (addressUC.isSuccess === false) {
+        return res
+          .status(400)
+          .json(resData.failed(addressUC.reason, addressUC.data));
+      };
 
-      res.status(201).json(resData.success(newAddress));
-    } catch (error) {
-      next(error);
+      res.status(201).json(
+        resData.success(
+          addressUC.data,
+        ),
+      );
+    } catch (e) {
+      next(e);
     }
   },
 
   updateAddress: async (req, res, next) => {
     try {
       let { id } = req.params;
+
       let address = {
         province: req.body.province,
         city: req.body.city,
@@ -66,24 +83,21 @@ module.exports = {
         user_id: req.body.user_id,
       };
 
-      // check address not null
-      let existAddress = await req.addressUC.getAddressByID(id);
-      if (existAddress == null) {
-        return res.status(404)
-          .json(resData.failed('address not found', null));
-      }
+      let addressUC = await req.addressUC.updateAddress(id, address);
 
-      // end
-      let updateAddress = await req.addressUC.updateAddress(id, address);
-      if (updateAddress == null) {
+      if (addressUC.isSuccess === false) {
         return res
           .status(400)
-          .json(resData.failed('failed to update address', null));
-      }
+          .json(resData.failed(addressUC.reason, addressUC.data));
+      };
 
-      res.json(resData.success(address));
-    } catch (error) {
-      next(error);
+      res.status(201).json(
+        resData.success(
+          addressUC.data,
+        ),
+      );
+    } catch (e) {
+      next(e);
     }
   },
 
@@ -92,17 +106,21 @@ module.exports = {
     try {
       let { id } = req.params;
 
-      let existAddress = await req.addressUC.getAddressByID(id);
+      let addressUC = await req.addressUC.deleteAddress(id);
 
-      if (existAddress == null) {
-        return res.status(404).json(resData.failed('address not found', null));
-      }
+      if (addressUC.isSuccess === false) {
+        return res
+          .status(400)
+          .json(resData.failed(addressUC.reason, addressUC.data));
+      };
 
-      await req.addressUC.deleteAddress(id);
-
-      res.json(resData.success());
-    } catch (error) {
-      next(error);
+      res.status(201).json(
+        resData.success(
+          addressUC.data,
+        ),
+      );
+    } catch (e) {
+      next(e);
     }
   },
 };

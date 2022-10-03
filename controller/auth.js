@@ -51,7 +51,9 @@ module.exports = {
           .json(resData.failed('password and confrim password not match', null));
       }
       let resUser = await req.userUC.register(user);
+
       if (resUser.isSuccess != true) {
+
         return res.status(400).json(resData.failed(resUser.message));
       }
       res.json(

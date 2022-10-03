@@ -10,11 +10,20 @@ class CategoryRepository {
   }
 
   async getCategoryByID(id) {
-    return await this.CategoryModel.findOne({
+    const category = await this.CategoryModel.findOne({
       where: {
         id,
       },
+      inculude: [
+        {
+          model:Category,
+          as: 'product',
+          attribute: ['id', 'name', 'description', 'category_id', 'sold', 'price', 'stock', 'image'],
+        },
+      ],
     });
+
+    return category;
   }
 
   async addCategory(category) {
