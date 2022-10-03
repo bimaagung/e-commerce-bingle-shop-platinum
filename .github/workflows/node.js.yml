@@ -17,8 +17,8 @@ env:
     PASSWORD_APM:elastic12345
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [16.x]
