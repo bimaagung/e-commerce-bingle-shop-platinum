@@ -8,69 +8,36 @@ class UserRepository {
   }
 
   async getUserExist(username, email) {
-    let user = null;
-    try {
-      user = await this.UserModel.findOne({
-        where: {
-          [Op.or]: [{ username }, { email }],
-        },
-      });
-    } catch (e) {
-      console.log(e);
-    }
-    return user;
+    return await this.UserModel.findOne({
+      where: {
+        [Op.or]: [{ username }, { email }],
+      },
+    });
   }
 
   async getUserByUsername(username) {
-    try {
-      return await this.UserModel.findOne({
-        where: { username },
-      });
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
-  }
-
-  async getUserById(id) {
-    try {
-      return await this.UserModel.findOne({
-        where: { id },
-      });
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
+    return await this.UserModel.findOne({
+      where: { username },
+    });
   }
 
   async registerUser(userData) {
     userData.password = bcrypt.hashSync(userData.password, 10);
     userData.is_admin = false;
-
-    let user = null;
-    try {
-      user = await this.UserModel.create(userData);
-    } catch (e) {
-      return null;
-    }
-
-    return user;
+    return await this.UserModel.create(userData);
   }
+
 
   async loginUser(username, password) {
     let user = null;
-    try {
-      user = await this.getUserByUsername(username);
-      if (user === null) {
-        return user;
-      }
-    } catch (e) {
-      console.log(e);
-      return null;
+    user = await this.getUserByUsername(username);
+    if (user === null) {
+      return user;
     }
     if (!bcrypt.compareSync(password, user.password)) {
       return null;
     }
+    return user
   }
 
   async updatePassword(newPassword) {
