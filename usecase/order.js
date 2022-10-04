@@ -301,6 +301,7 @@ class OrderUC {
       isSuccess: false,
       reason: null,
       data: null,
+      statusCode: 400,
     };
 
     let order = {};
@@ -328,6 +329,7 @@ class OrderUC {
 
     if (getOrderById === null) {
       result.reason = 'orders without pending status not found';
+      result.statusCode = 404;
       return result;
     }
 

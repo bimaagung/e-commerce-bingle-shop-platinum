@@ -69,32 +69,18 @@ module.exports = {
       const orderId = req.params.id;
       const statusOrder = req.body.status;
 
-      //  check order
-      const orderById = await req.orderUC.getOrderById(orderId);
-
-      if (orderById === null) {
-        return res.status(404).json(resData.failed('order not found'));
-      }
-
-      const pendingOrderById = await req.orderUC.getPendingOrderById(orderId);
-
-      // check order pending
-      if (pendingOrderById > 0) {
-        return res.status(400).json(resData.failed('order still pending'));
-      }
-
-      const updateStatusOrder = await req.orderUC.updateStatusOrder(
+      const order = await req.orderUC.updateStatusOrder(
         orderId,
         statusOrder,
       );
 
-      if (updateStatusOrder === null) {
+      if (order.isSuccess === false) {
         return res
-          .status(404)
-          .json(resData.failed('failed update status order'));
+          .status(order.statusCode)
+          .json(resData.failed(order.reason));
       }
 
-      res.json(resData.success());
+      res.status(200).json(resData.success());
     } catch (e) {
       next(e);
     }
