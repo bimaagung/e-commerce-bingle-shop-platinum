@@ -33,6 +33,9 @@ const OrderDetailRepository = require('./repository/orderDetail');
 const UserRepository = require('./repository/user');
 const UserUseCase = require('./usecase/user');
 
+const AuthRepository = require('./repository/auth')
+const AuthUseCase = require('./usecase/auth')
+
 app.use(morgan('dev'));
 
 const ProductImageRepository = require('./repository/product_image');
@@ -52,6 +55,11 @@ const addressUC = new AddressUseCase(new AddressRepository(), new UserRepository
 const categoryUC = new CategoryUseCase(new CategoryRepository());
 const productUC = new ProductUseCase(new ProductRepository(), new CategoryRepository());
 const userUC = new UserUseCase(new UserRepository());
+
+const authUC = new AuthUseCase(
+  new AuthRepository(),
+  new UserRepository()
+)
 
 const productImageUC = new ProductImageUseCase(
   new ProductImageRepository(),
@@ -73,6 +81,7 @@ app.use((req, res, next) => {
   req.addressUC = addressUC;
   req.productImageUC = productImageUC;
   req.orderUC = orderUC;
+  req.authUC = authUC;
   next();
 });
 

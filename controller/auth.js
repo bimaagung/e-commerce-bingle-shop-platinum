@@ -7,7 +7,7 @@ module.exports = {
     try {
       let { username, password } = req.body;
 
-      let user = await req.userUC.login(username, password);
+      let user = await req.authUC.login(username, password);
       if (!user.isSuccess) {
         return res
           .status(400)
@@ -50,7 +50,7 @@ module.exports = {
           .status(400)
           .json(resData.failed('password and confrim password not match', null));
       }
-      let resUser = await req.userUC.register(user);
+      let resUser = await req.authUC.register(user);
 
       if (resUser.isSuccess != true) {
 
