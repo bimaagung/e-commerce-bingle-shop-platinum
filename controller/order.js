@@ -43,7 +43,7 @@ module.exports = {
         return res.json(order.reason);
       }
 
-      return res.json(resData.success(order.data));
+      return res.status(200).json(resData.success(order.data));
     } catch (e) {
       next(e);
     }

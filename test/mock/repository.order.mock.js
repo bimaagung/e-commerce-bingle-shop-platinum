@@ -8,6 +8,7 @@ const mockOrderRepo = (
         returnUpdateOrder,
         returnCreateOrder,
         returnVerifyOrderWithoutStatusPending,
+        returnGetOrderPendingById,
     }
 ) => {
   const repo = {};
@@ -15,10 +16,12 @@ const mockOrderRepo = (
   repo.getListOrder = jest.fn().mockReturnValue(
     returnGetListOrder !== true ?  returnGetListOrder : [
       {
-        id: 1,
-        user_id: 2,
+        id: 'Ti9jtWs0FHhJMAmS',
+        user_id: 1,
         status: 'PENDING',
-        complete_date: null,
+        completed_date: null,
+        createdAt: "12-09-2022 23:30:00",
+        updatedAt: "12-09-2022 23:30:00",
       }
     ],
   );
@@ -26,66 +29,44 @@ const mockOrderRepo = (
   repo.getListOrderMultipleQuery = jest.fn().mockReturnValue(
     returnGetListOrderMultipleQuery !== true ? returnGetListOrderMultipleQuery : [
       {
-        id: 1,
-        user_id: 2,
-        status: 'PENDING',
-        complete_date: null,
+        id: 'Ti9jtWs0FHhJMAmS',
+        user_id: 1,
+        status: 'PROCESSED',
+        completed_date: null,
+        createdAt: "12-09-2022 23:30:00",
+        updatedAt: "12-09-2022 23:30:00",
       },
       {
-        id: 1,
+        id: 'Ti9jtWs0FHhJMAmS',
         user_id: 2,
-        status: 'SUBMITTED',
-        complete_date: null,
-      },
+        status: 'COMPLETED',
+        completed_date: null,
+        createdAt: "12-09-2022 23:30:00",
+        updatedAt: "12-09-2022 23:30:00",
+      }
     ], 
   );
 
   repo.getOrderById = jest.fn().mockReturnValue(
-    returnGetOrderById !== true ?  returnGetOrderById : {
-        id: 1,
-        user_id: 2,
-        status: 'PENDING',
-        complete_date: null,
-        qty: 1,
-        total_prize: 23000000,
-        user: {
-            id: 1,
-            name: 'Bima'
-        },
-        order_details: [
-            {
-                id: 1,
-                name: 'Iphone 14 Pro',
-                category: 'Smarphone',
-                prize: 23000000,
-                stock: 10,
-            }
-        ]
-    },
+    returnGetOrderById !== true ?  returnGetOrderById :  {
+        id: 'Ti9jtWs0FHhJMAmS',
+        user_id: 1,
+        status: 'PROCESSED',
+        completed_date: null,
+        createdAt: "12-09-2022 23:30:00",
+        updatedAt: "12-09-2022 23:30:00",
+      }
   );
 
   repo.verifyOrderWithoutStatusPending = jest.fn().mockReturnValue(
     returnVerifyOrderWithoutStatusPending !== true ?  returnVerifyOrderWithoutStatusPending : {
-        id: 1,
-        user_id: 2,
+        id: 'Ti9jtWs0FHhJMAmS',
+        user_id: 1,
         status: 'PROCESSED',
-        complete_date: null,
-        qty: 1,
-        total_prize: 23000000,
-        user: {
-            id: 1,
-            name: 'Bima'
-        },
-        order_details: [
-            {
-                id: 1,
-                name: 'Iphone 14 Pro',
-                category: 'Smarphone',
-                prize: 23000000,
-                stock: 10,
-            }
-        ]
-    },
+        completed_date: null,
+        createdAt: "12-09-2022 23:30:00",
+        updatedAt: "12-09-2022 23:30:00",
+      }
   );
 
   repo.getPendingOrderByUserId = jest.fn().mockReturnValue(
@@ -101,7 +82,7 @@ const mockOrderRepo = (
                 id: 1,
                 product_id: 2,
                 qty: 10,
-                total_price: 23000000,
+                total_price: 25000000,
             },
         ]
     },
@@ -116,7 +97,25 @@ const mockOrderRepo = (
   );
 
   repo.createOrder = jest.fn().mockReturnValue(
-    returnCreateOrder !== true ?  returnCreateOrder : true
+    returnCreateOrder !== true ?  returnCreateOrder :  {
+        id: 'Ti9jtWs0FHhJMAmS',
+        user_id: 1,
+        status: 'PENDING',
+        completed_date: null,
+        createdAt: "12-09-2022 23:30:00",
+        updatedAt: "12-09-2022 23:30:00",
+      }
+  );
+
+  repo.getOrderPendingById = jest.fn().mockReturnValue(
+    returnGetOrderPendingById !== true ?  returnGetOrderPendingById : {
+        id: 'Ti9jtWs0FHhJMAmS',
+        user_id: 1,
+        status: 'PENDING',
+        completed_date: null,
+        createdAt: "12-09-2022 23:30:00",
+        updatedAt: "12-09-2022 23:30:00",
+      }
   );
 
   return repo;

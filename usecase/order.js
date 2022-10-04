@@ -84,7 +84,7 @@ class OrderUC {
       data: null,
     };
 
-    const order = await this.orderRepository.getOrderById(orderId);
+    const order = await this.orderRepository.getOrderPendingById(orderId);
 
     if (order === null) {
       result.reason = 'order not found';

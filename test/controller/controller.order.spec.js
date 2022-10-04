@@ -1,16 +1,9 @@
 const orderController = require('../../controller/order');
 const resData = require('../../helper/response')
 
-let result = (isSuccess, reason, data) => { 
-    return {
-        isSuccess, 
-        reason, 
-        data
-    }
-}
-
 let mockOrderUC = {
     getPendingOrderByUserId: jest.fn().mockReturnValue(null),
+    getListOrder: jest.fn().mockReturnValue(null),
 }
 
 const mockRequest = (body={}, query={}, params={}, user={}, useCases={}) => {
@@ -85,4 +78,39 @@ describe('Test Order', () => {
         });
 
     });
+
+
+    describe('get list order', () => {
+
+        const order = [
+            {
+                id: "Ti9jtWs0FHhJMAmS",
+                user_id: 1,
+                status: "PROCESSED",
+                completed_date: null,
+                createdAt: "12-09-2022 23:30:00",
+                updatedAt: "12-09-2022 23:30:00",
+            }
+        ]
+        test('return should status is 200 and data is true', async() => {
+
+            mockOrderUC.getListOrder = jest.fn().mockReturnValue(
+                {isSuccess: true, reason:null, data: order}
+            );
+
+            let req = mockRequest({},{},{},{},{ orderUC: mockOrderUC });
+            let res = mockResponse();
+
+            await orderController.getListOrder(req, res, next);
+
+            expect(mockOrderUC.getListOrder).toHaveBeenCalled();
+            expect(res.status).toBeCalledWith(200)
+            expect(res.json).toBeCalledWith(resData.success(order));
+
+        });
+
+        test('return should status is 200 and data is empty', async() => {
+
+        });
+    })
  })
