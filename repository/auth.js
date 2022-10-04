@@ -23,6 +23,11 @@ class AuthRepository {
     }
     return user
   }
+  async getUserByUsername(username) {
+    return await this.UserModel.findOne({
+      where: { username },
+    });
+  }
 
 }
 
