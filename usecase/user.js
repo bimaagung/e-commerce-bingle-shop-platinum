@@ -3,6 +3,12 @@ class UserUC {
     this.UserRepository = UserRepository;
   }
 
+  async getUserExist(username , email){
+    return await this.UserRepository.getUserExist(username, email)
+    
+  }
+     
+
   async getUserByID(id) {
     return await this.UserRepository.getUserByID(id);
   }
