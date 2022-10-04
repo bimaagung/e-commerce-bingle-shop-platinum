@@ -80,7 +80,7 @@ module.exports = {
           .json(resData.failed(order.reason));
       }
 
-      res.status(200).json(resData.success());
+      res.status(order.statusCode).json(resData.success());
     } catch (e) {
       next(e);
     }
@@ -90,25 +90,19 @@ module.exports = {
     try {
       const userId = req.user.id;
 
-      const orderPending = await req.orderUC.getPendingOrderByUserId(userId);
+      const order = await req.orderUC.updateOrderSubmitted(userId);
 
-      if (orderPending === null) {
-        return res.status(404).json(resData.failed('order not found'));
-      }
-
-      const order = await req.orderUC.updateOrderSubmitted(orderPending);
-
-      if (order === null) {
+      if (order.isSuccess === false) {
         return res
-          .status(400)
+          .status(order.statusCode)
           .json(
             resData.failed(
-              'recheck the product, make sure the product is still in stock',
+              order.reason,
             ),
           );
       }
 
-      res.json(resData.success());
+      res.status(200).json(resData.success());
     } catch (e) {
       next(e);
     }

@@ -6,6 +6,7 @@ let mockOrderUC = {
     getListOrder: jest.fn().mockReturnValue(null),
     getPendingOrderByUserId: jest.fn().mockReturnValue(null),
     updateStatusOrder: jest.fn().mockReturnValue(null),
+    updateOrderSubmitted: jest.fn().mockReturnValue(null),
 }
 
 const mockRequest = (body={}, query={}, params={}, user={}, useCases={}) => {
@@ -174,21 +175,10 @@ describe('Test Order', () => {
 
     describe('change status order', () => {
 
-        const order = [
-            {
-                id: "Ti9jtWs0FHhJMAmS",
-                user_id: 1,
-                status: "PROCESSED",
-                completed_date: null,
-                createdAt: "12-09-2022 23:30:00",
-                updatedAt: "12-09-2022 23:30:00",
-            }
-        ]
-
         test('return should status is 200 and data is true', async() => {
 
             mockOrderUC.updateStatusOrder = jest.fn().mockReturnValue(
-                {isSuccess: true, reason:null, data: true}
+                {isSuccess: true, reason:null, data: true, statusCode:200}
             );
 
             let req = mockRequest({},{},{},{},{ orderUC: mockOrderUC });
@@ -230,6 +220,56 @@ describe('Test Order', () => {
             expect(mockOrderUC.updateStatusOrder).toHaveBeenCalled();
             expect(res.status).toBeCalledWith(400)
             expect(res.json).toBeCalledWith(resData.failed('request status outside the specified options'));
+        });
+    })
+
+    describe('submit order', () => {
+
+        test('return should status is 200 and data is true', async() => {
+
+            mockOrderUC.updateOrderSubmitted = jest.fn().mockReturnValue(
+                {isSuccess: true, reason:null, data: null, statusCode: 200}
+            );
+
+            let req = mockRequest({},{},{},{},{ orderUC: mockOrderUC });
+            let res = mockResponse();
+
+            await orderController.submitOrder(req, res, next);
+
+            expect(mockOrderUC.updateOrderSubmitted).toHaveBeenCalled();
+            expect(res.status).toBeCalledWith(200)
+            expect(res.json).toBeCalledWith(resData.success());
+
+        });
+
+        test(`return should status is 404 and reason is "order not found"`, async() => {
+             mockOrderUC.updateOrderSubmitted = jest.fn().mockReturnValue(
+                {isSuccess: false, reason:'order not found', data: null, statusCode: 404}
+            );
+
+            let req = mockRequest({},{},{},{},{ orderUC: mockOrderUC });
+            let res = mockResponse();
+
+            await orderController.submitOrder(req, res, next);
+
+            expect(mockOrderUC.updateOrderSubmitted).toHaveBeenCalled();
+            expect(res.status).toBeCalledWith(404)
+            expect(res.json).toBeCalledWith(resData.failed('order not found'));
+        });
+
+         test(`return should status is 400 and reason is "recheck the product, make sure the product is still in stock"`, async() => {
+             mockOrderUC.updateOrderSubmitted = jest.fn().mockReturnValue(
+                {isSuccess: false, reason:'order not found', data: null, statusCode: 400}
+            );
+
+            let req = mockRequest({},{},{},{},{ orderUC: mockOrderUC });
+            let res = mockResponse();
+
+            await orderController.submitOrder(req, res, next);
+
+            expect(mockOrderUC.updateOrderSubmitted).toHaveBeenCalled();
+            expect(res.status).toBeCalledWith(400)
+            expect(res.json).toBeCalledWith(resData.failed('order not found'));
         });
     })
 
