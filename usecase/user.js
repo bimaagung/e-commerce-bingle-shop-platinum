@@ -22,12 +22,6 @@ class UserUC {
         message: 'user not found',
       };
     }
-    user = await this.UserRepository.updateUser(userData, id);
-    if (user == null) {
-      return {
-        message: 'internal server error',
-      };
-    }
     isSuccess = true;
     return {
       isSuccess,

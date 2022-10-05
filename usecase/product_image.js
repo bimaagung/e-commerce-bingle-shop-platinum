@@ -30,11 +30,6 @@ class ProductImageUC {
       };
     }
     image = await this.productImageRepository.createImage(imageData);
-    if (image == null) {
-      return {
-        message: "internal server error ",
-      };
-    }
     isSuccess = true;
     return {
       isSuccess: isSuccess,
@@ -51,11 +46,6 @@ class ProductImageUC {
       };
     }
     image = await this.productImageRepository.updateImage(imageData, id);
-    if (image == null) {
-      return {
-        message: "internal server error",
-      };
-    }
     isSuccess = true;
     return {
       isSuccess: isSuccess,
@@ -72,12 +62,6 @@ class ProductImageUC {
       };
     }
     image = await this.productImageRepository.deleteImage(id);
-    if (image == null) {
-      return {
-        message: "internal server error",
-      };
-    }
-
     isSuccess = true;
     return {
       isSuccess: isSuccess,

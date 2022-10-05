@@ -37,7 +37,7 @@ module.exports = {
     },
     updateImageProduct: async (req, res, next) => {
         try {
-            let id = req.params.id
+            let {id} = req.params.id
             let dataImage = ({
                 url: await url.uploadCloudinaryProduct(req.file.path),
                 product_id: req.body.product_id
@@ -56,7 +56,7 @@ module.exports = {
     },
     deleteImageProduct: async (req, res, next) => {
         try {
-            let id = req.params.id
+            let {id} = req.params.id
 
             let image = await req.productImageUC.deleteImageProduct(id)
             if (!image.isSuccess) {
