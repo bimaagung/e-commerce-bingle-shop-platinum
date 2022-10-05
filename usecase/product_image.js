@@ -11,6 +11,9 @@ class ProductImageUC {
       return { message: "product not found" }
     }
     let image = await this.productImageRepository.getAllImageByProductID(productID)
+    if(image === null){
+      return {message : 'image product not found'}
+    }
     isSuccess = true
     return {
       isSuccess: isSuccess,
@@ -30,6 +33,11 @@ class ProductImageUC {
       };
     }
     image = await this.productImageRepository.createImage(imageData);
+    if(image == null){
+      return {
+        message: "something went error",
+      };
+    }
     isSuccess = true;
     return {
       isSuccess: isSuccess,
