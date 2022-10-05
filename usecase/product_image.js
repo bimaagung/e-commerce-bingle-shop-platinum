@@ -10,7 +10,7 @@ class ProductImageUC {
     if (product == null) {
       return { message: "product not found" }
     }
-    let image = await this.productImageRepository.getImageProductByProductID(productID)
+    let image = await this.productImageRepository.getAllImageByProductID(productID)
     isSuccess = true
     return {
       isSuccess: isSuccess,

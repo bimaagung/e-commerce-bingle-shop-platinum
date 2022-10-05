@@ -4,9 +4,9 @@ const url = require('../libs/handle_upload')
 module.exports = {
 
     getImageProductByProductID: async (req, res, next) => {
-        product_id = req.params.product_id
+       let product_id = req.params.product_id
         try {
-            let image = await req.productImageUC.getImageProductByProductID(productImageUC)
+            let image = await req.productImageUC.getImageProductByProductID(product_id)
             if (image.isSuccess !== true) {
                 return res
                     .status(404)

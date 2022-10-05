@@ -10,9 +10,9 @@ class ProductImageRepository {
       where : {id},
     })
   }
-  async getAllImageByProductID (productID){
+  async getAllImageByProductID (product_id){
     return await this.productImageModel.findAll({
-      where :{productID}
+      where :{product_id : product_id}
     })
   }
   
