@@ -16,7 +16,7 @@ module.exports = {
       next(e);
     }
   },
-  
+
   updateUser: async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -57,18 +57,10 @@ module.exports = {
     try {
       let id = req.user.id
       let user = {
-        image:null,
-      };
-      let image = null;
-      if (req.file !== undefined) {
-        image = await url.uploadCloudinaryAvatar(req.file.path);
-      } else {
-        image = process.env.PROFIL_URL;
+        image: await url.uploadCloudinaryAvatar(req.file.path)
       }
-      user.image = image;
-
       let updateAvatar = await req.userUC.updateUserProfile(user, id);
-      if (updateAvatar.is_success != true) {
+      if (updateAvatar.isSuccess != true) {
         return res.status(400).json(resData.failed(updateAvatar.message));
       }
       res.status(200).json(resData.success());

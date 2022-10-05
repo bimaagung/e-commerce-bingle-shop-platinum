@@ -11,8 +11,8 @@ const validation = require('../middleware/formValidation');
 const handleUpload = require('../libs/handle_upload');
 
 // user
-router.put('/api/customer/update-image/:id',authorized.customer, handleUpload.upload.single('image'), userController.updateAvatar);
-router.put('/api/customer/update/:id', authorized.customer, userController.updateUser);
+router.put('/api/customer/update-image/',authorized.customer, handleUpload.upload.single('image'), userController.updateAvatar);
+router.put('/api/customer/update/', authorized.customer, userController.updateUser);
 
 // address
 router.get('/api/customer/address/:id', authorized.customer, addressController.getAddressByID);
