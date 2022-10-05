@@ -22,15 +22,12 @@ class UserUC {
         message: 'user not found',
       };
     }
+    user = await this.UserRepository.updateUser(userData , id)
     isSuccess = true;
     return {
       isSuccess,
       user,
     };
-  }
-
-  async updateUser(id) {
-    return await this.UserRepository.updateUser(id);
   }
 }
 module.exports = UserUC;

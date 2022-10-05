@@ -19,35 +19,21 @@ module.exports = {
 
   updateUser: async (req, res, next) => {
     try {
-      const { id } = req.params;
+      let id = req.user.id
       const user = {
         name: req.body.name,
         username: req.body.username,
         email: req.body.email,
         alamat: req.body.alamat,
         telp: req.body.telp
-      };
-
-      const existUser = (id) => {
-        const user = this.getUserById(id);
-        if (user == null) {
-          return false
-        }
-        return true;
-      };
-      if (!existUser) {
-        return res.status(404)
-          .json(resData.failed('user not found', null));
       }
-
-      const updateUser = await req.userUC.updateUser(id, user);
+      const updateUser = await req.userUC.updateUserProfile(user, id);
       if (updateUser == null) {
         return res
           .status(400)
-          .json(resData.failed('failed to update user', null));
+          .json(resData.failed(resData.message));
       }
-
-      res.json(resData.success(user));
+      res.status(200).json(resData.success());
     } catch (error) {
       next(error);
     }
