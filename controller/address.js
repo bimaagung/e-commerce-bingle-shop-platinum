@@ -65,7 +65,7 @@ module.exports = {
 
   updateAddress: async (req, res, next) => {
     try {
-      let { id } = req.params.id;
+      let id  = req.params.id;
 
       let address = {
         province: req.body.province,

@@ -4,7 +4,7 @@ const url = require("../libs/handle_upload");
 module.exports = {
   getOneUser: async (req, res, next) => {
     try {
-      let id = req.params.id;
+      let id = req.user.id;
       let user = await req.userUC.getUserByID(id);
 
       if (user == null) {

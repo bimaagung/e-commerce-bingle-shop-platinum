@@ -56,7 +56,7 @@ module.exports = {
     },
     deleteImageProduct: async (req, res, next) => {
         try {
-            let {id} = req.params.id
+            let id = req.params.id
 
             let image = await req.productImageUC.deleteImageProduct(id)
             if (!image.isSuccess) {

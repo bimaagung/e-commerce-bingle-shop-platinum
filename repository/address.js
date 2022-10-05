@@ -21,8 +21,8 @@ class AddressRepository {
     return await this.AddressModel.create(reqAddress);
   }
 
-  async updateAddress(id, reqAddress) {
-    return await this.AddressModel.update(reqAddress, {
+  async updateAddress(id, Address) {
+    return await this.AddressModel.update(Address, {
       where: {
         id,
       },

@@ -1,7 +1,7 @@
 const express = require('express');
 
 // controller
-const userController = require('../controller/user');
+
 const productController = require('../controller/product');
 const categoryController = require('../controller/category');
 const imageController = require('../controller/image_product');
@@ -12,8 +12,7 @@ const validation = require('../middleware/formValidation');
 const handleUpload = require('../libs/handle_upload');
 const router = express.Router();
 
-// user
-router.get('/api/admin/user/:id', authorized.customer, userController.getOneUser);
+
 
 // Category
 router.post('/api/admin/category/add', authorized.admin, validation.category, categoryController.addCategory);

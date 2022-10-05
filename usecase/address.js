@@ -50,7 +50,7 @@ class AddressUC {
       data: null,
     };
 
-    let existUserById = await this.UserRepository.getUserById(address.user_id);
+    let existUserById = await this.UserRepository.getUserByID(address.user_id);
 
     if (existUserById == null) {
       result.reason = 'user id not found';
