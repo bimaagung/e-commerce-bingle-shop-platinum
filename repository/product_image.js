@@ -4,6 +4,18 @@ class ProductImageRepository {
   constructor() {
     this.productImageModel = ProductImage;
   }
+
+  async getImageByID(id){
+    return await this.productImageModel.findOne({
+      where : {id},
+    })
+  }
+  async getAllImageByProductID (productID){
+    return await this.productImageModel.findAll({
+      where :{productID}
+    })
+  }
+  
   async createImage(images) {
     return await this.productImageModel.create(images)
 
@@ -13,12 +25,7 @@ class ProductImageRepository {
       where: {id},
     })
 }
-  async getImageByID(id){
-    return await this.productImageModel.findOne({
-      where : {id},
-    })
-  }
-  async deleteImage(id){
+   async deleteImage(id){
     return await this.productImageModel.destroy({
       where : {id},
     })

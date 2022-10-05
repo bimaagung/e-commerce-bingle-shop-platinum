@@ -2,6 +2,22 @@ const resData = require('../helper/response')
 const url = require('../libs/handle_upload')
 
 module.exports = {
+
+    getImageProductByProductID: async (req, res, next) => {
+        product_id = req.params.product_id
+        try {
+            let image = await req.productImageUC.getImageProductByProductID(productImageUC)
+            if (image.isSuccess !== true) {
+                return res
+                    .status(404)
+                    .json(resData.failed(image.message))
+            }
+            res.status(200).json(resData.success(image.image))
+        } catch (e) {
+            next(e)
+        }
+    },
+
     addProductImage: async (req, res, next) => {
         try {
             let dataImage = ({
@@ -14,12 +30,7 @@ module.exports = {
                     .status(400)
                     .json(resData.failed(image.message))
             }
-            res.json(
-                resData.success({
-                    url: dataImage.url,
-                    product_id: dataImage.product_id
-                }),
-            );
+            res.status(200).json(resData.success(image.image))
         } catch (e) {
             next(e)
         }
@@ -37,12 +48,7 @@ module.exports = {
                     .status(400)
                     .json(resData.failed(image.message))
             }
-            res.json(
-                resData.success({
-                    url: dataImage.url,
-                    product_id: dataImage.product_id
-                }),
-            );
+            res.status(200).json(resData.success());
 
         } catch (e) {
             next(e)

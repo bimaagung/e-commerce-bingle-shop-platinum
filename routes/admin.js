@@ -24,8 +24,10 @@ router.patch('/order/update-status/:id', authorized.admin, orderController.chang
 router.get('/order', authorized.admin, orderController.getListOrder);
 
 // image product
-router.post('/add-image/product', authorized.admin, handleUpload.upload.single('url'), imageController.addProductImage);
+router.post('/add-image/product',authorized.admin, handleUpload.upload.single('url'), imageController.addProductImage);
 router.put('/update-image/product/:id', authorized.admin, handleUpload.upload.single('url'), imageController.updateImageProduct);
 router.delete('/delete-image/product/:id', authorized.admin, imageController.deleteImageProduct);
 
+// image prodcut customer
+router.get('/image/product/:product_id', imageController.getImageProductByProductID)
 module.exports = router;
