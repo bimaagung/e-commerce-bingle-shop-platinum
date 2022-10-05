@@ -41,13 +41,12 @@ app.use(morgan('dev'));
 const ProductImageRepository = require('./repository/product_image');
 const ProductImageUseCase = require('./usecase/product_image');
 
-const productRouter = require('./routes/product');
+const customerRouter= require('./routes/customer')
+const publicRouter = require('./routes/public')
 const authRouter = require('./routes/auth');
 const adminRouter = require('./routes/admin');
-const orderRouter = require('./routes/order');
-const categoryRouter = require('./routes/category');
-const addressRouter = require('./routes/address');
-const userRouter = require('./routes/user');
+
+
 
 app.use('/public', express.static('public'));
 
@@ -91,12 +90,12 @@ app.get('/', (req, res) => {
 });
 
 app.use('/', authRouter);
-app.use('/admin', adminRouter);
-app.use('/product', productRouter);
-app.use('/category', categoryRouter);
-app.use('/address', addressRouter);
-app.use('/order', orderRouter);
-app.use('/user', userRouter);
+app.use('/', adminRouter);
+app.use('/', customerRouter); 
+app.use('/', publicRouter); 
+
+
+
 
 // handle server error
 app.use(serverError);

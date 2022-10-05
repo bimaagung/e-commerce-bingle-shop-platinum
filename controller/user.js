@@ -55,7 +55,7 @@ module.exports = {
 
   updateAvatar: async (req, res, next) => {
     try {
-      let id = req.params.id;
+      let id = req.user.id
       let user = {
         image:null,
       };

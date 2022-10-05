@@ -4,6 +4,20 @@ class ProductImageUC {
     this.productImageRepository = ProductImageRepository;
     this.productRespository = ProductRespository;
   }
+  async getImageProductByProductID(productID) {
+    let isSuccess = false
+    let product = await this.productRespository.getProductByID(productID)
+    if (product == null) {
+      return { message: "product not found" }
+    }
+    let image = await this.productImageRepository.getImageProductByProductID(productID)
+    isSuccess = true
+    return {
+      isSuccess: isSuccess,
+      image: image
+    }
+  }
+
   async createImageProduct(imageData) {
     let isSuccess = false;
     let image = null;
@@ -63,13 +77,13 @@ class ProductImageUC {
         message: "internal server error",
       };
     }
-    
+
     isSuccess = true;
     return {
       isSuccess: isSuccess,
       image: image,
     };
-    
+
   }
 }
 
