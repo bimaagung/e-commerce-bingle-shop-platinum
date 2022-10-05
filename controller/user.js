@@ -19,19 +19,19 @@ module.exports = {
 
   updateUser: async (req, res, next) => {
     try {
-      let id = req.user.id
-      const user = {
+      let id = req.user.id;
+      let user = {
         name: req.body.name,
         username: req.body.username,
         email: req.body.email,
         alamat: req.body.alamat,
-        telp: req.body.telp
-      }
-      const updateUser = await req.userUC.updateUserProfile(user, id);
-      if (updateUser == null) {
+        telp: req.body.telp,
+      };
+      let updateUser = await req.userUC.updateUserProfile(user, id);
+      if (updateUser.isSuccess !== true) {
         return res
-          .status(400)
-          .json(resData.failed(resData.message));
+          .status(updateUser.status)
+          .json(resData.failed(updateUser.reason));
       }
       res.status(200).json(resData.success());
     } catch (error) {
@@ -41,15 +41,17 @@ module.exports = {
 
   updateAvatar: async (req, res, next) => {
     try {
-      let id = req.user.id
+      let id = req.user.id;
       let user = {
-        image: await url.uploadCloudinaryAvatar(req.file.path)
-      }
+        image: await url.uploadCloudinaryAvatar(req.file.path),
+      };
       let updateAvatar = await req.userUC.updateUserProfile(user, id);
       if (updateAvatar.isSuccess != true) {
-        return res.status(400).json(resData.failed(updateAvatar.message));
+        return res
+          .status(updateAvatar.status)
+          .json(resData.failed(updateAvatar.reason));
       }
-      res.status(200).json(resData.success());
+      res.status(updateAvatar.status).json(resData.success());
     } catch (e) {
       next(e);
     }

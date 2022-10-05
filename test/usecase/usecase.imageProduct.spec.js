@@ -39,7 +39,7 @@ describe('Image Product', () => {
             let res = await productImageUC.getImageProductByProductID()
 
             expect(res.isSuccess).toBeFalsy()
-            expect(res.message).toEqual("product not found")
+            expect(res.reason).toEqual("product not found")
         })
         test('isSuccess = false image not found', async () => {
             imageProductValues.returnGetAllImageByProductID = null
@@ -50,7 +50,7 @@ describe('Image Product', () => {
             let res = await productImageUC.getImageProductByProductID()
 
             expect(res.isSuccess).toBeFalsy()
-            expect(res.message).toEqual("image product not found")
+            expect(res.reason).toEqual("image not found")
         })
     })
     describe('create image product', () => {
@@ -75,7 +75,7 @@ describe('Image Product', () => {
                 product_id: 1
             })
             expect(res.isSuccess).toBeFalsy()
-            expect(res.message).toEqual("failed add image, product not found")
+            expect(res.reason).toEqual("failed add image, product not found")
         })
         test('isSuccess = product error server',async () => {
             imageProductValues.returnCreateImage = null
@@ -89,7 +89,7 @@ describe('Image Product', () => {
                 product_id: 1
             })
             expect(res.isSuccess).toBeFalsy()
-            expect(res.message).toEqual("something went error")
+            expect(res.reason).toEqual("something went error")
         })
     })
     describe('update image product', () => {
@@ -114,7 +114,7 @@ describe('Image Product', () => {
                 product_id: 1
             }, 1)
             expect(res.isSuccess).toBeFalsy()
-            expect(res.message).toEqual("image not found")
+            expect(res.reason).toEqual("image not found")
         })
        
     })
@@ -123,7 +123,7 @@ describe('Image Product', () => {
             let res = await productImageUC.deleteImageProduct()
             
             expect(res.isSuccess).toBeTruthy()
-            expect(res.data === null).toEqual(false)
+            expect(res.data === null).toEqual(true)
         })
         test('isSuccess = false image not found',async ()=>{
             imageProductValues.returnGetImageByID = null
@@ -134,7 +134,7 @@ describe('Image Product', () => {
             let res = await productImageUC.deleteImageProduct()
             
             expect(res.isSuccess).toBeFalsy()
-            expect(res.message).toEqual("image not found")
+            expect(res.reason).toEqual("image not found")
         })
     })
 })
