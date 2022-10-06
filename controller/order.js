@@ -80,7 +80,7 @@ module.exports = {
           .json(resData.failed(order.reason));
       }
 
-      res.status(order.statusCode).json(resData.success());
+      res.status(200).json(resData.success());
     } catch (e) {
       next(e);
     }

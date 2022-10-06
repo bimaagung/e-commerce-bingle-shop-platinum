@@ -22,8 +22,7 @@ class AddressUC {
 
     return result;
   }
-
-
+  
   async getAllAddress(userId) {
     let result = {
       isSuccess: false,

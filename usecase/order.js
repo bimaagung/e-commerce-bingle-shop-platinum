@@ -337,6 +337,7 @@ class OrderUC {
 
     result.isSuccess = true;
     result.data = updateStatusOrder;
+    result.statusCode = 200;
 
     return result;
   }
