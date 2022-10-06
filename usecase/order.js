@@ -84,7 +84,7 @@ class OrderUC {
       data: null,
     };
 
-    const order = await this.orderRepository.getOrderById(orderId);
+    const order = await this.orderRepository.getOrderPendingById(orderId);
 
     if (order === null) {
       result.reason = 'order not found';
@@ -301,6 +301,7 @@ class OrderUC {
       isSuccess: false,
       reason: null,
       data: null,
+      statusCode: 400,
     };
 
     let order = {};
@@ -328,6 +329,7 @@ class OrderUC {
 
     if (getOrderById === null) {
       result.reason = 'orders without pending status not found';
+      result.statusCode = 404;
       return result;
     }
 
@@ -335,6 +337,7 @@ class OrderUC {
 
     result.isSuccess = true;
     result.data = updateStatusOrder;
+    result.statusCode = 200;
 
     return result;
   }

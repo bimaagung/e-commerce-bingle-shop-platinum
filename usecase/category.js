@@ -31,7 +31,7 @@ class CategoryUC {
       data: [],
     };
 
-    const category = await this.categoryRepository.getCategoryByID(id);
+    const category = await this.categoryRepository.getAllCategory();
 
     result.isSuccess = true
     result.data = category

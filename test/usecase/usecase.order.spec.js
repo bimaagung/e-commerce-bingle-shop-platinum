@@ -19,6 +19,7 @@ describe('orders', () => {
       returnUpdateOrder: true,
       returnCreateOrder: true,
       returnVerifyOrderWithoutStatusPending: true,
+      returnGetOrderPendingById: true,
     }
 
     productValues = {
@@ -34,27 +35,27 @@ describe('orders', () => {
    orderUC = new OrderUseCase(mockOrderRepo(orderValues),mockOrderDetailRepo(orderDetailValues),mockProductRepo(productValues));
   })
 
-  describe('get list order test', () => {
-    test('with single query return shoud success is true and type data is array', async () => {
+  describe('getListOrder test', () => {
+    test('with single query shoud success is true and type data is array', async () => {
       let res = await orderUC.getListOrder('pending');
       expect(res.isSuccess).toBeTruthy();
       expect(Array.isArray(res.data)).toBeTruthy();
     });
-
-    test('with multiple query return should success is true and type data is array ', async () => {
+    
+    test('with multiple query should success is true and type data is array ', async () => {
       let res = await orderUC.getListOrder('pending, completed, submitted');
       expect(res.isSuccess).toBeTruthy();
       expect(Array.isArray(res.data)).toBeTruthy();
     });
 
-    test('without query return should success is true and type data is array', async () => {
+    test('without query order should success is true and type data is array', async () => {
       let res = await orderUC.getListOrder();
 
       expect(res.isSuccess).toBeTruthy();
       expect(Array.isArray(res.data)).toBeTruthy();
     });
 
-    test('return should type data is array and result = []', async () => {
+    test('should type data is array and result = []', async () => {
 
       const repo = mockOrderRepo({
       returnGetListOrder :  [],
@@ -72,33 +73,13 @@ describe('orders', () => {
 
   describe('get order by id test', () => {
 
-    test('return should success is true and data match value', async () => {
+    test('get order by is success', async () => {
       let res = await orderUC.getOrderById(12);
       expect(res.isSuccess).toBeTruthy();
-      expect(res.data).toMatchObject({
-          id: 1,
-          user_id: 2,
-          status: 'PENDING',
-          complete_date: null,
-          qty: 1,
-          total_prize: 23000000,
-          user: {
-              id: 1,
-              name: 'Bima'
-          },
-          order_details: [
-              {
-                  id: 1,
-                  name: 'Iphone 14 Pro',
-                  category: 'Smarphone',
-                  prize: 23000000,
-                  stock: 10,
-              }
-          ]
-      })
+      expect(typeof res.data === 'object').toBeTruthy();
     });
 
-    test("should status is false and reason 'order is not found'", async () => {
+    test('get order by id with order is not found', async () => {
       const repo = mockOrderRepo({returnGetOrderById : null});
       const orderUC = new OrderUseCase(repo);
 
@@ -112,55 +93,26 @@ describe('orders', () => {
 
   describe('get order pending by id test', () => {
 
-    test('return should success is true and data is return value true', async () => {
+    test('get order pending by id is success is true and data is return value true', async () => {
       let res = await orderUC.getPendingOrderById(12);
+
       expect(res.isSuccess).toBeTruthy();
-      expect(res.data).toMatchObject({
-          id: 1,
-          user_id: 2,
-          status: 'PENDING',
-          complete_date: null,
-          qty: 1,
-          total_prize: 23000000,
-          user: {
-              id: 1,
-              name: 'Bima'
-          },
-          order_details: [
-              {
-                  id: 1,
-                  name: 'Iphone 14 Pro',
-                  category: 'Smarphone',
-                  prize: 23000000,
-                  stock: 10,
-              }
-          ]
-      })
+      expect(typeof res.data === 'object').toBeTruthy();
     });
 
     test('get order pending by id with order status processed is not found', async () => {
-      const repo = mockOrderRepo({ 
-          returnGetOrderById  : {
-          id: 1,
-          user_id: 2,
-          status: 'PROCESSED',
-          complete_date: null,
-          qty: 1,
-          total_prize: 23000000,
-          user: {
-              id: 1,
-              name: 'Bima'
-          },
-          order_details: [
-              {
-                  id: 1,
-                  name: 'Iphone 14 Pro',
-                  category: 'Smarphone',
-                  prize: 23000000,
-                  stock: 10,
-              }
-          ]
-      }});
+      const repo = mockOrderRepo(
+        { 
+          returnGetOrderPendingById  : {
+            id: 'Ti9jtWs0FHhJMAmS',
+            user_id: 1,
+            status: 'PROCESSED',
+            completed_date: null,
+            createdAt: "12-09-2022 23:30:00",
+            updatedAt: "12-09-2022 23:30:00",
+          }
+        }
+      );
 
       const orderUC = new OrderUseCase(repo);
 
@@ -171,7 +123,7 @@ describe('orders', () => {
     });
 
     test('get order pending by id with param null should message order not found', async () => {
-      const repo = mockOrderRepo({returnGetOrderById: null});
+      const repo = mockOrderRepo({returnGetOrderPendingById: null});
 
       const orderUC = new OrderUseCase(repo);
 
@@ -306,6 +258,7 @@ describe('orders', () => {
         let res = await orderUC.updateStatusOrder(1,'ORDER_PROCESSED');
 
         expect(res.isSuccess).toBeTruthy();
+        expect(res.statusCode).toEqual(200);
       });
 
       test('param status is processed return should success is true', async () => {

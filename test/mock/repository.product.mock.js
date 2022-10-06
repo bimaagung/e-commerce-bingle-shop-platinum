@@ -2,6 +2,7 @@ const mockProductRepo = (
     {
         returnGetProductByID, 
         returnUpdateProduct,
+        returnGetAllProducts,
     }
 ) => {
   const repo = {};
@@ -11,17 +12,39 @@ const mockProductRepo = (
     
     returnGetProductByID !== true ? returnGetProductByID : {
         id: 1,
-        name: 'Iphone 14 Pro',
+        name: 'Iphone 13 Pro',
+        description: 'Smarphone dari apple',
         category_id: 1,
-        price: 23000000,
+        sold: 10,
+        price: 25000000,
         stock: 10,
-        sold: 0
+        image: null,
+        createdAt: "12-09-2022 23:30:00",
+        updatedAt: "12-09-2022 23:30:00",
     }
   );
 
   repo.updateProduct = jest.fn().mockReturnValue(
     returnUpdateProduct !== true ? returnUpdateProduct : true
   );
+
+  repo.getAllProducts = jest.fn().mockReturnValue(
+    returnGetAllProducts !== true ?  returnGetAllProducts : [
+      {
+        id: 1,
+        name: 'Iphone 13 Pro',
+        description: 'Smarphone dari apple',
+        category_id: 1,
+        sold: 10,
+        price: 25000000,
+        stock: 10,
+        image: null,
+        createdAt: "12-09-2022 23:30:00",
+        updatedAt: "12-09-2022 23:30:00",
+      }
+    ]
+  );
+
 
   return repo;
 };
