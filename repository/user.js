@@ -13,14 +13,7 @@ class UserRepository {
       },
     });
   }
-
-  async getUserByUsername(username) {
-    return await this.UserModel.findOne({
-      where: { username },
-    });
-  }
-
-
+  
   async updatePassword(newPassword) {
     let password = null;
     try {

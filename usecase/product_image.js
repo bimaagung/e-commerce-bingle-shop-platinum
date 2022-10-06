@@ -4,72 +4,90 @@ class ProductImageUC {
     this.productImageRepository = ProductImageRepository;
     this.productRespository = ProductRespository;
   }
+  async getImageProductByProductID(productID) {
+  let result = {
+    isSuccess : false,
+    reason : "success",
+    status : 404,
+    data : []
+   }
+    let product = await this.productRespository.getProductByID(productID)
+    if (product == null) {
+      result.reason = "product not found" 
+      return result
+    }
+    let image = await this.productImageRepository.getAllImageByProductID(productID)
+    if(image === null){
+      result.reason = "image not found"
+      return result
+    }
+    result.isSuccess = true
+    result.status = 200
+    result.data = image
+
+    return result
+  }
+
   async createImageProduct(imageData) {
-    let isSuccess = false;
-    let image = null;
+    let result = {
+      isSuccess : false,
+      reason : "success",
+      status : 404,
+      data : null
+     }
     let product = await this.productRespository.getProductByID(
       imageData.product_id
     );
     if (product == null) {
-      return {
-        message: "failed add image, product not found",
-      };
+     result.reason = "failed add image, product not found"
+     return result 
     }
-    image = await this.productImageRepository.createImage(imageData);
-    if (image == null) {
-      return {
-        message: "internal server error ",
-      };
+   let image = await this.productImageRepository.createImage(imageData);
+    if(image == null){
+      result.status = 500 
+      result.reason = "something went error" 
+      return result
     }
-    isSuccess = true;
-    return {
-      isSuccess: isSuccess,
-      image: image,
-    };
+    result.status = 200
+    result.isSuccess = true;
+    result.data = image
+    return result
   }
   async updateImageProduct(imageData, id) {
-    let isSuccess = false;
-    let image = null;
-    image = await this.productImageRepository.getImageByID(id);
+    let result = {
+      isSuccess : false,
+      reason : "success",
+      status : 404,
+      data : null
+     }
+    let image = await this.productImageRepository.getImageByID(id);
     if (image == null) {
-      return {
-        message: "image not found",
-      };
+      result.reason = "image not found"
+      return result
     }
     image = await this.productImageRepository.updateImage(imageData, id);
-    if (image == null) {
-      return {
-        message: "internal server error",
-      };
-    }
-    isSuccess = true;
-    return {
-      isSuccess: isSuccess,
-      image: image,
-    };
+    result.isSuccess = true
+    result.status = 200
+    result.data = image
+    return result
   }
   async deleteImageProduct(id) {
-    let isSuccess = false;
-    let image = null;
-    image = await this.productImageRepository.getImageByID(id);
+    let result = {
+      isSuccess : false,
+      reason : "success",
+      status : 404,
+      data : null
+     }
+   let image = await this.productImageRepository.getImageByID(id);
     if (image == null) {
-      return {
-        message: "image not found",
-      };
+      result.reason = "image not found"
+      return result
     }
     image = await this.productImageRepository.deleteImage(id);
-    if (image == null) {
-      return {
-        message: "internal server error",
-      };
-    }
-    
-    isSuccess = true;
-    return {
-      isSuccess: isSuccess,
-      image: image,
-    };
-    
+    result.isSuccess = true;
+    result.status = 200
+    return result
+
   }
 }
 

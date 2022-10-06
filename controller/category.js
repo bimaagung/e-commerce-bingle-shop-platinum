@@ -3,7 +3,7 @@ const resData = require('../helper/response');
 module.exports = {
   getAllCategory: async (req, res, next) => {
     try {
-      let category = await req.categoryUC.getAllCategory(null);
+      let category = await req.categoryUC.getAllCategory();
 
       return res.json(resData.success(category.data));
     } catch (e) {
@@ -13,7 +13,7 @@ module.exports = {
 
   getCategoryById: async (req, res, next) => {
     try {
-      let { id } = req.params;
+      let id = req.params.id;
 
       let category = await req.categoryUC.getCategoryByID(id);
 

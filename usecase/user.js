@@ -14,29 +14,20 @@ class UserUC {
   }
 
   async updateUserProfile(userData, id) {
-    let isSuccess = false;
-    let user = null;
-    user = await this.UserRepository.getUserByID(id);
+    let result = {
+      isSuccess : false,
+      reason : "success",
+      status : 404,
+      data : null
+     }
+   let user = await this.UserRepository.getUserByID(id);
     if (user == null) {
-      return {
-        message: 'user not found',
-      };
+      result.reason = 'user not found'
+      return result
     }
-    user = await this.UserRepository.updateUser(userData, id);
-    if (user == null) {
-      return {
-        message: 'internal server error',
-      };
-    }
-    isSuccess = true;
-    return {
-      isSuccess,
-      user,
-    };
-  }
-
-  async updateUser(id) {
-    return await this.UserRepository.updateUser(id);
+    user = await this.UserRepository.updateUser(userData , id)
+    result.isSuccess = true;
+    return result
   }
 }
 module.exports = UserUC;

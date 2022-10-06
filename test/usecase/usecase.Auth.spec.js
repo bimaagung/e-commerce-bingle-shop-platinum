@@ -38,7 +38,7 @@ describe('auth', ()=>{
             password: bcrypt.hashSync('123456', 10)
             })
             expect(res.isSuccess).toBeFalsy()
-            expect(res.message).toEqual("incorect username or password")
+            expect(res.reason).toEqual("incorect username or password")
         })
     })
     describe('register', ()=>{
@@ -69,7 +69,7 @@ describe('auth', ()=>{
             password: bcrypt.hashSync('123456', 10)
             })
             expect(res.isSuccess).toBeFalsy()
-            expect(res.message).toEqual("username or email not aviable")
+            expect(res.reason).toEqual("username or email not aviable")
         })
     })
 

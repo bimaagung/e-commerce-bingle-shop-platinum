@@ -4,7 +4,7 @@ const url = require("../libs/handle_upload");
 module.exports = {
   getOneUser: async (req, res, next) => {
     try {
-      let id = req.params.id;
+      let id = req.user.id;
       let user = await req.userUC.getUserByID(id);
 
       if (user == null) {
@@ -16,38 +16,24 @@ module.exports = {
       next(e);
     }
   },
-  
+
   updateUser: async (req, res, next) => {
     try {
-      const { id } = req.params;
-      const user = {
+      let id = req.user.id;
+      let user = {
         name: req.body.name,
         username: req.body.username,
         email: req.body.email,
         alamat: req.body.alamat,
-        telp: req.body.telp
+        telp: req.body.telp,
       };
-
-      const existUser = (id) => {
-        const user = this.getUserById(id);
-        if (user == null) {
-          return false
-        }
-        return true;
-      };
-      if (!existUser) {
-        return res.status(404)
-          .json(resData.failed('user not found', null));
-      }
-
-      const updateUser = await req.userUC.updateUser(id, user);
-      if (updateUser == null) {
+      let updateUser = await req.userUC.updateUserProfile(user, id);
+      if (updateUser.isSuccess !== true) {
         return res
-          .status(400)
-          .json(resData.failed('failed to update user', null));
+          .status(updateUser.status)
+          .json(resData.failed(updateUser.reason));
       }
-
-      res.json(resData.success(user));
+      res.status(200).json(resData.success());
     } catch (error) {
       next(error);
     }
@@ -55,23 +41,17 @@ module.exports = {
 
   updateAvatar: async (req, res, next) => {
     try {
-      let id = req.params.id;
+      let id = req.user.id;
       let user = {
-        image:null,
+        image: await url.uploadCloudinaryAvatar(req.file.path),
       };
-      let image = null;
-      if (req.file !== undefined) {
-        image = await url.uploadCloudinaryAvatar(req.file.path);
-      } else {
-        image = process.env.PROFIL_URL;
-      }
-      user.image = image;
-
       let updateAvatar = await req.userUC.updateUserProfile(user, id);
-      if (updateAvatar.is_success != true) {
-        return res.status(400).json(resData.failed(updateAvatar.message));
+      if (updateAvatar.isSuccess != true) {
+        return res
+          .status(updateAvatar.status)
+          .json(resData.failed(updateAvatar.reason));
       }
-      res.status(200).json(resData.success());
+      res.status(updateAvatar.status).json(resData.success());
     } catch (e) {
       next(e);
     }
