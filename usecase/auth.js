@@ -21,11 +21,6 @@ class AuthUC {
       return result;
     }
     user = await this.AuthRepository.registerUser(userData);
-    if(user === null){
-      result.reason = 'somthing went wrong'
-      result.status = 500
-      return result
-    }
     result.isSuccess = true;
     result.status = 200;
     result.data = user;
