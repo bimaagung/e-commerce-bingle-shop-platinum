@@ -258,6 +258,7 @@ describe('orders', () => {
         let res = await orderUC.updateStatusOrder(1,'ORDER_PROCESSED');
 
         expect(res.isSuccess).toBeTruthy();
+        expect(res.statusCode).toEqual(200);
       });
 
       test('param status is processed return should success is true', async () => {
