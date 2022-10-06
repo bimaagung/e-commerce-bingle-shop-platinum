@@ -35,27 +35,27 @@ describe('orders', () => {
    orderUC = new OrderUseCase(mockOrderRepo(orderValues),mockOrderDetailRepo(orderDetailValues),mockProductRepo(productValues));
   })
 
-  describe('get list order test', () => {
-    test('get list order with single query shoud success is true and type data is array', async () => {
+  describe('getListOrder test', () => {
+    test('with single query shoud success is true and type data is array', async () => {
       let res = await orderUC.getListOrder('pending');
       expect(res.isSuccess).toBeTruthy();
       expect(Array.isArray(res.data)).toBeTruthy();
     });
     
-    test('get list order multiple query should success is true and type data is array ', async () => {
+    test('with multiple query should success is true and type data is array ', async () => {
       let res = await orderUC.getListOrder('pending, completed, submitted');
       expect(res.isSuccess).toBeTruthy();
       expect(Array.isArray(res.data)).toBeTruthy();
     });
 
-    test('get list order should success is true and type data is array', async () => {
+    test('without query order should success is true and type data is array', async () => {
       let res = await orderUC.getListOrder();
 
       expect(res.isSuccess).toBeTruthy();
       expect(Array.isArray(res.data)).toBeTruthy();
     });
 
-    test('get list order should type data is array and result = []', async () => {
+    test('should type data is array and result = []', async () => {
 
       const repo = mockOrderRepo({
       returnGetListOrder :  [],
