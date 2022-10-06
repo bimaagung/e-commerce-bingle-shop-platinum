@@ -21,7 +21,7 @@ module.exports = {
 
   register: async (req, res, next) => {
     try {
-      let user = {
+      let userData = {
         name: req.body.name,
         username: req.body.username,
         image: null,
@@ -44,24 +44,18 @@ module.exports = {
       } else {
         image = process.env.PROFIL_URL;
       }
-      user.image = image;
+      userData.image = image;
 
-      let resUser = await req.authUC.register(user);
+      let resUser = await req.authUC.register(userData);
 
       if (resUser.isSuccess !== true) {
         return res
           .status(resUser.status)
-          .json(resData.failed(resUser.reason, null));
+          .json(resData.failed(resUser.reason));
       }
-
-      res.status(resUser.status).json(
-        resData.success({
-          name: user.name,
-          username: user.username,
-          email: user.email,
-          token: generateToken(user),
-        })
-      );
+      const user = _.omit(resUser.data.dataValues, ['password'])
+      const token = generateToken(user)
+      res.json(resData.success({ user, token }));
     } catch (e) {
       next(e);
     }

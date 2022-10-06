@@ -5,8 +5,7 @@ class UserUC {
 
   async getUserExist(username , email){
     return await this.UserRepository.getUserExist(username, email)
-    
-  }
+    }
      
 
   async getUserByID(id) {

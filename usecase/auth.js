@@ -11,8 +11,8 @@ class AuthUC {
       status: 404,
       data: null,
     };
-
-    let user = await this.UserRepository.getUserExist(
+    let user = null
+    user = await this.UserRepository.getUserExist(
       userData.username,
       userData.email
     );
@@ -21,8 +21,13 @@ class AuthUC {
       return result;
     }
     user = await this.AuthRepository.registerUser(userData);
+    if(user === null){
+      result.reason = 'somthing went wrong'
+      result.status = 500
+      return result
+    }
     result.isSuccess = true;
-    result.isSuccess = 200;
+    result.status = 200;
     result.data = user;
     return result;
   }

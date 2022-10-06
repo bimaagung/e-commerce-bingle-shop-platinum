@@ -7,6 +7,7 @@ module.exports = {
     const response = Joi.object({
       name: Joi.string().required(),
       username: Joi.string().required(),
+      image : Joi.string().allow(null),
       telp: Joi.number().required(),
       password: Joi.string().min(6),
       confrimPassword: Joi.ref('password'),
