@@ -9,17 +9,25 @@ const mockOrderDetailRepo = (
   repo.getOrderDetailById = jest.fn().mockReturnValue(
     returnGetOrderDetailById !== true ? returnGetOrderDetailById : [
         {
-            user_id: 1,
-            order_id: 1,
-            product_id: 1,
-            qty: 2,
-            total_price: 43000000,
+          id: 1,
+          user_id: 1,
+          order_id: 'Ti9jtWs0FHhJMAmS',
+          product_id: 1,
+          qty: 1,
+          total_price: 25000000,
         }
     ]
   );
 
   repo.addOrderDetails = jest.fn().mockReturnValue(
-    returnAddOrderDetails !== true ? returnAddOrderDetails : true
+    returnAddOrderDetails !== true ? returnAddOrderDetails : {
+          id: 1,
+          user_id: 1,
+          order_id: 'Ti9jtWs0FHhJMAmS',
+          product_id: 1,
+          qty: 1,
+          total_price: 25000000,
+        }
   );
 
   return repo;

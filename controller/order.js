@@ -43,7 +43,7 @@ module.exports = {
         return res.json(order.reason);
       }
 
-      return res.json(resData.success(order.data));
+      return res.status(200).json(resData.success(order.data));
     } catch (e) {
       next(e);
     }
@@ -55,11 +55,10 @@ module.exports = {
 
       const order = await req.orderUC.getPendingOrderByUserId(userId);
 
-      if (order === null) {
-        return res.status(404).json(resData.failed('not found pending order'));
+      if (order.isSuccess === false) {
+        return res.status(404).json(resData.failed(order.reason));
       }
-
-      res.json(resData.success(order));
+      res.status(200).json(resData.success(order.data));
     } catch (e) {
       next(e);
     }
@@ -70,32 +69,18 @@ module.exports = {
       const orderId = req.params.id;
       const statusOrder = req.body.status;
 
-      //  check order
-      const orderById = await req.orderUC.getOrderById(orderId);
-
-      if (orderById === null) {
-        return res.status(404).json(resData.failed('order not found'));
-      }
-
-      const pendingOrderById = await req.orderUC.getPendingOrderById(orderId);
-
-      // check order pending
-      if (pendingOrderById > 0) {
-        return res.status(400).json(resData.failed('order still pending'));
-      }
-
-      const updateStatusOrder = await req.orderUC.updateStatusOrder(
+      const order = await req.orderUC.updateStatusOrder(
         orderId,
         statusOrder,
       );
 
-      if (updateStatusOrder === null) {
+      if (order.isSuccess === false) {
         return res
-          .status(404)
-          .json(resData.failed('failed update status order'));
+          .status(order.statusCode)
+          .json(resData.failed(order.reason));
       }
 
-      res.json(resData.success());
+      res.status(order.statusCode).json(resData.success());
     } catch (e) {
       next(e);
     }
@@ -105,25 +90,19 @@ module.exports = {
     try {
       const userId = req.user.id;
 
-      const orderPending = await req.orderUC.getPendingOrderByUserId(userId);
+      const order = await req.orderUC.updateOrderSubmitted(userId);
 
-      if (orderPending === null) {
-        return res.status(404).json(resData.failed('order not found'));
-      }
-
-      const order = await req.orderUC.updateOrderSubmitted(orderPending);
-
-      if (order === null) {
+      if (order.isSuccess === false) {
         return res
-          .status(400)
+          .status(order.statusCode)
           .json(
             resData.failed(
-              'recheck the product, make sure the product is still in stock',
+              order.reason,
             ),
           );
       }
 
-      res.json(resData.success());
+      res.status(200).json(resData.success());
     } catch (e) {
       next(e);
     }

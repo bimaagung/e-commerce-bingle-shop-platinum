@@ -14,6 +14,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: {name : 'category_id', allowNull:false},
         as: 'category',
       })
+
+      // this.belongTo(models.product, {
+        //foreignKey: { name: 'category_id', allowNull:false},
+        // as : 'category',
+      //})
+
       this.hasMany(models.ProductImage, {
         foreignKey: {name : 'product_id', allowNull:false}
       })

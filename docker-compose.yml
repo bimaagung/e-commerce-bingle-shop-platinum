@@ -21,29 +21,6 @@ services:
         max-file: "1"
         max-size: "200m"
 
-  logstash:
-    image: docker.elastic.co/logstash/logstash:7.17.3
-    volumes:
-      - ./vendor/apm-elk/logstash/logstash.yml:/usr/share/logstash/config/logstash.yml
-      - ./vendor/apm-elk/logstash/pipeline:/usr/share/logstash/pipeline
-      - ./vendor/apm-elk/logstash/mydata:/usr/mydata
-    ports:
-      - "5044:5044"
-      - "5000:5000/tcp"
-      - "5000:5000/udp"
-      - "9600:9600"
-    environment:
-      LS_JAVA_OPTS: "-Xmx512m -Xms512m"
-    networks:
-      - elk
-    depends_on:
-      - elasticsearch
-    logging:
-      driver: "json-file"
-      options:
-        max-file: "1"
-        max-size: "200m"
-
   kibana:
     image: docker.elastic.co/kibana/kibana:7.17.3
     volumes:

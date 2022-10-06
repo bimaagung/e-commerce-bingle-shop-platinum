@@ -27,6 +27,14 @@ class OrderRepository {
     return order;
   }
 
+  async getOrderPendingById(orderId) {
+    const order = await this.OrderModel.findOne({
+      where: { id: orderId, status: 'PENDING' },
+    });
+
+    return order;
+  }
+
   async getOrderById(orderId) {
     const order = await this.OrderModel.findOne({
       where: { id: orderId },

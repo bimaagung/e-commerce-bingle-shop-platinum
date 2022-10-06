@@ -8,9 +8,9 @@ module.exports = {
       name: Joi.string().required(),
       username: Joi.string().required(),
       telp: Joi.number().required(),
-      email: Joi.string().email().required(),
       password: Joi.string().min(6),
       confrimPassword: Joi.ref('password'),
+      email: Joi.string().email().required(),
     }).validate(req.body);
 
     if (response.error) {
