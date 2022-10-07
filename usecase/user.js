@@ -1,3 +1,5 @@
+const bcrypt = require("bcrypt");
+
 class UserUC {
   constructor(UserRepository) {
     this.UserRepository = UserRepository;
@@ -87,8 +89,39 @@ class UserUC {
     };
   }
 
-  async updateUser(id) {
-    return await this.UserRepository.updateUser(id);
-  }
-}
+  //async updateUser(id) {
+    //return await this.UserRepository.updateUser(id);
+  //}
+
+  async updatePassword (id, password, confirmPassword) {
+    let result = {
+      isSuccess: false,
+      reason: null,
+      data: null,
+    };
+    if (password !== confirmPassword) {
+      result.reason = 'not match password'
+      return result
+    }
+
+    const cekUser = await this.UserRepository.getUserById(id)
+    if (cekUser=== null) {
+      result.reason = 'user not found'
+      return result
+    } 
+    
+    const passwordHash = bcrypt.hashSync(password, 10);
+
+    await this.UserRepository.updatePassword(passwordHash, id);
+    result.isSuccess = true
+    return result
+    }
+    }
+  
+// contoh di category.usecase update
+// menerima parameter pasword dan confrimn password
+// merubah password menjadi bycrt
+// cek apaakah user ada 
+// udate password ambil dari repositori 
+
 module.exports = UserUC;

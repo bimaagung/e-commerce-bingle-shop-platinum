@@ -50,6 +50,22 @@ module.exports = {
     } catch (error) {
       next(error);
     }
+  },
+
+  updatePassword : async (req, res, next) => {
+    try {
+      const { id } = req.user
+      const password = req.body.password
+      const confirmPassword = req.body.confirm_password
+
+      const updatePassword = await req.userUC.updatePassword (id, password, confirmPassword)
+      if (updatePassword === null) {
+        res.status(404).json(resData.failed(updatePassword.reason))
+      }
+      res.sattus(200).json(resData.success())
+    }catch(error) {
+      next(error);
+    }
   }
 
 }

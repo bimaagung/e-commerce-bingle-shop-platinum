@@ -71,29 +71,12 @@ class UserRepository {
     if (!bcrypt.compareSync(password, user.password)) {
       return null;
     }
-<<<<<<< HEAD
-    async updatePassword (password) {
-        let password = null
-        try {
-            password = await this.updatePassword(password)
-            if(password === null) {
-                return user
-            }
-        } catch (e) {
-            console.log(e)
-            return null
-        }
-        if (req.body.password !== req.body.confrimPassword) {
-            return res
-              .status(400)
-              .json(resData.failed('password and confrim password not match', null));
-          }
-    }
-=======
-    return user;
-  }
->>>>>>> 55ec0c57517f4bd482ed7f9c6611746194458b49
 
+    return user
+  }
+  async updatePassword (password, id) {
+   return await this.UserModel.update({password:password}, {where: id})
+}
   async getUserByID(id) {
     return await this.UserModel.findOne({
       where: { id }, attributes: { exclude: ['password', 'is_admin'] },

@@ -12,5 +12,6 @@ router.put('/update-image/:id', handleUpload.upload.single('image'), userControl
 
 router.get('/', authorized.customer, user.getUserById);
 router.put('/update/:id', authorized.customer, user.updateUser);
+router.put('/update-Password/:id',user.updatePassword);
 
 module.exports = router;
