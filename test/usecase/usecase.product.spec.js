@@ -10,6 +10,8 @@ describe('product', () => {
             returnGetProductByID:true, 
             returnUpdateProduct:true,
             returnGetAllProducts:true,
+            returnAddProduct: true,
+            returnDeleteProduct: true,
         }
 
         productUC = new ProductUseCase(mockProductRepo(productValues))
