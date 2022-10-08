@@ -1,6 +1,6 @@
 const mockAddressRepo = (
   {
-    returnCreateAddress,
+    returnAddAddress,
     returnGetAddressById,
     returnGetAllAddress,
     returnUpdateAddress,
@@ -9,8 +9,8 @@ const mockAddressRepo = (
 ) => {
   const repo = {};
   
-  repo.createAddress = jest.fn.mockReturnValue(
-    returnCreateAddress !== true ? returnCreateAddress : [
+  repo.addAddress = jest.fn().mockReturnValue(
+    returnAddAddress !== true ? returnAddAddress : [
       {
         id: 1,
         province: 'Banten',
@@ -25,16 +25,18 @@ const mockAddressRepo = (
   );
   
   repo.getAddressByID = jest.fn().mockReturnValue(
-    returnGetAddressById !== true ? returnGetAddressById : {
-      id: 1,
-      province: 'Banten',
-      city: 'Bumi Serpong',
-      postal_code: '15345',
-      detail: 'The Breeze BSD',
-      user_id: 2,
-      createdAt: "12-09-2022 23:30:00",
-      updatedAt: "12-09-2022 23:30:00"
-    }
+    returnGetAddressById !== true ? returnGetAddressById : [
+      {
+        id: 1,
+        province: 'Banten',
+        city: 'Bumi Serpong',
+        postal_code: '15345',
+        detail: 'The Breeze BSD',
+        user_id: 2,
+        createdAt: "12-09-2022 23:30:00",
+        updatedAt: "12-09-2022 23:30:00"
+     }
+    ]
   );
  
   repo.getAllAddress = jest.fn().mockReturnValue(
