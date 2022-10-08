@@ -1,12 +1,12 @@
-let apm = require('elastic-apm-node');
+// let apm = require('elastic-apm-node');
 
-apm.start({
-  serviceName: process.env.PLATINUM_MAJU_JAYA,
-  secretToken: '',
+// apm.start({
+//   serviceName: process.env.PLATINUM_MAJU_JAYA,
+//   secretToken: '',
 
-  serverUrl: `http://${process.env.SERVER_URL}:8200`,
-  environment: 'development',
-});
+//   serverUrl: `http://${process.env.SERVER_URL}:8200`,
+//   environment: 'development',
+// });
 
 const express = require('express');
 

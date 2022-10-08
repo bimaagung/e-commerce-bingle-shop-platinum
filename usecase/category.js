@@ -21,7 +21,7 @@ class CategoryUC {
     result.data = category
 
     return result
-   
+
   }
 
   async getAllCategory() {
@@ -62,34 +62,35 @@ class CategoryUC {
     };
 
     const cekCategory = await this.categoryRepository.getCategoryByID(id)
-    if ( cekCategory === null) {
+    if (cekCategory === null) {
       result.reason = 'category not found'
       return result
     }
-    const updateCategory = await this.categoryRepository.updateCategory(category,id);
+    const updateCategory = await this.categoryRepository.updateCategory(category, id);
 
     result.isSuccess = true
     result.data = updateCategory
-
     return result
   }
 
   async deleteCategory(id) {
     let result = {
       isSuccess: false,
-      reason: null,
+      status: 404,
+      reason: '',
       data: null,
     };
 
-    const category = await this.categoryRepository.getCategoryByID(id);
-    if ( category === null) {
+    let category = await this.categoryRepository.getCategoryByID(id);
+    if (category === null) {
       result.reason = 'category not found'
+      result.status =404
       return result
     }
-    const deleteCategory = await this.categoryRepository.deleteCategory(id);
-
+     await this.categoryRepository.deleteCategory(id);
     result.isSuccess = true
-    return result 
+    result.status = 200
+    return result
   }
 }
 
