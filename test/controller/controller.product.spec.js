@@ -1,3 +1,4 @@
+const { DESCRIBE } = require('sequelize/types/query-types')
 const productUseCase = require('../../controller/product')
 const resData = require('../../helper/response')
 
@@ -30,3 +31,12 @@ const mockResponse = () => {
 const next = (error) => {
     console.log(error.message)
 }
+
+describe('Test Product', () => {
+    describe('get all products', () => {
+
+        const product = {
+            
+        }
+    })
+})
