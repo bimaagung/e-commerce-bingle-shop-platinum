@@ -73,21 +73,23 @@ describe('address', () => {
     describe('get address by id', () => {
         test('seharusnya isSuccess  = true dan data dalam array', async () => { 
             let res = await addressUC.getAddressByID(1)
-            
+
             expect(res.isSuccess).toBeTruthy()
-            expect(Array.isArray(res.data)).toBeTruthy();
+            // expect(Array.isArray(res.data)).toBeTruthy();
+            expect(res.data === null).toEqual(false)
         });
 
         test('seharusnya isSuccess  = false dan data = []', async () => { 
-            addressValues.returnGetAddressByID = [null]
+            addressValues.returnGetAddressByID = []
             addressUC = new AddressUseCase(
                 mockAddressRepo(addressValues)
             );
 
             let res = await addressUC.getAddressByID()
             
-            expect(res.isSuccess).toBeFalsy()
-            expect(res.data).toEqual([]);
+            expect(res.isSuccess = false).toBeFalsy()
+            // expect(res.data).toEqual([]);
+            expect(res.reason).toEqual("list is empty")
         });
     });
     
@@ -100,7 +102,7 @@ describe('address', () => {
         });
 
         test('seharusnya isSuccess  = false dan data = []', async () => { 
-            addressValues.returnGetAllAddress = [null]
+            addressValues.returnGetAllAddress = []
             addressUC = new AddressUseCase(
                 mockAddressRepo(addressValues)
             );
