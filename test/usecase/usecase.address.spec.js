@@ -16,32 +16,57 @@ describe('address', () => {
         }
 
         userValues = {
-            returnGetUserExist:true
+            returnGetUserByID:true
         }
         
-        addressUC = new AddressUseCase(mockAddressRepo(addressValues))
+        addressUC = new AddressUseCase(
+            mockAddressRepo(addressValues), 
+            mockUserRepo(userValues)
+        )
     });
     
     describe('create address', () => {
         test('seharusnya isSuccess = true dan data dalam array', async () => {
-            let res = await addressUC.addAddress()
-
+            let res = await addressUC.addAddress(
+                {
+                    id: 1,
+                    province: 'Banten',
+                    city: 'Bumi Serpong',
+                    postal_code: '15345',
+                    detail: 'The Breeze BSD',
+                    user_id: 2,
+                    createdAt: "12-09-2022 23:30:00",
+                    updatedAt: "12-09-2022 23:30:00"
+                }
+            )
             expect(res.isSuccess).toBeTruthy()
             expect(Array.isArray(res.data)).toBeTruthy();
         });
 
         test('seharusnya isSuccess = false dan data = []',
         async () => {
-            addressValues.returnAddAddress = [null]
+            // addressValues.returnAddAddress = [null]
+            userValues.returnGetUserByID = null
             addressUC = new AddressUseCase(
                 mockAddressRepo(addressValues),
                 mockUserRepo(userValues)
             );
 
-            let res = await addressUC.addAddress()
+            let res = await addressUC.addAddress(
+                {
+                    id: 1,
+                    province: 'Banten',
+                    city: 'Bumi Serpong',
+                    postal_code: '15345',
+                    detail: 'The Breeze BSD',
+                    user_id: 2,
+                    createdAt: "12-09-2022 23:30:00",
+                    updatedAt: "12-09-2022 23:30:00"
+                }
+            )
             
-            expect(res.isSuccess).toBeFalsy()
-            expect(res.data).toEqual([]);
+            expect(res.isSuccess).toBeTruthy()
+            expect(res.reason).toEqual("user id not found");
         });
     });
 
