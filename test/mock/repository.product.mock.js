@@ -3,6 +3,8 @@ const mockProductRepo = (
         returnGetProductByID, 
         returnUpdateProduct,
         returnGetAllProducts,
+        returnAddProduct,
+        returnDeleteProduct
     }
 ) => {
   const repo = {};
