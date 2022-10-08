@@ -23,7 +23,7 @@ describe('product', () => {
             expect(Array.isArray(res.data)).toBeTruthy();
         })
 
-        test('seharusnya isSuccess  = false dan data = []', async () => { 
+        test('seharusnya isSuccess = true dan data = []', async () => { 
             productValues.returnGetAllProducts = null
             productUC = new ProductUseCase(
                 mockProductRepo(productValues)
@@ -31,7 +31,8 @@ describe('product', () => {
 
             let res = await productUC.getAllProducts()
             
-            expect(res.isSuccess).toBeFalsy()
+            expect(res.isSuccess).toBeTruthy()
+            expect(res.reason).toEqual('list is empty');
             expect(res.data).toEqual([]);
         })
     })

@@ -14,6 +14,7 @@ class ProductUC {
     let getAllProducts = await this.productRepository.getAllProducts(filters);
 
     if (getAllProducts === null) {
+      result.isSuccess = true;
       result.reason = 'list is empty';
       return result;
     }
