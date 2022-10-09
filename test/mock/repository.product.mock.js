@@ -11,7 +11,6 @@ const mockProductRepo = (
 
   
   repo.getProductByID = jest.fn().mockReturnValue(
-    
     returnGetProductByID !== true ? returnGetProductByID : {
         id: 10,
         name: 'ASUS ROG Phone 6 Pro 18/512Gb',
@@ -56,6 +55,25 @@ const mockProductRepo = (
       }
     ]
   );
+
+  repo.addProduct = jest.fn().mockReturnValue(
+    returnAddProduct !== true ? returnAddProduct : {
+      id: 10,
+        name: 'ASUS ROG Phone 6 Pro 18/512Gb',
+        description: 'Smarphone dari asus',
+        category_id: 2,
+        sold: 3,
+        price: 26500000,
+        stock: 7,
+        image: null,
+        createdAt: "12-09-2022 23:30:00",
+        updatedAt: "12-09-2022 23:30:00"
+    }
+  )
+
+  repo.deleteProduct = jest.fn().mockReturnValue(
+    returnDeleteProduct !== true ?  returnDeleteProduct : true
+    )
 
 
   return repo;

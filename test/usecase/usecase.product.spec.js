@@ -18,14 +18,14 @@ describe('product', () => {
     });
 
     describe('get all products', () => {
-        test('seharusnya isSuccess  = true dan data dalam array', async () => { 
+        test('should isSuccess  = true and data in array', async () => { 
             let res = await productUC.getAllProducts()
                 
             expect(res.isSuccess).toBeTruthy()
             expect(Array.isArray(res.data)).toBeTruthy();
         })
 
-        test('seharusnya isSuccess  = false dan data = []', async () => { 
+        test('should isSuccess  = false and data = []', async () => { 
             productValues.returnGetAllProducts = null
             productUC = new ProductUseCase(
                 mockProductRepo(productValues)
@@ -120,11 +120,12 @@ describe('product', () => {
         test('should isSuccess = false and reason = product not found', async () => {
             productValues.returnDeleteProduct = null
             productUC = new ProductUseCase(mockProductRepo)
-        })
+        
             let res = await productUC.deleteProduct()
 
             expect(res.isSuccess).toBeFalsy()
             expect(res.reason).toEqual('Product not found')
+        })
     })
 })
 
