@@ -26,15 +26,11 @@ module.exports = {
       let { id } = req.params;
 
       let product = await req.productUC.getProductByID(id);
-      if (product.isSuccess === false) {
+      if (product.isSuccess !== true) {
         return res.status(404).json(resData.failed(product.reason, product.data));
       }
 
-      res.json(
-        resData.success(
-          product.data,
-        ),
-      );
+      res.json(resData.success(product.data));
     } catch (e) {
       next(e);
     }

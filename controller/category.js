@@ -54,13 +54,13 @@ module.exports = {
 
       let categoryById = await req.categoryUC.getCategoryByID(id);
 
-      if (categoryById.isSuccess === false) {
+      if (categoryById.isSuccess !== true) {
         return res
           .status(404)
-          .json(resData.failed(category.reason, category.data));
+          .json(resData.failed(categoryById.reason, categoryById));
       }
 
-      return res.json(resData.success(category.data));
+       res.json(resData.success(categoryById));
     } catch (e) {
       next(e);
     }
@@ -72,13 +72,12 @@ module.exports = {
 
       let category = await req.categoryUC.getCategoryByID(id);
 
-      if (category === null) {
-        return res
-          .status(404)
+      if (category.isSuccess !== true) {
+        return res.status(404)
           .json(resData.failed( category.reason, category.data));
       }
 
-      return res.json(resData.success(category.data));
+     res.status(200).json(resData.success(category.data));
     } catch (e) {
       next(e);
     }
