@@ -32,7 +32,7 @@ const next = (error) => {
 }
 
 describe('Test Order', () => { 
-    describe('create order', () => {
+    describe(' order pending', () => {
 
         const order = {
                 id: 1,
@@ -56,6 +56,7 @@ describe('Test Order', () => {
             mockOrderUC.getPendingOrderByUserId = jest.fn().mockReturnValue(
                 {isSuccess: true, reason:null, data: order}
             );
+            
             let req = mockRequest({},{},{},{id:1},{ orderUC: mockOrderUC });
             let res = mockResponse();
 

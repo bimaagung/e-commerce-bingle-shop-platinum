@@ -13,7 +13,7 @@ module.exports = {
       }
       const user = _.omit(resUser.data.dataValues, ['password'])
       const token = generateToken(user)
-      res.json(resData.success({user, token}))
+      res.status(200).json(resData.success({user, token}))
     } catch (e) {
       next(e);
     }

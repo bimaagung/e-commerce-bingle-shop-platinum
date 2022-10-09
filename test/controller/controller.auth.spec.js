@@ -40,19 +40,23 @@ describe('test login', ()=>{
             createdAt: "2022-10-06T07:04:51.142Z",
             updatedAt: "2022-10-06T07:04:51.142Z"
         }
+
+        
         test('return status 200 isSuccess true', async ()=>{
             mockAuthUC.login = jest.fn().mockReturnValue(
-                {isSucces: true, reason:"", data : user}
+                {isSuccess: true, reason:"", data : user}
             )
             let req = mockRequest(
                 {username : "irvan", password :"password"},
                 {},{},{authUC : mockAuthUC}
                 )
-            let res =mockResponse()
+
+            let res = mockResponse()
+
             await authController.login(req, res, next)
             
-            expect(mockAuthUC.login).toBeCalledWith(user)
-            expect(res.json).toBeCalledWith(resData.success(user))
+            expect(mockAuthUC.login).toHaveBeenCalled()
+            expect(res.status).toBeCalledWith(200)
     })
     })
 })
