@@ -79,7 +79,8 @@ describe('product', () => {
     })
 
     describe('add product', () => {
-        test('seharusnya isSuccess  = true dan data dalam array'. async () => {
+        test('should isSuccess  = true and data is object', async () => {
+            
             let res = await productUC.addProduct(
                 {
                     id: 1,
@@ -98,6 +99,43 @@ describe('product', () => {
             expect(Array.isArray(res.data)).toBeTruthy();
         });
 
+        test('should isSuccess = false and data = []', async () => {
+            productValues.returnAddProduct = null
+            productUC = new ProductUseCase(
+                mockProductRepo(productValues)
+            );
+
+            let res = await productUC.addProduct(1,1,[{ id:1, qty:1}])
+            
+            expect(res.isSuccess).toBeFalsy();
+            expect(res.reason).toEqual('failed to add, category not found')
+        })
     })
 
+    describe('deleteProduct', () => {
+        test('should isSuccess = true', async () => {
+            let res = await productUC.deleteProduct(1[{id:1}])
+
+            expect(res.isSuccess).toBeTruthy();
+        })
+
+        test('should isSuccess = false and reason = product not found', async () => {
+            productValues.returnDeleteProduct = null
+            productUC = new ProductUseCase(mockProductRepo)
+        })
+            let res = await productUC.deleteProduct()
+
+            expect(res.isSuccess).toBeFalsy()
+            expect(res.reason).toEqual('Product not found')
+    })
 })
+
+
+        
+
+
+
+
+
+
+
