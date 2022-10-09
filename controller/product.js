@@ -11,7 +11,7 @@ module.exports = {
           .json(resData.failed(getAllProduct.reason, getAllProduct.data));
       }
 
-      res.json(
+      res.status(200).json(
         resData.success(
           getAllProduct.data,
         ),
