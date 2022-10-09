@@ -3,6 +3,8 @@ const mockProductRepo = (
         returnGetProductByID, 
         returnUpdateProduct,
         returnGetAllProducts,
+        returnAddProduct,
+        returnDeleteProduct
     }
 ) => {
 
@@ -28,6 +30,7 @@ const mockProductRepo = (
             product_id: 10,
             createdAt: "12-09-2022 23:30:00",
             updatedAt: "12-09-2022 23:30:00",
+
           }
         ]
     }
