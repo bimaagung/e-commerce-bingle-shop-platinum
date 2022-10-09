@@ -9,7 +9,7 @@ describe('address', () => {
     beforeEach(() => {
         addressValues = {
             returnAddAddress:true,
-            returnGetAddressByID:true, 
+            returnGetAddressById:true, 
             returnGetAllAddress:true,
             returnUpdateAddress:true,
             returnDeleteAddress:true
@@ -39,6 +39,7 @@ describe('address', () => {
                     updatedAt: "12-09-2022 23:30:00"
                 }
             )
+         
             expect(res.isSuccess).toBeTruthy()
             expect(Array.isArray(res.data)).toBeTruthy();
         });
@@ -65,22 +66,22 @@ describe('address', () => {
                 }
             )
             
-            expect(res.isSuccess).toBeTruthy()
+            expect(res.isSuccess).toBeFalsy()
             expect(res.reason).toEqual("user id not found");
         });
     });
 
     describe('get address by id', () => {
-        test('seharusnya isSuccess  = true dan data dalam array', async () => { 
-            let res = await addressUC.getAddressByID(1)
-
+        test('seharusnya isSuccess  = true ', async () => { 
+            let res = await addressUC.getAddressByID()
+            console.log(res)
             expect(res.isSuccess).toBeTruthy()
-            // expect(Array.isArray(res.data)).toBeTruthy();
+         
             expect(res.data === null).toEqual(false)
         });
 
         test('seharusnya isSuccess  = false dan data = []', async () => { 
-            addressValues.returnGetAddressByID = []
+            addressValues.returnGetAddressById = null
             addressUC = new AddressUseCase(
                 mockAddressRepo(addressValues)
             );
@@ -88,14 +89,14 @@ describe('address', () => {
             let res = await addressUC.getAddressByID()
             
             expect(res.isSuccess = false).toBeFalsy()
-            // expect(res.data).toEqual([]);
-            expect(res.reason).toEqual("list is empty")
+         
+            expect(res.reason).toEqual("address not found")
         });
     });
     
     describe('get all address', () => {
         test('seharusnya isSuccess  = true dan data dalam array', async () => { 
-            let res = await addressUC.getAllAddress()
+            let res = await addressUC.getAddressByUserID()
 
             expect(res.isSuccess).toBeTruthy()
             expect(Array.isArray(res.data)).toBeTruthy();
@@ -107,7 +108,7 @@ describe('address', () => {
                 mockAddressRepo(addressValues)
             );
 
-            let res = await addressUC.getAllAddress()
+            let res = await addressUC.getAddressByUserID()
             
             expect(res.isSuccess).toBeTruthy()
             expect(res.data).toEqual([]);
@@ -128,7 +129,7 @@ describe('address', () => {
             );
             let res = await addressUC.updateAddress(1, {province: 'test'})
             
-            expect(res.isSuccess).toBeTruthy()
+            expect(res.isSuccess).toBeFalsy()
             expect(res.reason).toEqual('address id not found');
         });
     });
@@ -147,7 +148,7 @@ describe('address', () => {
             );
             let res = await addressUC.deleteAddress()
             
-            expect(res.isSuccess).toBeTruthy(),
+            expect(res.isSuccess).toBeFalsy(),
             expect(res.reason).toEqual('address id not found');
         });
     });

@@ -25,9 +25,9 @@ const mockAddressRepo = (
   );
   
   repo.getAddressByID = jest.fn().mockReturnValue(
-    returnGetAddressById !== true ? returnGetAddressById : [
+    returnGetAddressById !== true ? returnGetAddressById : 
       {
-        id: 1,
+      id: 1,
         province: 'Banten',
         city: 'Bumi Serpong',
         postal_code: '15345',
@@ -36,10 +36,9 @@ const mockAddressRepo = (
         createdAt: "12-09-2022 23:30:00",
         updatedAt: "12-09-2022 23:30:00"
      }
-    ]
   );
  
-  repo.getAllAddress = jest.fn().mockReturnValue(
+  repo.getAddressByUserID = jest.fn().mockReturnValue(
     returnGetAllAddress !== true ? returnGetAllAddress : [
       {
         id: 1,

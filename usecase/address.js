@@ -12,6 +12,7 @@ class AddressUC {
       data: null,
     };
     let address = await this.AddressRepository.getAddressByID(id);
+    
     if (address == null) {
       result.reason = 'address not found';
       return result
