@@ -18,6 +18,7 @@ class ProductUC {
       result.reason = 'list is empty';
       return result;
     }
+
     result.isSuccess = true;
     result.data = getAllProducts;
     return result;

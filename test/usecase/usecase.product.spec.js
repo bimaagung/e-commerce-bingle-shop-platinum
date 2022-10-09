@@ -25,7 +25,7 @@ describe('product', () => {
             expect(Array.isArray(res.data)).toBeTruthy();
         })
 
-        test('seharusnya isSuccess  = false dan data = []', async () => { 
+        test('seharusnya isSuccess = true dan data = []', async () => { 
             productValues.returnGetAllProducts = null
             productUC = new ProductUseCase(
                 mockProductRepo(productValues)
