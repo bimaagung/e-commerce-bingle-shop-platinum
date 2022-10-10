@@ -92,13 +92,13 @@ class ProductUC {
       data: null,
     };
     let existProduct = await this.productRepository.getProductByID(id);
-
     if (existProduct === null) {
       result.reason = 'product not found';
       return result;
     }
-
-    return await this.productRepository.deleteProduct(id);
+    await this.productRepository.deleteProduct(id);
+    result.isSuccess = true
+    return result
   }
 }
 

@@ -123,14 +123,14 @@ describe('address', () => {
         });
 
         test('seharusnya isSuccess  = false dan reason = address not found', async () => { 
-            addressValues.returnGetAddressByID = null
+            addressValues.returnGetAddressById = null
             addressUC = new AddressUseCase(
                 mockAddressRepo(addressValues)
             );
             let res = await addressUC.updateAddress(1, {province: 'test'})
             
             expect(res.isSuccess).toBeFalsy()
-            expect(res.reason).toEqual('address id not found');
+            expect(res.reason).toEqual('address not found');
         });
     });
 
@@ -142,14 +142,14 @@ describe('address', () => {
         });
 
         test('seharusnya isSuccess  = false dan reason = address not found', async () => { 
-            addressValues.returnGetAddressByID = null
+            addressValues.returnGetAddressById = null
             addressUC = new AddressUseCase(
                 mockAddressRepo(addressValues)
             );
             let res = await addressUC.deleteAddress()
             
             expect(res.isSuccess).toBeFalsy(),
-            expect(res.reason).toEqual('address id not found');
+            expect(res.reason).toEqual('address not found');
         });
     });
 })
