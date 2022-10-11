@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "88e0c492-c092-4f00-ad12-3bf6012b9a74",
+		"_postman_id": "14ceacc5-d804-4834-ae34-8dbf4f352f18",
 		"name": "Platinum Maju Jaya",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21868515"
 	},
 	"item": [
 		{
@@ -27,7 +28,7 @@
 									"    pm.expect(jsonData.message).to.equals('success');\r",
 									"\r",
 									"    console.log(jsonData.data.username)\r",
-									"    pm.environment.set('usernameLogin', jsonData.data.username)\r",
+									"    pm.environment.set('usernameLogin', jsonData.data.user.username)\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -38,13 +39,44 @@
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"username\": \"{{$randomUserName}}\",\r\n    \"telp\": \"085676897365\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"{{NewPassword}}\",\r\n    \"confrimPassword\": \"{{NewConfirmPassword}}\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "{{$randomFullName}}",
+									"type": "default"
+								},
+								{
+									"key": "username",
+									"value": "{{$randomUserName}}",
+									"type": "default"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/userb/OneDrive/Gambar/flower.jpg"
+								},
+								{
+									"key": "telp",
+									"value": "08487438",
+									"type": "default"
+								},
+								{
+									"key": "password",
+									"value": "{{NewPassword}}",
+									"type": "default"
+								},
+								{
+									"key": "confrimPassword",
+									"value": "{{NewConfirmPassword}}",
+									"type": "default"
+								},
+								{
+									"key": "email",
+									"value": "{{$randomEmail}}",
+									"type": "default"
 								}
-							}
+							]
 						},
 						"url": {
 							"raw": "http://localhost:3000/api/user/register",
@@ -63,7 +95,92 @@
 					"response": []
 				},
 				{
-					"name": "Register With Invalid Request",
+					"name": "Register With No Image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response body data should contains\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.ownProperty('status');\r",
+									"    pm.expect(jsonData.status).to.equals('ok');\r",
+									"    pm.expect(jsonData).to.ownProperty('message');\r",
+									"    pm.expect(jsonData.message).to.equals('success');\r",
+									"\r",
+									"    console.log(jsonData.data.username)\r",
+									"    pm.environment.set('usernameLogin', jsonData.data.user.username)\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "{{$randomFullName}}",
+									"type": "default"
+								},
+								{
+									"key": "username",
+									"value": "{{$randomUserName}}",
+									"type": "default"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "telp",
+									"value": "08487438",
+									"type": "default"
+								},
+								{
+									"key": "password",
+									"value": "{{NewPassword}}",
+									"type": "default"
+								},
+								{
+									"key": "confrimPassword",
+									"value": "{{NewConfirmPassword}}",
+									"type": "default"
+								},
+								{
+									"key": "email",
+									"value": "{{$randomEmail}}",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register with Invalid Request",
 					"event": [
 						{
 							"listen": "test",
@@ -89,13 +206,44 @@
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": null,\r\n    \"username\": \"{{$randomUserName}}\",\r\n    \"telp\": \"085676897365\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"{{NewPassword}}\",\r\n    \"confrimPassword\": \"{{NewConfirmPassword}}\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "username",
+									"value": "{{$randomUserName}}",
+									"type": "default"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/userb/OneDrive/Gambar/flower.jpg"
+								},
+								{
+									"key": "telp",
+									"value": "08487438",
+									"type": "default"
+								},
+								{
+									"key": "password",
+									"value": "{{NewPassword}}",
+									"type": "default"
+								},
+								{
+									"key": "confrimPassword",
+									"value": "{{NewConfirmPassword}}",
+									"type": "default"
+								},
+								{
+									"key": "email",
+									"value": "{{$randomEmail}}",
+									"type": "default"
 								}
-							}
+							]
 						},
 						"url": {
 							"raw": "http://localhost:3000/api/user/register",
@@ -131,10 +279,10 @@
 									"    pm.expect(jsonData.status).to.equals('ok');\r",
 									"    pm.expect(jsonData).to.ownProperty('message');\r",
 									"    pm.expect(jsonData.message).to.equals('success');\r",
-									"    pm.expect(jsonData).to.ownProperty('token');\r",
+									"    pm.expect(jsonData).to.ownProperty('data');\r",
 									"    \r",
 									"    // memasukkan noteId ke dalam environment variable\r",
-									"    pm.environment.set('accessToken', jsonData.token)\r",
+									"    pm.environment.set('accessToken', jsonData.data.token)\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -239,10 +387,10 @@
 									"    pm.expect(jsonData.status).to.equals('ok');\r",
 									"    pm.expect(jsonData).to.ownProperty('message');\r",
 									"    pm.expect(jsonData.message).to.equals('success');\r",
-									"    pm.expect(jsonData).to.ownProperty('token');\r",
+									"    pm.expect(jsonData).to.ownProperty('data');\r",
 									"    \r",
 									"    // memasukkan noteId ke dalam environment variable\r",
-									"    pm.environment.set('accessTokenAdmin', jsonData.token)\r",
+									"    pm.environment.set('accessTokenAdmin', jsonData.data.token)\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -334,14 +482,17 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/address/create",
+							"raw": "http://localhost:3000/api/customer/address/add",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
+								"customer",
 								"address",
-								"create"
+								"add"
 							]
 						}
 					},
@@ -395,14 +546,17 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/address/create",
+							"raw": "http://localhost:3000/api/customer/address/add",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
+								"customer",
 								"address",
-								"create"
+								"add"
 							]
 						}
 					},
@@ -450,12 +604,16 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/address/",
+							"raw": "http://localhost:3000/api/customer/all/address/",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
+								"customer",
+								"all",
 								"address",
 								""
 							]
@@ -503,12 +661,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/address/{{addressId}}",
+							"raw": "http://localhost:3000/api/customer/address/{{addressId}}",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
+								"customer",
 								"address",
 								"{{addressId}}"
 							]
@@ -554,12 +715,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/address/3847839",
+							"raw": "http://localhost:3000/api/customer/address/3847839",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
+								"customer",
 								"address",
 								"3847839"
 							]
@@ -568,7 +732,7 @@
 					"response": []
 				},
 				{
-					"name": "Update Category with Valid Id",
+					"name": "Update Address with Valid Id",
 					"event": [
 						{
 							"listen": "test",
@@ -617,12 +781,15 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/address/update/{{addressId}}",
+							"raw": "http://localhost:3000/api/customer/address/update/{{addressId}}",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
+								"customer",
 								"address",
 								"update",
 								"{{addressId}}"
@@ -632,7 +799,7 @@
 					"response": []
 				},
 				{
-					"name": "Update Category with Invalid Id",
+					"name": "Update Address with Invalid Id",
 					"event": [
 						{
 							"listen": "test",
@@ -678,12 +845,15 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/address/update/9238927",
+							"raw": "http://localhost:3000/api/customer/address/update/9238927",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
+								"customer",
 								"address",
 								"update",
 								"9238927"
@@ -693,7 +863,7 @@
 					"response": []
 				},
 				{
-					"name": "Update Category with Incorrect Request",
+					"name": "Update Address with Incorrect Request",
 					"event": [
 						{
 							"listen": "test",
@@ -740,12 +910,15 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/address/update/{{addressId}}",
+							"raw": "http://localhost:3000/api/customer/address/update/{{addressId}}",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
+								"customer",
 								"address",
 								"update",
 								"{{addressId}}"
@@ -755,7 +928,7 @@
 					"response": []
 				},
 				{
-					"name": "Delete Category with Valid Id",
+					"name": "Delete Address with Valid Id",
 					"event": [
 						{
 							"listen": "test",
@@ -792,12 +965,15 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/address/delete/{{addressId}}",
+							"raw": "http://localhost:3000/api/customer/address/delete/{{addressId}}",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
+								"customer",
 								"address",
 								"delete",
 								"{{addressId}}"
@@ -807,7 +983,7 @@
 					"response": []
 				},
 				{
-					"name": "Delete Category with Invalid Id",
+					"name": "DeleteAddress with Invalid Id",
 					"event": [
 						{
 							"listen": "test",
@@ -844,12 +1020,15 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/address/delete/2738",
+							"raw": "http://localhost:3000/api/customer/address/delete/2738",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
+								"customer",
 								"address",
 								"delete",
 								"2738"
@@ -915,12 +1094,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/admin/category/add",
+							"raw": "http://localhost:3000/api/admin/category/add",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
 								"admin",
 								"category",
 								"add"
@@ -977,12 +1158,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/admin/category/add",
+							"raw": "http://localhost:3000/api/admin/category/add",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
 								"admin",
 								"category",
 								"add"
@@ -1039,12 +1222,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/admin/category/add",
+							"raw": "http://localhost:3000/api/admin/category/add",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
 								"admin",
 								"category",
 								"add"
@@ -1085,12 +1270,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/category",
+							"raw": "http://localhost:3000/api/public/category",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
+								"public",
 								"category"
 							]
 						}
@@ -1127,12 +1315,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/category/{{categoryId}}",
+							"raw": "http://localhost:3000/api/public/category/{{categoryId}}",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
+								"public",
 								"category",
 								"{{categoryId}}"
 							]
@@ -1168,12 +1359,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/category/3847839",
+							"raw": "http://localhost:3000/api/public/category/3847839",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
+								"public",
 								"category",
 								"3847839"
 							]
@@ -1231,12 +1425,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/admin/category/update/{{categoryId}}",
+							"raw": "http://localhost:3000/api/admin/category/update/{{categoryId}}",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
 								"admin",
 								"category",
 								"update",
@@ -1293,12 +1489,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/admin/category/update/9238927",
+							"raw": "http://localhost:3000/api/admin/category/update/9238927",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
 								"admin",
 								"category",
 								"update",
@@ -1356,12 +1554,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/admin/category/update/{{categoryId}}",
+							"raw": "http://localhost:3000/api/admin/category/update/{{categoryId}}",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
 								"admin",
 								"category",
 								"update",
@@ -1419,12 +1619,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/admin/category/update/{{categoryId}}",
+							"raw": "http://localhost:3000/api/admin/category/update/{{categoryId}}",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
 								"admin",
 								"category",
 								"update",
@@ -1472,12 +1674,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/admin/category/delete/{{categoryId}}",
+							"raw": "http://localhost:3000/api/admin/category/delete/{{categoryId}}",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
 								"admin",
 								"category",
 								"delete",
@@ -1525,12 +1729,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/admin/category/delete/{{categoryId}}",
+							"raw": "http://localhost:3000/api/admin/category/delete/{{categoryId}}",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
 								"admin",
 								"category",
 								"delete",
@@ -1578,12 +1784,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/admin/category/delete/2738",
+							"raw": "http://localhost:3000/api/admin/category/delete/2738",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
 								"admin",
 								"category",
 								"delete",
@@ -1642,7 +1850,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"{{$randomProductName}}\",\r\n    \"description\": \"this is product\",\r\n    \"category_id\": 1,\r\n    \"price\": 100000,\r\n    \"stock\": 20\r\n}",
+							"raw": "{\r\n    \"name\": \"{{$randomProductName}}\",\r\n    \"description\": \"this is product\",\r\n    \"category_id\": 23,\r\n    \"price\": 100000,\r\n    \"stock\": 20\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1650,12 +1858,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/admin/product/add",
+							"raw": "http://localhost:3000/api/admin/product/add",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
 								"admin",
 								"product",
 								"add"
@@ -1671,8 +1881,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 400\", function () {\r",
-									"    pm.response.to.have.status(400);\r",
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
 									"});\r",
 									"\r",
 									"pm.test(\"response body data should contains message category not found\", function () {\r",
@@ -1712,12 +1922,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/admin/product/add",
+							"raw": "http://localhost:3000/api/admin/product/add",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
 								"admin",
 								"product",
 								"add"
@@ -1774,12 +1986,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/admin/product/add",
+							"raw": "http://localhost:3000/api/admin/product/add",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
 								"admin",
 								"product",
 								"add"
@@ -1836,12 +2050,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/admin/product/add",
+							"raw": "http://localhost:3000/api/admin/product/add",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
 								"admin",
 								"product",
 								"add"
@@ -1882,12 +2098,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/product",
+							"raw": "http://localhost:3000/api/public/product",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
+								"public",
 								"product"
 							]
 						}
@@ -1924,12 +2143,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/product/{{productId}}",
+							"raw": "http://localhost:3000/api/public/product/{{productId}}",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
+								"public",
 								"product",
 								"{{productId}}"
 							]
@@ -1965,12 +2187,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/product/3847839",
+							"raw": "http://localhost:3000/api/public/product/3847839",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
+								"public",
 								"product",
 								"3847839"
 							]
@@ -1996,8 +2221,6 @@
 									"    pm.expect(jsonData.status).to.equals('ok');\r",
 									"    pm.expect(jsonData).to.ownProperty('message');\r",
 									"    pm.expect(jsonData.message).to.equals('success');\r",
-									"    pm.expect(jsonData).to.ownProperty('data');\r",
-									"    pm.expect(jsonData.data).to.be.an('object');\r",
 									"    \r",
 									"});"
 								],
@@ -2028,12 +2251,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/admin/product/update/{{productId}}",
+							"raw": "http://localhost:3000/api/admin/product/update/{{productId}}",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
 								"admin",
 								"product",
 								"update",
@@ -2090,79 +2315,18 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/admin/product/update/9238927",
+							"raw": "http://localhost:3000/api/admin/product/update/9238927",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
 								"admin",
 								"product",
 								"update",
 								"9238927"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Add Product with Category Not Available Copy",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 400\", function () {\r",
-									"    pm.response.to.have.status(400);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"response body data should contains message category not found\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"\r",
-									"    pm.expect(jsonData).to.ownProperty('status');\r",
-									"    pm.expect(jsonData.status).to.equals('failed');\r",
-									"    pm.expect(jsonData).to.ownProperty('message');\r",
-									"    pm.expect(jsonData.message).to.equals('failed to add, category not found');\r",
-									"    \r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessTokenAdmin}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"{{$randomProductName}}\",\r\n    \"description\": \"this is product updated\",\r\n    \"category_id\": 1000,\r\n    \"price\": 100000,\r\n    \"stock\": 20\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "localhost:3000/admin/product/update/{{productId}}",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"admin",
-								"product",
-								"update",
-								"{{productId}}"
 							]
 						}
 					},
@@ -2216,12 +2380,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/admin/product/update/{{productId}}",
+							"raw": "http://localhost:3000/api/admin/product/update/{{productId}}",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
 								"admin",
 								"product",
 								"update",
@@ -2279,12 +2445,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/admin/product/update/{{productId}}",
+							"raw": "http://localhost:3000/api/admin/product/update/{{productId}}",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
 								"admin",
 								"product",
 								"update",
@@ -2332,12 +2500,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/admin/product/delete/{{productId}}",
+							"raw": "http://localhost:3000/api/admin/product/delete/{{productId}}",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
 								"admin",
 								"product",
 								"delete",
@@ -2385,12 +2555,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/admin/product/delete/{{productId}}",
+							"raw": "http://localhost:3000/api/admin/product/delete/{{productId}}",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
 								"admin",
 								"product",
 								"delete",
@@ -2438,12 +2610,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/admin/product/delete/2738",
+							"raw": "http://localhost:3000/api/admin/product/delete/2738",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
 								"admin",
 								"product",
 								"delete",
@@ -2484,6 +2658,69 @@
 								],
 								"type": "text/javascript"
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Membuat owner User\r",
+									"const getProduct = {\r",
+									"    url: 'http://localhost:3000/api/public/product',\r",
+									"    method: 'GET',\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json',\r",
+									"    },\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(getProduct, (error, response) => {\r",
+									"    console.log(error ? error : response);\r",
+									"\r",
+									"    let responseJson = response.json().data;\r",
+									"\r",
+									"    let productArray = []\r",
+									"    responseJson.forEach((data)=>{\r",
+									"        let product = {\r",
+									"            id: data.id,\r",
+									"            qty: 1\r",
+									"        }\r",
+									"\r",
+									"        productArray.push(product);\r",
+									"    });\r",
+									"\r",
+									"    console.log(productArray);\r",
+									"    pm.environment.set('productOrder', JSON.stringify(productArray));\r",
+									"    //console.log(response.json().data);\r",
+									"    \r",
+									"\r",
+									"    // Setelah mendaftar, login dengan Owner User\r",
+									"\r",
+									"    // const loginOwnerUserRequest = {\r",
+									"    //     url: 'localhost:5000/authentications',\r",
+									"    //     method: 'POST',\r",
+									"    //     header: {\r",
+									"    //         'Content-Type': 'application/json',\r",
+									"    //     },\r",
+									"    //      body : {\r",
+									"    //         mode: 'raw',\r",
+									"    //         raw: JSON.stringify({\r",
+									"    //             username: 'owner_user',\r",
+									"    //             password: 'secret'\r",
+									"    //         }),\r",
+									"    //     },\r",
+									"    // };\r",
+									"\r",
+									"    // pm.sendRequest(loginOwnerUserRequest, (error, response) =>{\r",
+									"    //    if(!error) {\r",
+									"    //        // memasukkan access token Owner User ke environment variabel\r",
+									"    //        const { data: { accessToken } } = response.json()\r",
+									"    //        pm.environment.set('ownerAccessToken', accessToken);\r",
+									"    //    }\r",
+									"    // })\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
 						}
 					],
 					"request": {
@@ -2501,7 +2738,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"products\":[\r\n        {\r\n            \"id\": 2,\r\n            \"qty\":1\r\n        },\r\n         {\r\n            \"id\": 8,\r\n            \"qty\":1\r\n        },\r\n        {\r\n            \"id\": 4,\r\n            \"qty\":1\r\n        },\r\n        {\r\n            \"id\": 7,\r\n            \"qty\":1\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"products\":{{productOrder}}\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2509,15 +2746,17 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/order/create",
+							"raw": "http://localhost:3000/api/customer/order/add",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
+								"customer",
 								"order",
-								"create"
+								"add"
 							]
 						}
 					},
@@ -2563,16 +2802,201 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/order/pending/",
+							"raw": "http://localhost:3000/api/customer/order/pending/",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
+								"customer",
 								"order",
 								"pending",
 								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get List Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response body data should contains true\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(jsonData).to.ownProperty('status');\r",
+									"    pm.expect(jsonData.status).to.equals('ok');\r",
+									"    pm.expect(jsonData).to.ownProperty('message');\r",
+									"    pm.expect(jsonData.message).to.equals('success');\r",
+									"    pm.expect(jsonData).to.ownProperty('data');\r",
+									"    pm.expect(jsonData.data).to.be.an('array');\r",
+									"    pm.expect(jsonData.data).lengthOf.at.least(1);\r",
+									"    \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenAdmin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/admin/order",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get List Order With Query Status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response body data should contains true\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(jsonData).to.ownProperty('status');\r",
+									"    pm.expect(jsonData.status).to.equals('ok');\r",
+									"    pm.expect(jsonData).to.ownProperty('message');\r",
+									"    pm.expect(jsonData.message).to.equals('success');\r",
+									"    pm.expect(jsonData).to.ownProperty('data');\r",
+									"    pm.expect(jsonData.data).to.be.an('array');\r",
+									"    pm.expect(jsonData.data).lengthOf.at.least(1);\r",
+									"    \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenAdmin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/admin/order?status=pending",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"order"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "pending"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get List Order With Multipe Query Status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response body data should contains true\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(jsonData).to.ownProperty('status');\r",
+									"    pm.expect(jsonData.status).to.equals('ok');\r",
+									"    pm.expect(jsonData).to.ownProperty('message');\r",
+									"    pm.expect(jsonData.message).to.equals('success');\r",
+									"    pm.expect(jsonData).to.ownProperty('data');\r",
+									"    pm.expect(jsonData.data).to.be.an('array');\r",
+									"    pm.expect(jsonData.data).lengthOf.at.least(2);\r",
+									"    \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenAdmin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/admin/order?status=pending,completed",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"order"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "pending,completed"
+								}
 							]
 						}
 					},
@@ -2616,13 +3040,15 @@
 						"method": "PATCH",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/order/submit/",
+							"raw": "http://localhost:3000/api/customer/order/submit/",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
+								"customer",
 								"order",
 								"submit",
 								""
@@ -2678,13 +3104,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/admin/order/update-status/{{orderId}}",
+							"raw": "http://localhost:3000/api/admin/order/update-status/{{orderId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
 								"admin",
 								"order",
 								"update-status",
@@ -2741,13 +3168,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/admin/order/update-status/{{orderId}}",
+							"raw": "http://localhost:3000/api/admin/order/update-status/{{orderId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
 								"admin",
 								"order",
 								"update-status",

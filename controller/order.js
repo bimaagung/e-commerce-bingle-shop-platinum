@@ -8,38 +8,38 @@ module.exports = {
       const userId = req.user.id;
       const { products } = req.body;
 
-      // check user have pending order
-      const getPendingOrder = await req.orderUC.getPendingOrderByUserId(userId);
-
-      if (getPendingOrder !== null) {
-        return res
-          .status(400)
-          .json(resData.failed('user already has pending order'));
-      }
-
       // create a new order
-      const createOrder = await req.orderUC.createOrder(
+      const order = await req.orderUC.createOrder(
         userId,
         orderId,
         products,
       );
 
-      if (createOrder === null) {
+      if (!order.isSuccess) {
         return res
           .status(400)
           .json(
             resData.failed(
-              'can\'t process the order, please check each product in order',
+              order.reason,
             ),
           );
       }
 
       res.status(201).json(
-        resData.success({
-          order_id: orderId,
-          products: createOrder,
-        }),
+        resData.success(order.data),
       );
+    } catch (e) {
+      next(e);
+    }
+  },
+
+  getListOrder: async (req, res, next) => {
+    try {
+      const { status } = req.query;
+
+      const order = await req.orderUC.getListOrder(status);
+
+      return res.status(200).json(resData.success(order.data));
     } catch (e) {
       next(e);
     }
@@ -51,11 +51,10 @@ module.exports = {
 
       const order = await req.orderUC.getPendingOrderByUserId(userId);
 
-      if (order === null) {
-        return res.status(404).json(resData.failed('not found pending order'));
+      if (order.isSuccess === false) {
+        return res.status(404).json(resData.failed(order.reason));
       }
-
-      res.json(resData.success(order));
+      res.status(200).json(resData.success(order.data));
     } catch (e) {
       next(e);
     }
@@ -66,32 +65,18 @@ module.exports = {
       const orderId = req.params.id;
       const statusOrder = req.body.status;
 
-      //  check order
-      const orderById = await req.orderUC.getOrderById(orderId);
-
-      if (orderById === null) {
-        return res.status(404).json(resData.failed('order not found'));
-      }
-
-      const pendingOrderById = await req.orderUC.getPendingOrderById(orderId);
-
-      // check order pending
-      if (pendingOrderById > 0) {
-        return res.status(400).json(resData.failed('order still pending'));
-      }
-
-      const updateStatusOrder = await req.orderUC.updateStatusOrder(
+      const order = await req.orderUC.updateStatusOrder(
         orderId,
         statusOrder,
       );
 
-      if (updateStatusOrder === null) {
+      if (order.isSuccess === false) {
         return res
-          .status(404)
-          .json(resData.failed('failed update status order'));
+          .status(order.statusCode)
+          .json(resData.failed(order.reason));
       }
 
-      res.json(resData.success());
+      res.status(200).json(resData.success());
     } catch (e) {
       next(e);
     }
@@ -101,25 +86,19 @@ module.exports = {
     try {
       const userId = req.user.id;
 
-      const orderPending = await req.orderUC.getPendingOrderByUserId(userId);
+      const order = await req.orderUC.updateOrderSubmitted(userId);
 
-      if (orderPending === null) {
-        return res.status(404).json(resData.failed('order not found'));
-      }
-
-      const order = await req.orderUC.updateOrderSubmitted(orderPending);
-
-      if (order === null) {
+      if (order.isSuccess === false) {
         return res
-          .status(400)
+          .status(order.statusCode)
           .json(
             resData.failed(
-              'recheck the product. make sure the product is still in stock',
+              order.reason,
             ),
           );
       }
 
-      res.json(resData.success());
+      res.status(200).json(resData.success());
     } catch (e) {
       next(e);
     }

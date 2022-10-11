@@ -7,10 +7,11 @@ module.exports = {
     const response = Joi.object({
       name: Joi.string().required(),
       username: Joi.string().required(),
+      image : Joi.string().allow(null).allow(''),
       telp: Joi.number().required(),
-      email: Joi.string().email().required(),
       password: Joi.string().min(6),
       confrimPassword: Joi.ref('password'),
+      email: Joi.string().email().required(),
     }).validate(req.body);
 
     if (response.error) {
