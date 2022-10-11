@@ -298,6 +298,96 @@ describe('orders', () => {
         expect(res.reason).toEqual('request status outside the specified options');
       });
   });
+
+  describe(`addProductInDetailOrder test`, () => {
+      test('should return array product id with length > 0 ', async () => {
+        let res = await orderUC.addProductInDetailOrder(1,1,[
+            {
+              id:1,
+              qty:1
+            }
+          ]
+        );
+
+        expect(Array.isArray(res)).toBeTruthy();
+        expect(res.length).toBeGreaterThan(0);
+      });
+       test('should return empty array product id with length = 0 ', async () => {
+        productValues.returnGetProductByID = null
+        orderUC = new OrderUseCase(
+          mockOrderRepo(orderValues),
+          mockOrderDetailRepo(orderDetailValues), 
+          mockProductRepo(productValues)
+        );
+        let res = await orderUC.addProductInDetailOrder(1,1,[
+            {
+              id:2,
+              qty:1
+            }
+          ]
+        );
+
+        expect(Array.isArray(res)).toBeTruthy();
+        expect(res).toEqual([]);
+      });
+  });
+
+  describe(`getProductByOrderDetail test`, () => {
+      test('should return array product id with length > 0 ', async () => {
+        let res = await orderUC.getProductByOrderDetail([
+            {
+              product_id:1,
+              qty:1,
+              total_price: 25000000
+            }
+          ]
+        );
+
+        expect(Array.isArray(res)).toBeTruthy();
+        expect(res.length).toBeGreaterThan(0);
+      });
+       test('when product not found should return empty array product id with length = 0 ', async () => {
+        productValues.returnGetProductByID = null
+        orderUC = new OrderUseCase(
+          mockOrderRepo(orderValues),
+          mockOrderDetailRepo(orderDetailValues), 
+          mockProductRepo(productValues)
+        );
+        let res = await orderUC.getProductByOrderDetail([
+             {
+              product_id:2,
+              qty:1,
+              total_price: 25000000
+            }
+          ]
+        );
+
+        expect(Array.isArray(res)).toBeTruthy();
+        expect(res).toEqual([]);
+      });
+  });
+
+  describe(`updateStockSoldProduct test`, () => {
+      test('should return array product id with length > 0 ', async () => {
+        let res = await orderUC.updateStockSoldProduct(1,'SUBMITTED');
+
+        expect(Array.isArray(res)).toBeTruthy();
+        expect(res.length).toBeGreaterThan(0);
+      });
+
+       test('when product not found should return empty array product id with length = 0 ', async () => {
+        productValues.returnGetProductByID = null
+        orderUC = new OrderUseCase(
+          mockOrderRepo(orderValues),
+          mockOrderDetailRepo(orderDetailValues), 
+          mockProductRepo(productValues)
+        );
+        let res = await orderUC.updateStockSoldProduct(2,'SUBMITTED');
+
+        expect(Array.isArray(res)).toBeTruthy();
+        expect(res).toEqual([]);
+      });
+  });
 });
 
 
