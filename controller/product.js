@@ -25,7 +25,7 @@ module.exports = {
     try {
       let { id } = req.params;
 
-      let product = await req.productUC.getProductByID(id);
+      let product = await req.productUC.getProductById(id);
       if (product.isSuccess === false) {
         return res.status(404).json(resData.failed(product.reason, product.data));
       }

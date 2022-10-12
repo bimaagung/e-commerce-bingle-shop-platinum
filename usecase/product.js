@@ -23,7 +23,7 @@ class ProductUC {
     return result;
   }
 
-  async getProductByID(id) {
+  async getProductById(id) {
     let result = {
       isSuccess: false,
       reason: '',

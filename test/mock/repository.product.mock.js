@@ -1,6 +1,6 @@
 const mockProductRepo = (
     {
-        returnGetProductByID, 
+        returnGetProductById, 
         returnUpdateProduct,
         returnGetAllProducts,
         returnAddProduct,
@@ -10,8 +10,8 @@ const mockProductRepo = (
   const repo = {};
 
   
-  repo.getProductByID = jest.fn().mockReturnValue(
-    returnGetProductByID !== true ? returnGetProductByID : {
+  repo.getProductById = jest.fn().mockReturnValue(
+    returnGetProductById !== true ? returnGetProductById : {
         id: 10,
         name: 'ASUS ROG Phone 6 Pro 18/512Gb',
         description: 'Smarphone dari asus',

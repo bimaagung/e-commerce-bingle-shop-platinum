@@ -1,19 +1,21 @@
 const ProductUseCase = require('../../usecase/product');
 const mockProductRepo = require('../mock/repository.product.mock');
 
+//object
 let productValues = {}
+//class
 let productUC = null;
 
 describe('product', () => {
     beforeEach(() => {
         productValues = {
-            returnGetProductByID:true, 
+            returnGetProductById:true, 
             returnUpdateProduct:true,
             returnGetAllProducts:true,
             returnAddProduct:true,
             returnDeleteProduct:true,
         }
-
+        
         productUC = new ProductUseCase(mockProductRepo(productValues))
     });
 
@@ -25,7 +27,7 @@ describe('product', () => {
             expect(Array.isArray(res.data)).toBeTruthy();
         })
 
-        test('should isSuccess  = false and data = []', async () => { 
+        test('should isSuccess  = true and data = []', async () => { 
             productValues.returnGetAllProducts = null
             productUC = new ProductUseCase(
                 mockProductRepo(productValues)
@@ -40,13 +42,13 @@ describe('product', () => {
     })
 
     describe('update products', ()=>{
-        test('seharusnya isSuccess  = true', async () => { 
+        test('should isSuccess  = true', async () => { 
             let res = await productUC.updateProduct(1, {name: 'test'})
 
             expect(res.isSuccess).toBeTruthy()
         })
 
-        test('seharusnya isSuccess  = false dan reason = product not found', async () => { 
+        test('should isSuccess  = false and reason = product not found', async () => { 
             productValues.returnGetProductByID = null
             productUC = new ProductUseCase(
                 mockProductRepo(productValues)
@@ -58,20 +60,20 @@ describe('product', () => {
         })
     })
     describe('get product by Id', async () => {
-        test ('seharusnya isSuccess  = true dan data dalam object', async () => {
-            let res = await productUC.getProductByID(1)
+        test ('should isSuccess  = true and data is object', async () => {
+            let res = await productUC.getProductById(1)
 
             expect(res.isSuccess).toBeTruthy()
             expect(typeof res.data === 'object').toBeTruthy()
         })
 
-        test('seharusnya isSuccess = false dan data = null', async () => {
-            productValues.returnGetProductByID = null
+        test('should isSuccess = false and data = null', async () => {
+            productValues.returnGetProductById = null
             productUC = new ProductUseCase(
                 mockProductRepo(productValues)    
             )
 
-            let res = await productUC.getProductByID()
+            let res = await productUC.getProductById()
 
             expect(res.isSuccess).toBeFalsy()
             expect(res.data).toEqual(null)
