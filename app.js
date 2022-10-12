@@ -1,13 +1,12 @@
+let apm = require('elastic-apm-node');
 
-// let apm = require('elastic-apm-node');
+apm.start({
+  serviceName: process.env.PLATINUM_MAJU_JAYA,
+  // secretToken: '',
 
-// apm.start({
-//   serviceName: process.env.PLATINUM_MAJU_JAYA,
-//   secretToken: '',
-
-//   serverUrl: `http://${process.env.SERVER_URL}:8200`,
-//   environment: 'development',
-// });
+  serverUrl: `http://${process.env.SERVER_URL}:8200`,
+  environment: 'development',
+});
 
 const express = require('express');
 
@@ -34,20 +33,18 @@ const OrderDetailRepository = require('./repository/orderDetail');
 const UserRepository = require('./repository/user');
 const UserUseCase = require('./usecase/user');
 
-const AuthRepository = require('./repository/auth')
-const AuthUseCase = require('./usecase/auth')
+const AuthRepository = require('./repository/auth');
+const AuthUseCase = require('./usecase/auth');
 
 app.use(morgan('dev'));
 
 const ProductImageRepository = require('./repository/product_image');
 const ProductImageUseCase = require('./usecase/product_image');
 
-const customerRouter= require('./routes/customer')
-const publicRouter = require('./routes/public')
+const customerRouter = require('./routes/customer');
+const publicRouter = require('./routes/public');
 const authRouter = require('./routes/auth');
 const adminRouter = require('./routes/admin');
-
-
 
 app.use('/public', express.static('public'));
 
@@ -58,8 +55,8 @@ const userUC = new UserUseCase(new UserRepository());
 
 const authUC = new AuthUseCase(
   new AuthRepository(),
-  new UserRepository()
-)
+  new UserRepository(),
+);
 
 const productImageUC = new ProductImageUseCase(
   new ProductImageRepository(),
@@ -92,11 +89,8 @@ app.get('/', (req, res) => {
 
 app.use('/', authRouter);
 app.use('/', adminRouter);
-app.use('/', customerRouter); 
-app.use('/', publicRouter); 
-
-
-
+app.use('/', customerRouter);
+app.use('/', publicRouter);
 
 // handle server error
 app.use(serverError);

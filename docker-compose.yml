@@ -1,64 +1,85 @@
-version: '3.2'
+version: '3.8'
 
 services:
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.3
-    volumes:
-      - ./vendor/apm-elk/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-      - elasticsearch:/usr/share/elasticsearch/data
+
+  apm-server:
+    image: docker.elastic.co/apm/apm-server:7.13.0
+    cap_add: ["CHOWN", "DAC_OVERRIDE", "SETGID", "SETUID"]
+    cap_drop: ["ALL"]
     ports:
-      - "9200:9200"
-      - "9300:9300"
-    environment:
-      ES_JAVA_OPTS: "-Xmx512m -Xms512m"
-      ELASTIC_PASSWORD: elastic1234
-      discovery.type: single-node
+      - 8200:8200
+    depends_on:
+      - elasticsearch
+      - kibana
+    command: >
+        apm-server -e
+          -E apm-server.rum.enabled=true
+          -E setup.kibana.host=kibana:5601
+          -E setup.template.settings.index.number_of_replicas=0
+          -E apm-server.kibana.enabled=true
+          -E apm-server.kibana.host=kibana:5601
+          -E output.elasticsearch.hosts=["elasticsearch:9200"]
+    healthcheck:
+      interval: 10s
+      retries: 12
+      test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:8200/
     networks:
-      - elk
-    logging:
-      driver: "json-file"
-      options:
-        max-file: "1"
-        max-size: "200m"
+      - elastic
+  
+  elasticsearch:
+   container_name: elasticsearch
+   image: docker.elastic.co/elasticsearch/elasticsearch:7.13.0
+   ports:
+    - 9200:9200
+   volumes:
+    - elasticsearch-data:/usr/share/elasticsearch/data
+   environment:
+    - xpack.monitoring.enabled=true
+    - xpack.watcher.enabled=false
+    - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    - discovery.type=single-node
+   networks:
+    - elastic
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.17.3
-    volumes:
-      - ./vendor/apm-elk/kibana.yml:/usr/share/kibana/config/kibana.yml
-    ports:
-      - "5601:5601"
-    networks:
-      - elk
-    depends_on:
-      - elasticsearch
-    logging:
-      driver: "json-file"
-      options:
-        max-file: "1"
-        max-size: "200m"
-  
-  apm-server:
-    image: docker.elastic.co/apm/apm-server:7.17.3
-    command:
-      - --strict.perms=false
-    volumes:
-      - ./vendor/apm-elk/apm-server.yml:/usr/share/apm-server/apm-server.yml
-    ports:
-      - '8200:8200'
-    
-    env_file:
-      - .env
-    environment:
-      ELASTIC_PASSWORD: elastic1234
-      
-    networks:
-      - elk
-    depends_on:
-      - elasticsearch
+   container_name: kibana
+   image: docker.elastic.co/kibana/kibana:7.13.0
+   ports:
+    - 5601:5601
+   depends_on:
+    - elasticsearch
+   environment:
+    - ELASTICSEARCH_URL=http://localhost:9200
+    - xpack.apm.enabled=false
+   networks:
+    - elastic
 
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: 12345678
+    ports:
+      - '5431:5432'
+    expose:
+      - '5432'
+    networks:
+      - elastic
+  
+  platinum:
+    build: .
+    ports:
+      - '3000:3000'
+    expose:
+      - '3000'
+    networks:
+      - elastic
+    depends_on:
+      - postgres
+
+  
 networks:
-  elk:
+  elastic:
     driver: bridge
 
 volumes:
-  elasticsearch:
+  elasticsearch-data:
