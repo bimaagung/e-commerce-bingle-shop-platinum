@@ -25,9 +25,9 @@ const mockCategoryRepo = (
   repo.addCategory = jest.fn().mockReturnValue(
     returnAddCategory !== true ? returnAddCategory : {
       id: "1",
-          name: "celana",
-          createdAt: new Date(),
-          updatedAt: new Date(),
+      name: "celana",
+      createdAt: new Date(),
+      updatedAt: new Date(),
     }
   )
 
