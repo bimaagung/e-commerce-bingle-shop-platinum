@@ -254,66 +254,6 @@ describe('Test Order', () => {
         });
     })
 
-    describe('getPendingOrderByUserId test', () => {
-
-        const order = [
-            {
-                id: "Ti9jtWs0FHhJMAmS",
-                user_id: 1,
-                status: "PROCESSED",
-                completed_date: null,
-                createdAt: "12-09-2022 23:30:00",
-                updatedAt: "12-09-2022 23:30:00",
-            }
-        ]
-
-        test('should status is 200 and data is true', async() => {
-
-            mockOrderUC.getPendingOrderByUserId = jest.fn().mockReturnValue(
-                {isSuccess: true, reason:null, data: order}
-            );
-
-            let req = mockRequest({},{},{},{id:1},{ orderUC: mockOrderUC });
-            let res = mockResponse();
-
-            await orderController.getPendingOrderByUserId(req, res, next);
-
-            expect(mockOrderUC.getPendingOrderByUserId).toHaveBeenCalled();
-            expect(res.status).toBeCalledWith(200)
-            expect(res.json).toBeCalledWith(resData.success(order));
-
-        });
-
-        test(`should status is 404 and reason is "order not found"`, async() => {
-             mockOrderUC.getPendingOrderByUserId = jest.fn().mockReturnValue(
-                {isSuccess: false, reason:'order not found', data: order}
-            );
-
-            let req = mockRequest({},{},{},{id:2},{ orderUC: mockOrderUC });
-            let res = mockResponse();
-
-            await orderController.getPendingOrderByUserId(req, res, next);
-
-            expect(mockOrderUC.getPendingOrderByUserId).toHaveBeenCalled();
-            expect(res.status).toBeCalledWith(404)
-            expect(res.json).toBeCalledWith(resData.failed('order not found'));
-        });
-
-         test("should status is 500 and message is 'internal server error'", async () => {
-            mockOrderUC.getPendingOrderByUserId = jest.fn().mockImplementation(() => {
-                throw new Error();
-            });
-
-            let req = mockRequest({},{},{},{id:1},{ orderUC: mockOrderUC });
-            let res = mockResponse();
-            let serverError = next();
-
-            await orderController.getPendingOrderByUserId(req, res, next);
-            expect(serverError().status).toEqual(500);
-            expect(serverError().json.message).toEqual('internal server error');
-        });
-    })
-
     describe('changeStatusOrder test', () => {
 
         test('should status is 200 and data is true', async() => {
