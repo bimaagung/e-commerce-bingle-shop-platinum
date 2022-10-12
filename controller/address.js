@@ -3,36 +3,29 @@ const resData = require('../helper/response');
 module.exports = {
   getAddressByID: async (req, res, next) => {
     try {
-      let { id } = req.params;
-      let addressUC = await req.addressUC.getAddressByID(id);
-      if (addressUC.isSuccess === false) {
+      let  {id} = req.params;
+      let address = await req.addressUC.getAddressByID(id);
+      if (address.isSuccess === false) {
         return res
-          .status(400)
-          .json(resData.failed(addressUC.reason, addressUC.data));
+          .status(address.status)
+          .json(resData.failed(address.reason));
       };
-      res.status(201).json(
-        resData.success(
-          addressUC.data,
-        ),
-      );
+      res.status(address.status).json(resData.success(address.data));
     } catch (e) {
       next(e);
     }
   },
 
-  getAllAddress: async (req, res, next) => {
+  getAddresByUserID: async (req, res, next) => {
     try {
-      let addressUC = await req.addressUC.getAllAddress();
-      if (addressUC.isSuccess === false) {
+      let id = req.user.id
+      let address = await req.addressUC.getAddressByUserID(id);
+      if (address.isSuccess !== true) {
         return res
-          .status(400)
-          .json(resData.failed(addressUC.reason, addressUC.data));
+          .status(address.status)
+          .json(resData.failed(address.reason, address.data));
       };
-      res.status(201).json(
-        resData.success(
-          addressUC.data,
-        ),
-      );
+      res.status(address.status).json(resData.success(address.data));
     } catch (e) {
       next(e);
     }
@@ -47,17 +40,13 @@ module.exports = {
         detail: req.body.detail,
         user_id: req.user.id,
       };
-      let addressUC = await req.addressUC.addAddress(address);
-      if (addressUC.isSuccess === false) {
+      let resAddress = await req.addressUC.addAddress(address);
+      if (resAddress.isSuccess === false) {
         return res
-          .status(400)
-          .json(resData.failed(addressUC.reason, addressUC.data));
+          .status(resAddress.status)
+          .json(resData.failed(resAddress.reason, resAddress.data));
       };
-      res.status(201).json(
-        resData.success(
-          addressUC.data,
-        ),
-      );
+      res.status(resAddress.status).json(resData.success(resAddress.data));
     } catch (e) {
       next(e);
     }
@@ -75,17 +64,13 @@ module.exports = {
         user_id: req.user.id,
       };
 
-      let addressUC = await req.addressUC.updateAddress(id, address);
-      if (addressUC.isSuccess === false) {
+      let resAddress = await req.addressUC.updateAddress(id, address);
+      if (resAddress.isSuccess === false) {
         return res
-          .status(400)
-          .json(resData.failed(addressUC.reason, addressUC.data));
+          .status(resAddress.status)
+          .json(resData.failed(resAddress.reason));
       };
-      res.status(201).json(
-        resData.success(
-          addressUC.data,
-        ),
-      );
+      res.status(resAddress.status).json(resData.success(resAddress));
     } catch (e) {
       next(e);
     }
@@ -93,18 +78,14 @@ module.exports = {
 
   deleteAddress: async (req, res, next) => {
     try {
-      let { id } = req.params;
-      let addressUC = await req.addressUC.deleteAddress(id);
-      if (addressUC.isSuccess === false) {
+      let {id} = req.params;
+      let resAddress = await req.addressUC.deleteAddress(id);
+      if (resAddress.isSuccess === false) {
         return res
-          .status(400)
-          .json(resData.failed(addressUC.reason, addressUC.data));
+          .status(resAddress.status)
+          .json(resData.failed(resAddress.reason));
       };
-      res.status(201).json(
-        resData.success(
-          addressUC.data,
-        ),
-      );
+      res.status(resAddress.status).json(resData.success());
     } catch (e) {
       next(e);
     }

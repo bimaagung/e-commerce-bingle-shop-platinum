@@ -71,15 +71,15 @@ describe('orders', () => {
     });
   });
 
-  describe('get order by id test', () => {
+  describe('getOrderById test', () => {
 
-    test('get order by is success', async () => {
+    test('should isSuccess is true and data type is object', async () => {
       let res = await orderUC.getOrderById(12);
       expect(res.isSuccess).toBeTruthy();
       expect(typeof res.data === 'object').toBeTruthy();
     });
 
-    test('get order by id with order is not found', async () => {
+    test(`should isSucess is false and reason "order is not found"`, async () => {
       const repo = mockOrderRepo({returnGetOrderById : null});
       const orderUC = new OrderUseCase(repo);
 
@@ -91,16 +91,16 @@ describe('orders', () => {
 
   });
 
-  describe('get order pending by id test', () => {
+  describe('getPendingOrderById test', () => {
 
-    test('get order pending by id is success is true and data is return value true', async () => {
+    test('should isSuccess is true and data type is object', async () => {
       let res = await orderUC.getPendingOrderById(12);
 
       expect(res.isSuccess).toBeTruthy();
       expect(typeof res.data === 'object').toBeTruthy();
     });
 
-    test('get order pending by id with order status processed is not found', async () => {
+    test(`with body status order = processed should isSuccess is false and reason is "order not found"`, async () => {
       const repo = mockOrderRepo(
         { 
           returnGetOrderPendingById  : {
@@ -122,7 +122,7 @@ describe('orders', () => {
       expect(res.data).toEqual(null);
     });
 
-    test('get order pending by id with param null should message order not found', async () => {
+    test(`should isSuccess is false and reason is "order not found"`, async () => {
       const repo = mockOrderRepo({returnGetOrderPendingById: null});
 
       const orderUC = new OrderUseCase(repo);
@@ -135,9 +135,9 @@ describe('orders', () => {
 
   });
 
-  describe('get order pending by user id test', () => {
+  describe('getPendingOrderByUserId test', () => {
 
-    test('get order pending by user id with return status true and data type of array', async () => {
+    test('should isSuccess is true and data type is array', async () => {
       let res = await orderUC.getPendingOrderByUserId(1);
 
       expect(res.isSuccess).toBeTruthy();
@@ -146,7 +146,7 @@ describe('orders', () => {
           
     });
 
-    test('get order pending by user id with status false and message order pending not found', async () => {
+    test(`should isSuccess is false and reason "order not found"`, async () => {
       orderValues.returnGetPendingOrderByUserId = null
       productValues.returnGetProductByID = null
       orderUC = new OrderUseCase(
@@ -163,15 +163,15 @@ describe('orders', () => {
 
   });
 
-  describe('update order submitted test', () => {
+  describe('updateOrderSubmitted test', () => {
 
-    test('update order submitted should  success is true', async () => {
+    test('should  isSuccess is true', async () => {
       let res = await orderUC.updateOrderSubmitted(1);
 
       expect(res.isSuccess).toBeTruthy();
     });
 
-    test("update order submitted should  message is 'order not found'", async () => {
+    test(`should isSuccess is false and reason is "order not found"`, async () => {
       orderValues.returnGetPendingOrderByUserId = null
       orderUC = new OrderUseCase(
         mockOrderRepo(orderValues),
@@ -185,7 +185,7 @@ describe('orders', () => {
       expect(res.reason).toEqual('order not found');
     });
 
-    test("update order submitted should message is 'recheck the product, make sure the product is still in stock'", async () => {
+    test("when product not found or stock product is empty should isSuccess is false and reason is 'recheck the product, make sure the product is still in stock'", async () => {
       productValues.returnGetProductByID = null
       orderUC = new OrderUseCase(
         mockOrderRepo(orderValues),
@@ -202,10 +202,8 @@ describe('orders', () => {
 
   });
 
-  describe('create order test', () => {
-
-
-    test('return should success is true and type data is object', async () => {
+  describe('createOrder test', () => {
+    test('should isSucess is true and data type is object', async () => {
       orderValues.returnGetPendingOrderByUserId = null
       orderUC = new OrderUseCase(
         mockOrderRepo(orderValues),
@@ -219,7 +217,7 @@ describe('orders', () => {
       expect(typeof res.data === 'object').toBeTruthy();
     });
 
-    test("return should message is 'user already has pending order'", async () => {
+    test("should isSucess is false and reason is 'user already has pending order'", async () => {
       orderUC = new OrderUseCase(
         mockOrderRepo(orderValues),
         mockOrderDetailRepo(orderDetailValues), 
@@ -232,7 +230,7 @@ describe('orders', () => {
       expect(res.reason).toEqual('user already has pending order');
     });
 
-    test("update order submitted should message is 'can\'t process the order, please check each product in order'", async () => {
+    test("should isSuccess is false message is 'can\'t process the order, please check each product in order'", async () => {
       orderValues.returnGetPendingOrderByUserId = null;
       productValues.returnGetProductByID = null;
       productValues = {
@@ -253,27 +251,27 @@ describe('orders', () => {
 
   });
 
-  describe('update status order for admin test', () => {
-      test('param status is processed return should success is true', async () => {
+  describe('updateStatusOrder test', () => {
+      test('when param status is processed should isSuccess is true', async () => {
         let res = await orderUC.updateStatusOrder(1,'ORDER_PROCESSED');
 
         expect(res.isSuccess).toBeTruthy();
         expect(res.statusCode).toEqual(200);
       });
 
-      test('param status is processed return should success is true', async () => {
+      test('when param status is completed should isSuccess is true', async () => {
         let res = await orderUC.updateStatusOrder(1,'ORDER_COMPLETED');
 
         expect(res.isSuccess).toBeTruthy();
       });
 
-      test('param status is canceled return should success is true and updated return stock', async () => {
+      test('when param status is canceled should isSuccess is true and updated return stock', async () => {
         let res = await orderUC.updateStatusOrder(1,'ORDER_CANCELED');
 
         expect(res.isSuccess).toBeTruthy();
       });
 
-      test("return should reason is 'orders without pending status not found'", async () => {
+      test(`should isSuccess is false and reason is "orders without pending status not found"`, async () => {
         orderValues.returnVerifyOrderWithoutStatusPending = null;
         orderUC = new OrderUseCase(
           mockOrderRepo(orderValues),
@@ -287,7 +285,7 @@ describe('orders', () => {
         expect(res.reason).toEqual('orders without pending status not found');
       });
 
-      test("return should reason is 'request status outside the specified options'", async () => {
+      test(`should isSuccess is true and reason is "request status outside the specified options"`, async () => {
         orderUC = new OrderUseCase(
           mockOrderRepo(orderValues),
           mockOrderDetailRepo(orderDetailValues), 
@@ -298,6 +296,96 @@ describe('orders', () => {
 
         expect(res.isSuccess).toBeFalsy();
         expect(res.reason).toEqual('request status outside the specified options');
+      });
+  });
+
+  describe(`addProductInDetailOrder test`, () => {
+      test('should return array product id with length > 0 ', async () => {
+        let res = await orderUC.addProductInDetailOrder(1,1,[
+            {
+              id:1,
+              qty:1
+            }
+          ]
+        );
+
+        expect(Array.isArray(res)).toBeTruthy();
+        expect(res.length).toBeGreaterThan(0);
+      });
+       test('should return empty array product id with length = 0 ', async () => {
+        productValues.returnGetProductByID = null
+        orderUC = new OrderUseCase(
+          mockOrderRepo(orderValues),
+          mockOrderDetailRepo(orderDetailValues), 
+          mockProductRepo(productValues)
+        );
+        let res = await orderUC.addProductInDetailOrder(1,1,[
+            {
+              id:2,
+              qty:1
+            }
+          ]
+        );
+
+        expect(Array.isArray(res)).toBeTruthy();
+        expect(res).toEqual([]);
+      });
+  });
+
+  describe(`getProductByOrderDetail test`, () => {
+      test('should return array product id with length > 0 ', async () => {
+        let res = await orderUC.getProductByOrderDetail([
+            {
+              product_id:1,
+              qty:1,
+              total_price: 25000000
+            }
+          ]
+        );
+
+        expect(Array.isArray(res)).toBeTruthy();
+        expect(res.length).toBeGreaterThan(0);
+      });
+       test('when product not found should return empty array product id with length = 0 ', async () => {
+        productValues.returnGetProductByID = null
+        orderUC = new OrderUseCase(
+          mockOrderRepo(orderValues),
+          mockOrderDetailRepo(orderDetailValues), 
+          mockProductRepo(productValues)
+        );
+        let res = await orderUC.getProductByOrderDetail([
+             {
+              product_id:2,
+              qty:1,
+              total_price: 25000000
+            }
+          ]
+        );
+
+        expect(Array.isArray(res)).toBeTruthy();
+        expect(res).toEqual([]);
+      });
+  });
+
+  describe(`updateStockSoldProduct test`, () => {
+      test('should return array product id with length > 0 ', async () => {
+        let res = await orderUC.updateStockSoldProduct(1,'SUBMITTED');
+
+        expect(Array.isArray(res)).toBeTruthy();
+        expect(res.length).toBeGreaterThan(0);
+      });
+
+       test('when product not found should return empty array product id with length = 0 ', async () => {
+        productValues.returnGetProductByID = null
+        orderUC = new OrderUseCase(
+          mockOrderRepo(orderValues),
+          mockOrderDetailRepo(orderDetailValues), 
+          mockProductRepo(productValues)
+        );
+        let res = await orderUC.updateStockSoldProduct(2,'SUBMITTED');
+
+        expect(Array.isArray(res)).toBeTruthy();
+        expect(res).toEqual([]);
       });
   });
 });

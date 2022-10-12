@@ -46,12 +46,6 @@ class OrderUC {
       listOrder = await this.orderRepository.getListOrder();
     }
 
-    // check order is existing
-    if (listOrder.length < 1) {
-      result.reason = 'empty order';
-      return result;
-    }
-
     result.data = listOrder;
 
     return result;
@@ -215,13 +209,9 @@ class OrderUC {
       };
 
       // add product in detail order
-      const addOrderDetail = await this.orderDetailRepository.addOrderDetails(
+      await this.orderDetailRepository.addOrderDetails(
         orderDetail,
       );
-
-      if (addOrderDetail === null) {
-        continue;
-      }
 
       // if success push to product_id
       OrderDetailByProductId.push(getProductById);
@@ -372,14 +362,11 @@ class OrderUC {
         calProduct.stock = getProductById.stock + orderDetail[i].qty;
         calProduct.sold = getProductById.sold - orderDetail[i].qty;
 
-        const updateStockSoldProduct = await this.productRespository.updateProduct(
+        await this.productRespository.updateProduct(
           orderDetail[i].product_id,
           calProduct,
         );
 
-        if (updateStockSoldProduct === null) {
-          continue;
-        }
         fixUpdateProduct.push(orderDetail[i].product_id);
       } else if (statusOrder === orderConstant.ORDER_SUBMITTED) {
         // check stock
@@ -390,14 +377,12 @@ class OrderUC {
         // Reduce product stock after submitted
         calProduct.stock = getProductById.stock - orderDetail[i].qty;
         calProduct.sold = getProductById.sold + orderDetail[i].qty;
-        const updateStockSoldProduct = await this.productRespository.updateProduct(
+
+        await this.productRespository.updateProduct(
           orderDetail[i].product_id,
           calProduct,
         );
 
-        if (!updateStockSoldProduct) {
-          continue;
-        }
         fixUpdateProduct.push(orderDetail[i].product_id);
       } else {
         return;

@@ -30,11 +30,7 @@ module.exports = {
         return res.status(404).json(resData.failed(product.reason, product.data));
       }
 
-      res.json(
-        resData.success(
-          product.data,
-        ),
-      );
+      res.status(200).json(resData.success(product.data));
     } catch (e) {
       next(e);
     }
