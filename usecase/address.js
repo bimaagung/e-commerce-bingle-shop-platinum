@@ -12,14 +12,14 @@ class AddressUC {
       data: null,
     };
     let address = await this.AddressRepository.getAddressByID(id);
-    
+
     if (address == null) {
       result.reason = 'address not found';
-      return result
-    };
+      return result;
+    }
 
     result.isSuccess = true;
-    result.status = 200
+    result.status = 200;
     result.data = address;
     return result;
   }
@@ -33,8 +33,8 @@ class AddressUC {
 
     let address = await this.AddressRepository.getAddressByUserID(userId);
     result.isSuccess = true;
-    result.status = 200
-    result.data = address
+    result.status = 200;
+    result.data = address;
     return result;
   }
 
@@ -50,13 +50,13 @@ class AddressUC {
 
     if (existUserById == null) {
       result.reason = 'user id not found';
-      return result
-    };
+      return result;
+    }
     let addAddress = await this.AddressRepository.addAddress(address);
 
     result.isSuccess = true;
     result.data = addAddress;
-    result.status = 201
+    result.status = 201;
     return result;
   }
 
@@ -72,11 +72,11 @@ class AddressUC {
 
     if (existAddress == null) {
       result.reason = 'address not found';
-      return result
-    };
+      return result;
+    }
     let updateAddress = await this.AddressRepository.updateAddress(id, address);
     result.isSuccess = true;
-    result.status = 200
+    result.status = 200;
     result.data = updateAddress;
     return result;
   }
@@ -93,13 +93,13 @@ class AddressUC {
 
     if (existAddress == null) {
       result.reason = 'address not found';
-      return result
-    };
+      return result;
+    }
 
     let deleteAddress = await this.AddressRepository.deleteAddress(id);
 
     result.isSuccess = true;
-    result.status =200
+    result.status = 200;
     result.data = deleteAddress;
     return result;
   }

@@ -56,7 +56,7 @@ describe('product', () => {
             );
             let res = await productUC.updateProduct(1, {name: 'test'})
             
-            expect(res.isSuccess).toBeTruthy()
+            expect(res.isSuccess).toBeFalsy()
             expect(res.reason).toEqual('product not found');
         })
     })
