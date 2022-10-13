@@ -17,11 +17,10 @@ class CategoryUC {
       return result;
     }
 
-    result.isSuccess = true
-    result.data = category
+    result.isSuccess = true;
+    result.data = category;
 
-    return result
-
+    return result;
   }
 
   async getAllCategory() {
@@ -33,10 +32,10 @@ class CategoryUC {
 
     const category = await this.categoryRepository.getAllCategory();
 
-    result.isSuccess = true
-    result.data = category
+    result.isSuccess = true;
+    result.data = category;
 
-    return result
+    return result;
   }
 
   async addCategory(category) {
@@ -48,10 +47,15 @@ class CategoryUC {
 
     const addCategory = await this.categoryRepository.addCategory(category);
 
-    result.isSuccess = true
-    result.data = addCategory
+    if (addCategory === null) {
+      result.reason = 'failed add category';
+      return result;
+    }
 
-    return result
+    result.isSuccess = true;
+    result.data = addCategory;
+
+    return result;
   }
 
   async updateCategory(category, id) {
@@ -61,16 +65,16 @@ class CategoryUC {
       data: null,
     };
 
-    const cekCategory = await this.categoryRepository.getCategoryByID(id)
+    const cekCategory = await this.categoryRepository.getCategoryByID(id);
     if (cekCategory === null) {
-      result.reason = 'category not found'
-      return result
+      result.reason = 'category not found';
+      return result;
     }
     const updateCategory = await this.categoryRepository.updateCategory(category, id);
 
-    result.isSuccess = true
-    result.data = updateCategory
-    return result
+    result.isSuccess = true;
+    result.data = updateCategory;
+    return result;
   }
 
   async deleteCategory(id) {
@@ -83,16 +87,15 @@ class CategoryUC {
 
     let category = await this.categoryRepository.getCategoryByID(id);
     if (category === null) {
-      result.reason = 'category not found'
-      result.status =404
-      return result
+      result.reason = 'category not found';
+      result.status = 404;
+      return result;
     }
-     await this.categoryRepository.deleteCategory(id);
-    result.isSuccess = true
-    result.status = 200
-    return result
+    await this.categoryRepository.deleteCategory(id);
+    result.isSuccess = true;
+    result.status = 200;
+    return result;
   }
 }
 
 module.exports = CategoryUC;
-// blm fix
