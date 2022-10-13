@@ -55,6 +55,20 @@ const mockOrderRepo = (
         completed_date: null,
         createdAt: "12-09-2022 23:30:00",
         updatedAt: "12-09-2022 23:30:00",
+        user : {
+          id: '1',
+          name: 'Leslie Hayes',
+          username: 'Bessie_Fadel',
+          telp: '08487438',
+        },
+        order_details: [
+            {
+                id: 1,
+                product_id: 2,
+                qty: 10,
+                total_price: 25000000,
+            },
+        ]
       }
   );
 
@@ -75,8 +89,16 @@ const mockOrderRepo = (
         user_id: 1,
         status: 'PENDING',
         complete_date: null,
+        qty: 10,
+        total_price: 25000000,
         createdAt: "12-09-2022 23:30:00",
         updatedAt: "12-09-2022 23:30:00",
+        user : {
+          id: '1',
+          name: 'Leslie Hayes',
+          username: 'Bessie_Fadel',
+          telp: '08487438',
+        },
         order_details: [
             {
                 id: 1,
