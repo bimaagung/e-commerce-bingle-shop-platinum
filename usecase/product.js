@@ -31,13 +31,13 @@ class ProductUC {
       data: null,
     };
 
-    let getProductByID = await this.productRepository.getProductByID(id);
-    if (getProductByID == null) {
+    let getProductById = await this.productRepository.getProductById(id);
+    if (getProductById == null) {
       result.reason = 'product not found';
       return result;
     }
     result.isSuccess = true;
-    result.data = getProductByID;
+    result.data = getProductById;
     return result;
   }
 
@@ -73,7 +73,7 @@ class ProductUC {
     };
 
     // check product not null
-    let existProduct = await this.productRepository.getProductByID(id);
+    let existProduct = await this.productRepository.getProductById(id);
 
     if (existProduct === null) {
       result.reason = 'product not found';
@@ -91,14 +91,14 @@ class ProductUC {
       reason: '',
       data: null,
     };
-    let existProduct = await this.productRepository.getProductByID(id);
+    let existProduct = await this.productRepository.getProductById(id);
     if (existProduct === null) {
       result.reason = 'product not found';
       return result;
     }
     await this.productRepository.deleteProduct(id);
-    result.isSuccess = true
-    return result
+    result.isSuccess = true;
+    return result;
   }
 }
 

@@ -42,7 +42,7 @@ describe('product', () => {
         })
     })
 
-    describe('update products', ()=>{
+    describe('update products', () => {
         test('should isSuccess  = true', async () => { 
             let res = await productUC.updateProduct(1, {name: 'test'})
 
@@ -60,7 +60,7 @@ describe('product', () => {
             expect(res.reason).toEqual('product not found');
         })
     })
-    describe('get product by Id', async () => {
+    describe('get product by Id', () => {
         test ('should isSuccess  = true and data is object', async () => {
             let res = await productUC.getProductById(1)
 

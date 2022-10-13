@@ -109,10 +109,20 @@ describe('Test Product', () => {
             expect(mockProductUC.getProductById).toHaveBeenCalled()
             expect(res.status).toBeCalledWith(200)
             expect(res.json).toBeCalledWith(resData.success(product))
-
-            
-        
         })
 
+        test('should status 404 and message is product not found', async () => {
+            mockProductUC.getProductById = jest.fn().mockReturnValue(
+                {isSuccess: false, reason: 'product not found', data:null}
+            )
+        })
+        let req = mockRequest({},{},{},{id:2},{ productUC: mockProductUC})
+        let re = mockResponse()
+
+        await productController.getProductById(req, res, next)
+
+        expect(res.status).toBeCalledWith(404)
+        expect(res.json).toBeCalledWith(resData.failed('product not found'))
     })
+    
 })
