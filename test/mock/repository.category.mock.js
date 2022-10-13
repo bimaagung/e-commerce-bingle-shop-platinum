@@ -2,8 +2,8 @@ const mockCategoryRepo = (
   {
       
       returnGetCategoryByID,
-      returnPutCaregory,
-      returnAllCategory,
+      returnUpdateCategory,
+      returnGetAllCategory,
       returnAddCategory,
       returnDeleteCategory
   }
@@ -31,12 +31,12 @@ const mockCategoryRepo = (
     }
   )
 
-  repo.putCategory = jest.fn().mockReturnValue(
-    returnPutCaregory !== true ? returnPutCaregory : true
+  repo.updateCategory = jest.fn().mockReturnValue(
+    returnUpdateCategory !== true ? returnUpdateCategory : true
 )
 
 repo.getAllCategory = jest.fn().mockReturnValue(
-    returnAllCategory !== true ? returnAllCategory : [
+    returnGetAllCategory !== true ? returnGetAllCategory : [
         {
           id: "1",
           name: "celana",

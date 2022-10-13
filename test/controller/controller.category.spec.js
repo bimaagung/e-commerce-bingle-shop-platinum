@@ -44,19 +44,20 @@ describe('Test Category', () => {
                 updatedAt: new Date(),
             }
         ]
-        test('sholud status 200 data in category'), async () => {
-            mockCategoryUC.getAllCategory = jest.fn().mockReturnValue(
-                {isSuccess: true, reason:null, data:Category}
-            )
-            let req = mockRequest({},{},{},{},{ categoryUC: mockCategoryUC })
-            let res = mockResponse()
 
-            await categoryController.getAllCategory(req, res, next)
+    test('sholud status 200 data in category'), async () => {
+        mockCategoryUC.getAllCategory = jest.fn().mockReturnValue(
+            {isSuccess: true, reason:null, data:Category}
+        )
+        let req = mockRequest({},{},{},{},{ categoryUC: mockCategoryUC })
+        let res = mockResponse()
 
-            expect(mockCategoryUC.getAllCategory).toHaveBeenCalled()
-            expect(res.status).toBeCalledWith(200)
-            expect(res.json).toBeCalledWith(resData.success(Category))
-        }
+        await categoryController.getAllCategory(req, res, next)
+
+        expect(mockCategoryUC.getAllCategory).toHaveBeenCalled()
+        expect(res.status).toBeCalledWith(200)
+        expect(res.json).toBeCalledWith(resData.success(Category))
+    }
     
     test('should status 200 and data empty', async() => {
         mockCategoryUC.getAllCategory = jest.fn().mockReturnValue(

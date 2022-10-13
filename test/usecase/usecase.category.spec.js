@@ -1,22 +1,22 @@
 const CategoryUsecase = require("../../usecase/category")
-const mockCategoryRepo = require("../mock/repositori.category.mock");
+const mockCategoryRepo = require("../mock/repository.category.mock");
 
-let categoryvalues = {};
+let categoryValues = {};
 let categoryUC = null
 
 describe("category", () => {
 
-    beforeEach(() => {
-        categoryvalues = {
-        returnGetCategoryByID: true,
-        returnPutCategory: true,
-        returnGetAllCategory: true,
-        returnAddCategory: true,
-        returnDeleteCategory: true,
+  beforeEach(() => {
+
+        categoryValues = {
+          returnGetCategoryByID: true,
+          returnUpdateCategory: true,
+          returnGetAllCategory: true,
+          returnAddCategory: true,
+          returnDeleteCategory: true,
         }
-        categoryUC = new CategoryUsecase(
-            mockCategoryRepo(categoryvalues)
-        )
+
+        categoryUC = new CategoryUsecase(mockCategoryRepo(categoryValues))
     })
     describe("get all category", () => {
         test("seharusnya isSuccess = true dan data dalam array", async () => {
@@ -26,27 +26,26 @@ describe("category", () => {
         })
 
         test("seharusnya isSuccess = true dan data = []", async () => {
-            categoryvalues.returnGetAllCategory= null;
-            categoryUC = new CategoryUsecase(mockProductRepo(categoryvalues));
+            categoryValues.returnGetAllCategory = [];
+            categoryUC = new CategoryUsecase(mockCategoryRepo(categoryValues));
       
             let res = await categoryUC.getAllCategory();
       
             expect(res.isSuccess).toBeTruthy();
-            expect(res.reason).toEqual("list is empty");
             expect(res.data).toEqual([]);
           });
         });
       
-        describe("put category", () => {
+        describe("update category", () => {
           test("seharusnya isSuccess  = true", async () => {
-            let res = await categoryUC.putCategory(1, { name: "test" });
+            let res = await categoryUC.updateCategory(1, { name: "test" });
       
             expect(res.isSuccess).toBeTruthy();
           });
       
           test("seharusnya isSuccess  = false dan reason = category not found", async () => {
-            categoryvalues.returnGetAllCategory = null;
-            categoryUC = new CategoryUsecase(mockCategoryRepo(categoryvalues));
+            categoryValues.returnGetCategoryByID = null;
+            categoryUC = new CategoryUsecase(mockCategoryRepo(categoryValues));
             let res = await categoryUC.updateCategory(1, { name: "test" });
       
             expect(res.isSuccess).toBeFalsy();
@@ -55,15 +54,15 @@ describe("category", () => {
         });
         describe("get category by Id",() => {
           test("seharusnya isSuccess  = true dan data dalam object", async () => {
-            let res = await categoryUC.getProductByID(1);
+            let res = await categoryUC.getCategoryByID(1);
       
             expect(res.isSuccess).toBeTruthy();
             expect(typeof res.data === "object").toBeTruthy();
           });
       
           test("seharusnya isSuccess = false dan data = null", async () => {
-            categoryvalues = null;
-            categoryUC = new CategoryUsecase(mockCategoryRepo(categoryvalues));
+            categoryValues.returnGetCategoryByID = null;
+            categoryUC = new CategoryUsecase(mockCategoryRepo(categoryValues));
       
             let res = await categoryUC.getCategoryByID();
       
@@ -84,11 +83,8 @@ describe("category", () => {
           });
       
           test("should isSuccess = false and data = null", async () => {
-            categoryvalues.returnGetCategoryByID = null
-            categoryUC = new CategoryUsecase (
-               mockCategoryRepo(categoryvalues),
-                  mockCategoryRepo(categoryvalues)
-              )
+            categoryValues.returnAddCategory = null
+            categoryUC = new CategoryUsecase(mockCategoryRepo(categoryValues));
       
             let res = await categoryUC.addCategory({
                 id: "1",
@@ -96,7 +92,7 @@ describe("category", () => {
             });
       
             expect(res.isSuccess).toBeFalsy();
-            expect(res.reason).toEqual("failed to add, category not found");
+            expect(res.reason).toEqual("failed add category");
           });
         });
       
@@ -108,8 +104,8 @@ describe("category", () => {
           });
       
           test("should isSuccess = false and reason = category not found", async () => {
-            categoryvalues.returnGetCategoryByID = null
-            categoryUC = new CategoryUsecase(mockCategoryRepo(categoryvalues));
+            categoryValues.returnGetCategoryByID = null
+            categoryUC = new CategoryUsecase(mockCategoryRepo(categoryValues));
             let res = await categoryUC.deleteCategory();
       
             expect(res.isSuccess).toBeFalsy();
