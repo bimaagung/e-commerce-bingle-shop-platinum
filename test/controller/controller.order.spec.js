@@ -1,5 +1,5 @@
 const orderController = require('../../controller/order');
-const resData = require('../../helper/response')
+const resData = require('../../helper/response');
 
 let mockOrderUC = {
     getPendingOrderByUserId: jest.fn().mockReturnValue(null),
