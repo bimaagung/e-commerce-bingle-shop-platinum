@@ -13,6 +13,7 @@ Installation project
 - create db `sequelize db:create`
 - migrate table `sequelize db:migrate`
 - fill the table with dummy data `sequelize db:migrate:all`
+- create file `access.log` and `errors.log` in folder `logs`
 
 test each endpoint in postman
 
@@ -22,25 +23,6 @@ test each endpoint in postman
 - change environment to `Platinum Maju Jaya`
 - choose folder Platinum Maju Jaya and run
 
-add apm elk for logging and monitoring
-
-- change `serverUrl: 'http://YOUR_IP:8200'` in file `app.js`
-- change `hosts: ['YOUR_IP:9200']` in file `vendor/apm-elk/apm-server.yml`
-- run docker compose `docker-compose up -d`
-- open browser `http://localhost:5601/`
-- login 
-
-	username : `elastic`
-	password : `elastic1234`
-
-- choose menu apm in slide bar
-- choose add data
-- choose Tab Elatic APM in Fleet
-- Click APM Server Status make sure it's success
-- Choose Tab Node js
-- Click agent status if `No data has been received from agents yet` skip no problem
-- Click Load Kibana object make sure it's success if failed , click again
-- Launch APM
 
 ### Entity
 

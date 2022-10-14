@@ -1,59 +1,71 @@
-version: '3.8'
-
+version: '2.2'
 services:
-
   apm-server:
-    image: docker.elastic.co/apm/apm-server:7.13.0
+    image: docker.elastic.co/apm/apm-server:7.13.2
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+      kibana:
+        condition: service_healthy
     cap_add: ["CHOWN", "DAC_OVERRIDE", "SETGID", "SETUID"]
     cap_drop: ["ALL"]
     ports:
-      - 8200:8200
-    depends_on:
-      - elasticsearch
-      - kibana
+    - 8200:8200
+    networks:
+    - elastic
     command: >
-        apm-server -e
-          -E apm-server.rum.enabled=true
-          -E setup.kibana.host=kibana:5601
-          -E setup.template.settings.index.number_of_replicas=0
-          -E apm-server.kibana.enabled=true
-          -E apm-server.kibana.host=kibana:5601
-          -E output.elasticsearch.hosts=["elasticsearch:9200"]
+       apm-server -e
+         -E apm-server.rum.enabled=true
+         -E setup.kibana.host=kibana:5601
+         -E setup.template.settings.index.number_of_replicas=0
+         -E apm-server.kibana.enabled=true
+         -E apm-server.kibana.host=kibana:5601
+         -E output.elasticsearch.hosts=["elasticsearch:9200"]
     healthcheck:
       interval: 10s
       retries: 12
       test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:8200/
-    networks:
-      - elastic
-  
+
   elasticsearch:
-   container_name: elasticsearch
-   image: docker.elastic.co/elasticsearch/elasticsearch:7.13.0
-   ports:
-    - 9200:9200
-   volumes:
-    - elasticsearch-data:/usr/share/elasticsearch/data
-   environment:
-    - xpack.monitoring.enabled=true
-    - xpack.watcher.enabled=false
-    - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.2
+    environment:
+    - bootstrap.memory_lock=true
+    - cluster.name=docker-cluster
+    - cluster.routing.allocation.disk.threshold_enabled=false
     - discovery.type=single-node
-   networks:
+    - ES_JAVA_OPTS=-XX:UseAVX=2 -Xms1g -Xmx1g
+    ulimits:
+      memlock:
+        hard: -1
+        soft: -1
+    volumes:
+    - esdata:/usr/share/elasticsearch/data
+    ports:
+    - 9200:9200
+    networks:
     - elastic
+    healthcheck:
+      interval: 20s
+      retries: 10
+      test: curl -s http://localhost:9200/_cluster/health | grep -vq '"status":"red"'
 
   kibana:
-   container_name: kibana
-   image: docker.elastic.co/kibana/kibana:7.13.0
-   ports:
+    image: docker.elastic.co/kibana/kibana:7.13.2
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    ports:
     - 5601:5601
-   depends_on:
-    - elasticsearch
-   environment:
-    - ELASTICSEARCH_URL=http://localhost:9200
-    - xpack.apm.enabled=false
-   networks:
+    networks:
     - elastic
-
+    healthcheck:
+      interval: 10s
+      retries: 20
+      test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:5601/api/status
+  
   postgres:
     image: postgres:latest
     environment:
@@ -76,10 +88,10 @@ services:
     depends_on:
       - postgres
 
-  
+volumes:
+  esdata:
+    driver: local
+
 networks:
   elastic:
     driver: bridge
-
-volumes:
-  elasticsearch-data:
