@@ -1,5 +1,5 @@
 const resData = require("../helper/response");
-const url = require("../libs/handle_upload");
+const defaultImage = require("../internal/constant/defaultImage")
 
 module.exports = {
   getImageProductByProductID: async (req, res, next) => {
@@ -22,14 +22,21 @@ module.exports = {
   addProductImage: async (req, res, next) => {
     try {
       let dataImage = {
-        url: await url.uploadCloudinaryProduct(req.file.path),
-        product_id: req.body.product_id,
+        url: null,
+        product_id:req.body.product_id,
       };
+      let image = null
+      if(req.file !== undefined){
+        image = (req.file.path)
+      } else {
+        image = defaultImage.DEFAULT_PRODUCT_IMAGE
+      }
+      dataImage.url = image
       let resImage = await req.productImageUC.createImageProduct(dataImage);
       if (resImage.isSuccess !== true) {
         return res.status(resImage.status).json(resData.failed(resImage.reason, null));
       }
-      res.status(200).json(resData.success(resImage.data));
+      res.status(resImage.status).json(resData.success(resImage.data));
     } catch (e) {
       next(e);
     }
@@ -38,7 +45,7 @@ module.exports = {
     try {
       let id  = req.params.id;
       let dataImage = {
-        url: await url.uploadCloudinaryProduct(req.file.path),
+        url: req.file.path,
         product_id: req.body.product_id,
       };
       let resImage = await req.productImageUC.updateImageProduct(dataImage, id);
