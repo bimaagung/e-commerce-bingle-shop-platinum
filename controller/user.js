@@ -1,5 +1,4 @@
 const resData = require("../helper/response");
-const url = require("../libs/handle_upload");
 
 module.exports = {
   getOneUser: async (req, res, next) => {
@@ -43,9 +42,9 @@ module.exports = {
     try {
       let id = req.user.id;
       let user = {
-        image: await url.uploadCloudinaryAvatar(req.file.path),
+        image: req.file.path,
       };
-      let updateAvatar = await req.userUC.updateUserProfile(user, id);
+      let updateAvatar = await req.userUC.updateUserImage(user, id);
       if (updateAvatar.isSuccess != true) {
         return res
           .status(updateAvatar.status)

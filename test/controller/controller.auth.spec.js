@@ -56,7 +56,8 @@ describe('test login', ()=>{
             await authController.login(req, res, next)
             
             expect(mockAuthUC.login).toHaveBeenCalled()
-            expect(res.status).toBeCalledWith(200)
+            
+           
     })
     })
 })
