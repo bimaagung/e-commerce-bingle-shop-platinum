@@ -13,6 +13,7 @@ Installation project
 - create db `sequelize db:create`
 - migrate table `sequelize db:migrate`
 - fill the table with dummy data `sequelize db:migrate:all`
+- create file `access.log` and `errors.log` in folder `logs`
 
 test each endpoint in postman
 
