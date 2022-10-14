@@ -3,10 +3,9 @@ class UserUC {
     this.UserRepository = UserRepository;
   }
 
-  async getUserExist(username , email){
-    return await this.UserRepository.getUserExist(username, email)
-    }
-     
+  async getUserExist(username, email) {
+    return await this.UserRepository.getUserExist(username, email);
+  }
 
   async getUserByID(id) {
     return await this.UserRepository.getUserByID(id);
@@ -14,19 +13,19 @@ class UserUC {
 
   async updateUserProfile(userData, id) {
     let result = {
-      isSuccess : false,
-      reason : "success",
-      status : 404,
-      data : null
-     }
-   let user = await this.UserRepository.getUserByID(id);
+      isSuccess: false,
+      reason: 'success',
+      status: 404,
+      data: null,
+    };
+    let user = await this.UserRepository.getUserByID(id);
     if (user == null) {
-      result.reason = 'user not found'
-      return result
+      result.reason = 'user not found';
+      return result;
     }
-    user = await this.UserRepository.updateUser(userData , id)
+    user = await this.UserRepository.updateUser(userData, id);
     result.isSuccess = true;
-    return result
+    return result;
   }
 }
 module.exports = UserUC;
