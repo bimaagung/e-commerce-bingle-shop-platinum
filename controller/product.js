@@ -5,12 +5,6 @@ module.exports = {
     try {
       let getAllProduct = await req.productUC.getAllProducts();
 
-      if (getAllProduct.isSuccess === false) {
-        return res
-          .status(404)
-          .json(resData.failed(getAllProduct.reason, getAllProduct.data));
-      }
-
       res.status(200).json(
         resData.success(
           getAllProduct.data,

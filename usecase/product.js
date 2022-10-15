@@ -14,12 +14,6 @@ class ProductUC {
     };
     let getAllProducts = await this.productRepository.getAllProducts(filters);
 
-    if (getAllProducts === null) {
-      result.isSuccess = false;
-      result.reason = 'list is empty';
-      return result;
-    }
-
     result.isSuccess = true;
     result.status = 200;
     result.data = getAllProducts;

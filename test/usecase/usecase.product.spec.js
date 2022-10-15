@@ -92,26 +92,38 @@ describe('product', () => {
     describe('add product', () => {
         test('should isSuccess  = true and data is object', async () => {
             
-            let res = await productUC.addProduct()
+            let res = await productUC.addProduct({
+        
+                name: "ASUS ROG Phone 6 Pro 18/512Gb",
+                description: "Smarphone dari asus",
+                category_id: 2,
+                sold: 3,
+                price: 26500000,
+                stock: 7,
+
+            })
             
             expect(res.isSuccess).toBeTruthy();
             expect(typeof res.data === 'object').toBeTruthy();
         });
 
         test('should isSuccess = false and data = null', async () => {
-            productValues.returnAddProduct = null
+            categoryValues.returnGetCategoryByID = null
             productUC = new ProductUseCase(
-                mockProductRepo(productValues)
+                mockProductRepo(productValues),
+                mockCategoryRepo(categoryValues),
             );
 
           
             let res = await productUC.addProduct({
-            name: 'test',
-            description: 'ini test',
-            category_id: 1,
-            sold: 0,
-            price: 10000000,
-            stock: 10,   
+
+                name: "ASUS ROG Phone 6 Pro 18/512Gb",
+                description: "Smarphone dari asus",
+                category_id: 2,
+                sold: 3,
+                price: 26500000,
+                stock: 7, 
+
             })
             
             expect(res.isSuccess).toBeFalsy();
@@ -127,13 +139,13 @@ describe('product', () => {
         })
 
         test('should isSuccess = false and reason = product not found', async () => {
-            productValues.returnDeleteProduct = null
-            productUC = new ProductUseCase(mockProductRepo)
+            productValues.returnGetProductById = null
+            productUC = new ProductUseCase(mockProductRepo(productValues))
         
             let res = await productUC.deleteProduct()
 
             expect(res.isSuccess).toBeFalsy()
-            expect(res.reason).toEqual('Product not found')
+            expect(res.reason).toEqual('product not found')
         })
     })
 
@@ -145,7 +157,7 @@ describe('product', () => {
     });
 
       test("seharusnya isSuccess  = false dan reason = product not found", async () => {
-      productValues.returnGetProductByID = null;
+      productValues.returnGetProductById = null;
       productUC = new ProductUseCase(mockProductRepo(productValues));
       let res = await productUC.updateProduct(1, { name: "test" });
 
@@ -155,17 +167,17 @@ describe('product', () => {
   });
   describe("get product by Id", () => {
     test("seharusnya isSuccess  = true dan data dalam object", async () => {
-      let res = await productUC.getProductByID(1);
+      let res = await productUC.getProductById(1);
 
       expect(res.isSuccess).toBeTruthy();
       expect(typeof res.data === "object").toBeTruthy();
     });
 
     test("seharusnya isSuccess = false dan data = null", async () => {
-      productValues.returnGetProductByID = null;
+      productValues.returnGetProductById = null;
       productUC = new ProductUseCase(mockProductRepo(productValues));
 
-      let res = await productUC.getProductByID();
+      let res = await productUC.getProductById();
 
       expect(res.isSuccess).toBeFalsy();
       expect(res.data).toEqual(null);
@@ -217,7 +229,7 @@ describe('product', () => {
     });
 
     test("should isSuccess = false and reason = product not found", async () => {
-      productValues.returnGetProductByID = null;
+      productValues.returnGetProductById = null;
       productUC = new ProductUseCase(mockProductRepo(productValues));
       let res = await productUC.deleteProduct();
 
