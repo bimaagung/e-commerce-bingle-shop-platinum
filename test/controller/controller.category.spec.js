@@ -1,4 +1,4 @@
-//const { query } = require('express')
+// const { query } = require('express')
 //  const category = require('../../controller/category')
 const categoryController = require ('../../controller/category')
 const resData = require('../../helper/response')
