@@ -1,6 +1,7 @@
 const ProductImageUseCase = require('../../usecase/product_image')
 const mockImageProductRepo = require('../mock/repository.imageProduct')
 const mockProductRepo = require('../mock/repository.product.mock')
+const urlImage = require('../../internal/constant/defaultImage')
 
 let imageProductValues, productValues = {}
 
@@ -31,15 +32,15 @@ describe('Image Product', () => {
 
         })
         test('isSuccess == false product not found', async () => {
-            productValues.returnGetProductByID = null
+            productValues.returnGetProductByID = []
             productImageUC = new ProductImageUseCase(
                 mockImageProductRepo(imageProductValues),
                 mockProductRepo(productValues)
             )
             let res = await productImageUC.getImageProductByProductID()
 
-            expect(res.isSuccess).toBeFalsy()
-            expect(res.reason).toEqual("product not found")
+            expect(res.isSuccess).toBeTruthy()
+            expect(res.reason).toEqual("success")
         })
         test('isSuccess = false image not found', async () => {
             imageProductValues.returnGetAllImageByProductID = null
@@ -57,7 +58,7 @@ describe('Image Product', () => {
         test('isSuccess = true', async () => {
             let res = await productImageUC.createImageProduct({
                 id: 1,
-                url: "url_image_example",
+                url:urlImage.DEFAULT_PRODUCT_IMAGE,
                 product_id: 1
             })
             expect(res.isSuccess).toBeTruthy()
@@ -77,28 +78,15 @@ describe('Image Product', () => {
             expect(res.isSuccess).toBeFalsy()
             expect(res.reason).toEqual("failed add image, product not found")
         })
-        test('isSuccess = product error server',async () => {
-            imageProductValues.returnCreateImage = null
-            productImageUC = new ProductImageUseCase(
-                mockImageProductRepo(imageProductValues),
-                mockProductRepo(productValues)
-            )
-            let res = await productImageUC.createImageProduct({
-                id: 1,
-                url: "url_image_example",
-                product_id: 1
-            })
-            expect(res.isSuccess).toBeFalsy()
-            expect(res.reason).toEqual("something went error")
-        })
+       
     })
     describe('update image product', () => {
-        test('isSucces = true', async () => {
+        test('isSuccess = true', async () => {
             let res = await productImageUC.updateImageProduct({
                 id: 1,
-                url: "url_image_example",
+                url:urlImage.DEFAULT_PRODUCT_IMAGE,
                 product_id: 1
-            }, 1)
+            })
             expect(res.isSuccess).toBeTruthy()
             expect(res.data === null).toEqual(false)
         })
@@ -110,7 +98,7 @@ describe('Image Product', () => {
             )
             let res = await productImageUC.updateImageProduct({
                 id: 1,
-                url: "url_image_example",
+                url: urlImage.DEFAULT_PRODUCT_IMAGE,
                 product_id: 1
             }, 1)
             expect(res.isSuccess).toBeFalsy()

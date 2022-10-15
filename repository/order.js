@@ -1,6 +1,6 @@
 const { Op } = require('sequelize');
 const orderConstant = require('../internal/constant/order');
-const { Order, OrderDetail } = require('../models');
+const { Order, OrderDetail, User } = require('../models');
 
 class OrderRepository {
   constructor() {
@@ -13,16 +13,23 @@ class OrderRepository {
   }
 
   async getPendingOrderByUserId(userId) {
-    const order = await this.OrderModel.findOne({
-      where: { user_id: userId, status: orderConstant.ORDER_PENDING },
-      include: [
-        {
-          model: OrderDetail,
-          as: 'order_details',
-          attribute: ['id', 'product_id', 'qty', 'total_price'],
-        },
-      ],
-    });
+    const order = await this.OrderModel.findOne(
+      {
+        where: { user_id: userId, status: orderConstant.ORDER_PENDING },
+        include: [
+          {
+            model: OrderDetail,
+            as: 'order_details',
+            attribute: ['id', 'product_id', 'qty', 'total_price'],
+          },
+          {
+            model: User,
+            as: 'user',
+            attributes: ['id', 'name', 'username', 'telp'],
+          },
+        ],
+      },
+    );
 
     return order;
   }
@@ -36,9 +43,23 @@ class OrderRepository {
   }
 
   async getOrderById(orderId) {
-    const order = await this.OrderModel.findOne({
-      where: { id: orderId },
-    });
+    const order = await this.OrderModel.findOne(
+      {
+        where: { id: orderId },
+        include: [
+          {
+            model: OrderDetail,
+            as: 'order_details',
+            attribute: ['id', 'product_id', 'qty', 'total_price'],
+          },
+          {
+            model: User,
+            as: 'user',
+            attributes: ['id', 'name', 'username', 'telp'],
+          },
+        ],
+      },
+    );
 
     return order;
   }

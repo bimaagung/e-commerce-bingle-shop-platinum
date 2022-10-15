@@ -1,5 +1,6 @@
 const { ProductImage } = require("../models")
 
+
 class ProductImageRepository {
   constructor() {
     this.productImageModel = ProductImage;
@@ -17,7 +18,8 @@ class ProductImageRepository {
   }
   
   async createImage(images) {
-    return await this.productImageModel.create(images)
+ 
+  return await this.productImageModel.create(images)
 
   }
   async updateImage(images, id) {

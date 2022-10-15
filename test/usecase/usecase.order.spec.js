@@ -2,6 +2,7 @@ const OrderUseCase = require('../../usecase/order');
 const mockOrderRepo = require('../mock/repository.order.mock') 
 const mockProductRepo = require('../mock/repository.product.mock') 
 const mockOrderDetailRepo = require('../mock/respository.order_detail.mock') 
+const mockCategoryDetailRepo = require('../mock/repository.category.mock') 
 require('dotenv').config();
 
 let orderValues, productValues, orderDetailValues = {}
@@ -32,7 +33,11 @@ describe('orders', () => {
       returnAddOrderDetails: true
     }
 
-   orderUC = new OrderUseCase(mockOrderRepo(orderValues),mockOrderDetailRepo(orderDetailValues),mockProductRepo(productValues));
+    categoryValues = {
+      returnGetCategoryByID: true
+    }
+
+   orderUC = new OrderUseCase(mockOrderRepo(orderValues),mockOrderDetailRepo(orderDetailValues),mockProductRepo(productValues), mockCategoryDetailRepo(categoryValues));
   })
 
   describe('getListOrder test', () => {
@@ -75,8 +80,24 @@ describe('orders', () => {
 
     test('should isSuccess is true and data type is object', async () => {
       let res = await orderUC.getOrderById(12);
+      
       expect(res.isSuccess).toBeTruthy();
-      expect(typeof res.data === 'object').toBeTruthy();
+
+      expect(res.data).toHaveProperty('id');
+      expect(res.data).toHaveProperty('status');
+      expect(res.data).toHaveProperty('created_at');
+      expect(res.data).toHaveProperty('updated_at');
+      expect(res.data.user).toHaveProperty('id');
+      expect(res.data.user).toHaveProperty('name');
+      expect(res.data.user).toHaveProperty('telp');
+      expect(res.data.products[0]).toHaveProperty('id')
+      expect(res.data.products[0]).toHaveProperty('name')
+      expect(res.data.products[0]).toHaveProperty('category')
+      expect(res.data.products[0]).toHaveProperty('price')
+      expect(res.data.products[0]).toHaveProperty('qty')
+      expect(res.data.products[0]).toHaveProperty('total_price')
+      expect(res.data).toHaveProperty('total_price');
+      expect(res.data).toHaveProperty('qty');
     });
 
     test(`should isSucess is false and reason "order is not found"`, async () => {
@@ -141,8 +162,22 @@ describe('orders', () => {
       let res = await orderUC.getPendingOrderByUserId(1);
 
       expect(res.isSuccess).toBeTruthy();
-      expect(typeof res.data).toEqual('object')
-      expect(Array.isArray(res.data.products)).toBeTruthy();
+
+      expect(res.data).toHaveProperty('id');
+      expect(res.data).toHaveProperty('status');
+      expect(res.data).toHaveProperty('created_at');
+      expect(res.data).toHaveProperty('updated_at');
+      expect(res.data.user).toHaveProperty('id');
+      expect(res.data.user).toHaveProperty('name');
+      expect(res.data.user).toHaveProperty('telp');
+      expect(res.data.products[0]).toHaveProperty('id')
+      expect(res.data.products[0]).toHaveProperty('name')
+      expect(res.data.products[0]).toHaveProperty('category')
+      expect(res.data.products[0]).toHaveProperty('price')
+      expect(res.data.products[0]).toHaveProperty('qty')
+      expect(res.data.products[0]).toHaveProperty('total_price')
+      expect(res.data).toHaveProperty('total_price');
+      expect(res.data).toHaveProperty('qty');
           
     });
 
@@ -296,6 +331,98 @@ describe('orders', () => {
 
         expect(res.isSuccess).toBeFalsy();
         expect(res.reason).toEqual('request status outside the specified options');
+      });
+  });
+
+  describe(`addProductInDetailOrder test`, () => {
+      test('should return array product id with length > 0 ', async () => {
+        let res = await orderUC.addProductInDetailOrder(1,1,[
+            {
+              id:1,
+              qty:1
+            }
+          ]
+        );
+
+        expect(Array.isArray(res)).toBeTruthy();
+        expect(res.length).toBeGreaterThan(0);
+      });
+       test('should return empty array product id with length = 0 ', async () => {
+        productValues.returnGetProductByID = null
+        orderUC = new OrderUseCase(
+          mockOrderRepo(orderValues),
+          mockOrderDetailRepo(orderDetailValues), 
+          mockProductRepo(productValues)
+        );
+        let res = await orderUC.addProductInDetailOrder(1,1,[
+            {
+              id:2,
+              qty:1
+            }
+          ]
+        );
+
+        expect(Array.isArray(res)).toBeTruthy();
+        expect(res).toEqual([]);
+      });
+  });
+
+  describe(`getProductByOrderDetail test`, () => {
+      test('should return array product id with length > 0 ', async () => {
+        let res = await orderUC.getProductByOrderDetail([
+            {
+              product_id:1,
+              qty:1,
+              total_price: 25000000
+            }
+          ]
+        );
+
+        expect(typeof res === 'object').toBeTruthy();
+        expect(Array.isArray(res.resultOrderDetail)).toBeTruthy();
+        expect(res.resultOrderDetail.length).toBeGreaterThan(0);
+      });
+       test('when product not found should return empty array product id with length = 0 ', async () => {
+        productValues.returnGetProductByID = null
+        orderUC = new OrderUseCase(
+          mockOrderRepo(orderValues),
+          mockOrderDetailRepo(orderDetailValues), 
+          mockProductRepo(productValues),
+          mockCategoryDetailRepo(categoryValues)
+        );
+        let res = await orderUC.getProductByOrderDetail([
+             {
+              product_id:2,
+              qty:1,
+              total_price: 25000000
+            }
+          ]
+        );
+
+        expect(typeof res === 'object').toBeTruthy();
+        expect(res.resultOrderDetail).toEqual([]);
+      });
+  });
+
+  describe(`updateStockSoldProduct test`, () => {
+      test('should return array product id with length > 0 ', async () => {
+        let res = await orderUC.updateStockSoldProduct(1,'SUBMITTED');
+
+        expect(Array.isArray(res)).toBeTruthy();
+        expect(res.length).toBeGreaterThan(0);
+      });
+
+       test('when product not found should return empty array product id with length = 0 ', async () => {
+        productValues.returnGetProductByID = null
+        orderUC = new OrderUseCase(
+          mockOrderRepo(orderValues),
+          mockOrderDetailRepo(orderDetailValues), 
+          mockProductRepo(productValues)
+        );
+        let res = await orderUC.updateStockSoldProduct(2,'SUBMITTED');
+
+        expect(Array.isArray(res)).toBeTruthy();
+        expect(res).toEqual([]);
       });
   });
 });

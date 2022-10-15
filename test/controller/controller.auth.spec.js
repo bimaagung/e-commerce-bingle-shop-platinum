@@ -57,6 +57,7 @@ describe('test login', () => {
             await authController.login(req, res, next)
 
             expect(mockAuthUC.login).toHaveBeenCalled()
+<<<<<<< HEAD
             expect(res.status).toBeCalledWith(200)
         })
         test('return status 404 isSucces false', async () => {
@@ -73,6 +74,10 @@ describe('test login', () => {
             expect(mockAuthUC.login).toHaveBeenCalled()
             expect(res.json).toBeCalledWith(resData.failed('username or email not aviable'));
         })
+=======
+            
+           
+>>>>>>> a003d994cb9aa3eef0846598902e40efd31a9468
     })
     describe('test register', () => {
         describe('register success', () => {

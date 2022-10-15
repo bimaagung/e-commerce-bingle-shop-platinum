@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt')
 const authUseCase = require('../../usecase/auth')
 const mockAuthRepo = require('../mock/repository.auth.mock')
 const mockUserRepo = require('../mock/repository.user.mock')
+const urlImage = require('../../internal/constant/defaultImage')
 
 let authValues, userValues = {}
 let authUC= null
@@ -51,7 +52,7 @@ describe('auth', ()=>{
             let res = await authUC.register({
             id: 1,
             name: "test",
-            image: "url_image",
+            image: urlImage.DEFAULT_AVATAR,
             username: "testusername",
             email: "test@email.com",
             password: bcrypt.hashSync('123456', 10)

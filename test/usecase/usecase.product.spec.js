@@ -1,8 +1,9 @@
 const ProductUseCase = require("../../usecase/product");
 const mockProductRepo = require("../mock/repository.product.mock");
-const mockCategoryRepo = require("../mock/repository.category.mock")
+const mockCategoryRepo = require("../mock/repository.category.mock");
 
-let productValues, categoryValues = {};
+let productValues,
+  categoryValues = {};
 let productUC = null;
 
 describe("product", () => {
@@ -15,13 +16,13 @@ describe("product", () => {
       returnDeleteProduct: true,
     };
     categoryValues = {
-        returnGetCategoryByID: true
-    }
+      returnGetCategoryByID: true,
+    };
 
     productUC = new ProductUseCase(
-        mockProductRepo(productValues),
-        mockCategoryRepo(categoryValues)
-        );
+      mockProductRepo(productValues),
+      mockCategoryRepo(categoryValues)
+    );
   });
 
   describe("get all products", () => {
@@ -60,7 +61,7 @@ describe("product", () => {
       expect(res.reason).toEqual("product not found");
     });
   });
-  describe("get product by Id",() => {
+  describe("get product by Id", () => {
     test("seharusnya isSuccess  = true dan data dalam object", async () => {
       let res = await productUC.getProductByID(1);
 
@@ -83,8 +84,8 @@ describe("product", () => {
     test("should isSuccess  = true and data is object", async () => {
       let res = await productUC.addProduct({
         id: 10,
-        name: 'ASUS ROG Phone 6 Pro 18/512Gb',
-        description: 'Smarphone dari asus',
+        name: "ASUS ROG Phone 6 Pro 18/512Gb",
+        description: "Smarphone dari asus",
         category_id: 2,
         sold: 3,
         price: 26500000,
@@ -96,11 +97,11 @@ describe("product", () => {
     });
 
     test("should isSuccess = false and data = null", async () => {
-      categoryValues.returnGetCategoryByID = null
-      productUC = new ProductUseCase (
-         mockProductRepo(productValues),
-            mockCategoryRepo(categoryValues)
-        )
+      categoryValues.returnGetCategoryByID = null;
+      productUC = new ProductUseCase(
+        mockProductRepo(productValues),
+        mockCategoryRepo(categoryValues)
+      );
 
       let res = await productUC.addProduct({
         name: "test",
@@ -124,7 +125,7 @@ describe("product", () => {
     });
 
     test("should isSuccess = false and reason = product not found", async () => {
-      productValues.returnGetProductByID = null
+      productValues.returnGetProductByID = null;
       productUC = new ProductUseCase(mockProductRepo(productValues));
       let res = await productUC.deleteProduct();
 
