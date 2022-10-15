@@ -1,4 +1,4 @@
-const resData = require("../helper/response");
+const resData = require('../helper/response');
 
 module.exports = {
   getOneUser: async (req, res, next) => {
@@ -47,12 +47,12 @@ module.exports = {
         image: req.file.path,
       };
       let updateAvatar = await req.userUC.updateUserImage(user, id);
-      if (updateAvatar.isSuccess != true) {
+      if (updateAvatar.isSuccess === false) {
         return res
-          .status(updateAvatar.status)
+          .status(updateAvatar.statusCode)
           .json(resData.failed(updateAvatar.reason));
       }
-      res.status(updateAvatar.status).json(resData.success());
+      res.status(updateAvatar.statusCode).json(resData.success());
     } catch (e) {
       next(e);
     }

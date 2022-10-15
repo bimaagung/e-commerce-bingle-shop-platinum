@@ -8,6 +8,10 @@ const bcrypt = {
     hashSync: jest.fn().mockReturnValue('sdjsdkjnfjfw&*23672(%^SHGHGSjhsjkh87623')
 }
 
+const cloudinary = {
+    uploadCloudinaryAvatar: jest.fn().mockReturnValue('https://cloudinary.com/avatars/image.jpg')
+}
+
 describe('users', () => {
     beforeEach(() => {
         userValues = {
@@ -19,7 +23,7 @@ describe('users', () => {
 
 
 
-        userUC = new UserUseCase(mockUserRepo(userValues), bcrypt);
+        userUC = new UserUseCase(mockUserRepo(userValues), bcrypt, cloudinary);
   })
   
   describe('getUserExist test', () => { 
@@ -105,7 +109,7 @@ describe('users', () => {
         let res = await userUC.updatePassword(1,
             {
                 password : '12345678',
-                retypePassword: '12345678'
+                retype_password: '12345678'
             });
 
         expect(res.isSuccess).toBeTruthy();
@@ -118,7 +122,7 @@ describe('users', () => {
         let res = await userUC.updatePassword(2,
             {
                 password : '12345678',
-                retypePassword: '12345678'
+                retype_password: '12345678'
             });
 
         expect(res.isSuccess).toBeFalsy();
@@ -131,13 +135,35 @@ describe('users', () => {
         let res = await userUC.updatePassword(2,
             {
                 password : '12345678',
-                retypePassword: '123456789'
+                retype_password: '123456789'
             });
 
         expect(res.isSuccess).toBeFalsy();
         expect(res.reason).toEqual('password not match');
         expect(res.data).toBeNull();
         expect(res.statusCode).toEqual(400)
+    });
+
+   })
+
+    describe('updateUserImage test', () => { 
+
+    test('should isSuccess is true', async () => {
+        let res = await userUC.updateUserImage({image: './image.jpg'}, 1);
+
+        expect(res.isSuccess).toBeTruthy();
+        expect(res.statusCode).toEqual(200)
+    });
+
+    test('should isSuccess is false and reason is "user not found"', async () => {
+        userValues.returnGetUserByID = null
+        userUC = new UserUseCase(mockUserRepo(userValues));
+        let res = await userUC.updateUserImage({image: './image.jpg'}, 1);
+
+        expect(res.isSuccess).toBeFalsy();
+        expect(res.reason).toEqual('user not found');
+        expect(res.data).toBeNull();
+        expect(res.statusCode).toEqual(404);
     });
 
    })

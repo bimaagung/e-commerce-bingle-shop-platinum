@@ -1,9 +1,8 @@
-const cloudinary = require("../libs/handle_upload");
-const defaultImage = require("../internal/constant/defaultImage");
 class UserUC {
-  constructor(UserRepository, bcrypt) {
+  constructor(UserRepository, bcrypt, cloudinary) {
     this.UserRepository = UserRepository;
     this.bcrypt = bcrypt;
+    this.cloudinary = cloudinary;
   }
 
   async getUserExist(username, email) {
@@ -12,15 +11,15 @@ class UserUC {
 
   async getUserByID(id) {
     let result = {
-      isSuccess : false,
-      reason : null,
-      statusCode : 404,
-      data : null
-    }
+      isSuccess: false,
+      reason: null,
+      statusCode: 404,
+      data: null,
+    };
 
     const user = await this.UserRepository.getUserByID(id);
 
-    if(user === null) {
+    if (user === null) {
       result.reason = 'user not found';
       return result;
     }
@@ -57,7 +56,7 @@ class UserUC {
       data: null,
     };
 
-    if (user.password !== user.retypePassword) {
+    if (user.password !== user.retype_password) {
       result.reason = 'password not match';
       result.statusCode = 400;
       return result;
@@ -83,21 +82,25 @@ class UserUC {
 
   async updateUserImage(userData, id) {
     let result = {
-      isSuccess : false,
-      reason : "success",
-      status : 404,
-      data : null
-     }
+      isSuccess: false,
+      reason: null,
+      statusCode: 404,
+      data: null,
+    };
 
-   let user = await this.UserRepository.getUserByID(id);
+    let user = await this.UserRepository.getUserByID(id);
+
     if (user == null) {
-      result.reason = 'user not found'
-      return result
+      result.reason = 'user not found';
+      return result;
     }
-    userData.image = await cloudinary.uploadCloudinaryAvatar(userData.image)
-    user = await this.UserRepository.updateUser(userData , id)
+    userData.image = await this.cloudinary.uploadCloudinaryAvatar(userData.image);
+
+    await this.UserRepository.updateUser(userData, id);
+
     result.isSuccess = true;
-    return result
+    result.statusCode = 200;
+    return result;
   }
 }
 

@@ -1,11 +1,11 @@
 require('dotenv').config();
 
-// const useAPM = process.env.USE_APM || false;
-// const apm = require('elastic-apm-node').start({
-//   serviceName: process.env.APP_NAME,
-//   environment: 'development',
-//   active: useAPM,
-// });
+const useAPM = process.env.USE_APM || false;
+const apm = require('elastic-apm-node').start({
+  serviceName: process.env.APP_NAME,
+  environment: 'development',
+  active: useAPM,
+});
 
 const express = require('express');
 
@@ -15,6 +15,7 @@ let logger = require('morgan');
 const fs = require('fs');
 const moment = require('moment-timezone');
 const bcrypt = require('bcrypt');
+const cloudinary = require('./libs/handle_upload');
 
 const serverError = require('./middleware/serverError');
 
@@ -49,7 +50,7 @@ const adminRouter = require('./routes/admin');
 const addressUC = new AddressUseCase(new AddressRepository(), new UserRepository());
 const categoryUC = new CategoryUseCase(new CategoryRepository());
 const productUC = new ProductUseCase(new ProductRepository(), new CategoryRepository());
-const userUC = new UserUseCase(new UserRepository(), bcrypt);
+const userUC = new UserUseCase(new UserRepository(), bcrypt, cloudinary);
 
 const authUC = new AuthUseCase(
   new AuthRepository(),

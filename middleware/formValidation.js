@@ -3,11 +3,52 @@ const Joi = require('joi');
 const resData = require('../helper/response');
 
 module.exports = {
+
+  updateImage: async (req, res, next) => {
+    const response = Joi.object({
+      image: Joi.string().allow(null).allow(''),
+    }).validate(req.body);
+
+    if (response.error) {
+      return res.status(400).json(resData.failed(response.error.details[0].message));
+    }
+
+    next();
+  },
+
+  updatePassword: async (req, res, next) => {
+    const response = Joi.object({
+      password: Joi.string().min(6),
+      retype_password: Joi.ref('password'),
+    }).validate(req.body);
+
+    if (response.error) {
+      return res.status(400).json(resData.failed(response.error.details[0].message));
+    }
+
+    next();
+  },
+
+  updateUser: async (req, res, next) => {
+    const response = Joi.object({
+      name: Joi.string().required(),
+      username: Joi.string().required(),
+      email: Joi.string().email().required(),
+      telp: Joi.number().required(),
+    }).validate(req.body);
+
+    if (response.error) {
+      return res.status(400).json(resData.failed(response.error.details[0].message));
+    }
+
+    next();
+  },
+
   register: async (req, res, next) => {
     const response = Joi.object({
       name: Joi.string().required(),
       username: Joi.string().required(),
-      image : Joi.string().allow(null).allow(''),
+      image: Joi.string().allow(null).allow(''),
       telp: Joi.number().required(),
       password: Joi.string().min(6),
       confrimPassword: Joi.ref('password'),
