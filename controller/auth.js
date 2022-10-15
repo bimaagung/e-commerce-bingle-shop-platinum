@@ -1,6 +1,6 @@
 const generateToken = require("../helper/jwt");
 const resData = require("../helper/response");
-const url = require("../libs/handle_upload");
+const defaultImage = require("../internal/constant/defaultImage")
 const _= require("lodash")
 
 module.exports = {
@@ -40,14 +40,12 @@ module.exports = {
       }
       let image = null;
       if (req.file !== undefined) {
-        image = await url.uploadCloudinaryAvatar(req.file.path);
+        image = (req.file.path)
       } else {
-        image = process.env.PROFIL_URL;
+        image = defaultImage.DEFAULT_AVATAR
       }
       userData.image = image;
-
       let resUser = await req.authUC.register(userData);
-
       if (resUser.isSuccess !== true) {
         return res
           .status(resUser.status)

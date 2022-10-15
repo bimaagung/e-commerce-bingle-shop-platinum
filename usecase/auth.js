@@ -1,3 +1,5 @@
+const cloudinary = require("../libs/handle_upload");
+const defaultImage = require("../internal/constant/defaultImage");
 class AuthUC {
   constructor(AuthRepository, UserRepository) {
     this.AuthRepository = AuthRepository;
@@ -20,7 +22,15 @@ class AuthUC {
       result.reason = "username or email not aviable";
       return result;
     }
-    user = await this.AuthRepository.registerUser(userData);
+      
+    if(userData.image !== defaultImage.DEFAULT_AVATAR){
+      let image = await cloudinary.uploadCloudinaryAvatar(userData.image) 
+      userData.image = image
+      user = await this.AuthRepository.registerUser(userData);
+    } else {
+       user = await this.AuthRepository.registerUser(userData)
+    }
+    
     result.isSuccess = true;
     result.status = 200;
     result.data = user;
