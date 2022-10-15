@@ -3,7 +3,7 @@ const mockOrderRepo = require('../mock/repository.order.mock')
 const mockProductRepo = require('../mock/repository.product.mock') 
 const mockOrderDetailRepo = require('../mock/respository.order_detail.mock') 
 const mockCategoryDetailRepo = require('../mock/repository.category.mock') 
-require('dotenv').config();
+
 
 let orderValues, productValues, orderDetailValues = {}
 let orderUC = null
