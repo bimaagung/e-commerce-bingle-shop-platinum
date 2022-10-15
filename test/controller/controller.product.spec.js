@@ -48,6 +48,7 @@ describe('Test Product', () => {
                 updatedAt: "12-09-2022 23:30:00",       
             }
         ]
+        
         test('should status 200 and data in array', async () => {
             mockProductUC.getAllProducts = jest.fn().mockReturnValue(
                 {isSuccess: true, reason:null, data:product}
