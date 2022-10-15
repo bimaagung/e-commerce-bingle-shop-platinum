@@ -3,10 +3,11 @@
 const orderConstant = require('../internal/constant/order');
 
 class OrderUC {
-  constructor(orderRepository, orderDetailRepository, productRespository) {
+  constructor(orderRepository, orderDetailRepository, productRespository, categoryRepository) {
     this.orderRepository = orderRepository;
     this.orderDetailRepository = orderDetailRepository;
     this.productRespository = productRespository;
+    this.categoryRepository = categoryRepository;
   }
 
   async getListOrder(status) {
@@ -65,8 +66,23 @@ class OrderUC {
       return result;
     }
 
+    const productInOrderDetail = await this.getProductByOrderDetail(
+      order.order_details,
+    );
+
+    const orderData = {
+      id: order.id,
+      status: order.status,
+      created_at: order.createdAt,
+      updated_at: order.updatedAt,
+      qty: productInOrderDetail.totalQty,
+      total_price: productInOrderDetail.totalPrice,
+      user: order.user,
+      products: productInOrderDetail.resultOrderDetail,
+    };
+
     result.isSuccess = true;
-    result.data = order;
+    result.data = orderData;
 
     return result;
   }
@@ -116,16 +132,19 @@ class OrderUC {
       orderPending.order_details,
     );
 
-    const resultOrderDetail = {
+    const orderData = {
       id: orderPending.id,
       status: orderPending.status,
       created_at: orderPending.createdAt,
       updated_at: orderPending.updatedAt,
-      products: productInOrderDetail,
+      qty: productInOrderDetail.totalQty,
+      total_price: productInOrderDetail.totalPrice,
+      user: orderPending.user,
+      products: productInOrderDetail.resultOrderDetail,
     };
 
     result.isSuccess = true;
-    result.data = resultOrderDetail;
+    result.data = orderData;
 
     return result;
   }
@@ -221,7 +240,11 @@ class OrderUC {
   }
 
   async getProductByOrderDetail(orderDetail) {
-    let resultOrderDetail = [];
+    let result = {
+      totalPrice: 0,
+      totalQty: 0,
+      resultOrderDetail: [],
+    };
 
     for (let i = 0; i < orderDetail.length; i += 1) {
       const product = await this.productRespository.getProductByID(
@@ -232,19 +255,24 @@ class OrderUC {
         continue;
       }
 
+      const category = await this.categoryRepository.getCategoryByID(product.category_id);
+
       const resultProduct = {
         id: product.id,
         name: product.name,
-        category: product.category_id,
+        category: category.name,
         price: product.price,
         qty: orderDetail[i].qty,
         total_price: orderDetail[i].total_price,
       };
 
-      resultOrderDetail.push(resultProduct);
+      result.totalPrice += orderDetail[i].total_price;
+      result.totalQty += orderDetail[i].qty;
+
+      result.resultOrderDetail.push(resultProduct);
     }
 
-    return resultOrderDetail;
+    return result;
   }
 
   async updateOrderSubmitted(userId) {

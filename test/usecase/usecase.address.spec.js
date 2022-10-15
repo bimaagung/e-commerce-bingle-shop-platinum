@@ -46,7 +46,6 @@ describe('address', () => {
 
         test('seharusnya isSuccess = false dan data = []',
         async () => {
-            // addressValues.returnAddAddress = [null]
             userValues.returnGetUserByID = null
             addressUC = new AddressUseCase(
                 mockAddressRepo(addressValues),
@@ -74,9 +73,7 @@ describe('address', () => {
     describe('get address by id', () => {
         test('seharusnya isSuccess  = true ', async () => { 
             let res = await addressUC.getAddressByID()
-            console.log(res)
             expect(res.isSuccess).toBeTruthy()
-         
             expect(res.data === null).toEqual(false)
         });
 
@@ -87,9 +84,7 @@ describe('address', () => {
             );
 
             let res = await addressUC.getAddressByID()
-            
             expect(res.isSuccess = false).toBeFalsy()
-         
             expect(res.reason).toEqual("address not found")
         });
     });

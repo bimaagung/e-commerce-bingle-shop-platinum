@@ -1,7 +1,7 @@
-const generateToken = require("../helper/jwt");
-const resData = require("../helper/response");
-const url = require("../libs/handle_upload");
-const _= require("lodash")
+const _ = require('lodash');
+const generateToken = require('../helper/jwt');
+const resData = require('../helper/response');
+const defaultImage = require('../internal/constant/defaultImage');
 
 module.exports = {
   login: async (req, res, next) => {
@@ -11,9 +11,9 @@ module.exports = {
       if (resUser.isSuccess !== true) {
         return res.status(resUser.status).json(resData.failed(resUser.reason));
       }
-      const user = _.omit(resUser.data.dataValues, ['password'])
-      const token = generateToken(user)
-      res.status(200).json(resData.success({user, token}))
+      const user = _.omit(resUser.data.dataValues, ['password']);
+      const token = generateToken(user);
+      res.status(200).json(resData.success({ user, token }));
     } catch (e) {
       next(e);
     }
@@ -35,26 +35,24 @@ module.exports = {
         return res
           .status(400)
           .json(
-            resData.failed("password and confrim password not match", null)
+            resData.failed('password and confrim password not match', null),
           );
       }
       let image = null;
       if (req.file !== undefined) {
-        image = await url.uploadCloudinaryAvatar(req.file.path);
+        image = (req.file.path);
       } else {
-        image = process.env.PROFIL_URL;
+        image = defaultImage.DEFAULT_AVATAR;
       }
       userData.image = image;
-
       let resUser = await req.authUC.register(userData);
-
       if (resUser.isSuccess !== true) {
         return res
           .status(resUser.status)
           .json(resData.failed(resUser.reason));
       }
-      const user = _.omit(resUser.data.dataValues, ['password'])
-      const token = generateToken(user)
+      const user = _.omit(resUser.data.dataValues, ['password']);
+      const token = generateToken(user);
       res.json(resData.success({ user, token }));
     } catch (e) {
       next(e);

@@ -4,3 +4,4 @@ node_modules
 coverage
 .vscode
 public/*.jpg
+logs/*.log

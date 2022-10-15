@@ -1,6 +1,7 @@
 const resData = require('../helper/response');
 
 module.exports = {
+  // TODO: tambah fungsi untuk user memilih alamat utama, misal ada 4 alamat dalam 1 user , jadi user haru memilih salah satu alamat yang menjadi alamat utama,
   getAddressByID: async (req, res, next) => {
     try {
       let { id } = req.params;
@@ -22,8 +23,6 @@ module.exports = {
       let userId = req.user.id;
 
       let address = await req.addressUC.getAllAddress(userId);
-
-      
 
       res.json(resData.success(address));
     } catch (error) {

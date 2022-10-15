@@ -103,4 +103,19 @@ module.exports = {
       next(e);
     }
   },
+
+  getOrderById: async (req, res, next) => {
+    try {
+      const { id } = req.params;
+
+      const order = await req.orderUC.getOrderById(id);
+
+      if (order.isSuccess === false) {
+        return res.status(404).json(resData.failed(order.reason));
+      }
+      res.status(200).json(resData.success(order.data));
+    } catch (e) {
+      next(e);
+    }
+  },
 };
