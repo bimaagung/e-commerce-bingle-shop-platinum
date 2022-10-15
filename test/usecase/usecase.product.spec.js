@@ -2,9 +2,8 @@ const ProductUseCase = require("../../usecase/product");
 const mockProductRepo = require("../mock/repository.product.mock");
 const mockCategoryRepo = require("../mock/repository.category.mock");
 
-<<<<<<< HEAD
 //object
-let productValues = {}
+let productValues, categoryValues = {}
 //class
 let productUC = null;
 
@@ -18,38 +17,11 @@ describe('product', () => {
             returnDeleteProduct:true,
         }
         
-        productUC = new ProductUseCase(mockProductRepo(productValues))
-=======
-let productValues,
-  categoryValues = {};
-let productUC = null;
+        categoryValues = {
+          returnGetCategoryByID: true
+        }
 
-describe("product", () => {
-  beforeEach(() => {
-    productValues = {
-      returnGetProductByID: true,
-      returnUpdateProduct: true,
-      returnGetAllProducts: true,
-      returnAddProduct: true,
-      returnDeleteProduct: true,
-    };
-    categoryValues = {
-      returnGetCategoryByID: true,
-    };
-
-    productUC = new ProductUseCase(
-      mockProductRepo(productValues),
-      mockCategoryRepo(categoryValues)
-    );
-  });
-
-  describe("get all products", () => {
-    test("seharusnya isSuccess  = true dan data dalam array", async () => {
-      let res = await productUC.getAllProducts();
-
-      expect(res.isSuccess).toBeTruthy();
-      expect(Array.isArray(res.data)).toBeTruthy();
->>>>>>> 805fc3d69bfaceec72ea4f2844547fe437426baf
+        productUC = new ProductUseCase(mockProductRepo(productValues), mockCategoryRepo(categoryValues));
     });
 
     describe('get all products', () => {
@@ -61,16 +33,18 @@ describe("product", () => {
         })
 
         test('should isSuccess  = true and data = []', async () => { 
-            productValues.returnGetAllProducts = null
-            productUC = new ProductUseCase(
-                mockProductRepo(productValues)
-            );
+          
+          const repo = mockProductRepo({
+            returnGetAllProducts : [],
+          })
+            
+            const productUC = new ProductUseCase(repo);
 
             let res = await productUC.getAllProducts()
             
             expect(res.isSuccess).toBeTruthy()
-            expect(res.reason).toEqual('list is empty')
-            expect(res.data).toEqual([]);
+            expect(Array.isArray(res.data)).toBeTruthy()
+            expect(res.data.length).toBe(0);
         })
     })
 
