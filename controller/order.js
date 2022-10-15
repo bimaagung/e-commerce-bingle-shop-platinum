@@ -3,6 +3,9 @@ const resData = require('../helper/response');
 
 module.exports = {
   createOrder: async (req, res, next) => {
+    /*
+      #swagger.tags = ['Order']
+    */
     try {
       const orderId = nanoid(16);
       const userId = req.user.id;
@@ -34,6 +37,9 @@ module.exports = {
   },
 
   getListOrder: async (req, res, next) => {
+    /*
+      #swagger.tags = ['Order']
+    */
     try {
       const { status } = req.query;
 
@@ -46,6 +52,9 @@ module.exports = {
   },
 
   getPendingOrderByUserId: async (req, res, next) => {
+    /*
+      #swagger.tags = ['Order']
+    */
     try {
       const userId = req.user.id;
 
@@ -61,6 +70,9 @@ module.exports = {
   },
 
   changeStatusOrder: async (req, res, next) => {
+    /*
+      #swagger.tags = ['Order']
+    */
     try {
       const orderId = req.params.id;
       const statusOrder = req.body.status;
@@ -83,6 +95,9 @@ module.exports = {
   },
 
   submitOrder: async (req, res, next) => {
+    /*
+      #swagger.tags = ['Order']
+    */
     try {
       const userId = req.user.id;
 
@@ -105,6 +120,9 @@ module.exports = {
   },
 
   getOrderById: async (req, res, next) => {
+    /*
+      #swagger.tags = ['Order']
+    */
     try {
       const { id } = req.params;
 

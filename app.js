@@ -10,6 +10,7 @@ const apm = require('elastic-apm-node').start({
 const express = require('express');
 
 const app = express();
+const cors = require('cors');
 const swaggerUi = require('swagger-ui-express'); // import swagger
 
 let logger = require('morgan');
@@ -17,7 +18,6 @@ const fs = require('fs');
 const moment = require('moment-timezone');
 const bcrypt = require('bcrypt');
 const cloudinary = require('./libs/handle_upload');
-
 
 const serverError = require('./middleware/serverError');
 
@@ -73,6 +73,7 @@ const orderUC = new OrderUseCase(
 const ACCESS_LOG = process.env.ACCESS_LOG || './logs/access.log';
 const ERROR_LOG = process.env.ERROR_LOG || './logs/errors.log';
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use('/public', express.static('public'));
