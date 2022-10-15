@@ -51,7 +51,7 @@ module.exports = {
       image: Joi.string().allow(null).allow(''),
       telp: Joi.number().required(),
       password: Joi.string().min(6),
-      confrimPassword: Joi.ref('password'),
+      confrimPassword: Joi.string().min(6),
       email: Joi.string().email().required(),
     }).validate(req.body);
 
