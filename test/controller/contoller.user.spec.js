@@ -25,3 +25,19 @@ const mockResponse = () => {
 
     return res;
 }
+
+const next = () => jest.fn().mockReturnValue(
+    {
+        status: 500, 
+        json:{
+            status: 'failed',
+            message: 'internal server error',
+        }
+    }
+);
+
+describe('Test User', () => {
+    describe('getOneUser', () => {
+        test        
+    });
+});
