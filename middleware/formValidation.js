@@ -6,7 +6,7 @@ module.exports = {
 
   updateImage: async (req, res, next) => {
     const response = Joi.object({
-      image: Joi.string().allow(null).allow(''),
+      image: Joi.string().required(),
     }).validate(req.body);
 
     if (response.error) {

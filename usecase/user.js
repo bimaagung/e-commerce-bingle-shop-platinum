@@ -35,7 +35,7 @@ class UserUC {
     let result = {
       isSuccess: false,
       reason: 'success',
-      status: 404,
+      statusCode: 404,
       data: null,
     };
     let user = await this.UserRepository.getUserByID(id);
@@ -45,6 +45,7 @@ class UserUC {
     }
     user = await this.UserRepository.updateUser(userData, id);
     result.isSuccess = true;
+    result.statusCode = 200;
     return result;
   }
 
@@ -94,6 +95,7 @@ class UserUC {
       result.reason = 'user not found';
       return result;
     }
+
     userData.image = await this.cloudinary.uploadCloudinaryAvatar(userData.image);
 
     await this.UserRepository.updateUser(userData, id);
