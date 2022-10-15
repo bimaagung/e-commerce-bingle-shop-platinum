@@ -1,4 +1,4 @@
-//const { query } = require('express')
+// const { query } = require('express')
 //  const category = require('../../controller/category')
 const categoryController = require ('../../controller/category')
 const resData = require('../../helper/response')
@@ -25,7 +25,7 @@ const mockResponse = () => {
     const res = {}
     res.status = jest.fn().mockReturnValue(res)
     res.json = jest.fn().mockReturnValue(res)
-
+    
     return res
 }
 

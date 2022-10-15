@@ -1,17 +1,18 @@
 const authController = require('../../controller/auth')
 const resData = require('../../helper/response')
-const bcrypt = require('bcrypt')
+const urlImage = require('../../internal/constant/defaultImage')
 
 let mockAuthUC = {
     login: jest.fn().mockReturnValue(null),
     register: jest.fn().mockReturnValue(null)
 }
 
-const mockRequest = (body = {}, params = {}, user = {}, useCase = {}) => {
+const mockRequest = (body = {}, params = {}, user = {}, file = {}, useCase = {}) => {
     return {
         body: body,
         params: params,
         user: user,
+        file: file,
         ...useCase
     }
 }
@@ -49,7 +50,7 @@ describe('test login', () => {
             )
             let req = mockRequest(
                 { username: "irvan", password: "password" },
-                {}, {}, { authUC: mockAuthUC }
+                {}, {}, {}, { authUC: mockAuthUC }
             )
 
             let res = mockResponse()
@@ -57,67 +58,78 @@ describe('test login', () => {
             await authController.login(req, res, next)
 
             expect(mockAuthUC.login).toHaveBeenCalled()
-<<<<<<< HEAD
-            expect(res.status).toBeCalledWith(200)
+
+
         })
-        test('return status 404 isSucces false', async () => {
+        test('return status 404 isSuccess false', async () => {
             mockAuthUC.login = jest.fn().mockReturnValue(
-                { isSuccess: false, reason: "username or email not aviable", data: null }
+                { isSuccess: false, reason: "username or password incorect", data: null }
             )
             let req = mockRequest(
-                { username: "worngUsername", password: "wrongPassword" },
-                {}, {}, { authUC: mockAuthUC }
+                { username: "irvan", password: "password" },
+                {}, {}, {}, { authUC: mockAuthUC }
             )
+
             let res = mockResponse()
+
             await authController.login(req, res, next)
 
             expect(mockAuthUC.login).toHaveBeenCalled()
-            expect(res.json).toBeCalledWith(resData.failed('username or email not aviable'));
+            expect(res.json).toBeCalledWith(resData.failed("username or password incorect"))
         })
-=======
-            
-           
->>>>>>> a003d994cb9aa3eef0846598902e40efd31a9468
     })
-    describe('test register', () => {
-        describe('register success', () => {
-            const user = {
-                name: "irvan",
-                username: "irvan28",
-                image: null,
-                password: bcrypt.hashSync('123456', 10),
-                telp: "082311113",
-                is_admin: false,
-                email: "irvan@gmail.com",
-            }
-            test('return status 200 isSuccess true', async () => {
-                mockAuthUC.register = jest.fn().mockReturnValue(
-                    { isSuccess: true, reason: "", data: user }
-                )
-                let req = mockRequest(
-                    {
-                        name: "irvan",
-                        username: "irvan28",
-                        image: null,
-                        password: bcrypt.hashSync('123456', 10),
-                        telp: "082311113",
-                        is_admin: false,
-                        email: "irvan@gmail.com"
-                    },
-                    {}, {}, { authUC: mockAuthUC }
-                )
+    describe('register success', () => {
+        const user = {
+            id: 9,
+            name: "irvan",
+            username: "irvan28",
+            image: null,
+            password: "password",
+            telp: "082311113",
+            is_admin: false,
+            email: "irvan@gmail.com",
+            
+        }
 
-                let res = mockResponse()
-                console.log(res)
+        test('return status 200 isSuccess true', async () => {
+            mockAuthUC.register = jest.fn().mockReturnValue(
+                { isSuccess: true, reason: "", data: user }
+            )
+            let req = mockRequest(
+                {},
+                {},
+                {},
+                {},
+                { authUC: mockAuthUC }
+            )
 
-                await authController.register(req, res, next)
+            let res = mockResponse()
 
-                // expect(mockAuthUC.register).toHaveBeenCalled()
-                expect(res.status).toBeCalledWith(200)
-            })
+            await authController.register(req, res, next)
+
+            expect(mockAuthUC.register).toHaveBeenCalled()
+              
         })
+        
+        test('return status 200 isSuccess false', async () => {
+            mockAuthUC.register = jest.fn().mockReturnValue(
+                { isSuccess: false, reason: "", data: user }
+            )
+            let req = mockRequest(
+                {},
+                {},
+                {},
+                {},
+                { authUC: mockAuthUC }
+            )
+
+            let res = mockResponse()
+
+            await authController.register(req, res, next)
+
+            expect(mockAuthUC.register).toHaveBeenCalled()
+              
+        })
+
     })
 })
-
-
-

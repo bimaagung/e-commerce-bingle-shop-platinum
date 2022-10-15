@@ -52,7 +52,7 @@ module.exports = {
       if (resImage.isSuccess !== true) {
         return res.status(resImage.status).json(resData.failed(resImage.reason));
       }
-      res.status(resImage.status).json(resData.success());
+      res.status(200).json(resData.success());
     } catch (e) {
       next(e);
     }
