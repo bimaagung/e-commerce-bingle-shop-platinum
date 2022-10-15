@@ -6,11 +6,11 @@ module.exports = {
       let { id } = req.user;
       let user = await req.userUC.getUserByID(id);
 
-      if (user == null) {
-        return res.status(400).json(resData.failed('list is empty', null));
+      if (user.isSuccess === false) {
+        return res.status(user.statusCode).json(resData.failed(user.reason, user.data));
       }
 
-      res.json(resData.success(user));
+      res.status(user.statusCode).json(resData.success(user.data));
     } catch (e) {
       next(e);
     }
