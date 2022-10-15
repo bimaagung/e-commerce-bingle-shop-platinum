@@ -118,7 +118,7 @@ describe('Test Product', () => {
             )
         })
         let req = mockRequest({},{},{},{id:2},{ productUC: mockProductUC})
-        let re = mockResponse()
+        let res = mockResponse()
 
         await productController.getProductById(req, res, next)
 

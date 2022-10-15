@@ -56,7 +56,7 @@ describe('product', () => {
         })
 
         test('should isSuccess  = false and reason = product not found', async () => { 
-            productValues.returnGetProductByID = null
+            productValues.returnGetProductById = null
             productUC = new ProductUseCase(
                 mockProductRepo(productValues)
             );
