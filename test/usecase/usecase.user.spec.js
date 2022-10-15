@@ -47,23 +47,21 @@ describe('users', () => {
 
   describe('getUserByID test', () => { 
 
-    test('should return true', async () => {
+    test('should isSuccess is true and statusCode 200', async () => {
         let res = await userUC.getUserByID(1);
 
-        expect(typeof res === 'object').toBeTruthy();
-        expect(res).toHaveProperty('name');
-        expect(res).toHaveProperty('username');
-        expect(res).toHaveProperty('image');
-        expect(res).toHaveProperty('telp');
-        expect(res).toHaveProperty('email');
+        expect(res.isSuccess).toBeTruthy();
+        expect(res.statusCode).toEqual(200);        
     });
 
-    test('should return null', async () => {
+    test('should isSuccess is false and reason is "user not found"', async () => {
         userValues.returnGetUserByID = null
         userUC = new UserUseCase(mockUserRepo(userValues));
         let res = await userUC.getUserByID(1);
 
-        expect(res).toBeNull();
+        expect(res.isSuccess).toBeFalsy();
+        expect(res.reason).toEqual('user not found');
+        expect(res.statusCode).toEqual(404);
     });
 
    })

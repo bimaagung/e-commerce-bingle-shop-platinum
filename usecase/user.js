@@ -11,7 +11,25 @@ class UserUC {
   }
 
   async getUserByID(id) {
-    return await this.UserRepository.getUserByID(id);
+    let result = {
+      isSuccess : false,
+      reason : null,
+      statusCode : 404,
+      data : null
+    }
+
+    const user = await this.UserRepository.getUserByID(id);
+
+    if(user === null) {
+      result.reason = 'user not found';
+      return result;
+    }
+
+    result.isSuccess = true;
+    result.data = user;
+    result.statusCode = 200;
+
+    return result;
   }
 
   async updateUserProfile(userData, id) {
@@ -70,6 +88,7 @@ class UserUC {
       status : 404,
       data : null
      }
+
    let user = await this.UserRepository.getUserByID(id);
     if (user == null) {
       result.reason = 'user not found'

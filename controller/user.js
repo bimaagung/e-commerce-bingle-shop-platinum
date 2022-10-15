@@ -7,7 +7,7 @@ module.exports = {
       let user = await req.userUC.getUserByID(id);
 
       if (user.isSuccess === false) {
-        return res.status(user.statusCode).json(resData.failed(user.reason, user.data));
+        return res.status(user.statusCode).json(resData.failed(user.reason));
       }
 
       res.status(user.statusCode).json(resData.success(user.data));
@@ -23,16 +23,18 @@ module.exports = {
         name: req.body.name,
         username: req.body.username,
         email: req.body.email,
-        alamat: req.body.alamat,
         telp: req.body.telp,
       };
+
       let updateUser = await req.userUC.updateUserProfile(user, id);
-      if (updateUser.isSuccess !== true) {
+
+      if (updateUser.isSuccess === false) {
         return res
-          .status(updateUser.status)
+          .status(updateUser.statusCode)
           .json(resData.failed(updateUser.reason));
       }
-      res.status(200).json(resData.success());
+
+      res.status(updateUser.statusCode).json(resData.success());
     } catch (error) {
       next(error);
     }
@@ -53,6 +55,25 @@ module.exports = {
       res.status(updateAvatar.status).json(resData.success());
     } catch (e) {
       next(e);
+    }
+  },
+
+  updatePassword: async (req, res, next) => {
+    try {
+      let { id } = req.user;
+      let user = req.body;
+
+      let updatePassword = await req.userUC.updatePassword(id, user);
+
+      if (updatePassword.isSuccess === false) {
+        return res
+          .status(updatePassword.statusCode)
+          .json(resData.failed(updatePassword.reason));
+      }
+
+      res.status(updatePassword.statusCode).json(resData.success());
+    } catch (error) {
+      next(error);
     }
   },
 };
