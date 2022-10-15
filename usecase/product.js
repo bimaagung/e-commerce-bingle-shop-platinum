@@ -8,42 +8,41 @@ class ProductUC {
   async getAllProducts(filters) {
     let result = {
       isSuccess: false,
+      status: 404,
       reason: '',
       data: [],
     };
     let getAllProducts = await this.productRepository.getAllProducts(filters);
 
-    if (getAllProducts === null) {
-      result.isSuccess = true;
-      result.reason = 'list is empty';
-      return result;
-    }
-
     result.isSuccess = true;
+    result.status = 200;
     result.data = getAllProducts;
     return result;
   }
 
-  async getProductByID(id) {
+  async getProductById(id) {
     let result = {
       isSuccess: false,
+      status: 404,
       reason: '',
       data: null,
     };
 
-    let getProductByID = await this.productRepository.getProductByID(id);
-    if (getProductByID == null) {
+    let getProductById = await this.productRepository.getProductById(id);
+    if (getProductById == null) {
       result.reason = 'product not found';
       return result;
     }
     result.isSuccess = true;
-    result.data = getProductByID;
+    result.status = 200;
+    result.data = getProductById;
     return result;
   }
 
   async addProduct(product) {
     let result = {
       isSuccess: false,
+      status: 404,
       reason: '',
       data: null,
     };
@@ -61,44 +60,50 @@ class ProductUC {
 
     result.isSuccess = true;
     result.data = addProduct;
-
+    result.status = 201;
     return result;
   }
 
   async updateProduct(id, product) {
     let result = {
       isSuccess: false,
+      status: 404,
       reason: '',
       data: null,
     };
 
     // check product not null
-    let existProduct = await this.productRepository.getProductByID(id);
+    let existProduct = await this.productRepository.getProductById(id);
 
     if (existProduct === null) {
       result.reason = 'product not found';
       return result;
     }
-    await this.productRepository.updateProduct(id, product);
+    let updateProduct = await this.productRepository.updateProduct(id, product);
 
     result.isSuccess = true;
+    result.status = 200;
+    result.data = updateProduct;
     return result;
   }
 
   async deleteProduct(id) {
     let result = {
       isSuccess: false,
+      statusCode: 404,
       reason: '',
       data: null,
     };
-    let existProduct = await this.productRepository.getProductByID(id);
+    let existProduct = await this.productRepository.getProductById(id);
     if (existProduct === null) {
       result.reason = 'product not found';
       return result;
     }
-    await this.productRepository.deleteProduct(id);
-    result.isSuccess = true
-    return result
+    let deleteProduct = await this.productRepository.deleteProduct(id);
+    result.isSuccess = true;
+    result.status = 200;
+    result.data = deleteProduct;
+    return result;
   }
 }
 

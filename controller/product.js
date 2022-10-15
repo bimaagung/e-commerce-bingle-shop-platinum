@@ -5,12 +5,6 @@ module.exports = {
     try {
       let getAllProduct = await req.productUC.getAllProducts();
 
-      if (getAllProduct.isSuccess === false) {
-        return res
-          .status(404)
-          .json(resData.failed(getAllProduct.reason, getAllProduct.data));
-      }
-
       res.status(200).json(
         resData.success(
           getAllProduct.data,
@@ -25,12 +19,12 @@ module.exports = {
     try {
       let { id } = req.params;
 
-      let product = await req.productUC.getProductByID(id);
-      if (product.isSuccess !== true) {
+      let product = await req.productUC.getProductById(id);
+      if (product.isSuccess === false) {
         return res.status(404).json(resData.failed(product.reason, product.data));
       }
 
-      res.json(resData.success(product.data));
+      res.status(200).json(resData.success(product.data));
     } catch (e) {
       next(e);
     }

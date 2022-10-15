@@ -38,7 +38,7 @@ describe('Test Product', () => {
             {
                 id: 1,
                 name: 'Iphone 13 Pro',
-                description: 'Smarphone dari apple',
+                description: 'Smartphone dari apple',
                 category_id: 1,
                 sold: 10,
                 price: 25000000,
@@ -78,4 +78,52 @@ describe('Test Product', () => {
         })
         
     })
+
+    describe('get product by Id', () => {
+
+        const product = [
+            {
+                id: 1,
+                name: 'Iphone 13 Pro',
+                description: 'Smartphone dari apple',
+                category_id: 1,
+                sold: 10,
+                price: 25000000,
+                stock: 10,
+                image: null,
+                createdAt: "12-09-2022 23:30:00",
+                updatedAt: "12-09-2022 23:30:00",       
+            }
+        ]
+
+        test('should status 200 and data is object', async () => {
+            mockProductUC.getProductById = jest.fn().mockReturnValue(
+                {isSuccess: true, reason:null, data:product}
+            )
+        
+            let req = mockRequest({},{},{id:1},{},{ productUC: mockProductUC })
+            let res = mockResponse()
+
+            await productController.getProductById(req, res, next)
+            
+
+            expect(mockProductUC.getProductById).toHaveBeenCalled()
+            expect(res.status).toBeCalledWith(200)
+            expect(res.json).toBeCalledWith(resData.success(product))
+        })
+
+        test('should status 404 and message is product not found', async () => {
+            mockProductUC.getProductById = jest.fn().mockReturnValue(
+                {isSuccess: false, reason: 'product not found', data:null}
+            )
+        })
+        let req = mockRequest({},{},{},{id:2},{ productUC: mockProductUC})
+        let res = mockResponse()
+
+        await productController.getProductById(req, res, next)
+
+        expect(res.status).toBeCalledWith(404)
+        expect(res.json).toBeCalledWith(resData.failed('product not found'))
+    })
+    
 })
