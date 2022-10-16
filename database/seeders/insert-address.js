@@ -13,6 +13,7 @@ module.exports = {
           user_id: 2,
           createdAt: new Date(),
           updatedAt: new Date(),
+          main_address: true
         },
       ],
       {},

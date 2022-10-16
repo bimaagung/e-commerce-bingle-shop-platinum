@@ -103,5 +103,29 @@ class AddressUC {
     result.data = deleteAddress;
     return result;
   }
+
+  async isMainExist(userId) {
+  let existMainAddress = await this.AddressRepository.getAddressByUserID(userId);
+  let newArray = new Array();
+  for(let i = 0; i < existMainAddress.length; i++) {
+    if (existMainAddress[i].main_address == true) {
+     
+      return existMainAddress[i]
+    } 
+  }
+  }
+
+  async updateMainAddress(userId) {
+    console.log(userId)
+     let mainAddress = await this.isMainExist(userId);
+     if (mainAddress != null) {
+      mainAddress.main_address = false;
+      console.log(mainAddress.id);
+
+      let checkStatus = await this.updateAddress(mainAddress.id, mainAddress)
+      console.log(checkStatus)
+     }
+  }
+
 }
 module.exports = AddressUC;

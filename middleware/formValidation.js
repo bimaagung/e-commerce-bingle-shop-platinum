@@ -133,6 +133,8 @@ module.exports = {
       city: Joi.string().required(),
       postal_code: Joi.number().required(),
       detail: Joi.string().required(),
+      main_address: Joi.boolean().required(),
+
     }).validate(req.body);
 
     if (response.error) {
