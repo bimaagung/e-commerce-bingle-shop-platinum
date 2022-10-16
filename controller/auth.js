@@ -28,16 +28,10 @@ module.exports = {
         telp: req.body.telp,
         email: req.body.email,
         password: req.body.password,
+        confrimPassword : req.body.confrimPassword,
         is_admin: false,
       };
 
-      if (req.body.password !== req.body.confrimPassword) {
-        return res
-          .status(400)
-          .json(
-            resData.failed('password and confrim password not match', null),
-          );
-      }
       let image = null;
       if (req.file !== undefined) {
         image = (req.file.path);
