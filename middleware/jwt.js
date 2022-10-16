@@ -43,7 +43,13 @@ const authorized = (authorization, isAdmin) => {
   }
 };
 
+
 const admin = (req, res, next) => {
+  /* 
+  #swagger.security = [{
+    "bearerAuth": []
+  }] 
+  */
   const { authorization } = req.headers;
   const isAdmin = true;
   const getAuthorization = authorized(authorization, isAdmin);
@@ -57,7 +63,14 @@ const admin = (req, res, next) => {
   next();
 };
 
+
+
 const customer = (req, res, next) => {
+  /* 
+  #swagger.security = [{
+    "bearerAuth": []
+  }] 
+  */
   const { authorization } = req.headers;
   const isAdmin = false;
   const getAuthorization = authorized(authorization, isAdmin);

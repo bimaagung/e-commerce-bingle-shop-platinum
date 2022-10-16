@@ -117,8 +117,12 @@ app.use('/', publicRouter);
 // handle server error
 app.use(serverError);
 
-const swaggerDocument = require('./docs/docs.json');
 
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+const swaggerDocument = require('./docs/docs.json');
+const adminSwaggerDocument = require('./docs/admin_docs.json');
+
+
+app.use('/docs/admin', swaggerUi.serveFiles(adminSwaggerDocument), swaggerUi.setup(adminSwaggerDocument));
+app.use('/docs', swaggerUi.serveFiles(swaggerDocument), swaggerUi.setup(swaggerDocument));
 
 module.exports = app;

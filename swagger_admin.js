@@ -2,7 +2,7 @@ const options = {
     autoHeaders: false,
 }
 
-const swaggerAutogen = require('swagger-autogen')(options,{openapi: '3.0.0'})
+const swaggerAutogen = require('swagger-autogen')(options, {openapi: '3.0.0'})
 
 const doc = {
   info: {
@@ -35,8 +35,8 @@ const doc = {
   },
 }
 
-const outputFile = './docs/docs.json'
-const endpointsFiles = ['./routes/auth.js', './routes/public.js', './routes/customer.js']
+const outputFile = './docs/admin_docs.json'
+const endpointsFiles = ['./routes/auth.js', './routes/public.js', './routes/admin.js']
 
 /* NOTE: if you use the express Router, you must pass in the
    'endpointsFiles' only the root file where the route starts,
