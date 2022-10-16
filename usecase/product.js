@@ -50,7 +50,7 @@ class ProductUC {
     // to check whether the category exists
     let existCategory = await this.categoryRepository.getCategoryByID(product.category_id);
 
-    if (existCategory == null) {
+    if (existCategory === null) {
       result.reason = 'failed to add, category not found';
       return result;
     }
