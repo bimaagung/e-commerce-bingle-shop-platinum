@@ -45,7 +45,7 @@ describe('Test Category', () => {
             }
         ]
 
-    test('sholud status 200 data in category'), async () => {
+    test('sholud status 200 data in category', async () => {
         mockCategoryUC.getAllCategory = jest.fn().mockReturnValue(
             {isSuccess: true, reason:null, data:Category}
         )
@@ -57,7 +57,7 @@ describe('Test Category', () => {
         expect(mockCategoryUC.getAllCategory).toHaveBeenCalled()
         expect(res.status).toBeCalledWith(200)
         expect(res.json).toBeCalledWith(resData.success(Category))
-    }
+    })
     
     test('should status 200 and data empty', async() => {
         mockCategoryUC.getAllCategory = jest.fn().mockReturnValue(
