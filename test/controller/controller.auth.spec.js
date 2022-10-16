@@ -58,7 +58,8 @@ describe('test login', () => {
             await authController.login(req, res, next)
 
             expect(mockAuthUC.login).toHaveBeenCalled()
-
+            expect(res.status).toBeCalledWith(200)
+            expect(res.json).toBeCalledWith(resData.success(order));
 
         })
         test('return status 404 isSuccess false', async () => {

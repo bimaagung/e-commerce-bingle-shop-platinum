@@ -1,5 +1,5 @@
 {
-  "swagger": "2.0",
+  "openapi": "3.0.0",
   "info": {
     "title": "My API",
     "description": "Description",
@@ -9,45 +9,39 @@
     },
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
-  "basePath": "/",
-  "schemes": [
-    "http"
-  ],
-  "securityDefinitions": {
-    "bearerAuth": {
-      "type": "http",
-      "scheme": "bearer",
-      "bearerFormat": "JWT"
+  "servers": [
+    {
+      "url": "http://localhost:3000/"
     }
-  },
+  ],
   "paths": {
     "/api/user/login": {
       "post": {
         "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "username": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
           },
           "400": {
             "description": "Bad Request"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "example": "any"
+                  },
+                  "password": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -55,41 +49,42 @@
     "/api/user/register": {
       "post": {
         "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "example": "any"
-                },
-                "username": {
-                  "example": "any"
-                },
-                "telp": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                },
-                "confrimPassword": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
           },
           "400": {
             "description": "Bad Request"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "example": "any"
+                  },
+                  "username": {
+                    "example": "any"
+                  },
+                  "telp": {
+                    "example": "any"
+                  },
+                  "email": {
+                    "example": "any"
+                  },
+                  "password": {
+                    "example": "any"
+                  },
+                  "confrimPassword": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -113,7 +108,9 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -145,7 +142,9 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -166,7 +165,9 @@
             "name": "product_id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {}
@@ -177,18 +178,10 @@
         "description": "",
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
+            "name": "authorization",
+            "in": "header",
             "schema": {
-              "type": "object",
-              "properties": {
-                "reason": {
-                  "example": "any"
-                },
-                "data": {
-                  "example": "any"
-                }
-              }
+              "type": "string"
             }
           }
         ],
@@ -210,7 +203,24 @@
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "example": "any"
+                  },
+                  "data": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/admin/category/update/{id}": {
@@ -221,7 +231,16 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -253,7 +272,16 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -279,27 +307,10 @@
         "description": "",
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
+            "name": "authorization",
+            "in": "header",
             "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "example": "any"
-                },
-                "description": {
-                  "example": "any"
-                },
-                "category_id": {
-                  "example": "any"
-                },
-                "price": {
-                  "example": "any"
-                },
-                "stock": {
-                  "example": "any"
-                }
-              }
+              "type": "string"
             }
           }
         ],
@@ -321,7 +332,33 @@
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "example": "any"
+                  },
+                  "description": {
+                    "example": "any"
+                  },
+                  "category_id": {
+                    "example": "any"
+                  },
+                  "price": {
+                    "example": "any"
+                  },
+                  "stock": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/admin/product/update/{id}": {
@@ -332,33 +369,15 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           },
           {
-            "name": "body",
-            "in": "body",
+            "name": "authorization",
+            "in": "header",
             "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "example": "any"
-                },
-                "description": {
-                  "example": "any"
-                },
-                "category_id": {
-                  "example": "any"
-                },
-                "sold": {
-                  "example": "any"
-                },
-                "price": {
-                  "example": "any"
-                },
-                "stock": {
-                  "example": "any"
-                }
-              }
+              "type": "string"
             }
           }
         ],
@@ -380,7 +399,36 @@
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "example": "any"
+                  },
+                  "description": {
+                    "example": "any"
+                  },
+                  "category_id": {
+                    "example": "any"
+                  },
+                  "sold": {
+                    "example": "any"
+                  },
+                  "price": {
+                    "example": "any"
+                  },
+                  "stock": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/admin/product/delete/{id}": {
@@ -391,7 +439,16 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -423,18 +480,15 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           },
           {
-            "name": "body",
-            "in": "body",
+            "name": "authorization",
+            "in": "header",
             "schema": {
-              "type": "object",
-              "properties": {
-                "status": {
-                  "example": "any"
-                }
-              }
+              "type": "string"
             }
           }
         ],
@@ -450,7 +504,21 @@
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/admin/order": {
@@ -461,9 +529,18 @@
         "description": "",
         "parameters": [
           {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "status",
             "in": "query",
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -492,7 +569,16 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -518,15 +604,10 @@
         "description": "",
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
+            "name": "authorization",
+            "in": "header",
             "schema": {
-              "type": "object",
-              "properties": {
-                "product_id": {
-                  "example": "any"
-                }
-              }
+              "type": "string"
             }
           }
         ],
@@ -539,7 +620,21 @@
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "product_id": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/admin/update-image/product/{id}": {
@@ -550,18 +645,15 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           },
           {
-            "name": "body",
-            "in": "body",
+            "name": "authorization",
+            "in": "header",
             "schema": {
-              "type": "object",
-              "properties": {
-                "product_id": {
-                  "example": "any"
-                }
-              }
+              "type": "string"
             }
           }
         ],
@@ -577,7 +669,21 @@
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "product_id": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/admin/delete-image/product/{id}": {
@@ -588,7 +694,16 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -604,38 +719,47 @@
       }
     }
   },
-  "definitions": {
-    "User": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "number",
-          "example": 1
-        },
-        "name": {
-          "type": "string",
-          "example": "Bima"
-        },
-        "birth_date": {
-          "type": "string",
-          "example": "1996-12-12T17:00:00.000Z"
-        },
-        "email": {
-          "type": "string",
-          "example": "bimaagungsetya@gmail.com"
-        },
-        "password": {
-          "type": "string",
-          "example": "12345678"
-        },
-        "createdAt": {
-          "type": "string",
-          "example": "2022-09-04T14:59:41.336Z"
-        },
-        "updatedAt": {
-          "type": "string",
-          "example": "2022-09-04T14:59:41.336Z"
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Bima"
+          },
+          "birth_date": {
+            "type": "string",
+            "example": "1996-12-12T17:00:00.000Z"
+          },
+          "email": {
+            "type": "string",
+            "example": "bimaagungsetya@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "12345678"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2022-09-04T14:59:41.336Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2022-09-04T14:59:41.336Z"
+          }
         }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }

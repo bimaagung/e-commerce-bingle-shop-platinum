@@ -6,9 +6,18 @@ module.exports = {
     /*
       #swagger.tags = ['Order']
       #swagger.parameters['obj'] = {
-          in: 'body',
-          description: 'Adding new user.',
-          schema: { $ref: '#/definitions/CreateOrder' }
+        in: 'body',
+        description: 'Create order.',
+        schema: {
+          CreateOrder: {
+            products: [
+              {
+                id: 1,
+                qty: 2,
+              }
+            ]
+          },
+        }
       }
     */
     try {
