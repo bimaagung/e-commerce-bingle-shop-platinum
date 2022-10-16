@@ -5,6 +5,11 @@ module.exports = {
   createOrder: async (req, res, next) => {
     /*
       #swagger.tags = ['Order']
+      #swagger.parameters['obj'] = {
+          in: 'body',
+          description: 'Adding new user.',
+          schema: { $ref: '#/definitions/CreateOrder' }
+      }
     */
     try {
       const orderId = nanoid(16);

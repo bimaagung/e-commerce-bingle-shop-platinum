@@ -425,15 +425,11 @@
         "description": "",
         "parameters": [
           {
-            "name": "body",
+            "name": "obj",
             "in": "body",
+            "description": "Adding new user.",
             "schema": {
-              "type": "object",
-              "properties": {
-                "products": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/CreateOrder"
             }
           }
         ],
@@ -504,36 +500,24 @@
     }
   },
   "definitions": {
-    "User": {
+    "CreateOrder": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "number",
-          "example": 1
-        },
-        "name": {
-          "type": "string",
-          "example": "Bima"
-        },
-        "birth_date": {
-          "type": "string",
-          "example": "1996-12-12T17:00:00.000Z"
-        },
-        "email": {
-          "type": "string",
-          "example": "bimaagungsetya@gmail.com"
-        },
-        "password": {
-          "type": "string",
-          "example": "12345678"
-        },
-        "createdAt": {
-          "type": "string",
-          "example": "2022-09-04T14:59:41.336Z"
-        },
-        "updatedAt": {
-          "type": "string",
-          "example": "2022-09-04T14:59:41.336Z"
+        "products": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 1
+              },
+              "qty": {
+                "type": "number",
+                "example": 2
+              }
+            }
+          }
         }
       }
     }

@@ -87,18 +87,20 @@ class UserUC {
       reason: null,
       statusCode: 404,
       data: null,
-    };
+    }; 
+
+    let userBody = userData
 
     let user = await this.UserRepository.getUserByID(id);
 
-    if (user == null) {
+    if (user === null) {
       result.reason = 'user not found';
       return result;
     }
 
-    userData.image = await this.cloudinary.uploadCloudinaryAvatar(userData.image);
+    userBody.image = await this.cloudinary.uploadCloudinaryAvatar(userBody.image);
 
-    await this.UserRepository.updateUser(userData, id);
+    await this.UserRepository.updateUser(userBody, id);
 
     result.isSuccess = true;
     result.statusCode = 200;
