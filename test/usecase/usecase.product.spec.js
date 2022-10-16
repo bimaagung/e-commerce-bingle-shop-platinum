@@ -10,7 +10,7 @@ let productUC = null;
 describe('product', () => {
     beforeEach(() => {
         productValues = {
-            returnGetProductById:true, 
+            returnGetProductByID:true, 
             returnUpdateProduct:true,
             returnGetAllProducts:true,
             returnAddProduct:true,
@@ -56,7 +56,7 @@ describe('product', () => {
         })
 
         test('should isSuccess  = false and reason = product not found', async () => { 
-            productValues.returnGetProductById = null
+            productValues.returnGetProductByID = null
             productUC = new ProductUseCase(
                 mockProductRepo(productValues)
             );
@@ -75,7 +75,7 @@ describe('product', () => {
         })
 
         test('should isSuccess = false and data = null', async () => {
-            productValues.returnGetProductById = null
+            productValues.returnGetProductByID = null
             productUC = new ProductUseCase(
                 mockProductRepo(productValues)    
             )
@@ -139,7 +139,7 @@ describe('product', () => {
         })
 
         test('should isSuccess = false and reason = product not found', async () => {
-            productValues.returnGetProductById = null
+            productValues.returnGetProductByID = null
             productUC = new ProductUseCase(mockProductRepo(productValues))
         
             let res = await productUC.deleteProduct()
@@ -157,7 +157,7 @@ describe('product', () => {
     });
 
       test("seharusnya isSuccess  = false dan reason = product not found", async () => {
-      productValues.returnGetProductById = null;
+      productValues.returnGetProductByID = null;
       productUC = new ProductUseCase(mockProductRepo(productValues));
       let res = await productUC.updateProduct(1, { name: "test" });
 
@@ -174,7 +174,7 @@ describe('product', () => {
     });
 
     test("seharusnya isSuccess = false dan data = null", async () => {
-      productValues.returnGetProductById = null;
+      productValues.returnGetProductByID = null;
       productUC = new ProductUseCase(mockProductRepo(productValues));
 
       let res = await productUC.getProductById();
@@ -229,7 +229,7 @@ describe('product', () => {
     });
 
     test("should isSuccess = false and reason = product not found", async () => {
-      productValues.returnGetProductById = null;
+      productValues.returnGetProductByID = null;
       productUC = new ProductUseCase(mockProductRepo(productValues));
       let res = await productUC.deleteProduct();
 
