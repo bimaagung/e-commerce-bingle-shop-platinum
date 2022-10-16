@@ -2,7 +2,7 @@ const addressController = require('../../controller/address');
 const resData = require('../../helper/response');
 
 let mockAddressUC = {
-    getAddresByUserID: jest.fn().mockReturnValue(null),
+    getAddressByUserID: jest.fn().mockReturnValue(null),
     getAddressByID: jest.fn().mockReturnValue(null),
     addAddress: jest.fn().mockReturnValue(null),
     updateAddress: jest.fn().mockReturnValue(null),
@@ -53,30 +53,30 @@ describe('Test Address', () => {
         ]
 
         test("should status 200 and data in array", async () => {
-            mockAddressUC.getAddresByUserID = jest.fn().mockReturnValue(
-                { isSuccess: true, reason: null, data: address }
+            mockAddressUC.getAddressByUserID = jest.fn().mockReturnValue(
+                { isSuccess: true, reason: null, data: address, status: 200 }
             );
 
             let req = mockRequest({}, {}, { id: 2 }, {}, { addressUC: mockAddressUC });
             let res = mockResponse();
 
-            await addressController.getAddresByUserID(req, res, next);
+            await addressController.getAddressByUserID(req, res, next);
 
-            expect(mockAddressUC.getAddresByUserID).toHaveBeenCalled();
+            expect(mockAddressUC.getAddressByUserID).toHaveBeenCalled();
             expect(res.status).toBeCalledWith(200)
             expect(res.json).toBeCalledWith(resData.success(address));
         });
 
         test('should status 200 and data empty', async () => {
-            mockAddressUC.getAddresByUserID = jest.fn().mockReturnValue(
-                { isSuccess: true, reason: null, data: [] }
+            mockAddressUC.getAddressByUserID = jest.fn().mockReturnValue(
+                { isSuccess: true, reason: null, data: [], status: 200 }
             )
             let req = mockRequest({}, {}, {}, {}, { addressUC: mockAddressUC })
             let res = mockResponse()
 
-            await addressController.getAddresByUserID(req, res, next)
+            await addressController.getAddressByUserID(req, res, next)
 
-            expect(mockAddressUC.getAddresByUserID).toHaveBeenCalled()
+            expect(mockAddressUC.getAddressByUserID).toHaveBeenCalled()
             expect(res.status).toBeCalledWith(200)
             expect(res.json).toBeCalledWith(resData.success([]))
         })
@@ -99,7 +99,7 @@ describe('Test Address', () => {
 
         test('should status 200 and data is object', async () => {
             mockAddressUC.getAddressByID = jest.fn().mockReturnValue(
-                { isSuccess: true, reason: null, data: address }
+                { isSuccess: true, reason: null, data: address, status: 200 }
             )
 
             let req = mockRequest({}, {}, { id: 1 }, {}, { addressUC: mockAddressUC })
@@ -115,7 +115,7 @@ describe('Test Address', () => {
 
         test('should status 404 and message is address not found', async () => {
             mockAddressUC.getAddressByID = jest.fn().mockReturnValue(
-                { isSuccess: false, reason: 'address not found', data: null }
+                { isSuccess: false, reason: 'address not found', data: null, status: 404 }
             )
             let req = mockRequest({}, {}, {}, { id: 2 }, { addressUC: mockAddressUC })
             let res = mockResponse()

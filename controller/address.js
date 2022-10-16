@@ -16,7 +16,7 @@ module.exports = {
     }
   },
 
-  getAddresByUserID: async (req, res, next) => {
+  getAddressByUserID: async (req, res, next) => {
     try {
       let id = req.user.id
       let address = await req.addressUC.getAddressByUserID(id);
