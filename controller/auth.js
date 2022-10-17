@@ -1,5 +1,3 @@
-const _ = require('lodash');
-const generateToken = require('../helper/jwt');
 const resData = require('../helper/response');
 const defaultImage = require('../internal/constant/defaultImage');
 
@@ -11,9 +9,10 @@ module.exports = {
       if (resUser.isSuccess !== true) {
         return res.status(resUser.status).json(resData.failed(resUser.reason));
       }
-      const user = _.omit(resUser.data.dataValues, ['password']);
-      const token = generateToken(user);
-      res.status(200).json(resData.success({ user, token }));
+      res.status(200).json(resData.success({
+        user : resUser.data,
+        token : resData.token
+      }));
     } catch (e) {
       next(e);
     }
@@ -28,7 +27,7 @@ module.exports = {
         telp: req.body.telp,
         email: req.body.email,
         password: req.body.password,
-        confrimPassword : req.body.confrimPassword,
+        confrimPassword: req.body.confrimPassword,
         is_admin: false,
       };
 
@@ -45,9 +44,10 @@ module.exports = {
           .status(resUser.status)
           .json(resData.failed(resUser.reason));
       }
-      const user = _.omit(resUser.data.dataValues, ['password']);
-      const token = generateToken(user);
-      res.json(resData.success({ user, token }));
+      res.status(200).json(resData.success({
+        user : resUser.data,
+        token : resData.token
+      }));
     } catch (e) {
       next(e);
     }

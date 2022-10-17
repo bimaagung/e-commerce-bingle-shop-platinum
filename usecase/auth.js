@@ -1,11 +1,13 @@
 /* eslint-disable consistent-return */
 const defaultImage = require("../internal/constant/defaultImage");
 class AuthUC {
-  constructor(AuthRepository, UserRepository, bcrypt, cloudinary) {
+  constructor(AuthRepository, UserRepository, bcrypt, cloudinary, generateToken, _) {
     this.AuthRepository = AuthRepository;
     this.UserRepository = UserRepository;
     this.bcrypt = bcrypt;
     this.cloudinary = cloudinary;
+    this.generateToken = generateToken
+    this._ =_
   }
 
   async register(userData) {
@@ -14,6 +16,7 @@ class AuthUC {
       reason: "",
       status: 404,
       data: null,
+      token: null
     };
 
     let user = await this.UserRepository.getUserExist(
@@ -38,10 +41,12 @@ class AuthUC {
     } else {
       user = await this.AuthRepository.registerUser(userData);
     }
-
+    let dataUser =this._.omit(user.dataValues, ['password'])
+    let token = this.generateToken(dataUser)
     result.isSuccess = true;
     result.status = 200;
-    result.data = user;
+    result.data = dataUser
+    result.token = token
     return result;
   }
 
@@ -51,6 +56,7 @@ class AuthUC {
       reason: "",
       status: 404,
       data: null,
+      token: null
     };
 
     let user = await this.AuthRepository.loginUser(username);
@@ -62,9 +68,12 @@ class AuthUC {
       result.reason = "incorect username or password";
       return result;
     }
+    let dataUser =this._.omit(user.dataValues, ['password'])
+    let token = this.generateToken(dataUser)
     result.isSuccess = true;
     result.status = 200;
-    result.data = user;
+    result.data = dataUser;
+    result.token = token;
     return result;
   }
 }

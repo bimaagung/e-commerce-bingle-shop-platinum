@@ -16,7 +16,6 @@ class ProductImageUC {
     let image = await this.productImageRepository.getAllImageByProductID(
       productID
     );
-    console.log(image.length)
     if (image === null) {
       result.reason = "image not found";
       return result;
