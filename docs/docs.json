@@ -98,7 +98,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Berhasil melihat semua product",
+            "description": "Berhasil melihat semua produk",
             "content": {
               "application/json": {
                 "schema": {
@@ -128,7 +128,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Berhasil melihat semua product",
+            "description": "Berhasil melihat produk berdasarkan id produk",
             "content": {
               "application/json": {
                 "schema": {
@@ -152,17 +152,30 @@
     },
     "/api/public/category": {
       "get": {
+        "tags": [
+          "Category"
+        ],
         "description": "",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Berhasil melihat semua kategori",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successGetAllCategory"
+                }
+              }
+            }
           }
         }
       }
     },
     "/api/public/category/{id}": {
       "get": {
+        "tags": [
+          "Category"
+        ],
         "description": "",
         "parameters": [
           {
@@ -176,10 +189,24 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Berhasil melihat semua kategori",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successGetAllCategory"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found"
+            "description": "Kategori tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/categoryNotFound"
+                }
+              }
+            }
           }
         }
       }
@@ -1207,6 +1234,100 @@
         },
         "xml": {
           "name": "productNotFound"
+        }
+      },
+      "successGetAllCategory": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Laptop"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "example": "2022-10-13T09:31:19.311Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "example": "2022-10-13T09:31:19.311Z"
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successGetAllCategory"
+        }
+      },
+      "successGetCategoryById": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 1
+              },
+              "name": {
+                "type": "string",
+                "example": "Laptop"
+              },
+              "createdAt": {
+                "type": "string",
+                "example": "2022-10-13T09:31:19.311Z"
+              },
+              "updatedAt": {
+                "type": "string",
+                "example": "2022-10-13T09:31:19.311Z"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successGetCategoryById"
+        }
+      },
+      "categoryNotFound": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "category not found"
+          },
+          "data": {}
+        },
+        "xml": {
+          "name": "categoryNotFound"
         }
       }
     },

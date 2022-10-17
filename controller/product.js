@@ -5,7 +5,7 @@ module.exports = {
     /*
       #swagger.tags = ['Product']
       #swagger.responses[200] = {
-        description: "Berhasil melihat semua product",
+        description: "Berhasil melihat semua produk",
           content: {
               "application/json": {
                   schema:{
@@ -33,7 +33,7 @@ module.exports = {
     /*
       #swagger.tags = ['Product']
       #swagger.responses[200] = {
-        description: "Berhasil melihat semua product",
+        description: "Berhasil melihat produk berdasarkan id produk",
           content: {
               "application/json": {
                   schema:{

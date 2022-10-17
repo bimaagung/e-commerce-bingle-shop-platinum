@@ -2,6 +2,20 @@ const resData = require('../helper/response');
 
 module.exports = {
   getAllCategory: async (req, res, next) => {
+    /*
+      #swagger.tags = ['Category']
+      #swagger.responses[200] = {
+        description: "Berhasil melihat semua kategori",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/successGetAllCategory"
+                  }
+              }
+          }
+      }
+
+    */
     try {
       let category = await req.categoryUC.getAllCategory();
 
@@ -12,19 +26,42 @@ module.exports = {
   },
 
   getCategoryById: async (req, res, next) => {
+    /*
+      #swagger.tags = ['Category']
+      #swagger.responses[200] = {
+        description: "Berhasil melihat semua kategori",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/successGetAllCategory"
+                  }
+              }
+          }
+      }
+      #swagger.responses[404] = {
+        description: "Kategori tidak ditemukan",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/categoryNotFound"
+                  }
+              }
+          }
+      }
+
+    */
     try {
-      let id = req.params.id;
+      let { id } = req.params;
 
       let category = await req.categoryUC.getCategoryByID(id);
 
       if (category.isSuccess === false) {
         return res
           .status(404)
-          .json(resData.failed( category.reason, category.data));
+          .json(resData.failed(category.reason, category.data));
       }
 
       return res.json(resData.success(category.data));
-
     } catch (e) {
       next(e);
     }
@@ -60,7 +97,7 @@ module.exports = {
           .json(resData.failed(categoryById.reason, categoryById));
       }
 
-       res.json(resData.success(categoryById));
+      res.json(resData.success(categoryById));
     } catch (e) {
       next(e);
     }
@@ -74,10 +111,10 @@ module.exports = {
 
       if (category.isSuccess !== true) {
         return res.status(404)
-          .json(resData.failed( category.reason, category.data));
+          .json(resData.failed(category.reason, category.data));
       }
 
-     res.status(200).json(resData.success(category.data));
+      res.status(200).json(resData.success(category.data));
     } catch (e) {
       next(e);
     }
