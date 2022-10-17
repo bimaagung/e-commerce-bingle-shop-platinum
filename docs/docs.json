@@ -534,13 +534,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "in": {
-                    "example": "any"
-                  },
-                  "description": {
-                    "example": "any"
-                  },
-                  "schema": {
+                  "products": {
                     "example": "any"
                   }
                 }

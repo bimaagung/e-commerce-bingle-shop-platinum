@@ -5,20 +5,6 @@ module.exports = {
   createOrder: async (req, res, next) => {
     /*
       #swagger.tags = ['Order']
-      #swagger.parameters['obj'] = {
-        in: 'body',
-        description: 'Create order.',
-        schema: {
-          CreateOrder: {
-            products: [
-              {
-                id: 1,
-                qty: 2,
-              }
-            ]
-          },
-        }
-      }
     */
     try {
       const orderId = nanoid(16);
