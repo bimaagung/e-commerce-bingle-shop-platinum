@@ -1,6 +1,7 @@
 const swaggerAutogen = require('swagger-autogen')({openapi: '3.0.0'})
 const orderSchemaReq = require('./docs/schema/request/order') 
 const orderSchemaRes = require('./docs/schema/response/order') 
+const productSchemaRes = require('./docs/schema/response/product') 
 
 const doc = {
   info: {
@@ -37,7 +38,13 @@ const doc = {
     orderNotFound: orderSchemaRes.orderNotFound,
 
     unathorized: orderSchemaRes.unathorized,
+    
+    // product
+    successGetAllProduct: productSchemaRes.successGetAllProduct,
+    successGetProductById: productSchemaRes.successGetProductById,
 
+    // product not found
+    productNotFound : productSchemaRes.productNotFound
   },
 }
 

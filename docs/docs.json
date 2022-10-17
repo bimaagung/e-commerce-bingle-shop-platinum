@@ -91,17 +91,30 @@
     },
     "/api/public/product": {
       "get": {
+        "tags": [
+          "Product"
+        ],
         "description": "",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Berhasil melihat semua product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successGetAllProduct"
+                }
+              }
+            }
           }
         }
       }
     },
     "/api/public/product/{id}": {
       "get": {
+        "tags": [
+          "Product"
+        ],
         "description": "",
         "parameters": [
           {
@@ -115,10 +128,24 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Berhasil melihat semua product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successGetProductById"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found"
+            "description": "Produk tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/productNotFound"
+                }
+              }
+            }
           }
         }
       }
@@ -1011,6 +1038,175 @@
         },
         "xml": {
           "name": "unathorized"
+        }
+      },
+      "successGetAllProduct": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Asus ROG Zephyrush M16"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Laptop gaming dari asus"
+                },
+                "category_id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "sold": {
+                  "type": "number",
+                  "example": 23
+                },
+                "price": {
+                  "type": "number",
+                  "example": 30000000
+                },
+                "stock": {
+                  "type": "number",
+                  "example": 0
+                },
+                "createdAt": {
+                  "type": "string",
+                  "example": "2022-10-13T09:31:19.370Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "example": "2022-10-17T06:48:59.632Z"
+                },
+                "ProductImages": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "url": {
+                        "type": "string",
+                        "example": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815144/default%20image/default_product_w8fe1a.jpg"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successGetAllProduct"
+        }
+      },
+      "successGetProductById": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 1
+              },
+              "name": {
+                "type": "string",
+                "example": "Asus ROG Zephyrush M16"
+              },
+              "description": {
+                "type": "string",
+                "example": "Laptop gaming dari asus"
+              },
+              "category_id": {
+                "type": "number",
+                "example": 1
+              },
+              "sold": {
+                "type": "number",
+                "example": 23
+              },
+              "price": {
+                "type": "number",
+                "example": 30000000
+              },
+              "stock": {
+                "type": "number",
+                "example": 0
+              },
+              "createdAt": {
+                "type": "string",
+                "example": "2022-10-13T09:31:19.370Z"
+              },
+              "updatedAt": {
+                "type": "string",
+                "example": "2022-10-17T06:48:59.632Z"
+              },
+              "ProductImages": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "url": {
+                      "type": "string",
+                      "example": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815144/default%20image/default_product_w8fe1a.jpg"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successGetProductById"
+        }
+      },
+      "productNotFound": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "product not found"
+          },
+          "data": {
+            "type": "string",
+            "example": "null"
+          }
+        },
+        "xml": {
+          "name": "productNotFound"
         }
       }
     },

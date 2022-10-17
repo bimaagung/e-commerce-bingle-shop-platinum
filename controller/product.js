@@ -2,6 +2,20 @@ const resData = require('../helper/response');
 
 module.exports = {
   getAllProducts: async (req, res, next) => {
+    /*
+      #swagger.tags = ['Product']
+      #swagger.responses[200] = {
+        description: "Berhasil melihat semua product",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/successGetAllProduct"
+                  }
+              }
+          }
+      }
+
+    */
     try {
       let getAllProduct = await req.productUC.getAllProducts();
 
@@ -16,6 +30,31 @@ module.exports = {
   },
 
   getProductById: async (req, res, next) => {
+    /*
+      #swagger.tags = ['Product']
+      #swagger.responses[200] = {
+        description: "Berhasil melihat semua product",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/successGetProductById"
+                  }
+              }
+          }
+      }
+
+      #swagger.responses[404] = {
+        description: "Produk tidak ditemukan",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/productNotFound"
+                  }
+              }
+          }
+      }
+
+    */
     try {
       let { id } = req.params;
 
