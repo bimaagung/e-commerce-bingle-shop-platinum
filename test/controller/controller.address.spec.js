@@ -47,6 +47,7 @@ describe('Test Address', () => {
                 postal_code: '15345',
                 detail: 'The Breeze BSD',
                 user_id: 2,
+                main_address: true,
                 createdAt: "12-09-2022 23:30:00",
                 updatedAt: "12-09-2022 23:30:00"
             }
@@ -92,6 +93,7 @@ describe('Test Address', () => {
                 postal_code: '15345',
                 detail: 'The Breeze BSD',
                 user_id: 2,
+                main_address: true,
                 createdAt: "12-09-2022 23:30:00",
                 updatedAt: "12-09-2022 23:30:00"
             }
@@ -127,8 +129,135 @@ describe('Test Address', () => {
         })
     })
 
-    describe('update address ', () => {})
-    describe('delete address ', () => {})
-    describe('create address ', () => {})
+    describe('update address ', () => {
+        const address =
+        {
+            id: 1,
+            province: 'Banten',
+            city: 'Bumi Serpong',
+            postal_code: '15345',
+            detail: 'The Breeze BSD',
+            user_id: 2,
+            main_address: true,
+            createdAt: "12-09-2022 23:30:00",
+            updatedAt: "12-09-2022 23:30:00"
+        }
+
+
+        test('should status 200 and data object', async () => {
+            mockAddressUC.updateAddress = jest.fn().mockReturnValue(
+                { isSuccess: true, reason: null, data: address, status: 200 })
+
+            let req = mockRequest({}, {}, { id: 1 }, {}, { addressUC: mockAddressUC })
+            let res = mockResponse()
+
+            await addressController.updateAddress(req, res, next)
+
+            expect(mockAddressUC.updateAddress).toHaveBeenCalled()
+            expect(res.status).toBeCalledWith(200)
+            expect(res.json).toBeCalledWith(resData.success())
+        })
+
+        test('should status 404 and message is address not found', async () => {
+            mockAddressUC.updateAddress = jest.fn().mockReturnValue(
+                { isSuccess: false, reason: 'address not found', data: null, status: 404 })
+
+            let req = mockRequest({}, {}, { id: 2 }, {}, { addressUC: mockAddressUC })
+            let res = mockResponse()
+
+            await addressController.updateAddress(req, res, next)
+
+            expect(res.status).toBeCalledWith(404)
+            expect(res.json).toBeCalledWith(resData.failed('address not found'))
+        })
+    })
+    describe('delete address ', () => {
+
+        const address =
+        {
+            id: 1,
+            province: 'Banten',
+            city: 'Bumi Serpong',
+            postal_code: '15345',
+            detail: 'The Breeze BSD',
+            user_id: 2,
+            main_address: true,
+            createdAt: "12-09-2022 23:30:00",
+            updatedAt: "12-09-2022 23:30:00"
+        }
+
+        test('should status 200 and data is object', async () => {
+            mockAddressUC.deleteAddress = jest.fn().mockReturnValue(
+                { isSuccess: true, reason: null, data: address, status: 200 })
+
+            let req = mockRequest({}, {}, { id: 1 }, {}, { addressUC: mockAddressUC })
+            let res = mockResponse()
+
+            await addressController.deleteAddress(req, res, next)
+
+
+            expect(mockAddressUC.deleteAddress).toHaveBeenCalled()
+            expect(res.status).toBeCalledWith(200)
+            expect(res.json).toBeCalledWith(resData.success())
+        })
+
+
+        test('should status 404 and message is address not found', async () => {
+            mockAddressUC.deleteAddress = jest.fn().mockReturnValue(
+                { isSuccess: false, reason: 'address not found', data: null, status: 404 })
+
+            let req = mockRequest({}, {}, { id: 2 }, {}, { addressUC: mockAddressUC })
+            let res = mockResponse()
+
+            await addressController.deleteAddress(req, res, next)
+
+            expect(res.status).toBeCalledWith(404)
+            expect(res.json).toBeCalledWith(resData.failed('address not found'))
+        })
+    })
+
+    describe('create address ', () => {
+
+        const address =
+        {
+            id: 1,
+            province: 'Banten',
+            city: 'Bumi Serpong',
+            postal_code: '15345',
+            detail: 'The Breeze BSD',
+            user_id: 2,
+            main_address: true,
+            createdAt: "12-09-2022 23:30:00",
+            updatedAt: "12-09-2022 23:30:00"
+        }
+
+        test('should status 201 and data is object', async () => {
+            mockAddressUC.addAddress = jest.fn().mockReturnValue(
+                { isSuccess: true, reason: null, data: address, status: 201 })
+
+            let req = mockRequest({ address }, {}, {}, {}, { addressUC: mockAddressUC })
+            let res = mockResponse()
+
+            await addressController.addAddress(req, res, next)
+
+
+            expect(mockAddressUC.addAddress).toHaveBeenCalled()
+            expect(res.status).toBeCalledWith(201)
+            expect(res.json).toBeCalledWith(resData.success(address))
+        })
+
+        test('should status 404 and message is address not found', async () => {
+            mockAddressUC.addAddress = jest.fn().mockReturnValue(
+                { isSuccess: false, reason: 'failed to add, address not found', data: null, status: 404 })
+
+            let req = mockRequest({ address }, {}, {}, {}, { addressUC: mockAddressUC })
+            let res = mockResponse()
+
+            await addressController.addAddress(req, res, next)
+
+            expect(res.status).toBeCalledWith(404)
+            expect(res.json).toBeCalledWith(resData.failed('failed to add, address not found', null))
+        })
+    })
 
 })
