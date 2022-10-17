@@ -17,6 +17,9 @@ const cloudinary = {
     .fn()
     .mockReturnValue("https://cloudinary.com/avatars/image.jpg"),
 };
+const _ = {
+  omit : jest.fn().mockReturnValue()
+}
 
 describe("auth", () => {
   beforeEach(() => {
@@ -31,7 +34,7 @@ describe("auth", () => {
       mockAuthRepo(authValues),
       mockUserRepo(userValues),
       bcrypt,
-      cloudinary
+      cloudinary, _
     );
   });
   describe("Test Register", () => {
@@ -41,7 +44,7 @@ describe("auth", () => {
         mockAuthRepo(authValues),
         mockUserRepo(userValues),
         bcrypt,
-        cloudinary
+        cloudinary,_
       );
       let res = await authUC.register({
         name: "kian",

@@ -12,6 +12,7 @@ class AuthRepository {
   async loginUser(username) {
     return await this.UserModel.findOne({
       where: { username },
+      
     });
   }
   

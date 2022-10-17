@@ -28,15 +28,14 @@ module.exports = {
       let image = null
       if(req.file !== undefined){
         image = (req.file.path)
-      } else {
-        image = defaultImage.DEFAULT_PRODUCT_IMAGE
-      }
-      dataImage.url = image
-      let resImage = await req.productImageUC.createImageProduct(dataImage);
-      if (resImage.isSuccess !== true) {
-        return res.status(resImage.status).json(resData.failed(resImage.reason, null));
-      }
-      res.status(resImage.status).json(resData.success(resImage.data));
+      } 
+        dataImage.url = image
+        let resImage = await req.productImageUC.createImageProduct(dataImage);
+        if (resImage.isSuccess !== true) {
+          return res.status(resImage.status).json(resData.failed(resImage.reason));
+        }
+        res.status(resImage.status).json(resData.success(resImage.data));
+      
     } catch (e) {
       next(e);
     }
