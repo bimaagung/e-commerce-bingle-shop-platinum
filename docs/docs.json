@@ -357,6 +357,9 @@
     },
     "/api/customer/address/{id}": {
       "get": {
+        "tags": [
+          "Address"
+        ],
         "description": "",
         "parameters": [
           {
@@ -376,8 +379,35 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "Berhasil mengambil alamat berdasarkan id alamat",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successAddAddress"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Alamat tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/addressNotFound"
+                }
+              }
+            }
+          },
           "401": {
-            "description": "Unauthorized"
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -389,6 +419,9 @@
     },
     "/api/customer/all/address/": {
       "get": {
+        "tags": [
+          "Address"
+        ],
         "description": "",
         "parameters": [
           {
@@ -400,8 +433,25 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "Berhasil mengambil semua alamat berdasarkan id pengguna",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successGetAllAdressByUserId"
+                }
+              }
+            }
+          },
           "401": {
-            "description": "Unauthorized"
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -413,6 +463,9 @@
     },
     "/api/customer/address/add": {
       "post": {
+        "tags": [
+          "Address"
+        ],
         "description": "",
         "parameters": [
           {
@@ -424,11 +477,38 @@
           }
         ],
         "responses": {
+          "201": {
+            "description": "Berhasil menambahkan alamat",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successAddAddress"
+                }
+              }
+            }
+          },
           "400": {
             "description": "Bad Request"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pengguna tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userNotFound"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -437,24 +517,16 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "province": {
-                    "example": "any"
-                  },
-                  "city": {
-                    "example": "any"
-                  },
-                  "postal_code": {
-                    "example": "any"
-                  },
-                  "detail": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/bodyAddAddress"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyAddAddress"
               }
             }
           }
@@ -463,6 +535,9 @@
     },
     "/api/customer/address/update/{id}": {
       "put": {
+        "tags": [
+          "Address"
+        ],
         "description": "",
         "parameters": [
           {
@@ -482,11 +557,38 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "Berhasil mengubah alamat",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/sucessAddress"
+                }
+              }
+            }
+          },
           "400": {
             "description": "Bad Request"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Alamat tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/addressNotFound"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -495,24 +597,16 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "province": {
-                    "example": "any"
-                  },
-                  "city": {
-                    "example": "any"
-                  },
-                  "postal_code": {
-                    "example": "any"
-                  },
-                  "detail": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/bodyUpdateAddress"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyUpdateAddress"
               }
             }
           }
@@ -521,6 +615,9 @@
     },
     "/api/customer/address/delete/{id}": {
       "delete": {
+        "tags": [
+          "Address"
+        ],
         "description": "",
         "parameters": [
           {
@@ -540,8 +637,35 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "Berhasil menghapus alamat berdasarkan id alamat",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/sucessAddress"
+                }
+              }
+            }
+          },
           "401": {
-            "description": "Unauthorized"
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Alamat tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/addressNotFound"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -718,7 +842,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/successSubmiteOrder"
+                  "$ref": "#/components/schemas/successOrder"
                 }
               }
             }
@@ -1003,7 +1127,7 @@
           "name": "successGetOrderPending"
         }
       },
-      "successSubmiteOrder": {
+      "successOrder": {
         "type": "object",
         "properties": {
           "status": {
@@ -1016,7 +1140,7 @@
           }
         },
         "xml": {
-          "name": "successSubmiteOrder"
+          "name": "successOrder"
         }
       },
       "checkProductOrderBeforeSumbit": {
@@ -1328,6 +1452,215 @@
         },
         "xml": {
           "name": "categoryNotFound"
+        }
+      },
+      "bodyAddAddress": {
+        "type": "object",
+        "properties": {
+          "province": {
+            "type": "string",
+            "example": "Jakarta"
+          },
+          "city": {
+            "type": "string",
+            "example": "Jakarta"
+          },
+          "postal_code": {
+            "type": "number",
+            "example": 12940
+          },
+          "detail": {
+            "type": "string",
+            "example": "Jl. Setiabudi, Kuningan, Jakarta Selatan"
+          }
+        },
+        "xml": {
+          "name": "bodyAddAddress"
+        }
+      },
+      "bodyUpdateAddress": {
+        "type": "object",
+        "properties": {
+          "province": {
+            "type": "string",
+            "example": "Jawa Tengah"
+          },
+          "city": {
+            "type": "string",
+            "example": "Semarang"
+          },
+          "postal_code": {
+            "type": "number",
+            "example": 50139
+          },
+          "detail": {
+            "type": "string",
+            "example": "Jl. Pemuda, Semarang Tengah"
+          }
+        },
+        "xml": {
+          "name": "bodyUpdateAddress"
+        }
+      },
+      "successAddAddress": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 33
+              },
+              "province": {
+                "type": "string",
+                "example": "Jakarta"
+              },
+              "city": {
+                "type": "string",
+                "example": "Jakarta"
+              },
+              "postal_code": {
+                "type": "string",
+                "example": "12940"
+              },
+              "detail": {
+                "type": "string",
+                "example": "Jl. Setiabudi, Kuningan, Jakarta Selatan"
+              },
+              "user_id": {
+                "type": "number",
+                "example": 61
+              },
+              "updatedAt": {
+                "type": "string",
+                "example": "2022-10-17T10:22:27.508Z"
+              },
+              "createdAt": {
+                "type": "string",
+                "example": "2022-10-17T10:22:27.508Z"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successAddAddress"
+        }
+      },
+      "successGetAllAdressByUserId": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 33
+                },
+                "province": {
+                  "type": "string",
+                  "example": "Jakarta"
+                },
+                "city": {
+                  "type": "string",
+                  "example": "Jakarta"
+                },
+                "postal_code": {
+                  "type": "string",
+                  "example": "12940"
+                },
+                "detail": {
+                  "type": "string",
+                  "example": "Jl. Setiabudi, Kuningan, Jakarta Selatan"
+                },
+                "user_id": {
+                  "type": "number",
+                  "example": 61
+                },
+                "createdAt": {
+                  "type": "string",
+                  "example": "2022-10-17T10:22:27.508Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "example": "2022-10-17T10:22:27.508Z"
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successGetAllAdressByUserId"
+        }
+      },
+      "sucessAddress": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          }
+        },
+        "xml": {
+          "name": "sucessAddress"
+        }
+      },
+      "addressNotFound": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "address not found"
+          }
+        },
+        "xml": {
+          "name": "addressNotFound"
+        }
+      },
+      "userNotFound": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "user id not found"
+          },
+          "data": {
+            "type": "string",
+            "example": "null"
+          }
+        },
+        "xml": {
+          "name": "userNotFound"
         }
       }
     },

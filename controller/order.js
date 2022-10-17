@@ -204,7 +204,7 @@ module.exports = {
           content: {
               "application/json": {
                   schema:{
-                      $ref: "#/definitions/successSubmiteOrder"
+                      $ref: "#/definitions/successOrder"
                   }
               }
           }

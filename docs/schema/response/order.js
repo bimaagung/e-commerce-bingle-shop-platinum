@@ -61,7 +61,7 @@ module.exports = {
             ]
         }
     },
-    successSubmiteOrder : {
+    successOrder : {
         "status": "ok",
         "message": "success"
     },
