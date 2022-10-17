@@ -59,7 +59,6 @@ describe('test login', () => {
 
             expect(mockAuthUC.login).toHaveBeenCalled()
             expect(res.status).toBeCalledWith(200)
-            expect(res.json).toBeCalledWith(resData.success(order));
 
         })
         test('return status 404 isSuccess false', async () => {
@@ -109,12 +108,13 @@ describe('test login', () => {
             await authController.register(req, res, next)
 
             expect(mockAuthUC.register).toHaveBeenCalled()
+            expect(res.status).toBeCalledWith(200)
               
         })
         
-        test('return status 200 isSuccess false', async () => {
+        test('return status 404 isSuccess false', async () => {
             mockAuthUC.register = jest.fn().mockReturnValue(
-                { isSuccess: false, reason: "", data: user }
+                { isSuccess: false, reason: "", data: user, status: 404 }
             )
             let req = mockRequest(
                 {},
@@ -129,7 +129,7 @@ describe('test login', () => {
             await authController.register(req, res, next)
 
             expect(mockAuthUC.register).toHaveBeenCalled()
-              
+            expect(res.status).toBeCalledWith(404)
         })
 
     })

@@ -18,6 +18,8 @@ const fs = require('fs');
 const moment = require('moment-timezone');
 const bcrypt = require('bcrypt');
 const cloudinary = require('./libs/handle_upload');
+const generateToken = require('./helper/jwt');
+const _ = require('lodash')
 
 const serverError = require('./middleware/serverError');
 
@@ -57,7 +59,7 @@ const userUC = new UserUseCase(new UserRepository(), bcrypt, cloudinary);
 const authUC = new AuthUseCase(
   new AuthRepository(),
   new UserRepository(),
-  bcrypt, cloudinary
+  bcrypt, cloudinary, generateToken, _
 );
 
 const productImageUC = new ProductImageUseCase(
