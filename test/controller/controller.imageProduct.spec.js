@@ -80,7 +80,7 @@ describe("Test upload image", () => {
 
       expect(mockImageProductUC.createImageProduct).toHaveBeenCalled();
 
-      expect(res.json).toBeCalledWith(resData.failed("failed add image, product not found", null));
+      expect(res.json).toBeCalledWith(resData.failed("failed add image, product not found"));
     });
   });
   describe("get image by product id ", () => {

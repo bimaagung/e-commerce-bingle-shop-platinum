@@ -44,23 +44,25 @@ class ProductImageUC {
       result.status = 404;
       return result;
     }
-    let existImage =await this.productImageRepository.getAllImageByProductID(
+    let existImage = await this.productImageRepository.getAllImageByProductID(
       imageData.product_id
     );
-    
-    if(existImage.length === 9){
+
+    if (existImage.length === 9) {
       result.isSuccess = false
       result.reason = "failed add image, maximum limit image"
       result.status = 400
       return result
     }
     let image = null;
-    if (imageData.url !== defaultImage.DEFAULT_PRODUCT_IMAGE) {
-      imageData.url = await cloudinary.uploadCloudinaryProduct(imageData.url);
-      image = await this.productImageRepository.createImage(imageData);
-    } else {
-      image = await this.productImageRepository.createImage(imageData);
+    if (imageData.url === null) {
+      result.isSuccess = false
+      result.reason = "failed add image, please insert file"
+      return result
     }
+    imageData.url = await cloudinary.uploadCloudinaryProduct(imageData.url);
+    image = await this.productImageRepository.createImage(imageData);
+    
     result.data = image;
     return result;
   }

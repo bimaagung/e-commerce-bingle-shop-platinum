@@ -11,7 +11,7 @@ module.exports = {
       }
       res.status(200).json(resData.success({
         user : resUser.data,
-        token : resData.token
+        token : resUser.token
       }));
     } catch (e) {
       next(e);
@@ -46,7 +46,7 @@ module.exports = {
       }
       res.status(200).json(resData.success({
         user : resUser.data,
-        token : resData.token
+        token : resUser.token
       }));
     } catch (e) {
       next(e);
