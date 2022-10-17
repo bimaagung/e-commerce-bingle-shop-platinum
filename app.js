@@ -17,9 +17,9 @@ let logger = require('morgan');
 const fs = require('fs');
 const moment = require('moment-timezone');
 const bcrypt = require('bcrypt');
+const _ = require('lodash');
 const cloudinary = require('./libs/handle_upload');
 const generateToken = require('./helper/jwt');
-const _ = require('lodash')
 
 const serverError = require('./middleware/serverError');
 
@@ -59,7 +59,13 @@ const userUC = new UserUseCase(new UserRepository(), bcrypt, cloudinary);
 const authUC = new AuthUseCase(
   new AuthRepository(),
   new UserRepository(),
-  bcrypt, cloudinary, generateToken, _
+  bcrypt,
+
+  cloudinary,
+
+  generateToken,
+
+  _,
 );
 
 const productImageUC = new ProductImageUseCase(
@@ -119,10 +125,8 @@ app.use('/', publicRouter);
 // handle server error
 app.use(serverError);
 
-
 const swaggerDocument = require('./docs/docs.json');
 const adminSwaggerDocument = require('./docs/admin_docs.json');
-
 
 app.use('/docs/admin', swaggerUi.serveFiles(adminSwaggerDocument), swaggerUi.setup(adminSwaggerDocument));
 app.use('/docs', swaggerUi.serveFiles(swaggerDocument), swaggerUi.setup(swaggerDocument));

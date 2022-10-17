@@ -5,6 +5,66 @@ module.exports = {
   createOrder: async (req, res, next) => {
     /*
       #swagger.tags = ['Order']
+      #swagger.requestBody = {
+      required: true,
+      schema: { $ref: "#/definitions/bodyCreateOrder" }
+      }
+
+      #swagger.responses[201] = {
+        description: "Berhasil membuat pesanan",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/successCreateOrder"
+                  }
+              }
+          }
+      }
+
+       #swagger.responses[400] = {
+        description: "Pelanggan masih mempunyai pesanan yang belum di submit",
+          content: {
+              "application/json": {
+                examples: {
+                  have_order_pending: {
+                    value:{
+                      "status": "failed",
+                      "message": "user already has pending order"
+                    },
+                    summary: "Pelanggan masih mempunyai pesanan yang belum di submit"
+                  },
+                  product_order_empty: {
+                    value:{
+                      "status": "failed",
+                      "message": "can't process the order, please check each product in order"
+                    },
+                    summary: "Salah satu produk yang dipesan kosong atau tidak ada"
+                  }
+                },
+                schema:{
+                  oneOf: [
+                    {
+                        $ref: "#/definitions/failHaveOrderPending"
+                    },
+                    {
+                        $ref: "#/definitions/failCreateProductOrder"
+                    }
+                  ]
+                },
+              }
+          }
+      }
+
+      #swagger.responses[401] = {
+        description: "Akun tidak valid",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/unathorized"
+                  }
+              }
+          }
+      }
     */
     try {
       const orderId = nanoid(16);
@@ -39,6 +99,17 @@ module.exports = {
   getListOrder: async (req, res, next) => {
     /*
       #swagger.tags = ['Order']
+      #swagger.responses[200] = {
+        description: "Berhasil melihat pesanan yang belum di submit",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/successGetOrderPending"
+                  }
+              }
+          }
+      }
+
     */
     try {
       const { status } = req.query;
@@ -54,6 +125,37 @@ module.exports = {
   getPendingOrderByUserId: async (req, res, next) => {
     /*
       #swagger.tags = ['Order']
+      #swagger.responses[200] = {
+        description: "Berhasil melihat pesanan yang belum di submit",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/successGetOrderPending"
+                  }
+              }
+          }
+      }
+      #swagger.responses[404] = {
+        description: "Belum membuat pesanan",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/orderNotFound"
+                  }
+              }
+          }
+      }
+
+      #swagger.responses[401] = {
+        description: "Akun tidak valid",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/unathorized"
+                  }
+              }
+          }
+      }
     */
     try {
       const userId = req.user.id;
@@ -97,6 +199,49 @@ module.exports = {
   submitOrder: async (req, res, next) => {
     /*
       #swagger.tags = ['Order']
+      #swagger.responses[200] = {
+        description: "Berhasil submit pesanan",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/successSubmiteOrder"
+                  }
+              }
+          }
+      }
+
+       #swagger.responses[400] = {
+        description: "Produk yang diorder stoknya sudah habis atau tidak ada",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/checkProductOrderBeforeSumbit"
+                  }
+              }
+          }
+      }
+
+      #swagger.responses[404] = {
+        description: "Belum membuat pesanan baru",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/orderNotFound"
+                  }
+              }
+          }
+      }
+
+      #swagger.responses[401] = {
+        description: "Akun tidak valid",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/unathorized"
+                  }
+              }
+          }
+      }
     */
     try {
       const userId = req.user.id;

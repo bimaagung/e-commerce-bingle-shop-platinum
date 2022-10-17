@@ -1,4 +1,6 @@
 const swaggerAutogen = require('swagger-autogen')({openapi: '3.0.0'})
+const orderSchemaReq = require('./docs/schema/request/order') 
+const orderSchemaRes = require('./docs/schema/response/order') 
 
 const doc = {
   info: {
@@ -19,14 +21,23 @@ const doc = {
     }
   },
   definitions: {
-    CreateOrder: {
-      products: [
-        {
-          id: 1,
-          qty: 2,
-        }
-      ]
-    },
+    // create order
+    bodyCreateOrder: orderSchemaReq.createOrder,
+    successCreateOrder: orderSchemaRes.successCreateOrder,
+    failCreateProductOrder: orderSchemaRes.checkProductOrder,
+    failHaveOrderPending: orderSchemaRes.haveOrderPending,
+
+    // get order pending
+    successGetOrderPending : orderSchemaRes.successGetOrderPending,
+
+    // submite order
+    successSubmiteOrder : orderSchemaRes.successSubmiteOrder,
+    checkProductOrderBeforeSumbit: orderSchemaRes.checkProductOrderBeforeSumbit,
+
+    orderNotFound: orderSchemaRes.orderNotFound,
+
+    unathorized: orderSchemaRes.unathorized,
+
   },
 }
 
