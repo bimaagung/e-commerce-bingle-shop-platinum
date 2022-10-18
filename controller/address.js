@@ -70,7 +70,7 @@ module.exports = {
           .status(resAddress.status)
           .json(resData.failed(resAddress.reason));
       };
-      res.status(resAddress.status).json(resData.success(resAddress));
+      res.status(resAddress.status).json(resData.success());
     } catch (e) {
       next(e);
     }
