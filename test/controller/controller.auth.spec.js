@@ -60,7 +60,6 @@ describe('test login', () => {
             expect(mockAuthUC.login).toHaveBeenCalled()
             expect(res.status).toBeCalledWith(200)
 
-
         })
         test('return status 404 isSuccess false', async () => {
             mockAuthUC.login = jest.fn().mockReturnValue(

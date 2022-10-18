@@ -2,6 +2,41 @@ const resData = require('../helper/response');
 
 module.exports = {
   getOneUser: async (req, res, next) => {
+    /*
+      #swagger.tags = ['User']
+      #swagger.responses[200] = {
+        description: "Berhasil melihat profil berdasarkan id pengguna",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/successGetUserById"
+                  }
+              }
+          }
+      }
+      #swagger.responses[404] = {
+        description: "Pengguna tidak ditemukan",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/userNotFound"
+                  }
+              }
+          }
+      }
+
+      #swagger.responses[401] = {
+        description: "Akun tidak valid",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/unathorized"
+                  }
+              }
+          }
+      }
+
+    */
     try {
       let { id } = req.user;
       let user = await req.userUC.getUserByID(id);
@@ -17,6 +52,48 @@ module.exports = {
   },
 
   updateUser: async (req, res, next) => {
+    /*
+      #swagger.tags = ['User']
+
+      #swagger.requestBody = {
+        required: true,
+        schema: { $ref: "#/definitions/bodyUpdateUser" }
+      }
+
+      #swagger.responses[200] = {
+        description: "Berhasil memperbaharui profil pengguna",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/successUser"
+                  }
+              }
+          }
+      }
+
+      #swagger.responses[404] = {
+        description: "Pengguna tidak ditemukan",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/userNotFound"
+                  }
+              }
+          }
+      }
+
+      #swagger.responses[401] = {
+        description: "Akun tidak valid",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/unathorized"
+                  }
+              }
+          }
+      }
+
+    */
     try {
       let { id } = req.user;
       let user = {
@@ -41,6 +118,48 @@ module.exports = {
   },
 
   updateAvatar: async (req, res, next) => {
+    /*
+    #swagger.tags = ['User']
+    #swagger.consumes = ['multipart/form-data']
+    #swagger.requestBody = {
+            required: true,
+            "@content": {
+                "multipart/form-data": {
+                    schema: {
+                        type: "object",
+                        properties: {
+                            image: {
+                                type: "string",
+                                format: "binary"
+                            }
+                        },
+                    }
+                }
+            }
+        }
+
+    #swagger.responses[200] = {
+      description: "Berhasil memperbaharui password pengguna",
+        content: {
+            "application/json": {
+                schema:{
+                    $ref: "#/definitions/successUser"
+                }
+            }
+        }
+    }
+
+    #swagger.responses[401] = {
+        description: "Akun tidak valid",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/unathorized"
+                  }
+              }
+          }
+      }
+    */
     try {
       let { id } = req.user;
       let user = {
@@ -59,9 +178,65 @@ module.exports = {
   },
 
   updatePassword: async (req, res, next) => {
+    /*
+      #swagger.tags = ['User']
+
+      #swagger.requestBody = {
+        required: true,
+        schema: { $ref: "#/definitions/bodyUpdatePassword" }
+      }
+
+      #swagger.responses[200] = {
+        description: "Berhasil memperbaharui password pengguna",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/successUser"
+                  }
+              }
+          }
+      }
+
+      #swagger.responses[400] = {
+        description: "Password dan confirmPassword tidak sesuai",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/notMatchPassword"
+                  }
+              }
+          }
+      }
+
+      #swagger.responses[404] = {
+        description: "Pengguna tidak ditemukan",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/userNotFound"
+                  }
+              }
+          }
+      }
+
+      #swagger.responses[401] = {
+        description: "Akun tidak valid",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/unathorized"
+                  }
+              }
+          }
+      }
+
+    */
     try {
       let { id } = req.user;
-      let user = req.body;
+      let user = {
+        password: req.body.password,
+        confirmPassword: req.body.confirmPassword,
+      };
 
       let updatePassword = await req.userUC.updatePassword(id, user);
 

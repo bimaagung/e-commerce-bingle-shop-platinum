@@ -1,11 +1,11 @@
 require('dotenv').config();
 
-// const useAPM = process.env.USE_APM || false;
-// const apm = require('elastic-apm-node').start({
-//   serviceName: process.env.APP_NAME,
-//   environment: 'development',
-//   active: useAPM,
-// });
+const useAPM = process.env.USE_APM || false;
+const apm = require('elastic-apm-node').start({
+  serviceName: process.env.APP_NAME,
+  environment: 'development',
+  active: useAPM,
+});
 
 const express = require('express');
 
@@ -17,9 +17,9 @@ let logger = require('morgan');
 const fs = require('fs');
 const moment = require('moment-timezone');
 const bcrypt = require('bcrypt');
+const _ = require('lodash');
 const cloudinary = require('./libs/handle_upload');
 const generateToken = require('./helper/jwt');
-const _ = require('lodash')
 
 const serverError = require('./middleware/serverError');
 
@@ -59,7 +59,13 @@ const userUC = new UserUseCase(new UserRepository(), bcrypt, cloudinary);
 const authUC = new AuthUseCase(
   new AuthRepository(),
   new UserRepository(),
-  bcrypt, cloudinary, generateToken, _
+  bcrypt,
+
+  cloudinary,
+
+  generateToken,
+
+  _,
 );
 
 const productImageUC = new ProductImageUseCase(
@@ -73,8 +79,8 @@ const orderUC = new OrderUseCase(
   new CategoryRepository(),
 );
 
-// const ACCESS_LOG = process.env.ACCESS_LOG || './logs/access.log';
-// const ERROR_LOG = process.env.ERROR_LOG || './logs/errors.log';
+const ACCESS_LOG = process.env.ACCESS_LOG || './logs/access.log';
+const ERROR_LOG = process.env.ERROR_LOG || './logs/errors.log';
 
 app.use(cors());
 app.use(express.json());
@@ -83,17 +89,17 @@ app.use('/public', express.static('public'));
 
 // Logger
 
-// logger.token('date', (req, res, tz) => moment().tz(tz).format());
-// logger.format('custom_format', ':remote-addr - :remote-user [:date[Asia/Jakarta]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"');
+logger.token('date', (req, res, tz) => moment().tz(tz).format());
+logger.format('custom_format', ':remote-addr - :remote-user [:date[Asia/Jakarta]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"');
 
-// app.use(logger('custom_format', {
-//   stream: fs.createWriteStream(ACCESS_LOG, { flags: 'a' }),
-// }));
+app.use(logger('custom_format', {
+  stream: fs.createWriteStream(ACCESS_LOG, { flags: 'a' }),
+}));
 
-// app.use(logger('custom_format', {
-//   skip(req, res) { return res.statusCode < 400; },
-//   stream: fs.createWriteStream(ERROR_LOG, { flags: 'a' }),
-// }));
+app.use(logger('custom_format', {
+  skip(req, res) { return res.statusCode < 400; },
+  stream: fs.createWriteStream(ERROR_LOG, { flags: 'a' }),
+}));
 
 app.use((req, res, next) => {
   req.categoryUC = categoryUC;
@@ -120,7 +126,9 @@ app.use('/', publicRouter);
 app.use(serverError);
 
 const swaggerDocument = require('./docs/docs.json');
+const adminSwaggerDocument = require('./docs/admin_docs.json');
 
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/docs/admin', swaggerUi.serveFiles(adminSwaggerDocument), swaggerUi.setup(adminSwaggerDocument));
+app.use('/docs', swaggerUi.serveFiles(swaggerDocument), swaggerUi.setup(swaggerDocument));
 
 module.exports = app;

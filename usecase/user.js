@@ -57,7 +57,7 @@ class UserUC {
       data: null,
     };
 
-    if (user.password !== user.retype_password) {
+    if (user.password !== user.confirmPassword) {
       result.reason = 'password not match';
       result.statusCode = 400;
       return result;
@@ -89,16 +89,18 @@ class UserUC {
       data: null,
     };
 
+    let userBody = userData;
+
     let user = await this.UserRepository.getUserByID(id);
 
-    if (user == null) {
+    if (user === null) {
       result.reason = 'user not found';
       return result;
     }
 
-    userData.image = await this.cloudinary.uploadCloudinaryAvatar(userData.image);
+    userBody.image = await this.cloudinary.uploadCloudinaryAvatar(userBody.image);
 
-    await this.UserRepository.updateUser(userData, id);
+    await this.UserRepository.updateUser(userBody, id);
 
     result.isSuccess = true;
     result.statusCode = 200;

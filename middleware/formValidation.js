@@ -19,7 +19,7 @@ module.exports = {
   updatePassword: async (req, res, next) => {
     const response = Joi.object({
       password: Joi.string().min(6),
-      retype_password: Joi.ref('password'),
+      confirmPassword: Joi.ref('password'),
     }).validate(req.body);
 
     if (response.error) {

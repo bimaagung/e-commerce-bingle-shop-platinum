@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 
 // controller
@@ -15,6 +16,6 @@ router.get('/api/public/category', categoryController.getAllCategory);
 router.get('/api/public/category/:id', categoryController.getCategoryById);
 
 // image prodcut customer
-router.get('/api/public/image/product/:product_id', imageController.getImageProductByProductID)
+router.get('/api/public/image/product/:product_id', imageController.getImageProductByProductID);
 
 module.exports = router;
