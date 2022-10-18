@@ -51,6 +51,11 @@ module.exports = {
         "data": "null"
     },
 
+     imageProductNotFound: {
+        "status": "failed",
+        "message": "image not found",
+    },
+
     successAddProduct: {
         "status": "ok",
         "message": "success",
@@ -75,5 +80,33 @@ module.exports = {
     successProduct: {
         "status": "ok",
         "message": "success"
+    },
+    imageProduct : {
+        "status": "ok",
+        "message": "success",
+        "data": [
+            {
+            "id": 1,
+            "url": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815144/default%20image/default_product_w8fe1a.jpg",
+            "product_id": 1,
+            "createdAt": "2022-10-13T09:31:19.180Z",
+            "updatedAt": "2022-10-13T09:31:19.180Z"
+            }
+        ]
+    },
+    addImageProduct: {
+        "status": "ok",
+        "message": "success",
+        "data": {
+            "id": 43,
+            "url": "http://res.cloudinary.com/dnvltueqb/image/upload/v1666095182/product/1666095182744_flower_hzk1cc.jpg",
+            "product_id": 9,
+            "updatedAt": "2022-10-18T12:13:05.400Z",
+            "createdAt": "2022-10-18T12:13:05.400Z"
+        }
+    },
+    addImageNotFound:{
+        "status": "failed",
+        "message": "failed add image, product not found"
     }
 }

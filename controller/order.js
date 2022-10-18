@@ -98,17 +98,35 @@ module.exports = {
   getListOrder: async (req, res, next) => {
     /*
       #swagger.tags = ['Order']
+      #swagger.autoQuery = false
+      #swagger.parameters['status'] = {
+          'in': 'query',
+          'description': 'Ada dapat memilih semua pesanan dengan mengkosongkan query atau mengisi query untuk filter status dengan satu dan mix parameter [SUBMITTED, PROCESSED, COMPLETED, CANCELED]',
+          'schema': {
+              '$ref': '#/definitions/queryStatus'
+          }
+      }
+
       #swagger.responses[200] = {
-        description: "Berhasil melihat pesanan yang belum di submit",
+        description: "Berhasil melihat semua pesanan",
           content: {
               "application/json": {
                   schema:{
-                      $ref: "#/definitions/successGetOrderPending"
+                      $ref: "#/definitions/successGetListOrder"
                   }
               }
           }
       }
-
+      #swagger.responses[401] = {
+        description: "Akun tidak valid",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/unathorized"
+                  }
+              }
+          }
+      }
     */
     try {
       const { status } = req.query;
@@ -173,6 +191,53 @@ module.exports = {
   changeStatusOrder: async (req, res, next) => {
     /*
       #swagger.tags = ['Order']
+      #swagger.requestBody = {
+        required: true,
+        schema: { $ref: "#/definitions/bodyUpdateStatusOrder" }
+      }
+      #swagger.responses[200] = {
+        description: "Berhasil memperbaharui status pesanan",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/successOrder"
+                  }
+              }
+          }
+      }
+
+       #swagger.responses[400] = {
+        description: "Pesanan tidak ditemukan",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/outsideOptionStatus"
+                  }
+              }
+          }
+      }
+
+       #swagger.responses[404] = {
+        description: "Pesanan tidak ditemukan",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/orderNotFound"
+                  }
+              }
+          }
+      }
+
+      #swagger.responses[401] = {
+        description: "Akun tidak valid",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/unathorized"
+                  }
+              }
+          }
+      }
     */
     try {
       const orderId = req.params.id;
@@ -266,6 +331,38 @@ module.exports = {
   getOrderById: async (req, res, next) => {
     /*
       #swagger.tags = ['Order']
+      #swagger.responses[200] = {
+        description: "Berhasil mendapatkan pesanan sesuai id pesanan",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/successGetOrderPending"
+                  }
+              }
+          }
+      }
+
+       #swagger.responses[404] = {
+        description: "Pesanan tidak ditemukan",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/orderNotFound"
+                  }
+              }
+          }
+      }
+
+      #swagger.responses[401] = {
+        description: "Akun tidak valid",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/unathorized"
+                  }
+              }
+          }
+      }
     */
     try {
       const { id } = req.params;

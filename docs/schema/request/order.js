@@ -6,5 +6,11 @@ module.exports = {
                 qty:3
             },
         ]
+    },
+    updateStatusOrder: {
+        status: "ORDER_COMPLETED"
+    },
+    queryStatus: {
+        status: 'PROCESSED,COMPLETED'
     }
 }

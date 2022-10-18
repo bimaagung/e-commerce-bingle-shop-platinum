@@ -76,5 +76,23 @@ module.exports = {
     checkProductOrderBeforeSumbit: {
         "status": "failed",
         "message": "recheck the product, make sure the product is still in stock"
+    },
+    outsideOptionStatus: {
+        "status": "failed",
+        "message": "request status outside the specified options"
+    },
+    successGetListOrder: {
+        "status": "ok",
+        "message": "success",
+        "data": [
+            {
+            "id": "-PR2tfcIjnhD8BXP",
+            "user_id": 4,
+            "status": "COMPLETED",
+            "completed_date": "2022-10-13T09:31:40.363Z",
+            "createdAt": "2022-10-13T09:31:39.585Z",
+            "updatedAt": "2022-10-13T09:31:40.365Z"
+            },
+        ]
     }
 }

@@ -346,7 +346,7 @@ class OrderUC {
     const getOrderById = await this.orderRepository.verifyOrderWithoutStatusPending(orderId);
 
     if (getOrderById === null) {
-      result.reason = 'orders without pending status not found';
+      result.reason = 'order not found';
       result.statusCode = 404;
       return result;
     }

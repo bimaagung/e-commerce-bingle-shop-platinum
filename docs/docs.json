@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "E-commerce Platinum Maju Jaya",
-    "description": "Ecommerce App for project platinum, create by Maju Jaya",
+    "title": "Customer - API E-commerce Platinum Maju Jaya",
+    "description": "API ecommerce App for project platinum for customer, create by Maju Jaya",
     "termsOfService": "http://swagger.io/terms/",
     "contact": {
       "email": "platinum.majujaya@gmail.com"
@@ -242,6 +242,9 @@
     },
     "/api/public/image/product/{product_id}": {
       "get": {
+        "tags": [
+          "Product"
+        ],
         "description": "",
         "parameters": [
           {
@@ -253,7 +256,18 @@
             }
           }
         ],
-        "responses": {}
+        "responses": {
+          "200": {
+            "description": "Berhasil melihat semua gambar produk berdasarkan id produk",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/imageProduct"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/customer/profil/user/": {
@@ -391,6 +405,9 @@
     },
     "/api/customer/update-image/": {
       "put": {
+        "tags": [
+          "User"
+        ],
         "description": "",
         "parameters": [
           {
@@ -402,18 +419,48 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Bad Request"
+          "200": {
+            "description": "Berhasil memperbaharui password pengguna",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successUser"
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
           }
         },
         "security": [
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/customer/update/": {
@@ -1308,22 +1355,6 @@
           "name": "orderNotFound"
         }
       },
-      "unathorized": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "example": "failed"
-          },
-          "message": {
-            "type": "string",
-            "example": "unauthorized"
-          }
-        },
-        "xml": {
-          "name": "unathorized"
-        }
-      },
       "successGetAllProduct": {
         "type": "object",
         "properties": {
@@ -1493,6 +1524,63 @@
           "name": "productNotFound"
         }
       },
+      "addImageProduct": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 43
+              },
+              "url": {
+                "type": "string",
+                "example": "http://res.cloudinary.com/dnvltueqb/image/upload/v1666095182/product/1666095182744_flower_hzk1cc.jpg"
+              },
+              "product_id": {
+                "type": "number",
+                "example": 9
+              },
+              "updatedAt": {
+                "type": "string",
+                "example": "2022-10-18T12:13:05.400Z"
+              },
+              "createdAt": {
+                "type": "string",
+                "example": "2022-10-18T12:13:05.400Z"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "addImageProduct"
+        }
+      },
+      "addImageNotFound": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "failed add image, product not found"
+          }
+        },
+        "xml": {
+          "name": "addImageNotFound"
+        }
+      },
       "successGetAllCategory": {
         "type": "object",
         "properties": {
@@ -1515,7 +1603,7 @@
                 },
                 "name": {
                   "type": "string",
-                  "example": "Laptop"
+                  "example": "Camera"
                 },
                 "createdAt": {
                   "type": "string",
@@ -1553,7 +1641,7 @@
               },
               "name": {
                 "type": "string",
-                "example": "Laptop"
+                "example": "Camera"
               },
               "createdAt": {
                 "type": "string",
@@ -1581,7 +1669,10 @@
             "type": "string",
             "example": "category not found"
           },
-          "data": {}
+          "data": {
+            "type": "string",
+            "example": "null"
+          }
         },
         "xml": {
           "name": "categoryNotFound"
@@ -2049,6 +2140,22 @@
         },
         "xml": {
           "name": "passwordNotMatch"
+        }
+      },
+      "unathorized": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "unauthorized"
+          }
+        },
+        "xml": {
+          "name": "unathorized"
         }
       }
     },

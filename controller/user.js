@@ -118,6 +118,48 @@ module.exports = {
   },
 
   updateAvatar: async (req, res, next) => {
+    /*
+    #swagger.tags = ['User']
+    #swagger.consumes = ['multipart/form-data']
+    #swagger.requestBody = {
+            required: true,
+            "@content": {
+                "multipart/form-data": {
+                    schema: {
+                        type: "object",
+                        properties: {
+                            image: {
+                                type: "string",
+                                format: "binary"
+                            }
+                        },
+                    }
+                }
+            }
+        }
+
+    #swagger.responses[200] = {
+      description: "Berhasil memperbaharui password pengguna",
+        content: {
+            "application/json": {
+                schema:{
+                    $ref: "#/definitions/successUser"
+                }
+            }
+        }
+    }
+
+    #swagger.responses[401] = {
+        description: "Akun tidak valid",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/unathorized"
+                  }
+              }
+          }
+      }
+    */
     try {
       let { id } = req.user;
       let user = {

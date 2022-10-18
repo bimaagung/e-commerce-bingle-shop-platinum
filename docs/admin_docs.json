@@ -1,11 +1,11 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "My API",
-    "description": "Description",
+    "title": "Admin - API E-commerce Platinum Maju Jaya",
+    "description": "API ecommerce App for project platinum for admin, create by Maju Jaya",
     "termsOfService": "http://swagger.io/terms/",
     "contact": {
-      "email": "apiteam@swagger.io"
+      "email": "platinum.majujaya@gmail.com"
     },
     "version": "1.0.0"
   },
@@ -242,6 +242,9 @@
     },
     "/api/public/image/product/{product_id}": {
       "get": {
+        "tags": [
+          "Product"
+        ],
         "description": "",
         "parameters": [
           {
@@ -253,11 +256,25 @@
             }
           }
         ],
-        "responses": {}
+        "responses": {
+          "200": {
+            "description": "Berhasil melihat semua gambar produk berdasarkan id produk",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/imageProduct"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/admin/category/add": {
       "post": {
+        "tags": [
+          "Category"
+        ],
         "description": "",
         "parameters": [
           {
@@ -269,6 +286,16 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "Berhasil membuat kategori baru",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successGetAllCategory"
+                }
+              }
+            }
+          },
           "201": {
             "description": "Created"
           },
@@ -276,7 +303,14 @@
             "description": "Bad Request"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
           },
           "404": {
             "description": "Not Found"
@@ -288,18 +322,16 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "reason": {
-                    "example": "any"
-                  },
-                  "data": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/bodyAddCategory"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyAddCategory"
               }
             }
           }
@@ -308,6 +340,9 @@
     },
     "/api/admin/category/update/{id}": {
       "put": {
+        "tags": [
+          "Category"
+        ],
         "description": "",
         "parameters": [
           {
@@ -328,27 +363,66 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Berhasil memperbarui kategori",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successCategory"
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad Request"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found"
+            "description": "Kategori tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/categoryNotFound"
+                }
+              }
+            }
           }
         },
         "security": [
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyUpdateCategory"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyUpdateCategory"
+              }
+            }
+          }
+        }
       }
     },
     "/api/admin/category/delete/{id}": {
       "delete": {
+        "tags": [
+          "Category"
+        ],
         "description": "",
         "parameters": [
           {
@@ -369,13 +443,34 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Berhasil menghapus kategori",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successCategory"
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found"
+            "description": "Kategori tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/categoryNotFound"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -624,10 +719,44 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Berhasil memperbaharui status pesanan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successOrder"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Pesanan tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/outsideOptionStatus"
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pesanan tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/orderNotFound"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -636,15 +765,16 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "status": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/bodyUpdateStatusOrder"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyUpdateStatusOrder"
               }
             }
           }
@@ -666,33 +796,34 @@
             }
           },
           {
-            "name": "description",
+            "name": "status",
             "in": "query",
+            "description": "Ada dapat memilih semua pesanan dengan mengkosongkan query atau mengisi query untuk filter status dengan satu dan mix parameter [SUBMITTED, PROCESSED, COMPLETED, CANCELED]",
             "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "content",
-            "in": "query",
-            "schema": {
-              "type": "string"
+              "$ref": "#/components/schemas/queryStatus"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Berhasil melihat pesanan yang belum di submit",
+            "description": "Berhasil melihat semua pesanan",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/successGetOrderPending"
+                  "$ref": "#/components/schemas/successGetListOrder"
                 }
               }
             }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -727,13 +858,34 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Berhasil mendapatkan pesanan sesuai id pesanan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successGetOrderPending"
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found"
+            "description": "Pesanan tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/orderNotFound"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -745,6 +897,9 @@
     },
     "/api/admin/add-image/product": {
       "post": {
+        "tags": [
+          "Product"
+        ],
         "description": "",
         "parameters": [
           {
@@ -756,8 +911,35 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "Berhasil menambahkan gambar di produk",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/addImageProduct"
+                }
+              }
+            }
+          },
           "401": {
-            "description": "Unauthorized"
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Produk tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/addImageNotFound"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -766,15 +948,24 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
                   "product_id": {
-                    "example": "any"
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string",
+                    "format": "binary"
                   }
-                }
+                },
+                "required": [
+                  "product_id",
+                  "url"
+                ]
               }
             }
           }
@@ -783,6 +974,9 @@
     },
     "/api/admin/update-image/product/{id}": {
       "put": {
+        "tags": [
+          "Product"
+        ],
         "description": "",
         "parameters": [
           {
@@ -815,15 +1009,24 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
                   "product_id": {
-                    "example": "any"
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string",
+                    "format": "binary"
                   }
-                }
+                },
+                "required": [
+                  "product_id",
+                  "url"
+                ]
               }
             }
           }
@@ -832,6 +1035,9 @@
     },
     "/api/admin/delete-image/product/{id}": {
       "delete": {
+        "tags": [
+          "Product"
+        ],
         "description": "",
         "parameters": [
           {
@@ -851,8 +1057,35 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "Berhasil menghapus gambar produk",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successProduct"
+                }
+              }
+            }
+          },
           "401": {
-            "description": "Unauthorized"
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Gambar produk tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/imageProductNotFound"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -865,6 +1098,381 @@
   },
   "components": {
     "schemas": {
+      "bodyCreateOrder": {
+        "type": "object",
+        "properties": {
+          "products": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "qty": {
+                  "type": "number",
+                  "example": 3
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "bodyCreateOrder"
+        }
+      },
+      "bodyUpdateStatusOrder": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ORDER_COMPLETED"
+          }
+        },
+        "xml": {
+          "name": "bodyUpdateStatusOrder"
+        }
+      },
+      "queryStatus": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "PROCESSED,COMPLETED"
+          }
+        },
+        "xml": {
+          "name": "queryStatus"
+        }
+      },
+      "successCreateOrder": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "order_id": {
+                "type": "string",
+                "example": "bQ660uV5EW6vSXe-"
+              },
+              "products": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Asus ROG Zephyrush M16"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "Laptop gaming dari asus"
+                    },
+                    "category_id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "sold": {
+                      "type": "number",
+                      "example": 20
+                    },
+                    "price": {
+                      "type": "number",
+                      "example": 30000000
+                    },
+                    "stock": {
+                      "type": "number",
+                      "example": 10
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2022-10-13T09:31:19.370Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2022-10-14T04:51:49.715Z"
+                    },
+                    "ProductImages": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "number",
+                            "example": 1
+                          },
+                          "url": {
+                            "type": "string",
+                            "example": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815144/default%20image/default_product_w8fe1a.jpg"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successCreateOrder"
+        }
+      },
+      "successGetListOrder": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "-PR2tfcIjnhD8BXP"
+                },
+                "user_id": {
+                  "type": "number",
+                  "example": 4
+                },
+                "status": {
+                  "type": "string",
+                  "example": "COMPLETED"
+                },
+                "completed_date": {
+                  "type": "string",
+                  "example": "2022-10-13T09:31:40.363Z"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "example": "2022-10-13T09:31:39.585Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "example": "2022-10-13T09:31:40.365Z"
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successGetListOrder"
+        }
+      },
+      "failCreateProductOrder": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "can't process the order, please check each product in order"
+          }
+        },
+        "xml": {
+          "name": "failCreateProductOrder"
+        }
+      },
+      "failHaveOrderPending": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "user already has pending order"
+          }
+        },
+        "xml": {
+          "name": "failHaveOrderPending"
+        }
+      },
+      "successGetOrderPending": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "bQ660uV5EW6vSXe-"
+              },
+              "status": {
+                "type": "string",
+                "example": "PENDING"
+              },
+              "created_at": {
+                "type": "string",
+                "example": "2022-10-17T05:28:32.419Z"
+              },
+              "updated_at": {
+                "type": "string",
+                "example": "2022-10-17T05:28:32.419Z"
+              },
+              "qty": {
+                "type": "number",
+                "example": 3
+              },
+              "total_price": {
+                "type": "number",
+                "example": 90000000
+              },
+              "user": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 61
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Bima"
+                  },
+                  "username": {
+                    "type": "string",
+                    "example": "bima"
+                  },
+                  "telp": {
+                    "type": "string",
+                    "example": "08554637"
+                  }
+                }
+              },
+              "products": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Asus ROG Zephyrush M16"
+                    },
+                    "category": {
+                      "type": "string",
+                      "example": "Laptop"
+                    },
+                    "price": {
+                      "type": "number",
+                      "example": 30000000
+                    },
+                    "qty": {
+                      "type": "number",
+                      "example": 3
+                    },
+                    "total_price": {
+                      "type": "number",
+                      "example": 90000000
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successGetOrderPending"
+        }
+      },
+      "successOrder": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          }
+        },
+        "xml": {
+          "name": "successOrder"
+        }
+      },
+      "checkProductOrderBeforeSumbit": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "recheck the product, make sure the product is still in stock"
+          }
+        },
+        "xml": {
+          "name": "checkProductOrderBeforeSumbit"
+        }
+      },
+      "orderNotFound": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "order not found"
+          }
+        },
+        "xml": {
+          "name": "orderNotFound"
+        }
+      },
+      "outsideOptionStatus": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "request status outside the specified options"
+          }
+        },
+        "xml": {
+          "name": "outsideOptionStatus"
+        }
+      },
       "bodyAddProduct": {
         "type": "object",
         "properties": {
@@ -1183,6 +1791,46 @@
           "name": "categoryProductNotFound"
         }
       },
+      "imageProductNotFound": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "image not found"
+          }
+        },
+        "xml": {
+          "name": "imageProductNotFound"
+        }
+      },
+      "bodyAddCategory": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Camera"
+          }
+        },
+        "xml": {
+          "name": "bodyAddCategory"
+        }
+      },
+      "bodyUpdateCategory": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Drone"
+          }
+        },
+        "xml": {
+          "name": "bodyUpdateCategory"
+        }
+      },
       "successGetAllCategory": {
         "type": "object",
         "properties": {
@@ -1205,7 +1853,7 @@
                 },
                 "name": {
                   "type": "string",
-                  "example": "Laptop"
+                  "example": "Camera"
                 },
                 "createdAt": {
                   "type": "string",
@@ -1243,7 +1891,7 @@
               },
               "name": {
                 "type": "string",
-                "example": "Laptop"
+                "example": "Camera"
               },
               "createdAt": {
                 "type": "string",
@@ -1271,10 +1919,29 @@
             "type": "string",
             "example": "category not found"
           },
-          "data": {}
+          "data": {
+            "type": "string",
+            "example": "null"
+          }
         },
         "xml": {
           "name": "categoryNotFound"
+        }
+      },
+      "successCategory": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          }
+        },
+        "xml": {
+          "name": "successCategory"
         }
       },
       "unathorized": {

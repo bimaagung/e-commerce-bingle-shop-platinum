@@ -14,8 +14,8 @@ const authSchemaRes = require('./docs/schema/response/auth')
 
 const doc = {
   info: {
-    title: 'E-commerce Platinum Maju Jaya',
-    description: 'Ecommerce App for project platinum, create by Maju Jaya',
+    title: 'Customer - API E-commerce Platinum Maju Jaya',
+    description: 'API ecommerce App for project platinum for customer, create by Maju Jaya',
     termsOfService: 'http://swagger.io/terms/',
     contact: {
       email: 'platinum.majujaya@gmail.com',
@@ -31,16 +31,12 @@ const doc = {
     }
   },
   definitions: {
-    // create order
+    // order
     bodyCreateOrder: orderSchemaReq.createOrder,
     successCreateOrder: orderSchemaRes.successCreateOrder,
     failCreateProductOrder: orderSchemaRes.checkProductOrder,
     failHaveOrderPending: orderSchemaRes.haveOrderPending,
-
-    // get order pending
     successGetOrderPending : orderSchemaRes.successGetOrderPending,
-
-    // submite order
     successOrder : orderSchemaRes.successOrder,
     checkProductOrderBeforeSumbit: orderSchemaRes.checkProductOrderBeforeSumbit,
     orderNotFound: orderSchemaRes.orderNotFound,
@@ -49,6 +45,8 @@ const doc = {
     successGetAllProduct: productSchemaRes.successGetAllProduct,
     successGetProductById: productSchemaRes.successGetProductById,
     productNotFound : productSchemaRes.productNotFound,
+    addImageProduct: productSchemaRes.addImageProduct,
+    addImageNotFound: productSchemaRes.addImageNotFound,
 
     // category
     successGetAllCategory: categorySchemaRes.successGetAllCategory,

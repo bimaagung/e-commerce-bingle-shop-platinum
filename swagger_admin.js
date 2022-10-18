@@ -1,25 +1,20 @@
 const swaggerAutogen = require('swagger-autogen')({ openapi: '3.0.0' });
 
 const orderSchemaReq = require('./docs/schema/request/order');
-const addressSchemaReq = require('./docs/schema/request/address');
-const userSchemaReq = require('./docs/schema/request/user');
-const authSchemaReq = require('./docs/schema/request/auth');
 const productSchemaReq = require('./docs/schema/request/product');
+const categorySchemaReq = require('./docs/schema/request/category');
 
 const orderSchemaRes = require('./docs/schema/response/order');
 const productSchemaRes = require('./docs/schema/response/product');
 const categorySchemaRes = require('./docs/schema/response/category');
-const addressSchemaRes = require('./docs/schema/response/address');
-const userSchemaRes = require('./docs/schema/response/user');
-const authSchemaRes = require('./docs/schema/response/auth');
 
 const doc = {
   info: {
-    title: 'My API',
-    description: 'Description',
+    title: 'Admin - API E-commerce Platinum Maju Jaya',
+    description: 'API ecommerce App for project platinum for admin, create by Maju Jaya',
     termsOfService: 'http://swagger.io/terms/',
     contact: {
-      email: 'apiteam@swagger.io',
+      email: 'platinum.majujaya@gmail.com',
     },
   },
   host: 'localhost:3000',
@@ -32,6 +27,20 @@ const doc = {
     },
   },
   definitions: {
+    // order
+    bodyCreateOrder: orderSchemaReq.createOrder,
+    bodyUpdateStatusOrder: orderSchemaReq.updateStatusOrder,
+    queryStatus: orderSchemaReq.queryStatus,
+    successCreateOrder: orderSchemaRes.successCreateOrder,
+    successGetListOrder: orderSchemaRes.successGetListOrder,
+    failCreateProductOrder: orderSchemaRes.checkProductOrder,
+    failHaveOrderPending: orderSchemaRes.haveOrderPending,
+    successGetOrderPending: orderSchemaRes.successGetOrderPending,
+    successOrder: orderSchemaRes.successOrder,
+    checkProductOrderBeforeSumbit: orderSchemaRes.checkProductOrderBeforeSumbit,
+    orderNotFound: orderSchemaRes.orderNotFound,
+    outsideOptionStatus: orderSchemaRes.outsideOptionStatus,
+
     // product
     bodyAddProduct: productSchemaReq.addProduct,
     bodyUpdateProduct: productSchemaReq.updateProduct,
@@ -41,14 +50,19 @@ const doc = {
     successProduct: productSchemaRes.successProduct,
     productNotFound: productSchemaRes.productNotFound,
     categoryProductNotFound: productSchemaRes.categoryProductNotFound,
+    imageProductNotFound: productSchemaRes.imageProductNotFound,
 
     // category
+    bodyAddCategory: categorySchemaReq.addCategory,
+    bodyUpdateCategory: categorySchemaReq.updateCategory,
     successGetAllCategory: categorySchemaRes.successGetAllCategory,
     successGetCategoryById: categorySchemaRes.successGetCategoryById,
     categoryNotFound: categorySchemaRes.categoryNotFound,
+    successCategory: categorySchemaRes.successCategory,
 
     // auth
     unathorized: orderSchemaRes.unathorized,
+
   },
 };
 

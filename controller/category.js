@@ -68,6 +68,37 @@ module.exports = {
   },
 
   addCategory: async (req, res, next) => {
+    /*
+      #swagger.tags = ['Category']
+
+      #swagger.requestBody = {
+        required: true,
+        schema: { $ref: "#/definitions/bodyAddCategory" }
+      }
+
+      #swagger.responses[200] = {
+        description: "Berhasil membuat kategori baru",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/successGetAllCategory"
+                  }
+              }
+          }
+      }
+
+      #swagger.responses[401] = {
+        description: "Akun tidak valid",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/unathorized"
+                  }
+              }
+          }
+      }
+
+    */
     try {
       let category = req.body;
 
@@ -85,6 +116,48 @@ module.exports = {
   },
 
   putCategory: async (req, res, next) => {
+    /*
+      #swagger.tags = ['Category']
+
+      #swagger.requestBody = {
+        required: true,
+        schema: { $ref: "#/definitions/bodyUpdateCategory" }
+      }
+
+      #swagger.responses[200] = {
+        description: "Berhasil memperbarui kategori",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/successCategory"
+                  }
+              }
+          }
+      }
+
+      #swagger.responses[404] = {
+        description: "Kategori tidak ditemukan",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/categoryNotFound"
+                  }
+              }
+          }
+      }
+
+      #swagger.responses[401] = {
+        description: "Akun tidak valid",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/unathorized"
+                  }
+              }
+          }
+      }
+
+    */
     try {
       let { id } = req.params;
       let category = req.body;
@@ -94,16 +167,53 @@ module.exports = {
       if (categoryById.isSuccess !== true) {
         return res
           .status(404)
-          .json(resData.failed(categoryById.reason, categoryById));
+          .json(resData.failed(categoryById.reason, null));
       }
 
-      res.json(resData.success(categoryById));
+      res.json(resData.success());
     } catch (e) {
       next(e);
     }
   },
 
   deleteCategory: async (req, res, next) => {
+    /*
+      #swagger.tags = ['Category']
+
+      #swagger.responses[200] = {
+        description: "Berhasil menghapus kategori",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/successCategory"
+                  }
+              }
+          }
+      }
+
+      #swagger.responses[404] = {
+        description: "Kategori tidak ditemukan",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/categoryNotFound"
+                  }
+              }
+          }
+      }
+
+      #swagger.responses[401] = {
+        description: "Akun tidak valid",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/unathorized"
+                  }
+              }
+          }
+      }
+
+    */
     try {
       let { id } = req.params;
 
@@ -111,10 +221,10 @@ module.exports = {
 
       if (category.isSuccess !== true) {
         return res.status(404)
-          .json(resData.failed(category.reason, category.data));
+          .json(resData.failed(category.reason, null));
       }
 
-      res.status(200).json(resData.success(category.data));
+      res.status(200).json(resData.success());
     } catch (e) {
       next(e);
     }
