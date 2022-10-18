@@ -1,34 +1,35 @@
 /* eslint-disable consistent-return */
-const defaultImage = require("../internal/constant/defaultImage");
+const defaultImage = require('../internal/constant/defaultImage');
+
 class AuthUC {
   constructor(AuthRepository, UserRepository, bcrypt, cloudinary, generateToken, _) {
     this.AuthRepository = AuthRepository;
     this.UserRepository = UserRepository;
     this.bcrypt = bcrypt;
     this.cloudinary = cloudinary;
-    this.generateToken = generateToken
-    this._ =_
+    this.generateToken = generateToken;
+    this._ = _;
   }
 
   async register(userData) {
     let result = {
       isSuccess: false,
-      reason: "",
+      reason: '',
       status: 404,
       data: null,
-      token: null
+      token: null,
     };
 
     let user = await this.UserRepository.getUserExist(
       userData.username,
-      userData.email
+      userData.email,
     );
     if (userData.password !== userData.confrimPassword) {
-      result.reason = "password and confrim password not match";
+      result.reason = 'password and confrim password not match';
       return result;
     }
     if (user !== null) {
-      result.reason = "username or email not aviable";
+      result.reason = 'username or email not aviable';
       return result;
     }
 
@@ -41,35 +42,35 @@ class AuthUC {
     } else {
       user = await this.AuthRepository.registerUser(userData);
     }
-    let dataUser =this._.omit(user.dataValues, ['password'])
-    let token = this.generateToken(dataUser)
+    let dataUser = this._.omit(user.dataValues, ['password']);
+    let token = this.generateToken(dataUser);
     result.isSuccess = true;
     result.status = 200;
-    result.data = dataUser
-    result.token = token
+    result.data = dataUser;
+    result.token = token;
     return result;
   }
 
   async login(username, password) {
     let result = {
       isSuccess: false,
-      reason: "",
+      reason: '',
       status: 404,
       data: null,
-      token: null
+      token: null,
     };
 
     let user = await this.AuthRepository.loginUser(username);
     if (user == null) {
-      result.reason = "incorect username or password";
+      result.reason = 'incorect username or password';
       return result;
     }
     if (!this.bcrypt.compareSync(password, user.password)) {
-      result.reason = "incorect username or password";
+      result.reason = 'incorect username or password';
       return result;
     }
-    let dataUser =this._.omit(user.dataValues, ['password'])
-    let token = this.generateToken(dataUser)
+    let dataUser = this._.omit(user.dataValues, ['password']);
+    let token = this.generateToken(dataUser);
     result.isSuccess = true;
     result.status = 200;
     result.data = dataUser;

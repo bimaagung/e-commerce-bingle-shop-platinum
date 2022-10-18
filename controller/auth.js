@@ -3,6 +3,9 @@ const defaultImage = require('../internal/constant/defaultImage');
 
 module.exports = {
   login: async (req, res, next) => {
+    /*
+      #swagger.tags = ['Auth']
+    */
     try {
       let { username, password } = req.body;
       let resUser = await req.authUC.login(username, password);
@@ -10,8 +13,8 @@ module.exports = {
         return res.status(resUser.status).json(resData.failed(resUser.reason));
       }
       res.status(200).json(resData.success({
-        user : resUser.data,
-        token : resUser.token
+        user: resUser.data,
+        token: resUser.token,
       }));
     } catch (e) {
       next(e);
@@ -19,6 +22,56 @@ module.exports = {
   },
 
   register: async (req, res, next) => {
+    /*
+      #swagger.tags = ['Auth']
+      #swagger.requestBody = {
+        required: true,
+        schema: { $ref: "#/definitions/bodyRegister" }
+      }
+      #swagger.responses[200] = {
+        description: "Berhasil mengubah alamat",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/successRegister"
+                  }
+              }
+          }
+      }
+
+       #swagger.responses[400] = {
+          content: {
+              "application/json": {
+                examples: {
+                  have_order_pending: {
+                    value:{
+                      "status": "failed",
+                      "message": "username or email not aviable"
+                    },
+                    summary: "username atau email tidak tersedia"
+                  },
+                  product_order_empty: {
+                    value:{
+                      "status": "failed",
+                      "message": "password and confrim password not match"
+                    },
+                    summary: "Password and Confirm Password tidak sesuai"
+                  }
+                },
+                schema:{
+                  oneOf: [
+                    {
+                        $ref: "#/definitions/notAvailable"
+                    },
+                    {
+                        $ref: "#/definitions/passwordNotMatch"
+                    }
+                  ]
+                },
+              }
+          }
+      }
+    */
     try {
       let userData = {
         name: req.body.name,
@@ -45,8 +98,8 @@ module.exports = {
           .json(resData.failed(resUser.reason));
       }
       res.status(200).json(resData.success({
-        user : resUser.data,
-        token : resUser.token
+        user: resUser.data,
+        token: resUser.token,
       }));
     } catch (e) {
       next(e);

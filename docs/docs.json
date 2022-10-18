@@ -1,11 +1,11 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "My API",
-    "description": "Description",
+    "title": "E-commerce Platinum Maju Jaya",
+    "description": "Ecommerce App for project platinum, create by Maju Jaya",
     "termsOfService": "http://swagger.io/terms/",
     "contact": {
-      "email": "apiteam@swagger.io"
+      "email": "platinum.majujaya@gmail.com"
     },
     "version": "1.0.0"
   },
@@ -17,6 +17,9 @@
   "paths": {
     "/api/user/login": {
       "post": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "parameters": [],
         "responses": {
@@ -48,41 +51,67 @@
     },
     "/api/user/register": {
       "post": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Berhasil mengubah alamat",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successRegister"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "have_order_pending": {
+                    "value": {
+                      "status": "failed",
+                      "message": "username or email not aviable"
+                    },
+                    "summary": "username atau email tidak tersedia"
+                  },
+                  "product_order_empty": {
+                    "value": {
+                      "status": "failed",
+                      "message": "password and confrim password not match"
+                    },
+                    "summary": "Password and Confirm Password tidak sesuai"
+                  }
+                },
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/notAvailable"
+                    },
+                    {
+                      "$ref": "#/components/schemas/passwordNotMatch"
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "example": "any"
-                  },
-                  "username": {
-                    "example": "any"
-                  },
-                  "telp": {
-                    "example": "any"
-                  },
-                  "email": {
-                    "example": "any"
-                  },
-                  "password": {
-                    "example": "any"
-                  },
-                  "confrimPassword": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/bodyRegister"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyRegister"
               }
             }
           }
@@ -229,6 +258,9 @@
     },
     "/api/customer/profil/user/": {
       "get": {
+        "tags": [
+          "User"
+        ],
         "description": "",
         "parameters": [
           {
@@ -240,8 +272,35 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "Berhasil melihat profil berdasarkan id pengguna",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successGetUserById"
+                }
+              }
+            }
+          },
           "401": {
-            "description": "Unauthorized"
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pengguna tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userNotFound"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -253,6 +312,9 @@
     },
     "/api/customer/update-password/": {
       "patch": {
+        "tags": [
+          "User"
+        ],
         "description": "",
         "parameters": [
           {
@@ -264,18 +326,67 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "Berhasil memperbaharui password pengguna",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successUser"
+                }
+              }
+            }
+          },
           "400": {
-            "description": "Bad Request"
+            "description": "Password dan confirmPassword tidak sesuai",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/notMatchPassword"
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pengguna tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userNotFound"
+                }
+              }
+            }
           }
         },
         "security": [
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyUpdatePassword"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyUpdatePassword"
+              }
+            }
+          }
+        }
       }
     },
     "/api/customer/update-image/": {
@@ -307,6 +418,9 @@
     },
     "/api/customer/update/": {
       "put": {
+        "tags": [
+          "User"
+        ],
         "description": "",
         "parameters": [
           {
@@ -318,11 +432,38 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "Berhasil memperbaharui profil pengguna",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successUser"
+                }
+              }
+            }
+          },
           "400": {
             "description": "Bad Request"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pengguna tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userNotFound"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -331,24 +472,16 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "example": "any"
-                  },
-                  "username": {
-                    "example": "any"
-                  },
-                  "email": {
-                    "example": "any"
-                  },
-                  "telp": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/bodyUpdateUser"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyUpdateUser"
               }
             }
           }
@@ -702,7 +835,7 @@
             }
           },
           "400": {
-            "description": "Pelanggan masih mempunyai pesanan yang belum di submit",
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "examples": {
@@ -1643,6 +1776,131 @@
           "name": "addressNotFound"
         }
       },
+      "bodyUpdateUser": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Customer A"
+          },
+          "username": {
+            "type": "string",
+            "example": "customer"
+          },
+          "email": {
+            "type": "string",
+            "example": "custome@gmail.com"
+          },
+          "telp": {
+            "type": "string",
+            "example": "08363372"
+          }
+        },
+        "xml": {
+          "name": "bodyUpdateUser"
+        }
+      },
+      "bodyUpdatePassword": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string",
+            "example": "123456789"
+          },
+          "confirmPassword": {
+            "type": "string",
+            "example": "123456789"
+          }
+        },
+        "xml": {
+          "name": "bodyUpdatePassword"
+        }
+      },
+      "successUser": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          }
+        },
+        "xml": {
+          "name": "successUser"
+        }
+      },
+      "successGetUserById": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 2
+              },
+              "name": {
+                "type": "string",
+                "example": "customer"
+              },
+              "username": {
+                "type": "string",
+                "example": "customer"
+              },
+              "image": {
+                "type": "string",
+                "example": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815145/default%20image/profile_xzrsh7.png"
+              },
+              "telp": {
+                "type": "string",
+                "example": "0823111111"
+              },
+              "email": {
+                "type": "string",
+                "example": "customern@mail.com"
+              },
+              "createdAt": {
+                "type": "string",
+                "example": "2022-10-13T09:31:19.367Z"
+              },
+              "updatedAt": {
+                "type": "string",
+                "example": "2022-10-13T09:31:19.367Z"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successGetUserById"
+        }
+      },
+      "notMatchPassword": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "password not match"
+          }
+        },
+        "xml": {
+          "name": "notMatchPassword"
+        }
+      },
       "userNotFound": {
         "type": "object",
         "properties": {
@@ -1661,6 +1919,136 @@
         },
         "xml": {
           "name": "userNotFound"
+        }
+      },
+      "bodyRegister": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Customer B"
+          },
+          "username": {
+            "type": "string",
+            "example": "customer_b"
+          },
+          "telp": {
+            "type": "string",
+            "example": "083637267"
+          },
+          "email": {
+            "type": "string",
+            "example": "customerb@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "123456"
+          },
+          "confrimPassword": {
+            "type": "string",
+            "example": "123456"
+          }
+        },
+        "xml": {
+          "name": "bodyRegister"
+        }
+      },
+      "successRegister": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "user": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 72
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Customer B"
+                  },
+                  "username": {
+                    "type": "string",
+                    "example": "customer_b"
+                  },
+                  "image": {
+                    "type": "string",
+                    "example": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815145/default%20image/profile_xzrsh7.png"
+                  },
+                  "telp": {
+                    "type": "string",
+                    "example": "083637267"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "customerb@gmail.com"
+                  },
+                  "is_admin": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "example": "2022-10-18T02:01:39.871Z"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "example": "2022-10-18T02:01:39.871Z"
+                  }
+                }
+              },
+              "token": {
+                "type": "string",
+                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzIsIm5hbWUiOiJDdXN0b21lciBCIiwidXNlcm5hbWUiOiJjdXN0b21lcl9iIiwiZW1haWwiOiJjdXN0b21lcmJAZ21haWwuY29tIiwiaXNfYWRtaW4iOmZhbHNlLCJpYXQiOjE2NjYwNTg0OTksImV4cCI6MTY2NjA4MDA5OX0.TbD6tj-2S_gFWyERrlFHukuNak55csfeal3gmfdGYhg"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successRegister"
+        }
+      },
+      "notAvailable": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "username or email not aviable"
+          }
+        },
+        "xml": {
+          "name": "notAvailable"
+        }
+      },
+      "passwordNotMatch": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "password and confrim password not match"
+          }
+        },
+        "xml": {
+          "name": "passwordNotMatch"
         }
       }
     },

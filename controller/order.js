@@ -22,7 +22,6 @@ module.exports = {
       }
 
        #swagger.responses[400] = {
-        description: "Pelanggan masih mempunyai pesanan yang belum di submit",
           content: {
               "application/json": {
                 examples: {

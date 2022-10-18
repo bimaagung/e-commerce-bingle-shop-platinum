@@ -70,6 +70,47 @@ module.exports = {
   },
 
   addProduct: async (req, res, next) => {
+    /*
+      #swagger.tags = ['Product']
+      #swagger.requestBody = {
+        required: true,
+        schema: { $ref: "#/definitions/bodyAddProduct" }
+      }
+
+      #swagger.responses[201] = {
+        description: "Berhasil menambahkan produk baru",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/successAddProduct"
+                  }
+              }
+          }
+      }
+
+      #swagger.responses[404] = {
+        description: "Kategori untuk produk tersebut tidak ditemukan",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/categoryProductNotFound"
+                  }
+              }
+          }
+      }
+
+      #swagger.responses[401] = {
+        description: "Akun tidak valid",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/unathorized"
+                  }
+              }
+          }
+      }
+
+    */
     try {
       let product = {
         name: req.body.name,
@@ -99,6 +140,47 @@ module.exports = {
   },
 
   updateProduct: async (req, res, next) => {
+    /*
+      #swagger.tags = ['Product']
+      #swagger.requestBody = {
+        required: true,
+        schema: { $ref: "#/definitions/bodyUpdateProduct" }
+      }
+
+      #swagger.responses[200] = {
+        description: "Berhasil mengubah produk",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/successProduct"
+                  }
+              }
+          }
+      }
+
+      #swagger.responses[404] = {
+        description: "Produk tidak ditemukan",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/productNotFound"
+                  }
+              }
+          }
+      }
+
+      #swagger.responses[401] = {
+        description: "Akun tidak valid",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/unathorized"
+                  }
+              }
+          }
+      }
+
+    */
     try {
       let { id } = req.params;
       let product = {
@@ -126,6 +208,43 @@ module.exports = {
   },
 
   deleteProduct: async (req, res, next) => {
+    /*
+      #swagger.tags = ['Product']
+
+      #swagger.responses[200] = {
+        description: "Berhasil menghapus produk",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/successProduct"
+                  }
+              }
+          }
+      }
+
+      #swagger.responses[404] = {
+        description: "Produk tidak ditemukan",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/productNotFound"
+                  }
+              }
+          }
+      }
+
+      #swagger.responses[401] = {
+        description: "Akun tidak valid",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/unathorized"
+                  }
+              }
+          }
+      }
+
+    */
     try {
       let { id } = req.params;
 

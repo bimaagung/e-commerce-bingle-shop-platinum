@@ -2,20 +2,23 @@ const swaggerAutogen = require('swagger-autogen')({openapi: '3.0.0'})
 
 const orderSchemaReq = require('./docs/schema/request/order') 
 const addressSchemaReq = require('./docs/schema/request/address')
+const userSchemaReq = require('./docs/schema/request/user')
+const authSchemaReq = require('./docs/schema/request/auth')
 
 const orderSchemaRes = require('./docs/schema/response/order') 
 const productSchemaRes = require('./docs/schema/response/product')
 const categorySchemaRes = require('./docs/schema/response/category')
 const addressSchemaRes = require('./docs/schema/response/address')
 const userSchemaRes = require('./docs/schema/response/user')
+const authSchemaRes = require('./docs/schema/response/auth')
 
 const doc = {
   info: {
-    title: 'My API',
-    description: 'Description',
+    title: 'E-commerce Platinum Maju Jaya',
+    description: 'Ecommerce App for project platinum, create by Maju Jaya',
     termsOfService: 'http://swagger.io/terms/',
     contact: {
-      email: 'apiteam@swagger.io',
+      email: 'platinum.majujaya@gmail.com',
     },
   },
   host: 'localhost:3000',
@@ -40,10 +43,7 @@ const doc = {
     // submite order
     successOrder : orderSchemaRes.successOrder,
     checkProductOrderBeforeSumbit: orderSchemaRes.checkProductOrderBeforeSumbit,
-
     orderNotFound: orderSchemaRes.orderNotFound,
-
-    unathorized: orderSchemaRes.unathorized,
     
     // product
     successGetAllProduct: productSchemaRes.successGetAllProduct,
@@ -64,7 +64,20 @@ const doc = {
     addressNotFound: addressSchemaRes.addressNotFound,
 
     // user
+    bodyUpdateUser: userSchemaReq.updateUser,
+    bodyUpdatePassword: userSchemaReq.updatePassword,
+    successUser: userSchemaRes.successUser,
+    successGetUserById: userSchemaRes.successGetUserById,
+    notMatchPassword: userSchemaRes.notMatchPassword,
     userNotFound : userSchemaRes.userNotFound,
+
+    // auth
+    bodyRegister : authSchemaReq.register,
+    successRegister: authSchemaRes.successRegister,
+    notAvailable: authSchemaRes.notAvailable,
+    passwordNotMatch: authSchemaRes.passwordNotMatch,
+    unathorized: orderSchemaRes.unathorized,
+
   },
 }
 

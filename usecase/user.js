@@ -57,7 +57,7 @@ class UserUC {
       data: null,
     };
 
-    if (user.password !== user.retype_password) {
+    if (user.password !== user.confirmPassword) {
       result.reason = 'password not match';
       result.statusCode = 400;
       return result;
@@ -87,9 +87,9 @@ class UserUC {
       reason: null,
       statusCode: 404,
       data: null,
-    }; 
+    };
 
-    let userBody = userData
+    let userBody = userData;
 
     let user = await this.UserRepository.getUserByID(id);
 
