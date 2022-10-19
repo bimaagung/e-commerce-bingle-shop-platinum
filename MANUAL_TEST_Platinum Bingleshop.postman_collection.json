@@ -168,7 +168,7 @@
 							"variable": [
 								{
 									"key": "product_id",
-									"value": null
+									"value": "11"
 								}
 							]
 						}
@@ -806,7 +806,49 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update main address",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6ImN1c3RvbWVyIiwidXNlcm5hbWUiOiJjdXN0b21lciIsImVtYWlsIjoiY3VzdG9tZXJuQG1haWwuY29tIiwiaXNfYWRtaW4iOmZhbHNlLCJpYXQiOjE2NjYxODAyNjYsImV4cCI6MTY2NjIwMTg2Nn0.sweNO6vaSFSXTG80gwvtO6xranknG7kHxODLuvP9pW8",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/customer/address/update-main-address/:address_id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"customer",
+								"address",
+								"update-main-address",
+								":address_id"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "address_id",
+									"value": "2"
 								}
 							]
 						}
@@ -968,22 +1010,22 @@
 					"formdata": [
 						{
 							"key": "name",
-							"value": "Bimasetya",
+							"value": "kian",
 							"type": "text"
 						},
 						{
 							"key": "username",
-							"value": "jajang2922",
+							"value": "kian28",
 							"type": "text"
 						},
 						{
 							"key": "image",
 							"type": "file",
-							"src": "/C:/Users/Irvan/Desktop/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
+							"src": "/C:/Users/Irvan/Desktop/test.jpg"
 						},
 						{
 							"key": "telp",
-							"value": "08231555",
+							"value": "0823155511",
 							"type": "text"
 						},
 						{
@@ -998,7 +1040,7 @@
 						},
 						{
 							"key": "email",
-							"value": "jajang@gmail.com",
+							"value": "kian@gmail.com",
 							"type": "text"
 						}
 					]
