@@ -207,7 +207,7 @@ module.exports = {
         user_id: req.user.id,
       };
 
-      let resAddress = await req.addressUC.updateAddress(id, address);
+      let resAddress = await req.addressUC.updateAddress(address, id);
       if (resAddress.isSuccess === false) {
         return res
           .status(resAddress.status)
