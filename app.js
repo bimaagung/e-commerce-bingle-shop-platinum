@@ -71,6 +71,8 @@ const authUC = new AuthUseCase(
 const productImageUC = new ProductImageUseCase(
   new ProductImageRepository(),
   new ProductRepository(),
+  cloudinary,
+  _,
 );
 const orderUC = new OrderUseCase(
   new OrderRepository(),
