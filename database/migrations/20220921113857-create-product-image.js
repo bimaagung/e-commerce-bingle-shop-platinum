@@ -11,6 +11,9 @@ module.exports = {
       url: {
         type: Sequelize.STRING
       },
+      cover_image : {
+        type: Sequelize.BOOLEAN
+      },
       product_id: {
         type: Sequelize.INTEGER
       },

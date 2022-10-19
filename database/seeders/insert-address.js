@@ -11,6 +11,7 @@ module.exports = {
           postal_code: "44151",
           detail: 'Jl.Pembangunan no 56 kec.Sukaregang',
           user_id: 2,
+          main_address : true,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
