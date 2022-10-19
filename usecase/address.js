@@ -60,7 +60,7 @@ class AddressUC {
     return result;
   }
 
-  async updateAddress(id, address) {
+  async updateAddress(address, id) {
     let result = {
       isSuccess: false,
       status: 404,
@@ -74,12 +74,47 @@ class AddressUC {
       result.reason = 'address not found';
       return result;
     }
-    let updateAddress = await this.AddressRepository.updateAddress(id, address);
+    let updateAddress = await this.AddressRepository.updateAddress(address, id);
     result.isSuccess = true;
     result.status = 200;
     result.data = updateAddress;
     return result;
   }
+  async changeMainAddress (address_id, user_id){
+    let result = {
+      isSuccess : false,
+      reason : "",
+      status: 404,
+    }
+    let existAddress = await this.AddressRepository.getAddressByID(address_id)
+    if(existAddress === null){
+      result.reason = "address not found"
+      return result
+  }
+  let address = await this.AddressRepository.getMainAddress(user_id);
+    if (address === null) {
+      result.reason = "customer not have address";
+      return result;
+    }
+    const changeMainAddressToFasle = {
+      main_address: false,
+    };
+    await this.AddressRepository.updateAddress(
+      changeMainAddressToFasle,
+      address.id
+      );
+      
+    const newMainAddres = {
+      main_address: true,
+    };
+    await this.AddressRepository.updateAddress(newMainAddres, address_id);
+
+    result.isSuccess = true;
+    result.status = 200;
+    return result;
+  }
+
+
 
   async deleteAddress(id) {
     let result = {

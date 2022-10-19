@@ -22,6 +22,7 @@ router.get('/api/customer/address/:id', authorized.customer, addressController.g
 router.get('/api/customer/all/address/', authorized.customer, addressController.getAddresByUserID);
 router.post('/api/customer/address/add', authorized.customer, validation.address, addressController.addAddress);
 router.put('/api/customer/address/update/:id', authorized.customer, validation.address, addressController.updateAddress);
+router.put('/api/customer/address/update-main-address/:address_id', authorized.customer,  addressController.changeMainAddress);
 router.delete('/api/customer/address/delete/:id', authorized.customer, addressController.deleteAddress);
 
 // order
