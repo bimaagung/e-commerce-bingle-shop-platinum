@@ -52,6 +52,12 @@ class AddressUC {
       result.reason = "user id not found";
       return result;
     }
+    let limitAddress = await this.AddressRepository.getAddressByUserID(address.user_id)
+    if(limitAddress.length === 3){
+      result.reason = "cannot add address, maximal limit"
+      result.status = 400
+      return result
+    }
     let main_address = await this.AddressRepository.getMainAddress(
       address.user_id
     );
