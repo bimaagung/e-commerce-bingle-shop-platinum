@@ -37,23 +37,6 @@ class ProductImageUC {
 
     return result;
   }
-  async getImageProductByID(imageId) {
-    let result = {
-      isSuccess: false,
-      reason: "failed",
-      status: 404,
-      data: null,
-    };
-    let image = await this.productImageRepository.getImageByID(imageId);
-    if (image === null) {
-      result.reason = "image not found";
-      return result;
-    }
-    result.isSuccess = true;
-    result.status = 200;
-    result.data = image;
-    return result;
-  }
 
   async createImageProduct(data) {
     let result = {
