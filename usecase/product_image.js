@@ -197,7 +197,10 @@ class ProductImageUC {
     const changeCoverImageToFalse = {
       cover_image: false,
     };
-    await this.productImageRepository.updateImage(changeCoverImageToFalse, getCoverImage.id);
+    await this.productImageRepository.updateImage(
+      changeCoverImageToFalse,
+      getCoverImage.id
+    );
     const newCoverImage = {
       cover_image: true,
     };

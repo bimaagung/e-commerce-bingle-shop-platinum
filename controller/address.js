@@ -141,6 +141,7 @@ module.exports = {
         postal_code: req.body.postal_code,
         detail: req.body.detail,
         user_id: req.user.id,
+        main_address: true,
       };
       let resAddress = await req.addressUC.addAddress(address);
       if (resAddress.isSuccess === false) {

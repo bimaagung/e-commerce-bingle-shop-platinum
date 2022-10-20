@@ -8,13 +8,13 @@ class AddressUC {
     let result = {
       isSuccess: false,
       status: 404,
-      reason: '',
+      reason: "",
       data: null,
     };
     let address = await this.AddressRepository.getAddressByID(id);
 
     if (address == null) {
-      result.reason = 'address not found';
+      result.reason = "address not found";
       return result;
     }
 
@@ -27,7 +27,7 @@ class AddressUC {
   async getAddressByUserID(userId) {
     let result = {
       isSuccess: false,
-      reason: '',
+      reason: "",
       data: [],
     };
 
@@ -42,20 +42,28 @@ class AddressUC {
     let result = {
       isSuccess: false,
       status: 404,
-      reason: '',
+      reason: "",
       data: null,
     };
 
     let existUserById = await this.UserRepository.getUserByID(address.user_id);
 
     if (existUserById == null) {
-      result.reason = 'user id not found';
+      result.reason = "user id not found";
       return result;
     }
-    let addAddress = await this.AddressRepository.addAddress(address);
+    let main_address = await this.AddressRepository.getMainAddress(
+      address.user_id
+    );
+    if (main_address === null) {
+      address = await this.AddressRepository.addAddress(address);
+    } else {
+      address.main_address = false;
+      address = await this.AddressRepository.addAddress(address);
+    }
 
     result.isSuccess = true;
-    result.data = addAddress;
+    result.data = address;
     result.status = 201;
     return result;
   }
@@ -64,14 +72,14 @@ class AddressUC {
     let result = {
       isSuccess: false,
       status: 404,
-      reason: '',
+      reason: "",
       data: null,
     };
 
     let existAddress = await this.AddressRepository.getAddressByID(id);
 
     if (existAddress == null) {
-      result.reason = 'address not found';
+      result.reason = "address not found";
       return result;
     }
     let updateAddress = await this.AddressRepository.updateAddress(address, id);
@@ -80,18 +88,18 @@ class AddressUC {
     result.data = updateAddress;
     return result;
   }
-  async changeMainAddress (address_id, user_id){
+  async changeMainAddress(address_id, user_id) {
     let result = {
-      isSuccess : false,
-      reason : "",
+      isSuccess: false,
+      reason: "",
       status: 404,
+    };
+    let existAddress = await this.AddressRepository.getAddressByID(address_id);
+    if (existAddress === null) {
+      result.reason = "address not found";
+      return result;
     }
-    let existAddress = await this.AddressRepository.getAddressByID(address_id)
-    if(existAddress === null){
-      result.reason = "address not found"
-      return result
-  }
-  let address = await this.AddressRepository.getMainAddress(user_id);
+    let address = await this.AddressRepository.getMainAddress(user_id);
     if (address === null) {
       result.reason = "customer not have address";
       return result;
@@ -102,8 +110,8 @@ class AddressUC {
     await this.AddressRepository.updateAddress(
       changeMainAddressToFasle,
       address.id
-      );
-      
+    );
+
     const newMainAddres = {
       main_address: true,
     };
@@ -114,20 +122,24 @@ class AddressUC {
     return result;
   }
 
-
-
   async deleteAddress(id) {
     let result = {
       isSuccess: false,
       status: 404,
-      reason: '',
+      reason: "",
       data: null,
     };
 
     let existAddress = await this.AddressRepository.getAddressByID(id);
 
     if (existAddress == null) {
-      result.reason = 'address not found';
+      result.reason = "address not found";
+      return result;
+    }
+    if (existAddress.main_address === true) {
+      result.reason =
+        "cannot delete main address, please change main address first";
+      result.status = 400;
       return result;
     }
 
