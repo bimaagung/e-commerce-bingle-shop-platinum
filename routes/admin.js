@@ -20,7 +20,8 @@ router.put('/api/admin/category/update/:id', authorized.admin, validation.catego
 router.delete('/api/admin/category/delete/:id', authorized.admin, categoryController.deleteCategory);
 
 // Product
-router.post('/api/admin/product/add', authorized.admin, validation.product, productController.addProduct);
+// TODO Update category_id allow null
+router.post('/api/admin/product/add', authorized.admin,  productController.addProduct);
 router.put('/api/admin/product/update/:id', authorized.admin, validation.product, productController.updateProduct);
 router.delete('/api/admin/product/delete/:id', authorized.admin, productController.deleteProduct);
 

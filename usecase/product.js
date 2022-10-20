@@ -1,8 +1,17 @@
 /* eslint-disable no-return-await */
 class ProductUC {
-  constructor(productRepository, categoryRepository) {
+  constructor(
+    productRepository,
+    categoryRepository,
+    productImageRepository,
+    defaultImage,
+    _
+  ) {
     this.productRepository = productRepository;
     this.categoryRepository = categoryRepository;
+    this.productImageRepository = productImageRepository;
+    this.defaultImage = defaultImage;
+    this._ = _;
   }
 
   async getAllProducts(filters) {
@@ -39,7 +48,7 @@ class ProductUC {
     return result;
   }
 
-  async addProduct(product) {
+  async addProduct(dataProduct) {
     let result = {
       isSuccess: false,
       status: 404,
@@ -47,21 +56,34 @@ class ProductUC {
       data: null,
     };
 
-    // to check whether the category exists
     let existCategory = await this.categoryRepository.getCategoryByID(
-      product.category_id
+      dataProduct.category_id
     );
-
     if (existCategory === null) {
       result.reason = "failed to add, category not found";
       return result;
     }
 
-    // to add product to database
-    let addProduct = await this.productRepository.addProduct(product);
+    let product = await this.productRepository.addProduct(dataProduct);
+
+    const setImageAsCover = {
+      url: this.defaultImage.DEFAULT_PRODUCT_IMAGE,
+      cover_image: true,
+      product_id: product.id,
+    };
+    let cover_image = await this.productImageRepository.createImage(
+      setImageAsCover
+    );
+
+    const setCoverImageID = {
+      cover_imageID: cover_image.id,
+    };
+
+    await this.productRepository.updateProduct(setCoverImageID, product.id);
+    let getProduct = await this.productRepository.getProductByID(product.id);
 
     result.isSuccess = true;
-    result.data = addProduct;
+    result.data = getProduct;
     result.status = 201;
     return result;
   }

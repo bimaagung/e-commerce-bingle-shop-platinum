@@ -1,4 +1,4 @@
-require('dotenv').config();
+require("dotenv").config();
 
 // const useAPM = process.env.USE_APM || false;
 // const apm = require('elastic-apm-node').start({
@@ -7,74 +7,81 @@ require('dotenv').config();
 //   active: useAPM,
 // });
 
-const express = require('express');
+const express = require("express");
 
 const app = express();
-const cors = require('cors');
+const cors = require("cors");
 
+const swaggerUi = require("swagger-ui-express"); // import swagger
 
-const swaggerUi = require('swagger-ui-express'); // import swagger
+let logger = require("morgan");
+const fs = require("fs");
+const moment = require("moment-timezone");
+const bcrypt = require("bcrypt");
+const _ = require("lodash");
+const cloudinary = require("./libs/handle_upload");
+const generateToken = require("./helper/jwt");
+const googleOauth = require("./libs/google-auth");
+const func = require("./libs/function");
+const defaultImage = require("./internal/constant/defaultImage");
 
-let logger = require('morgan');
-const fs = require('fs');
-const moment = require('moment-timezone');
-const bcrypt = require('bcrypt');
-const _ = require('lodash');
-const cloudinary = require('./libs/handle_upload');
-const generateToken = require('./helper/jwt');
-const googleOauth = require('./libs/google-auth')
-const func = require('./libs/function')
+const serverError = require("./middleware/serverError");
 
-const serverError = require('./middleware/serverError');
+const CategoryRepository = require("./repository/category");
+const CategoryUseCase = require("./usecase/category");
 
-const CategoryRepository = require('./repository/category');
-const CategoryUseCase = require('./usecase/category');
+const AddressRepository = require("./repository/address");
+const AddressUseCase = require("./usecase/address");
 
-const AddressRepository = require('./repository/address');
-const AddressUseCase = require('./usecase/address');
+const ProductUseCase = require("./usecase/product");
+const ProductRepository = require("./repository/product");
 
-const ProductUseCase = require('./usecase/product');
-const ProductRepository = require('./repository/product');
+const OrderUseCase = require("./usecase/order");
 
-const OrderUseCase = require('./usecase/order');
+const OrderRepository = require("./repository/order");
+const OrderDetailRepository = require("./repository/orderDetail");
 
-const OrderRepository = require('./repository/order');
-const OrderDetailRepository = require('./repository/orderDetail');
+const UserRepository = require("./repository/user");
+const UserUseCase = require("./usecase/user");
 
-const UserRepository = require('./repository/user');
-const UserUseCase = require('./usecase/user');
+const AuthRepository = require("./repository/auth");
+const AuthUseCase = require("./usecase/auth");
 
-const AuthRepository = require('./repository/auth');
-const AuthUseCase = require('./usecase/auth');
-
-const ProductImageRepository = require('./repository/product_image');
-const ProductImageUseCase = require('./usecase/product_image');
+const ProductImageRepository = require("./repository/product_image");
+const ProductImageUseCase = require("./usecase/product_image");
 
 const EmailRepository = require("./repository/email");
 const OtpRepository = require("./repository/otp");
-const OtpUseCase =require("./usecase/otp");
+const OtpUseCase = require("./usecase/otp");
 
-const ChatRepository = require('./repository/chat');
-const ChatUseCase = require('./usecase/chat');
+const ChatRepository = require("./repository/chat");
+const ChatUseCase = require("./usecase/chat");
 
+const customerRouter = require("./routes/customer");
+const publicRouter = require("./routes/public");
+const authRouter = require("./routes/auth");
+const adminRouter = require("./routes/admin");
+const otpRouter = require("./routes/otp");
 
-const customerRouter = require('./routes/customer');
-const publicRouter = require('./routes/public');
-const authRouter = require('./routes/auth');
-const adminRouter = require('./routes/admin');
-const otpRouter = require("./routes/otp")
-
-
-const addressUC = new AddressUseCase(new AddressRepository(), new UserRepository());
+const addressUC = new AddressUseCase(
+  new AddressRepository(),
+  new UserRepository()
+);
 const categoryUC = new CategoryUseCase(new CategoryRepository());
-const productUC = new ProductUseCase(new ProductRepository(), new CategoryRepository());
+const productUC = new ProductUseCase(
+  new ProductRepository(),
+  new CategoryRepository(),
+  new ProductImageRepository(),
+  defaultImage,
+  _
+);
 
 const userUC = new UserUseCase(
   new UserRepository(),
   new OtpRepository(),
-   bcrypt, 
-   cloudinary
-   );
+  bcrypt,
+  cloudinary
+);
 
 const chatUC = new ChatUseCase(new ChatRepository(), new UserRepository(), _);
 
@@ -87,37 +94,32 @@ const authUC = new AuthUseCase(
   generateToken,
   _,
   googleOauth,
-  func,
+  func
 );
 
 const productImageUC = new ProductImageUseCase(
   new ProductImageRepository(),
   new ProductRepository(),
   cloudinary,
-  _,
+  _
 );
 const orderUC = new OrderUseCase(
   new OrderRepository(),
   new OrderDetailRepository(),
   new ProductRepository(),
-  new CategoryRepository(),
+  new CategoryRepository()
 );
 
-
-const otpUC = new OtpUseCase(
-  new OtpRepository(),
-  new EmailRepository()
-  );
+const otpUC = new OtpUseCase(new OtpRepository(), new EmailRepository());
 
 // const ACCESS_LOG = process.env.ACCESS_LOG || './logs/access.log';
 // const ERROR_LOG = process.env.ERROR_LOG || './logs/errors.log';
 
-
-app.set('view engine', 'ejs')
+app.set("view engine", "ejs");
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use('/public', express.static('public'));
+app.use("/public", express.static("public"));
 
 // Logger
 
@@ -141,31 +143,38 @@ app.use((req, res, next) => {
   req.productImageUC = productImageUC;
   req.orderUC = orderUC;
   req.authUC = authUC;
-  req.otpUC = otpUC
+  req.otpUC = otpUC;
   req.chatUC = chatUC;
 
   next();
 });
 
-app.get('/', (req, res) => {
+app.get("/", (req, res) => {
   // #swagger.ignore = true
-  res.send('Hello Platinum Maju Jaya');
+  res.send("Hello Platinum Maju Jaya");
 });
 
-app.use('/', authRouter);
-app.use('/', adminRouter);
-app.use('/', customerRouter);
-app.use('/', publicRouter);
-app.use('/', otpRouter)
-
+app.use("/", authRouter);
+app.use("/", adminRouter);
+app.use("/", customerRouter);
+app.use("/", publicRouter);
+app.use("/", otpRouter);
 
 // handle server error
 app.use(serverError);
 
-const swaggerDocument = require('./docs/docs.json');
-const adminSwaggerDocument = require('./docs/admin_docs.json');
+const swaggerDocument = require("./docs/docs.json");
+const adminSwaggerDocument = require("./docs/admin_docs.json");
 
-app.use('/docs/admin', swaggerUi.serveFiles(adminSwaggerDocument), swaggerUi.setup(adminSwaggerDocument));
-app.use('/docs', swaggerUi.serveFiles(swaggerDocument), swaggerUi.setup(swaggerDocument));
+app.use(
+  "/docs/admin",
+  swaggerUi.serveFiles(adminSwaggerDocument),
+  swaggerUi.setup(adminSwaggerDocument)
+);
+app.use(
+  "/docs",
+  swaggerUi.serveFiles(swaggerDocument),
+  swaggerUi.setup(swaggerDocument)
+);
 
 module.exports = app;
