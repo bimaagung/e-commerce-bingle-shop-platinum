@@ -2,9 +2,9 @@
 const defaultImage = require("../internal/constant/defaultImage");
 const _ = require("loadsh");
 class ProductImageUC {
-  constructor(ProductImageRepository, ProductRespository, cloudinary, _) {
+  constructor(ProductImageRepository, ProductRepository, cloudinary, _) {
     this.productImageRepository = ProductImageRepository;
-    this.productRespository = ProductRespository;
+    this.productRepository = ProductRepository;
     this.cloudinary = cloudinary;
     this._ = _;
   }
@@ -17,7 +17,7 @@ class ProductImageUC {
       data: [],
     };
 
-    let existProduct = await this.productRespository.getProductByID(product_id);
+    let existProduct = await this.productRepository.getProductByID(product_id);
     if (existProduct === null) {
       result.reason = "product not found";
       return result;
@@ -62,7 +62,7 @@ class ProductImageUC {
       return result;
     }
 
-    let product = await this.productRespository.getProductByID(data.product_id);
+    let product = await this.productRepository.getProductByID(data.product_id);
     if (product == null) {
       result.reason = "failed add image, product not found";
       return result;
@@ -105,7 +105,7 @@ class ProductImageUC {
       const setCoverImageID = {
         cover_imageID: image.id,
       };
-      await this.productRespository.updateProduct(
+      await this.productRepository.updateProduct(
         setCoverImageID,
         image.product_id
       );
@@ -126,7 +126,7 @@ class ProductImageUC {
       const setCoverImageID = {
         cover_imageID: newImage.id,
       };
-      await this.productRespository.updateProduct(setCoverImageID, product_id);
+      await this.productRepository.updateProduct(setCoverImageID, product_id);
     }
     let existCover = this._.find(images, ["cover_image", true]);
 
@@ -140,7 +140,7 @@ class ProductImageUC {
         cover_imageID: image.id,
       };
 
-      await this.productRespository.updateProduct(setCoverImageID, product_id);
+      await this.productRepository.updateProduct(setCoverImageID, product_id);
     }
   }
 
@@ -197,12 +197,12 @@ class ProductImageUC {
     const changeCoverImageToFalse = {
       cover_image: false,
     };
-    await this.updateImage(changeCoverImageToFalse, getCoverImage.id);
+    await this.productImageRepository.updateImage(changeCoverImageToFalse, getCoverImage.id);
     const newCoverImage = {
       cover_image: true,
     };
 
-    await this.updateImage(newCoverImage, image_id);
+    await this.productImageRepository.updateImage(newCoverImage, image_id);
 
     const setCoverImageID = {
       cover_imageID: image_id,

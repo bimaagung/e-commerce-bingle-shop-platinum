@@ -64,7 +64,7 @@ class ProductUC {
     return result;
   }
 
-  async updateProduct(id, product) {
+  async updateProduct(product, id) {
     let result = {
       isSuccess: false,
       status: 404,
@@ -79,7 +79,7 @@ class ProductUC {
       result.reason = 'product not found';
       return result;
     }
-    let updateProduct = await this.productRepository.updateProduct(id, product);
+    let updateProduct = await this.productRepository.updateProduct( product, id);
 
     result.isSuccess = true;
     result.status = 200;

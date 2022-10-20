@@ -31,6 +31,7 @@ router.get('/api/admin/order/:id', authorized.admin, orderController.getOrderByI
 // image product
 router.post('/api/admin/add-image/product', authorized.admin, handleUpload.upload.single('url'), imageController.addProductImage);
 router.put('/api/admin/update-image/product/:id', authorized.admin, handleUpload.upload.single('url'), imageController.updateImageProduct);
+router.put('/api/admin/update-cover/product/', authorized.admin, imageController.changeCoverImage);
 router.delete('/api/admin/delete-image/product/:id', authorized.admin, imageController.deleteImageProduct);
 
 module.exports = router;

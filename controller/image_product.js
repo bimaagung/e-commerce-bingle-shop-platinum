@@ -111,10 +111,10 @@ module.exports = {
       let dataImage = {
         url: null,
         product_id: req.body.product_id,
-        cover_image : false
+        cover_image: false,
       };
       if (req.file !== undefined) {
-        dataImage.url = (req.file.path);
+        dataImage.url = req.file.path;
       }
       let resImage = await req.productImageUC.createImageProduct(dataImage);
       if (resImage.isSuccess !== true) {
@@ -166,6 +166,24 @@ module.exports = {
           .json(resData.failed(resImage.reason));
       }
       res.status(200).json(resData.success());
+    } catch (e) {
+      next(e);
+    }
+  },
+  changeCoverImage: async (req, res, next) => {
+    let image_id = req.query.image_id;
+    let product_id = req.query.product_id;
+    try {
+      let resUpdate = await req.productImageUC.changeCoverImage(
+        image_id,
+        product_id
+      );
+      if (resUpdate.isSuccess !== true) {
+        return res
+          .status(resUpdate.status)
+          .json(resData.failed(resUpdate.reason));
+      }
+      res.status(resUpdate.status).json(resData.success());
     } catch (e) {
       next(e);
     }
