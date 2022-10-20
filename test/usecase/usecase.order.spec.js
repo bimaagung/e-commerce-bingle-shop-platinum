@@ -317,7 +317,7 @@ describe('orders', () => {
         let res = await orderUC.updateStatusOrder(2,'ORDER_PROCESSED');
 
         expect(res.isSuccess).toBeFalsy();
-        expect(res.reason).toEqual('orders without pending status not found');
+        expect(res.reason).toEqual('order not found');
       });
 
       test(`should isSuccess is true and reason is "request status outside the specified options"`, async () => {
