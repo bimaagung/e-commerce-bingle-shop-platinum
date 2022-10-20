@@ -29,7 +29,8 @@ class UserRepository {
 
   async getUserByID(id) {
     return await this.UserModel.findOne({
-      where: { id },
+      where: { id }, 
+      attributes: {exclude: ['password', 'is_admin']}
      
     });
   }

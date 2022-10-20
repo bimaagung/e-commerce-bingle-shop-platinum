@@ -1,6 +1,4 @@
 const resData = require("../helper/response");
-const defaultImage = require("../internal/constant/defaultImage");
-
 module.exports = {
   getImageProductByProductID: async (req, res, next) => {
     /*

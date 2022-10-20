@@ -95,7 +95,8 @@ const authUC = new AuthUseCase(
   generateToken,
   _,
   googleOauth,
-  func
+  func,
+  defaultImage
 );
 
 const productImageUC = new ProductImageUseCase(
