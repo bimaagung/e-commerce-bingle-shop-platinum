@@ -1,9 +1,8 @@
-const _ = require('lodash');
-
 class ChatUC {
-  constructor(chatRepository, userRepository) {
+  constructor(chatRepository, userRepository, _) {
     this.chatRepository = chatRepository;
     this.userRepository = userRepository;
+    this._ = _;
   }
 
   async getListChatByUserId(userId) {
@@ -30,12 +29,12 @@ class ChatUC {
     });
 
     // short uniq
-    const allUniqContact = _.uniq(arrayIdContact);
+    const allUniqContact = this._.uniq(arrayIdContact);
 
     // remove self user id
-    const uniqContact = _.remove(allUniqContact, (n) => n !== userId);
+    const uniqContact = this._.remove(allUniqContact, (n) => n !== userId);
 
-    // filter by contact
+    // filter by contact chat
     for (let x = 0; x < uniqContact.length; x += 1) {
       let id = uniqContact[x];
 
@@ -51,7 +50,7 @@ class ChatUC {
         const messageDetail = {
           as: row.sender_id === userId ? 'sender' : 'recipient',
           content: row.content,
-          time: row.createdAt,
+          date: row.createdAt,
         };
 
         messages.push(messageDetail);

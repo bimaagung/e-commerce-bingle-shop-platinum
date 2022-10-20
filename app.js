@@ -58,7 +58,7 @@ const addressUC = new AddressUseCase(new AddressRepository(), new UserRepository
 const categoryUC = new CategoryUseCase(new CategoryRepository());
 const productUC = new ProductUseCase(new ProductRepository(), new CategoryRepository());
 const userUC = new UserUseCase(new UserRepository(), bcrypt, cloudinary);
-const chatUC = new ChatUseCase(new ChatRepository(), new UserRepository());
+const chatUC = new ChatUseCase(new ChatRepository(), new UserRepository(), _);
 
 const authUC = new AuthUseCase(
   new AuthRepository(),
