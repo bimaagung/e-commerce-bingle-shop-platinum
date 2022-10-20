@@ -1,6 +1,5 @@
 /* eslint-disable no-return-await */
 const defaultImage = require("../internal/constant/defaultImage");
-const _ = require("loadsh");
 class ProductImageUC {
   constructor(ProductImageRepository, ProductRepository, cloudinary, _) {
     this.productImageRepository = ProductImageRepository;

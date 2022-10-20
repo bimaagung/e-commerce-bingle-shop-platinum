@@ -11,6 +11,8 @@ const express = require('express');
 
 const app = express();
 const cors = require('cors');
+
+
 const swaggerUi = require('swagger-ui-express'); // import swagger
 
 let logger = require('morgan');
@@ -84,6 +86,7 @@ const orderUC = new OrderUseCase(
 // const ACCESS_LOG = process.env.ACCESS_LOG || './logs/access.log';
 // const ERROR_LOG = process.env.ERROR_LOG || './logs/errors.log';
 
+app.set('view engine', 'ejs')
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
