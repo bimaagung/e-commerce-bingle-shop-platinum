@@ -134,5 +134,13 @@ app.use('/docs/admin', swaggerUi.serveFiles(adminSwaggerDocument), swaggerUi.set
 app.use('/docs', swaggerUi.serveFiles(swaggerDocument), swaggerUi.setup(swaggerDocument));
 
 const httpServer = http.createServer(app)
+const io = socketIO(httpServer);
+io.on('connection', (socket) => {
+    console.log('user is connected')
+
+    socket.on('disconnected', () => {
+      console.log('user is disconnected')
+    })
+})
 
 module.exports = app;
