@@ -10,6 +10,8 @@ const apm = require('elastic-apm-node').start({
 const express = require('express');
 
 const app = express();
+const socketIO = require('socket.io');
+const http = require('http');
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express'); // import swagger
 
@@ -130,5 +132,7 @@ const adminSwaggerDocument = require('./docs/admin_docs.json');
 
 app.use('/docs/admin', swaggerUi.serveFiles(adminSwaggerDocument), swaggerUi.setup(adminSwaggerDocument));
 app.use('/docs', swaggerUi.serveFiles(swaggerDocument), swaggerUi.setup(swaggerDocument));
+
+const httpServer = http.createServer(app)
 
 module.exports = app;
