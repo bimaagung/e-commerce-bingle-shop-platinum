@@ -1,37 +1,44 @@
-const { ProductImage } = require("../models")
-
+const { ProductImage } = require("../models");
 
 class ProductImageRepository {
   constructor() {
     this.productImageModel = ProductImage;
   }
 
-  async getImageByID(id){
+  async getImageByID(id) {
     return await this.productImageModel.findOne({
-      where : {id},
-    })
+      where: { id },
+    });
   }
-  async getAllImageByProductID (product_id){
+  async getAllImageByProductID(product_id) {
     return await this.productImageModel.findAll({
-      where :{product_id : product_id}
-    })
+      where: { product_id: product_id },
+    });
   }
-  
-  async createImage(images) {
- 
-  return await this.productImageModel.create(images)
 
+  async createImage(images) {
+    return await this.productImageModel.create(images);
   }
+
+  async getCoverImage(product_id) {
+    return await this.productImageModel.findOne({
+      where: {
+        product_id: product_id,
+        cover_image: true,
+      },
+    });
+  }
+
   async updateImage(images, id) {
     return await this.productImageModel.update(images, {
-      where: {id},
-    })
-}
-   async deleteImage(id){
+      where: { id },
+    });
+  }
+  async deleteImage(id) {
     return await this.productImageModel.destroy({
-      where : {id},
-    })
+      where: { id },
+    });
   }
 }
 
-module.exports = ProductImageRepository
+module.exports = ProductImageRepository;

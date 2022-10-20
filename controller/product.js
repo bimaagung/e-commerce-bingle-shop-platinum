@@ -192,7 +192,7 @@ module.exports = {
         stock: req.body.stock,
       };
 
-      let updateProduct = await req.productUC.updateProduct(id, product);
+      let updateProduct = await req.productUC.updateProduct(product, id);
 
       if (updateProduct.isSuccess === false) {
         return res

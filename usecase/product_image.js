@@ -1,5 +1,6 @@
-/* eslint-disable no-return-await */ const defaultImage = require("../internal/constant/defaultImage");
-const _= require('loadsh')
+/* eslint-disable no-return-await */
+const defaultImage = require("../internal/constant/defaultImage");
+const _ = require("loadsh");
 class ProductImageUC {
   constructor(ProductImageRepository, ProductRespository, cloudinary, _) {
     this.productImageRepository = ProductImageRepository;
@@ -61,9 +62,7 @@ class ProductImageUC {
       return result;
     }
 
-    let product = await this.productRespository.getProductByID(
-      data.product_id
-    );
+    let product = await this.productRespository.getProductByID(data.product_id);
     if (product == null) {
       result.reason = "failed add image, product not found";
       return result;
@@ -101,10 +100,7 @@ class ProductImageUC {
       const newCoverImage = {
         cover_image: true,
       };
-      await this.productImageRepository.updateImage(
-        newCoverImage,
-        image.id
-      );
+      await this.productImageRepository.updateImage(newCoverImage, image.id);
 
       const setCoverImageID = {
         cover_imageID: image.id,
@@ -119,37 +115,31 @@ class ProductImageUC {
     let images = await this.productImageRepository.getAllImageByProductID(
       product_id
     );
-
     if (images.length === 0) {
       let dataImage = {
         url: defaultImage.DEFAULT_PRODUCT_IMAGE,
         cover_image: true,
         product_id: product_id,
       };
-      let newImage = await this.productImageRepository.createImage(
-        dataImage
-      );
+      let newImage = await this.productImageRepository.createImage(dataImage);
+
       const setCoverImageID = {
         cover_imageID: newImage.id,
       };
       await this.productRespository.updateProduct(setCoverImageID, product_id);
     }
-    let existCover =_.find(images, ["cover_image" , true]);
-    
-    console.log(existCover)
+    let existCover = this._.find(images, ["cover_image", true]);
+
     if (!existCover && images.length) {
       let image = images[0];
       const newCoverImage = {
         cover_image: true,
       };
-     await this.productImageRepository.updateImage(
-        newCoverImage,
-        image.id
-      );
+      await this.productImageRepository.updateImage(newCoverImage, image.id);
       const setCoverImageID = {
-        cover_imageID: image.id
+        cover_imageID: image.id,
       };
-     
+
       await this.productRespository.updateProduct(setCoverImageID, product_id);
     }
   }
@@ -182,6 +172,47 @@ class ProductImageUC {
     return result;
   }
 
+  async changeCoverImage(image_id, product_id) {
+    let result = {
+      isSuccess: false,
+      reason: "failed",
+      status: 404,
+    };
+
+    let imageExist = await this.productImageRepository.getAllImageByProductID(
+      image_id
+    );
+    if (imageExist === null) {
+      result.reason = "image not found";
+      return result;
+    }
+
+    let getCoverImage = await this.productImageRepository.getCoverImage(
+      product_id
+    );
+    if (getCoverImage == null) {
+      result.reason = "image not found";
+      return result;
+    }
+    const changeCoverImageToFalse = {
+      cover_image: false,
+    };
+    await this.updateImage(changeCoverImageToFalse, getCoverImage.id);
+    const newCoverImage = {
+      cover_image: true,
+    };
+
+    await this.updateImage(newCoverImage, image_id);
+
+    const setCoverImageID = {
+      cover_imageID: image_id,
+    };
+    await this.productRepository.updateProduct(setCoverImageID, product_id);
+    result.isSuccess = true;
+    result.status = 200;
+    return result;
+  }
+
   async deleteImageProduct(id) {
     let result = {
       isSuccess: false,
@@ -190,11 +221,14 @@ class ProductImageUC {
       data: null,
     };
     let image = await this.productImageRepository.getImageByID(id);
+    let product_id = image.product_id;
     if (image == null) {
       result.reason = "image not found";
       return result;
     }
-    image = await this.productImageRepository.deleteImage(id);
+
+    await this.productImageRepository.deleteImage(id);
+    await this.setCoverImageByProductId(product_id);
     result.isSuccess = true;
     result.status = 200;
     return result;
