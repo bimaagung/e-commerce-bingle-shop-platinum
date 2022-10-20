@@ -1,6 +1,7 @@
 class UserUC {
-  constructor(UserRepository, bcrypt, cloudinary) {
+  constructor(UserRepository, OtpRepository, bcrypt, cloudinary) {
     this.UserRepository = UserRepository;
+    this.OtpRepository = OtpRepository;
     this.bcrypt = bcrypt;
     this.cloudinary = cloudinary;
   }
@@ -94,7 +95,7 @@ class UserUC {
       statusCode: 400,
       data: null,
     };
-    if (user.newPassword !== user.confirmNewPassword) {
+    if (userData.newPassword !== userData.confirmNewPassword) {
       result.reason = "password not match";
       return result;
     }
@@ -103,10 +104,10 @@ class UserUC {
       result.reason = "user not found";
       return result;
     }
-    let otp = await this.OtpRespository.getOTP(
+    let otp = await this.OtpRepository.getOTP(
       email,
-      userData.Otp_code,
-      "RESETPASSWORD"
+      userData.otp_code,
+      "RESETPASSWORD" 
     );
     if (otp === null) {
       result.reason = "invalid otp code";
@@ -115,7 +116,7 @@ class UserUC {
     userData.password = userData.newPassword;
     userData.password = this.bcrypt.hashSync(userData.password, 10);
     await this.UserRepository.updateUser(userData, user.id);
-    await this.OtpRespository.deleteAllOtp(email);
+    await this.OtpRepository.deleteAllOtp(email);
 
     result.isSuccess = true;
     result.statusCode = 200;

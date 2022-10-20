@@ -2,9 +2,10 @@
 const defaultImage = require('../internal/constant/defaultImage');
 
 class AuthUC {
-  constructor(AuthRepository, UserRepository, bcrypt, cloudinary, generateToken, _, googleOauth, func) {
+  constructor(AuthRepository, UserRepository, OtpRepository, bcrypt, cloudinary, generateToken, _, googleOauth, func) {
     this.AuthRepository = AuthRepository;
     this.UserRepository = UserRepository;
+    this.OtpRepository = OtpRepository;
     this.bcrypt = bcrypt;
     this.cloudinary = cloudinary;
     this.generateToken = generateToken;
@@ -22,6 +23,11 @@ class AuthUC {
       token: null,
     };
 
+    let otp = await this.OtpRepository.getOTP(userData.email, userData.otp_code, "REGISTRATION")
+    if(otp === null){
+      result.reason = "invalid otp code"
+      return result
+  }
     let user = await this.UserRepository.getUserExist(
       userData.username,
       userData.email,
@@ -46,6 +52,8 @@ class AuthUC {
     }
     let dataUser = this._.omit(user.dataValues, ['password']);
     let token = this.generateToken(dataUser);
+
+    await this.OtpRepository.deleteAllOtp(userData.email)
     result.isSuccess = true;
     result.status = 200;
     result.data = dataUser;
@@ -93,7 +101,7 @@ class AuthUC {
 
       const userData = {
         name: data.name,
-        username: data.given_name+this.func.generateRandomNumberic(3),
+        username: data.given_name+this.func.generateRandomNumber(3),
         image: defaultImage.DEFAULT_AVATAR,
         email: data.email,
         is_admin: false

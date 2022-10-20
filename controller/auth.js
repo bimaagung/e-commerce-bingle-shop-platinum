@@ -82,6 +82,7 @@ module.exports = {
         password: req.body.password,
         confrimPassword: req.body.confrimPassword,
         is_admin: false,
+        otp_code : req.body.otp_code
       };
 
       let image = null;
