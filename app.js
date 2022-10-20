@@ -68,6 +68,7 @@ const addressUC = new AddressUseCase(
   new UserRepository()
 );
 const categoryUC = new CategoryUseCase(new CategoryRepository());
+
 const productUC = new ProductUseCase(
   new ProductRepository(),
   new CategoryRepository(),
@@ -101,7 +102,8 @@ const productImageUC = new ProductImageUseCase(
   new ProductImageRepository(),
   new ProductRepository(),
   cloudinary,
-  _
+  _,
+  defaultImage
 );
 const orderUC = new OrderUseCase(
   new OrderRepository(),
