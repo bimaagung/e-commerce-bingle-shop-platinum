@@ -106,8 +106,8 @@ class UserUC {
     }
     let otp = await this.OtpRepository.getOTP(
       email,
-      userData.Otp_code,
-      "RESETPASSWORD"
+      userData.otp_code,
+      "RESETPASSWORD" 
     );
     if (otp === null) {
       result.reason = "invalid otp code";
