@@ -13,6 +13,12 @@ class UserRepository {
       },
     });
   }
+  
+  async getUserByEmail(email) {
+    return await this.UserModel.findOne({
+      where: {email},
+    });
+  }
 
   async updatePassword(newPassword, id) {
     const password = await this.updatePassword(newPassword, {

@@ -252,4 +252,25 @@ module.exports = {
       next(error);
     }
   },
+  
+  resetPassword : async (req, res, next)=>{
+    let email = req.query.email
+    let user = {
+      newPassword: req.body.newPassword,
+      confrimNewPassword: req.body.confrimNewPassword,
+      otp_code: req.body.otp_code
+    }
+    try {
+      resReset = await req.userUC.resetPassword(user, email)
+      if(resReset.isSuccess !== true){
+        return res
+        .status(resReset.statusCode)
+        .json(resData.failed(resReset.reason))
+      }
+      res.status(resReset.statusCode).json(resData.success())
+
+    } catch (e) {
+     next (e) 
+    }
+  }
 };

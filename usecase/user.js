@@ -87,6 +87,41 @@ class UserUC {
     return result;
   }
 
+  async resetPassword(userData, email) {
+    let result = {
+      isSuccess: false,
+      reason: null,
+      statusCode: 400,
+      data: null,
+    };
+    if (user.newPassword !== user.confirmNewPassword) {
+      result.reason = "password not match";
+      return result;
+    }
+    let user = await this.UserRepository.getUserByEmail(email);
+    if (user === null) {
+      result.reason = "user not found";
+      return result;
+    }
+    let otp = await this.OtpRespository.getOTP(
+      email,
+      userData.Otp_code,
+      "RESETPASSWORD"
+    );
+    if (otp === null) {
+      result.reason = "invalid otp code";
+      return result;
+    }
+    userData.password = userData.newPassword;
+    userData.password = this.bcrypt.hashSync(userData.password, 10);
+    await this.UserRepository.updateUser(userData, user.id);
+    await this.OtpRespository.deleteAllOtp(email);
+
+    result.isSuccess = true;
+    result.statusCode = 200;
+    return result;
+  }
+
   async updateUserImage(userData, id) {
     let result = {
       isSuccess: false,
