@@ -62,11 +62,33 @@ class AuthUC {
 
     let user = await this.AuthRepository.loginUser(username);
     if (user == null) {
-      result.reason = 'incorect username or password';
+      result.reason = 'incorect email or password';
       return result;
     }
     if (!this.bcrypt.compareSync(password, user.password)) {
-      result.reason = 'incorect username or password';
+      result.reason = 'incorect email or password';
+      return result;
+    }
+    let dataUser = this._.omit(user.dataValues, ['password']);
+    let token = this.generateToken(dataUser);
+    result.isSuccess = true;
+    result.status = 200;
+    result.data = dataUser;
+    result.token = token;
+    return result;
+  }
+  async loginGoogle(email) {
+    let result = {
+      isSuccess: false,
+      reason: '',
+      status: 404,
+      data: null,
+      token: null,
+    };
+
+    let user = await this.AuthRepository.loginWithGoogle(email);
+    if (user == null) {
+      result.reason = 'register first';
       return result;
     }
     let dataUser = this._.omit(user.dataValues, ['password']);
