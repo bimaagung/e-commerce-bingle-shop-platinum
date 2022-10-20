@@ -116,7 +116,13 @@ module.exports = {
         postal_code: req.body.postal_code,
         detail: req.body.detail,
         user_id: req.user.id,
+        main_address: req.body.main_address
       };
+      let isMain = address.main_address == true;
+      if (isMain) {
+        console.log(isMain)
+        await req.addressUC.updateMainAddress(address.user_id)
+      }
       let resAddress = await req.addressUC.addAddress(address);
       if (resAddress.isSuccess === false) {
         return res
@@ -180,8 +186,13 @@ module.exports = {
         postal_code: req.body.postal_code,
         detail: req.body.detail,
         user_id: req.user.id,
+        main_address: req.body.main_address
       };
-
+      let isMain = address.main_address == true;
+      if (isMain) {
+        console.log(isMain)
+        await req.addressUC.updateMainAddress(address.user_id)
+      }
       let resAddress = await req.addressUC.updateAddress(id, address);
       if (resAddress.isSuccess === false) {
         return res
