@@ -52,32 +52,7 @@ module.exports = {
     }
   },
 
-  getAddresByUserID: async (req, res, next) => {
-    /*
-      #swagger.tags = ['Address']
-
-      #swagger.responses[200] = {
-        description: "Berhasil mengambil semua alamat berdasarkan id pengguna",
-          content: {
-              "application/json": {
-                  schema:{
-                      $ref: "#/definitions/successGetAllAdressByUserId"
-                  }
-              }
-          }
-      }
-
-      #swagger.responses[401] = {
-        description: "Akun tidak valid",
-          content: {
-              "application/json": {
-                  schema:{
-                      $ref: "#/definitions/unathorized"
-                  }
-              }
-          }
-      }
-    */
+  getAddressByUserID: async (req, res, next) => {
     try {
       let { id } = req.user;
       let address = await req.addressUC.getAddressByUserID(id);
@@ -212,7 +187,9 @@ module.exports = {
         return res
           .status(resAddress.status)
           .json(resData.failed(resAddress.reason));
-      }
+
+      };
+      
       res.status(resAddress.status).json(resData.success());
     } catch (e) {
       next(e);
