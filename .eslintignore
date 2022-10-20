@@ -2,6 +2,6 @@
 /models
 /node_modules
 /docs
-/__tests__
+/test
 swagger.js
 /.github
