@@ -25,7 +25,6 @@ router.put('/api/customer/update/email/',authorized.customer, userController.upd
 
 
 // address
-router.get('/api/customer/address/:id', authorized.customer, addressController.getAddressByID);
 router.get('/api/customer/all/address/', authorized.customer, addressController.getAddressByUserID);
 // TODO UPDATE ADDRESS VALIDATOR ADD
 router.post('/api/customer/address/add', authorized.customer, addressController.addAddress);

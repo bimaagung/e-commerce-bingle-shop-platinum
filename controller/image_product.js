@@ -33,22 +33,6 @@ module.exports = {
       next(e);
     }
   },
-
-  getImageProductByID: async (req, res, next) => {
-    let { id } = req.params;
-    try {
-      let resImage = await req.productImageUC.getImageProductByID(id);
-      if (resImage.isSuccess !== true) {
-        return res
-          .status(resImage.status)
-          .json(resData.failed(resImage.reason));
-      }
-      res.status(resImage.status).json(resData.success(resImage.data));
-    } catch (e) {
-      next(e);
-    }
-  },
-
   addProductImage: async (req, res, next) => {
     /*
     #swagger.tags = ['Product']
@@ -123,49 +107,6 @@ module.exports = {
           .json(resData.failed(resImage.reason));
       }
       res.status(resImage.status).json(resData.success(resImage.data));
-    } catch (e) {
-      next(e);
-    }
-  },
-  updateImageProduct: async (req, res, next) => {
-    /*
-    #swagger.tags = ['Product']
-    #swagger.consumes = ['multipart/form-data']
-    #swagger.requestBody = {
-            required: true,
-            "@content": {
-                "multipart/form-data": {
-                    schema: {
-                        type: "object",
-                        properties: {
-                            product_id: {
-                                type: "string"
-                            },
-                            url: {
-                                type: "string",
-                                format: "binary"
-                            }
-                        },
-                        required: ["product_id", "url"]
-                    }
-                }
-            }
-        }
-
-    */
-    try {
-      let { id } = req.params;
-      let dataImage = {
-        url: req.file.path,
-        product_id: req.body.product_id,
-      };
-      let resImage = await req.productImageUC.updateImageProduct(dataImage, id);
-      if (resImage.isSuccess !== true) {
-        return res
-          .status(resImage.status)
-          .json(resData.failed(resImage.reason));
-      }
-      res.status(200).json(resData.success());
     } catch (e) {
       next(e);
     }
