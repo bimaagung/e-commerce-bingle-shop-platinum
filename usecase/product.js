@@ -118,16 +118,30 @@ class ProductUC {
       reason: "",
       data: null,
     };
-    let existProduct = await this.productRepository.getProductByID(id);
-    if (existProduct === null) {
+    let product = await this.productRepository.getProductByID(id);
+    if (product === null) {
       result.reason = "product not found";
       return result;
     }
-    let deleteProduct = await this.productRepository.deleteProduct(id);
+    let image = await this.productImageRepository.getAllImageByProductID(
+      product.id
+    );
+    await this.deleteAllImageProduct(image);
+
     result.isSuccess = true;
     result.status = 200;
-    result.data = deleteProduct;
     return result;
+  }
+
+  async deleteAllImageProduct(image) {
+    await image.forEach((data) => {
+      if (data.product_id === data.product_id) {
+        this.productImageRepository.deleteImage(data.id);
+        if (data.length === 0) {
+          this.productRepository.deleteProduct(image.product_id);
+        }
+      }
+    });
   }
 }
 
