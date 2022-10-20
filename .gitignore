@@ -4,3 +4,8 @@ node_modules
 coverage
 .vscode
 public/*.jpg
+<<<<<<< HEAD
+logs/*.log
+=======
+logs/*.log
+>>>>>>> db8476a1e1d341ea9106b93c5634a823b9ad10ca

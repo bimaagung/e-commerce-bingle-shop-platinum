@@ -2,7 +2,8 @@ const OrderUseCase = require('../../usecase/order');
 const mockOrderRepo = require('../mock/repository.order.mock') 
 const mockProductRepo = require('../mock/repository.product.mock') 
 const mockOrderDetailRepo = require('../mock/respository.order_detail.mock') 
-require('dotenv').config();
+const mockCategoryDetailRepo = require('../mock/repository.category.mock') 
+
 
 let orderValues, productValues, orderDetailValues = {}
 let orderUC = null
@@ -32,7 +33,11 @@ describe('orders', () => {
       returnAddOrderDetails: true
     }
 
-   orderUC = new OrderUseCase(mockOrderRepo(orderValues),mockOrderDetailRepo(orderDetailValues),mockProductRepo(productValues));
+    categoryValues = {
+      returnGetCategoryByID: true
+    }
+
+   orderUC = new OrderUseCase(mockOrderRepo(orderValues),mockOrderDetailRepo(orderDetailValues),mockProductRepo(productValues), mockCategoryDetailRepo(categoryValues));
   })
 
   describe('getListOrder test', () => {
@@ -75,8 +80,24 @@ describe('orders', () => {
 
     test('should isSuccess is true and data type is object', async () => {
       let res = await orderUC.getOrderById(12);
+      
       expect(res.isSuccess).toBeTruthy();
-      expect(typeof res.data === 'object').toBeTruthy();
+
+      expect(res.data).toHaveProperty('id');
+      expect(res.data).toHaveProperty('status');
+      expect(res.data).toHaveProperty('created_at');
+      expect(res.data).toHaveProperty('updated_at');
+      expect(res.data.user).toHaveProperty('id');
+      expect(res.data.user).toHaveProperty('name');
+      expect(res.data.user).toHaveProperty('telp');
+      expect(res.data.products[0]).toHaveProperty('id')
+      expect(res.data.products[0]).toHaveProperty('name')
+      expect(res.data.products[0]).toHaveProperty('category')
+      expect(res.data.products[0]).toHaveProperty('price')
+      expect(res.data.products[0]).toHaveProperty('qty')
+      expect(res.data.products[0]).toHaveProperty('total_price')
+      expect(res.data).toHaveProperty('total_price');
+      expect(res.data).toHaveProperty('qty');
     });
 
     test(`should isSucess is false and reason "order is not found"`, async () => {
@@ -141,8 +162,22 @@ describe('orders', () => {
       let res = await orderUC.getPendingOrderByUserId(1);
 
       expect(res.isSuccess).toBeTruthy();
-      expect(typeof res.data).toEqual('object')
-      expect(Array.isArray(res.data.products)).toBeTruthy();
+
+      expect(res.data).toHaveProperty('id');
+      expect(res.data).toHaveProperty('status');
+      expect(res.data).toHaveProperty('created_at');
+      expect(res.data).toHaveProperty('updated_at');
+      expect(res.data.user).toHaveProperty('id');
+      expect(res.data.user).toHaveProperty('name');
+      expect(res.data.user).toHaveProperty('telp');
+      expect(res.data.products[0]).toHaveProperty('id')
+      expect(res.data.products[0]).toHaveProperty('name')
+      expect(res.data.products[0]).toHaveProperty('category')
+      expect(res.data.products[0]).toHaveProperty('price')
+      expect(res.data.products[0]).toHaveProperty('qty')
+      expect(res.data.products[0]).toHaveProperty('total_price')
+      expect(res.data).toHaveProperty('total_price');
+      expect(res.data).toHaveProperty('qty');
           
     });
 
@@ -282,7 +317,7 @@ describe('orders', () => {
         let res = await orderUC.updateStatusOrder(2,'ORDER_PROCESSED');
 
         expect(res.isSuccess).toBeFalsy();
-        expect(res.reason).toEqual('orders without pending status not found');
+        expect(res.reason).toEqual('order not found');
       });
 
       test(`should isSuccess is true and reason is "request status outside the specified options"`, async () => {
@@ -343,15 +378,17 @@ describe('orders', () => {
           ]
         );
 
-        expect(Array.isArray(res)).toBeTruthy();
-        expect(res.length).toBeGreaterThan(0);
+        expect(typeof res === 'object').toBeTruthy();
+        expect(Array.isArray(res.resultOrderDetail)).toBeTruthy();
+        expect(res.resultOrderDetail.length).toBeGreaterThan(0);
       });
        test('when product not found should return empty array product id with length = 0 ', async () => {
         productValues.returnGetProductByID = null
         orderUC = new OrderUseCase(
           mockOrderRepo(orderValues),
           mockOrderDetailRepo(orderDetailValues), 
-          mockProductRepo(productValues)
+          mockProductRepo(productValues),
+          mockCategoryDetailRepo(categoryValues)
         );
         let res = await orderUC.getProductByOrderDetail([
              {
@@ -362,8 +399,8 @@ describe('orders', () => {
           ]
         );
 
-        expect(Array.isArray(res)).toBeTruthy();
-        expect(res).toEqual([]);
+        expect(typeof res === 'object').toBeTruthy();
+        expect(res.resultOrderDetail).toEqual([]);
       });
   });
 

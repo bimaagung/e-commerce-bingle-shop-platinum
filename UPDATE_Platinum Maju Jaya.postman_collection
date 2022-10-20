@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "14ceacc5-d804-4834-ae34-8dbf4f352f18",
+		"_postman_id": "027d9be6-ebae-4b6c-b220-310365649eb1",
 		"name": "Platinum Maju Jaya",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "21868515"
+		"_exporter_id": "20841766"
 	},
 	"item": [
 		{
@@ -27,8 +27,11 @@
 									"    pm.expect(jsonData).to.ownProperty('message');\r",
 									"    pm.expect(jsonData.message).to.equals('success');\r",
 									"\r",
+									"    const passwordLogin = pm.environment.get('NewPassword')\r",
+									"\r",
 									"    console.log(jsonData.data.username)\r",
 									"    pm.environment.set('usernameLogin', jsonData.data.user.username)\r",
+									"    pm.environment.set('passwordLogin', passwordLogin)\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -420,6 +423,519 @@
 								"api",
 								"user",
 								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get User By Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response body data should status true and message success\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(jsonData).to.ownProperty('status');\r",
+									"    pm.expect(jsonData.status).to.equals('ok');\r",
+									"    pm.expect(jsonData).to.ownProperty('message');\r",
+									"    pm.expect(jsonData.message).to.equals('success');\r",
+									"    pm.expect(jsonData).to.ownProperty('data');\r",
+									"    pm.expect(jsonData.data).to.be.an('object');\r",
+									"    pm.expect(jsonData.data).to.ownProperty('name');\r",
+									"    pm.expect(jsonData.data).to.ownProperty('username');\r",
+									"    pm.expect(jsonData.data).to.ownProperty('image');\r",
+									"    pm.expect(jsonData.data).to.ownProperty('telp');\r",
+									"    pm.expect(jsonData.data).to.ownProperty('email');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/customer/profil/user/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"customer",
+								"profil",
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response body data should status true and message success\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(jsonData).to.ownProperty('status');\r",
+									"    pm.expect(jsonData.status).to.equals('ok');\r",
+									"    pm.expect(jsonData).to.ownProperty('message');\r",
+									"    pm.expect(jsonData.message).to.equals('success');\r",
+									"\r",
+									"    // update password\r",
+									"    pm.environment.set('passwordLogin', '123456789')\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"123456789\",\r\n    \"retype_password\": \"123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/customer/update-password/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"customer",
+								"update-password",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Password with Incorrect Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response body data should status failed and message type data is string\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(jsonData).to.ownProperty('status');\r",
+									"    pm.expect(jsonData.status).to.equals('failed');\r",
+									"    pm.expect(jsonData).to.ownProperty('message');\r",
+									"    pm.expect(jsonData.message).to.an('string');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": null,\r\n    \"retype_password\": \"123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/customer/update-password/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"customer",
+								"update-password",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Password with Password and Retype Password Not Match",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response body data should status failed and message type data is string\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(jsonData).to.ownProperty('status');\r",
+									"    pm.expect(jsonData.status).to.equals('failed');\r",
+									"    pm.expect(jsonData).to.ownProperty('message');\r",
+									"    pm.expect(jsonData.message).to.an('string');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"1234567\",\r\n    \"retype_password\": \"123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/customer/update-password/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"customer",
+								"update-password",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Image Avatar",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response body data should status true and message success\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(jsonData).to.ownProperty('status');\r",
+									"    pm.expect(jsonData.status).to.equals('ok');\r",
+									"    pm.expect(jsonData).to.ownProperty('message');\r",
+									"    pm.expect(jsonData.message).to.equals('success');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/userb/OneDrive/Gambar/flower.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/customer/update-image/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"customer",
+								"update-image",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Image Avatar with Invalid Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response body data should status failed and message type data is string\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(jsonData).to.ownProperty('status');\r",
+									"    pm.expect(jsonData.status).to.equals('failed');\r",
+									"    pm.expect(jsonData).to.ownProperty('message');\r",
+									"    pm.expect(jsonData.message).to.an('string');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/customer/update-image/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"customer",
+								"update-image",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profil User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response body data should status true and message success\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(jsonData).to.ownProperty('status');\r",
+									"    pm.expect(jsonData.status).to.equals('ok');\r",
+									"    pm.expect(jsonData).to.ownProperty('message');\r",
+									"    pm.expect(jsonData.message).to.equals('success');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"username\": \"{{$randomUserName}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"telp\": \"0845362827\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/customer/update/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"customer",
+								"update",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profil User with Invalid Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response body data should status failed and message type data is string\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(jsonData).to.ownProperty('status');\r",
+									"    pm.expect(jsonData.status).to.equals('failed');\r",
+									"    pm.expect(jsonData).to.ownProperty('message');\r",
+									"    pm.expect(jsonData.message).to.an('string');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": null,\r\n    \"username\": \"{{$randomUserName}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"telp\": \"0845362827\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/customer/update/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"customer",
+								"update",
+								""
 							]
 						}
 					},
@@ -1850,7 +2366,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"{{$randomProductName}}\",\r\n    \"description\": \"this is product\",\r\n    \"category_id\": 23,\r\n    \"price\": 100000,\r\n    \"stock\": 20\r\n}",
+							"raw": "{\r\n    \"name\": \"{{$randomProductName}}\",\r\n    \"description\": \"this is product\",\r\n    \"category_id\": 1,\r\n    \"price\": 100000,\r\n    \"stock\": 20\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2997,6 +3513,63 @@
 									"key": "status",
 									"value": "pending,completed"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Order By Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response body data should contains true\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(jsonData).to.ownProperty('status');\r",
+									"    pm.expect(jsonData.status).to.equals('ok');\r",
+									"    pm.expect(jsonData).to.ownProperty('message');\r",
+									"    pm.expect(jsonData.message).to.equals('success');\r",
+									"    pm.expect(jsonData).to.ownProperty('data');\r",
+									"    pm.expect(jsonData.data).to.be.an('object');\r",
+									"    \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenAdmin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/admin/order/{{orderId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"order",
+								"{{orderId}}"
 							]
 						}
 					},
