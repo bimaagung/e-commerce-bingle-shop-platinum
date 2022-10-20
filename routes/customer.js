@@ -20,6 +20,9 @@ router.put('/api/customer/update-image/', authorized.customer, handleUpload.uplo
 router.put('/api/customer/update/', authorized.customer, validation.updateUser, userController.updateUser);
 // TODO update validator reset password
 router.put('/api/customer/reset-password/', userController.resetPassword);
+// TODO ADD JOI RESET EMAIL
+router.put('/api/customer/update/email/',authorized.customer, userController.updateEmail);
+
 
 // address
 router.get('/api/customer/address/:id', authorized.customer, addressController.getAddressByID);

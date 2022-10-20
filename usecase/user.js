@@ -115,12 +115,37 @@ class UserUC {
     }
     userData.password = userData.newPassword;
     userData.password = this.bcrypt.hashSync(userData.password, 10);
-    await this.UserRepository.updateUser(userData, user.id);
+    await this.UserRepository.updateUser(userData.email, id);
     await this.OtpRepository.deleteAllOtp(email);
 
     result.isSuccess = true;
     result.statusCode = 200;
     return result;
+  }
+
+  async updateEmail (userData , id ){
+    let result = {
+      isSuccess : false,
+      reason : '',
+      status : 400,
+    }
+    let user = await this.UserRepository.getUserByID(id)
+    if(user === null){
+      result.reason = "user not found"
+      result.status = 404
+      return result
+    }
+    let otp = await this.OtpRepository.getOTP(userData.newEmail , userData.otp_code,"UPDATEEMAIL" )
+    if(otp === null){
+      result.reason = "invalid otp code"
+      return result
+    }
+    await this.UserRepository.updateUser(userData, id)
+    await this.OtpRepository.deleteAllOtp(userData.newEmail)
+    
+    result.isSuccess =true
+    result.status = 200
+    return result
   }
 
   async updateUserImage(userData, id) {

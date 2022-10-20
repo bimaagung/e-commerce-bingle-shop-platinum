@@ -99,7 +99,6 @@ module.exports = {
       let user = {
         name: req.body.name,
         username: req.body.username,
-        email: req.body.email,
         telp: req.body.telp,
       };
 
@@ -272,5 +271,23 @@ module.exports = {
     } catch (e) {
      next (e) 
     }
-  }
+  },
+  updateEmail: async (req, res, next) => {
+    let id = req.user.id
+    let userData = {
+      newEmail: req.body.email,
+      otp_code: req.body.otp_code
+    }
+    try {
+
+      let resUpdate = await req.userUC.updateEmail(userData, id)
+      if (resUpdate.isSuccess !== true) {
+        return res
+          .status(resUpdate.status).json(resData.failed(resUpdate.reason))
+      }
+      res.status(resUpdate.status).json(resData.success())
+    } catch (e) {
+      next(e)
+    }
+  },
 };
