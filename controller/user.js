@@ -1,4 +1,4 @@
-const resData = require('../helper/response');
+const resData = require("../helper/response");
 
 module.exports = {
   getOneUser: async (req, res, next) => {
@@ -232,13 +232,14 @@ module.exports = {
 
     */
     try {
-      let { id } = req.user;
-      let user = {
-        password: req.body.password,
-        confirmPassword: req.body.confirmPassword,
+      let { id } = req.user
+      let dataPassword = {
+        oldPassword: req.body.oldPassword,
+        newPassword: req.body.newPassword,
+        confirmNewPassword: req.body.confirmNewPassword,
       };
 
-      let updatePassword = await req.userUC.updatePassword(id, user);
+      let updatePassword = await req.userUC.updatePassword(dataPassword, id);
 
       if (updatePassword.isSuccess === false) {
         return res

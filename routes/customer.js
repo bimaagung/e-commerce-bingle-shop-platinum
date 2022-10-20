@@ -13,7 +13,8 @@ const handleUpload = require('../libs/handle_upload');
 
 // user
 router.get('/api/customer/profil/user/', authorized.customer, userController.getOneUser);
-router.patch('/api/customer/update-password/', authorized.customer, validation.updatePassword, userController.updatePassword);
+// TODO update validator update password
+router.patch('/api/customer/update-password/', authorized.customer, userController.updatePassword);
 router.put('/api/customer/update-image/', authorized.customer, handleUpload.upload.single('image'), userController.updateAvatar);
 router.put('/api/customer/update/', authorized.customer, validation.updateUser, userController.updateUser);
 
