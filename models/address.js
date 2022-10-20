@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     postal_code: DataTypes.STRING,
     detail: DataTypes.STRING,
     user_id : DataTypes.INTEGER,
-    main_address : DataTypes.BOOLEAN
+    main_address: DataTypes.BOOLEAN 
   }, {
     sequelize,
     modelName: 'address',

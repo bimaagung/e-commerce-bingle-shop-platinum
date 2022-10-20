@@ -26,6 +26,9 @@ module.exports = {
       stock: {
         type: Sequelize.INTEGER
       },  
+      cover_imageID: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

@@ -176,10 +176,46 @@
 					"response": []
 				},
 				{
+					"name": "get image product by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/public/image/product/detail/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"public",
+								"image",
+								"product",
+								"detail",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "delete image product",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwidXNlcm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AbWFpbC5jb20iLCJpc19hZG1pbiI6dHJ1ZSwiaWF0IjoxNjY2MTkyNjIwLCJleHAiOjE2NjYyMTQyMjB9.LEk0oQhPfKR3zq-y-Yaub0CU6GdoVWytLSa9042bHwI",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "formdata",
 							"formdata": [
@@ -218,7 +254,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": null
+									"value": "10"
 								}
 							]
 						}
@@ -268,6 +304,45 @@
 								{
 									"key": "id",
 									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change cover image",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwidXNlcm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AbWFpbC5jb20iLCJpc19hZG1pbiI6dHJ1ZSwiaWF0IjoxNjY2MjI3MzM3LCJleHAiOjE2NjYyNDg5Mzd9._4DuctEAkhXZ8QaQUnrzlFilsndK9fG76bIt77xccto",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/admin/update-cover/product/?image_id=50&product_id=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"update-cover",
+								"product",
+								""
+							],
+							"query": [
+								{
+									"key": "image_id",
+									"value": "50"
+								},
+								{
+									"key": "product_id",
+									"value": "2"
 								}
 							]
 						}
@@ -806,7 +881,49 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update main address",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6ImN1c3RvbWVyIiwidXNlcm5hbWUiOiJjdXN0b21lciIsImVtYWlsIjoiY3VzdG9tZXJuQG1haWwuY29tIiwiaXNfYWRtaW4iOmZhbHNlLCJpYXQiOjE2NjYxODAyNjYsImV4cCI6MTY2NjIwMTg2Nn0.sweNO6vaSFSXTG80gwvtO6xranknG7kHxODLuvP9pW8",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/customer/address/update-main-address/:address_id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"customer",
+								"address",
+								"update-main-address",
+								":address_id"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "address_id",
+									"value": "2"
 								}
 							]
 						}
@@ -925,6 +1042,86 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "update password",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6ImN1c3RvbWVyIiwidXNlcm5hbWUiOiJjdXN0b21lciIsImVtYWlsIjoiY3VzdG9tZXJuQG1haWwuY29tIiwiaXNfYWRtaW4iOmZhbHNlLCJpYXQiOjE2NjYyMzMyMTgsImV4cCI6MTY2NjI1NDgxOH0.iibV08iSi8GAqL2WYtQ4zb68QTuvew3RpW07XL6iXYU",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"oldPassword\" : \"123456\",\r\n    \"newPassword\" : \"123456\",\r\n    \"confirmNewPassword\" : \"123456\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/customer/update-password/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"customer",
+								"update-password",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset password",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6ImN1c3RvbWVyIiwidXNlcm5hbWUiOiJjdXN0b21lciIsImVtYWlsIjoiY3VzdG9tZXJuQG1haWwuY29tIiwiaXNfYWRtaW4iOmZhbHNlLCJpYXQiOjE2NjYyMzMyMTgsImV4cCI6MTY2NjI1NDgxOH0.iibV08iSi8GAqL2WYtQ4zb68QTuvew3RpW07XL6iXYU",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"oldPassword\" : \"123456\",\r\n    \"newPassword\" : \"123456\",\r\n    \"otp_code\" : \"123456\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/customer/reset-password/?email",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"customer",
+								"reset-password",
+								""
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -968,22 +1165,22 @@
 					"formdata": [
 						{
 							"key": "name",
-							"value": "Bimasetya",
+							"value": "kian",
 							"type": "text"
 						},
 						{
 							"key": "username",
-							"value": "jajang2922",
+							"value": "kian28",
 							"type": "text"
 						},
 						{
 							"key": "image",
 							"type": "file",
-							"src": "/C:/Users/Irvan/Desktop/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
+							"src": "/C:/Users/Irvan/Desktop/test.jpg"
 						},
 						{
 							"key": "telp",
-							"value": "08231555",
+							"value": "0823155511",
 							"type": "text"
 						},
 						{
@@ -998,7 +1195,7 @@
 						},
 						{
 							"key": "email",
-							"value": "jajang@gmail.com",
+							"value": "kian@gmail.com",
 							"type": "text"
 						}
 					]

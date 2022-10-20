@@ -116,7 +116,11 @@ module.exports = {
         postal_code: req.body.postal_code,
         detail: req.body.detail,
         user_id: req.user.id,
+<<<<<<< HEAD
+        main_address: true,
+=======
         main_address: req.body.main_address
+>>>>>>> dev
       };
       let isMain = address.main_address == true;
       if (isMain) {
@@ -188,12 +192,8 @@ module.exports = {
         user_id: req.user.id,
         main_address: req.body.main_address
       };
-      let isMain = address.main_address == true;
-      if (isMain) {
-        console.log(isMain)
-        await req.addressUC.updateMainAddress(address.user_id)
-      }
-      let resAddress = await req.addressUC.updateAddress(id, address);
+
+      let resAddress = await req.addressUC.updateAddress(address, id);
       if (resAddress.isSuccess === false) {
         return res
           .status(resAddress.status)
@@ -255,6 +255,24 @@ module.exports = {
       res.status(resAddress.status).json(resData.success());
     } catch (e) {
       next(e);
+    }
+  },
+  changeMainAddress: async (req, res, next) => {
+    let address_id = req.params.address_id 
+    let user_id = req.user.id
+     
+    try {
+
+      let res_update = await req.addressUC.changeMainAddress(address_id, user_id )
+      if (res_update.isSuccess !== true) {
+        return res
+          .status(res_update.status)
+          .json(resData.failed(res_update.reason))
+      }
+      res.status(res_update.status).json(resData.success())
+
+    } catch (e) {
+      next(e)
     }
   },
 };

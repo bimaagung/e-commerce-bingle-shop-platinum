@@ -1,16 +1,18 @@
 require('dotenv').config();
 
-const useAPM = process.env.USE_APM || false;
-const apm = require('elastic-apm-node').start({
-  serviceName: process.env.APP_NAME,
-  environment: 'development',
-  active: useAPM,
-});
+// const useAPM = process.env.USE_APM || false;
+// const apm = require('elastic-apm-node').start({
+//   serviceName: process.env.APP_NAME,
+//   environment: 'development',
+//   active: useAPM,
+// });
 
 const express = require('express');
 
 const app = express();
 const cors = require('cors');
+
+
 const swaggerUi = require('swagger-ui-express'); // import swagger
 
 let logger = require('morgan');
@@ -75,6 +77,8 @@ const authUC = new AuthUseCase(
 const productImageUC = new ProductImageUseCase(
   new ProductImageRepository(),
   new ProductRepository(),
+  cloudinary,
+  _,
 );
 const orderUC = new OrderUseCase(
   new OrderRepository(),
@@ -83,9 +87,10 @@ const orderUC = new OrderUseCase(
   new CategoryRepository(),
 );
 
-const ACCESS_LOG = process.env.ACCESS_LOG || './logs/access.log';
-const ERROR_LOG = process.env.ERROR_LOG || './logs/errors.log';
+// const ACCESS_LOG = process.env.ACCESS_LOG || './logs/access.log';
+// const ERROR_LOG = process.env.ERROR_LOG || './logs/errors.log';
 
+app.set('view engine', 'ejs')
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -93,17 +98,17 @@ app.use('/public', express.static('public'));
 
 // Logger
 
-logger.token('date', (req, res, tz) => moment().tz(tz).format());
-logger.format('custom_format', ':remote-addr - :remote-user [:date[Asia/Jakarta]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"');
+// logger.token('date', (req, res, tz) => moment().tz(tz).format());
+// logger.format('custom_format', ':remote-addr - :remote-user [:date[Asia/Jakarta]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"');
 
-app.use(logger('custom_format', {
-  stream: fs.createWriteStream(ACCESS_LOG, { flags: 'a' }),
-}));
+// app.use(logger('custom_format', {
+//   stream: fs.createWriteStream(ACCESS_LOG, { flags: 'a' }),
+// }));
 
-app.use(logger('custom_format', {
-  skip(req, res) { return res.statusCode < 400; },
-  stream: fs.createWriteStream(ERROR_LOG, { flags: 'a' }),
-}));
+// app.use(logger('custom_format', {
+//   skip(req, res) { return res.statusCode < 400; },
+//   stream: fs.createWriteStream(ERROR_LOG, { flags: 'a' }),
+// }));
 
 app.use((req, res, next) => {
   req.categoryUC = categoryUC;
