@@ -62,7 +62,7 @@ const customerRouter = require('./routes/customer');
 const publicRouter = require('./routes/public');
 const authRouter = require('./routes/auth');
 const adminRouter = require('./routes/admin');
-const otpRouter = require("./routes/otp_router")
+const otpRouter = require("./routes/otp")
 
 
 const addressUC = new AddressUseCase(new AddressRepository(), new UserRepository());
@@ -101,8 +101,8 @@ const otpUC = new OtpUseCase(
   new EmailRepository()
   );
 
-const ACCESS_LOG = process.env.ACCESS_LOG || './logs/access.log';
-const ERROR_LOG = process.env.ERROR_LOG || './logs/errors.log';
+// const ACCESS_LOG = process.env.ACCESS_LOG || './logs/access.log';
+// const ERROR_LOG = process.env.ERROR_LOG || './logs/errors.log';
 
 
 app.set('view engine', 'ejs')

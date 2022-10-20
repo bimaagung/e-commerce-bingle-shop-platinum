@@ -20,7 +20,7 @@ class OtpRepository {
         let otp_obj = {
             email: email,
             otp_type: otp_type,
-            otp_code: func.generateOTPCode(6)
+            otp_code: func.generateRandomNumber(6)
         }
         let minutesToAdd = 2
         let currentDate = new Date()

@@ -93,7 +93,7 @@ class AuthUC {
 
       const userData = {
         name: data.name,
-        username: data.given_name+this.func.generateRandomNumberic(3),
+        username: data.given_name+this.func.generateRandomNumber(3),
         image: defaultImage.DEFAULT_AVATAR,
         email: data.email,
         is_admin: false

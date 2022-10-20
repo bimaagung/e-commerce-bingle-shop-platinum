@@ -1,4 +1,4 @@
-const email_message = require('../internal/constants/email_message')
+const email_message = require('../internal/constant/email_message')
 class Otp {
     constructor(otpRepository, emailRepository) {
         this.otpRepository = otpRepository
