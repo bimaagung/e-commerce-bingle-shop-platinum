@@ -50,13 +50,20 @@ const AuthUseCase = require('./usecase/auth');
 const ProductImageRepository = require('./repository/product_image');
 const ProductImageUseCase = require('./usecase/product_image');
 
+const EmailRepository = require("./repository/email");
+const OtpRepository = require("./repository/otp");
+const OtpUseCase =require("./usecase/otp");
+
 const ChatRepository = require('./repository/chat');
 const ChatUseCase = require('./usecase/chat');
+
 
 const customerRouter = require('./routes/customer');
 const publicRouter = require('./routes/public');
 const authRouter = require('./routes/auth');
 const adminRouter = require('./routes/admin');
+const otpRouter = require("./routes/otp_router")
+
 
 const addressUC = new AddressUseCase(new AddressRepository(), new UserRepository());
 const categoryUC = new CategoryUseCase(new CategoryRepository());
@@ -88,8 +95,15 @@ const orderUC = new OrderUseCase(
   new CategoryRepository(),
 );
 
-// const ACCESS_LOG = process.env.ACCESS_LOG || './logs/access.log';
-// const ERROR_LOG = process.env.ERROR_LOG || './logs/errors.log';
+
+const otpUC = new OtpUseCase(
+  new OtpRepository(),
+  new EmailRepository()
+  );
+
+const ACCESS_LOG = process.env.ACCESS_LOG || './logs/access.log';
+const ERROR_LOG = process.env.ERROR_LOG || './logs/errors.log';
+
 
 app.set('view engine', 'ejs')
 app.use(cors());
@@ -119,7 +133,9 @@ app.use((req, res, next) => {
   req.productImageUC = productImageUC;
   req.orderUC = orderUC;
   req.authUC = authUC;
+  req.otpUC = otpUC
   req.chatUC = chatUC;
+
   next();
 });
 
@@ -132,6 +148,8 @@ app.use('/', authRouter);
 app.use('/', adminRouter);
 app.use('/', customerRouter);
 app.use('/', publicRouter);
+app.use('/', otpRouter)
+
 
 // handle server error
 app.use(serverError);
