@@ -70,6 +70,19 @@ class ChatUC {
     result.data = listChat;
     return result;
   }
+
+  async addChat(chatData) {
+    const chat = await this.chatRepository.addChat(chatData);
+
+    if (chat === null) {
+      return null;
+    }
+
+    return {
+      ...chat.get(),
+      is_sender: true,
+    };
+  }
 }
 
 module.exports = ChatUC;
