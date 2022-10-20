@@ -65,7 +65,6 @@
             }
           },
           "400": {
-            "description": "Bad Request",
             "content": {
               "application/json": {
                 "examples": {
@@ -95,7 +94,8 @@
                   ]
                 }
               }
-            }
+            },
+            "description": "Bad Request"
           }
         },
         "requestBody": {
@@ -565,13 +565,6 @@
         "description": "",
         "parameters": [
           {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "name": "email",
             "in": "query",
             "schema": {
@@ -579,16 +572,7 @@
             }
           }
         ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized"
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "responses": {},
         "requestBody": {
           "content": {
             "application/json": {
@@ -598,7 +582,7 @@
                   "newPassword": {
                     "example": "any"
                   },
-                  "confrimNewPassword": {
+                  "confirmNewPassword": {
                     "example": "any"
                   },
                   "otp_code": {
@@ -722,9 +706,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Bad Request"
           },
           "401": {
             "description": "Akun tidak valid",
@@ -1181,6 +1162,59 @@
             "bearerAuth": []
           }
         ]
+      }
+    },
+    "/api/otp/verify": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "otp_code",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "otp_type",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/api/otp/request": {
+      "post": {
+        "description": "",
+        "parameters": [],
+        "responses": {},
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "otp_type": {
+                    "example": "any"
+                  },
+                  "email": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   },

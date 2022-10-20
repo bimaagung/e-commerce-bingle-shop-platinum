@@ -80,7 +80,7 @@ const doc = {
 }
 
 const outputFile = './docs/docs.json'
-const endpointsFiles = ['./routes/auth.js', './routes/public.js', './routes/customer.js']
+const endpointsFiles = ['./routes/auth.js', './routes/public.js', './routes/customer.js', './routes/otp.js']
 
 /* NOTE: if you use the express Router, you must pass in the
    'endpointsFiles' only the root file where the route starts,

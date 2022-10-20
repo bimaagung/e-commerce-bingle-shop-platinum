@@ -65,7 +65,6 @@
             }
           },
           "400": {
-            "description": "Bad Request",
             "content": {
               "application/json": {
                 "examples": {
@@ -95,7 +94,8 @@
                   ]
                 }
               }
-            }
+            },
+            "description": "Bad Request"
           }
         },
         "requestBody": {
