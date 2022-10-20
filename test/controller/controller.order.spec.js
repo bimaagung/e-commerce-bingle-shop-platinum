@@ -292,7 +292,7 @@ describe('Test Order', () => {
 
         test(`should status is 404 and reason is "orders without pending status not found"`, async() => {
              mockOrderUC.updateStatusOrder = jest.fn().mockReturnValue(
-                {isSuccess: false, reason:'orders without pending status not found', data: null, statusCode: 404}
+                {isSuccess: false, reason:'order not found', data: null, statusCode: 404}
             );
 
             let req = mockRequest({status: "ORDER_COMPLETED"},{},{id:2},{},{ orderUC: mockOrderUC });
@@ -302,7 +302,7 @@ describe('Test Order', () => {
 
             expect(mockOrderUC.updateStatusOrder).toHaveBeenCalled();
             expect(res.status).toBeCalledWith(404)
-            expect(res.json).toBeCalledWith(resData.failed('orders without pending status not found'));
+            expect(res.json).toBeCalledWith(resData.failed('order not found'));
         });
 
           test(`should status is 400 and reason is "request status outside the specified options"`, async() => {
