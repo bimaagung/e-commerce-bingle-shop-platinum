@@ -14,6 +14,7 @@ module.exports = {
           main_address : true,
           createdAt: new Date(),
           updatedAt: new Date(),
+          main_address: true
         },
       ],
       {},

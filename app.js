@@ -48,6 +48,9 @@ const AuthUseCase = require('./usecase/auth');
 const ProductImageRepository = require('./repository/product_image');
 const ProductImageUseCase = require('./usecase/product_image');
 
+const ChatRepository = require('./repository/chat');
+const ChatUseCase = require('./usecase/chat');
+
 const customerRouter = require('./routes/customer');
 const publicRouter = require('./routes/public');
 const authRouter = require('./routes/auth');
@@ -57,6 +60,7 @@ const addressUC = new AddressUseCase(new AddressRepository(), new UserRepository
 const categoryUC = new CategoryUseCase(new CategoryRepository());
 const productUC = new ProductUseCase(new ProductRepository(), new CategoryRepository());
 const userUC = new UserUseCase(new UserRepository(), bcrypt, cloudinary);
+const chatUC = new ChatUseCase(new ChatRepository(), new UserRepository(), _);
 
 const authUC = new AuthUseCase(
   new AuthRepository(),
@@ -114,6 +118,7 @@ app.use((req, res, next) => {
   req.productImageUC = productImageUC;
   req.orderUC = orderUC;
   req.authUC = authUC;
+  req.chatUC = chatUC;
   next();
 });
 

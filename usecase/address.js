@@ -156,5 +156,52 @@ class AddressUC {
     result.data = deleteAddress;
     return result;
   }
+
+  // async isMainExist(userId) {
+  // let existMainAddress = await this.AddressRepository.getAddressByUserID(userId);
+  // let newArray = new Array();
+  // for(let i = 0; i < existMainAddress.length; i++) {
+  //   if (existMainAddress[i].main_address == true) {
+     
+  //     return existMainAddress[i]
+  //   } 
+  // }
+  // }
+
+  async updateMainAddress(userId) {
+    console.log(userId)
+    // let mainAddress = await this.isMainExist(userId);
+    let existMainAddress = await this.AddressRepository.getAddressByUserID(userId);
+    for(let i = 0; i < existMainAddress.length; i++) {
+      if ( existMainAddress[i].main_address) {
+        let newAddress = {
+          province: existMainAddress[i].province,
+        city: existMainAddress[i].city,
+        postal_code: existMainAddress[i].postal_code,
+        detail: existMainAddress[i].detail,
+        user_id: existMainAddress[i].user_id,
+        main_address: false
+        }
+        await this.updateAddress(existMainAddress[i].id, newAddress)
+      }
+    }
+
+    //  if (mainAddress != null) {
+    //   let newAddress = {
+    //     province: mainAddress.province,
+    //     city: mainAddress.city,
+    //     postal_code: mainAddress.postal_code,
+    //     detail: mainAddress.detail,
+    //     user_id: mainAddress.user_id,
+    //     main_address: false
+    //   }
+    
+    //   console.log(newAddress);
+
+    //   let checkStatus = await this.updateAddress(mainAddress.id, newAddress)
+    //   console.log(checkStatus)
+    //  }
+  }
+
 }
 module.exports = AddressUC;

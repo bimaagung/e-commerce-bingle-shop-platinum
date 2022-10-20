@@ -10,6 +10,7 @@ const mockUserRepo = (
     const repo = {}
     repo.getUserExist = jest.fn().mockReturnValue(
         returnGetUserExist !== true ? returnGetUserExist : {
+            id:1,
             name: 'user',
             username: 'user1',
             image: 'http://localhost:8080/images/user1.jpg',
@@ -20,6 +21,7 @@ const mockUserRepo = (
 
     repo.getUserByID = jest.fn().mockReturnValue(
         returnGetUserByID !== true ? returnGetUserByID : {
+            id: 1,
             name: 'user',
             username: 'user1',
             image: 'http://localhost:8080/images/user1.jpg',
