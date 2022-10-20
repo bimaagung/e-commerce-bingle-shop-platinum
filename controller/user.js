@@ -257,8 +257,8 @@ module.exports = {
     let email = req.query.email
     let user = {
       newPassword: req.body.newPassword,
-      confrimNewPassword: req.body.confrimNewPassword,
-      otp_code: req.body.otp_code
+      confirmNewPassword: req.body.confirmNewPassword,
+      otp_code : req.body.otp_code
     }
     try {
       resReset = await req.userUC.resetPassword(user, email)

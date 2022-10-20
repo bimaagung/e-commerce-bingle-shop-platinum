@@ -19,7 +19,7 @@ router.patch('/api/customer/update-password/', authorized.customer, userControll
 router.put('/api/customer/update-image/', authorized.customer, handleUpload.upload.single('image'), userController.updateAvatar);
 router.put('/api/customer/update/', authorized.customer, validation.updateUser, userController.updateUser);
 // TODO update validator reset password
-router.put('/api/customer/reset-password/', authorized.customer, userController.resetPassword);
+router.put('/api/customer/reset-password/', userController.resetPassword);
 
 // address
 router.get('/api/customer/address/:id', authorized.customer, addressController.getAddressByID);

@@ -1,4 +1,3 @@
-// const googleOauth = require ('../libs/google-auth')
 const resData = require('../helper/response')
 module.exports = {
     loginWithGooglePage: async (req, res, next) => {
@@ -10,7 +9,6 @@ module.exports = {
     },
     loginWithGoogle :async (req, res, next) =>{
         let idToken =req.body.idToken
-        // let data = await googleOauth(idToken)
         try {
             let resUser = await req.authUC.loginGoogle(idToken);
             if (resUser.isSuccess !== true) {

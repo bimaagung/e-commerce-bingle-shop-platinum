@@ -52,6 +52,8 @@ class AuthUC {
     }
     let dataUser = this._.omit(user.dataValues, ['password']);
     let token = this.generateToken(dataUser);
+
+    await this.OtpRepository.deleteAllOtp(userData.email)
     result.isSuccess = true;
     result.status = 200;
     result.data = dataUser;
