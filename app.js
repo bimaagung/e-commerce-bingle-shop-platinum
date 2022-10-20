@@ -1,16 +1,18 @@
 require('dotenv').config();
 
-const useAPM = process.env.USE_APM || false;
-const apm = require('elastic-apm-node').start({
-  serviceName: process.env.APP_NAME,
-  environment: 'development',
-  active: useAPM,
-});
+// const useAPM = process.env.USE_APM || false;
+// const apm = require('elastic-apm-node').start({
+//   serviceName: process.env.APP_NAME,
+//   environment: 'development',
+//   active: useAPM,
+// });
 
 const express = require('express');
 
 const app = express();
 const cors = require('cors');
+
+
 const swaggerUi = require('swagger-ui-express'); // import swagger
 
 let logger = require('morgan');
@@ -20,6 +22,8 @@ const bcrypt = require('bcrypt');
 const _ = require('lodash');
 const cloudinary = require('./libs/handle_upload');
 const generateToken = require('./helper/jwt');
+const googleOauth = require('./libs/google-auth')
+const func = require('./libs/function')
 
 const serverError = require('./middleware/serverError');
 
@@ -50,6 +54,10 @@ const EmailRepository = require("./repository/email");
 const OtpRepository = require("./repository/otp");
 const OtpUseCase =require("./usecase/otp");
 
+const ChatRepository = require('./repository/chat');
+const ChatUseCase = require('./usecase/chat');
+
+
 const customerRouter = require('./routes/customer');
 const publicRouter = require('./routes/public');
 const authRouter = require('./routes/auth');
@@ -61,22 +69,24 @@ const addressUC = new AddressUseCase(new AddressRepository(), new UserRepository
 const categoryUC = new CategoryUseCase(new CategoryRepository());
 const productUC = new ProductUseCase(new ProductRepository(), new CategoryRepository());
 const userUC = new UserUseCase(new UserRepository(), bcrypt, cloudinary);
+const chatUC = new ChatUseCase(new ChatRepository(), new UserRepository(), _);
 
 const authUC = new AuthUseCase(
   new AuthRepository(),
   new UserRepository(),
   bcrypt,
-
   cloudinary,
-
   generateToken,
-
   _,
+  googleOauth,
+  func,
 );
 
 const productImageUC = new ProductImageUseCase(
   new ProductImageRepository(),
   new ProductRepository(),
+  cloudinary,
+  _,
 );
 const orderUC = new OrderUseCase(
   new OrderRepository(),
@@ -84,6 +94,7 @@ const orderUC = new OrderUseCase(
   new ProductRepository(),
   new CategoryRepository(),
 );
+
 
 const otpUC = new OtpUseCase(
   new OtpRepository(),
@@ -93,6 +104,8 @@ const otpUC = new OtpUseCase(
 const ACCESS_LOG = process.env.ACCESS_LOG || './logs/access.log';
 const ERROR_LOG = process.env.ERROR_LOG || './logs/errors.log';
 
+
+app.set('view engine', 'ejs')
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -100,17 +113,17 @@ app.use('/public', express.static('public'));
 
 // Logger
 
-logger.token('date', (req, res, tz) => moment().tz(tz).format());
-logger.format('custom_format', ':remote-addr - :remote-user [:date[Asia/Jakarta]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"');
+// logger.token('date', (req, res, tz) => moment().tz(tz).format());
+// logger.format('custom_format', ':remote-addr - :remote-user [:date[Asia/Jakarta]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"');
 
-app.use(logger('custom_format', {
-  stream: fs.createWriteStream(ACCESS_LOG, { flags: 'a' }),
-}));
+// app.use(logger('custom_format', {
+//   stream: fs.createWriteStream(ACCESS_LOG, { flags: 'a' }),
+// }));
 
-app.use(logger('custom_format', {
-  skip(req, res) { return res.statusCode < 400; },
-  stream: fs.createWriteStream(ERROR_LOG, { flags: 'a' }),
-}));
+// app.use(logger('custom_format', {
+//   skip(req, res) { return res.statusCode < 400; },
+//   stream: fs.createWriteStream(ERROR_LOG, { flags: 'a' }),
+// }));
 
 app.use((req, res, next) => {
   req.categoryUC = categoryUC;
@@ -121,6 +134,8 @@ app.use((req, res, next) => {
   req.orderUC = orderUC;
   req.authUC = authUC;
   req.otpUC = otpUC
+  req.chatUC = chatUC;
+
   next();
 });
 

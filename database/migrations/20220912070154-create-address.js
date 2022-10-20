@@ -23,6 +23,9 @@ module.exports = {
       user_id: {
         type: Sequelize.INTEGER
       },
+      main_address : {
+        type: Sequelize.BOOLEAN
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

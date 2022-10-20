@@ -52,32 +52,7 @@ module.exports = {
     }
   },
 
-  getAddresByUserID: async (req, res, next) => {
-    /*
-      #swagger.tags = ['Address']
-
-      #swagger.responses[200] = {
-        description: "Berhasil mengambil semua alamat berdasarkan id pengguna",
-          content: {
-              "application/json": {
-                  schema:{
-                      $ref: "#/definitions/successGetAllAdressByUserId"
-                  }
-              }
-          }
-      }
-
-      #swagger.responses[401] = {
-        description: "Akun tidak valid",
-          content: {
-              "application/json": {
-                  schema:{
-                      $ref: "#/definitions/unathorized"
-                  }
-              }
-          }
-      }
-    */
+  getAddressByUserID: async (req, res, next) => {
     try {
       let { id } = req.user;
       let address = await req.addressUC.getAddressByUserID(id);
@@ -141,7 +116,13 @@ module.exports = {
         postal_code: req.body.postal_code,
         detail: req.body.detail,
         user_id: req.user.id,
+        main_address: req.body.main_address
       };
+      let isMain = address.main_address == true;
+      if (isMain) {
+        console.log(isMain)
+        await req.addressUC.updateMainAddress(address.user_id)
+      }
       let resAddress = await req.addressUC.addAddress(address);
       if (resAddress.isSuccess === false) {
         return res
@@ -205,14 +186,17 @@ module.exports = {
         postal_code: req.body.postal_code,
         detail: req.body.detail,
         user_id: req.user.id,
+        main_address: req.body.main_address
       };
 
-      let resAddress = await req.addressUC.updateAddress(id, address);
+      let resAddress = await req.addressUC.updateAddress(address, id);
       if (resAddress.isSuccess === false) {
         return res
           .status(resAddress.status)
           .json(resData.failed(resAddress.reason));
-      }
+
+      };
+      
       res.status(resAddress.status).json(resData.success());
     } catch (e) {
       next(e);
@@ -267,6 +251,24 @@ module.exports = {
       res.status(resAddress.status).json(resData.success());
     } catch (e) {
       next(e);
+    }
+  },
+  changeMainAddress: async (req, res, next) => {
+    let address_id = req.params.address_id 
+    let user_id = req.user.id
+     
+    try {
+
+      let res_update = await req.addressUC.changeMainAddress(address_id, user_id )
+      if (res_update.isSuccess !== true) {
+        return res
+          .status(res_update.status)
+          .json(resData.failed(res_update.reason))
+      }
+      res.status(res_update.status).json(resData.success())
+
+    } catch (e) {
+      next(e)
     }
   },
 };

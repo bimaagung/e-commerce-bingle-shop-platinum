@@ -1,5 +1,5 @@
-const resData = require('../helper/response');
-const defaultImage = require('../internal/constant/defaultImage');
+const resData = require("../helper/response");
+const defaultImage = require("../internal/constant/defaultImage");
 
 module.exports = {
   getImageProductByProductID: async (req, res, next) => {
@@ -21,8 +21,23 @@ module.exports = {
     let { product_id } = req.params;
     try {
       let resImage = await req.productImageUC.getImageProductByProductID(
-        product_id,
+        product_id
       );
+      if (resImage.isSuccess !== true) {
+        return res
+          .status(resImage.status)
+          .json(resData.failed(resImage.reason));
+      }
+      res.status(resImage.status).json(resData.success(resImage.data));
+    } catch (e) {
+      next(e);
+    }
+  },
+
+  getImageProductByID: async (req, res, next) => {
+    let { id } = req.params;
+    try {
+      let resImage = await req.productImageUC.getImageProductByID(id);
       if (resImage.isSuccess !== true) {
         return res
           .status(resImage.status)
@@ -96,15 +111,16 @@ module.exports = {
       let dataImage = {
         url: null,
         product_id: req.body.product_id,
+        cover_image: false,
       };
-      let image = null;
       if (req.file !== undefined) {
-        image = (req.file.path);
+        dataImage.url = req.file.path;
       }
-      dataImage.url = image;
       let resImage = await req.productImageUC.createImageProduct(dataImage);
       if (resImage.isSuccess !== true) {
-        return res.status(resImage.status).json(resData.failed(resImage.reason));
+        return res
+          .status(resImage.status)
+          .json(resData.failed(resImage.reason));
       }
       res.status(resImage.status).json(resData.success(resImage.data));
     } catch (e) {
@@ -145,9 +161,29 @@ module.exports = {
       };
       let resImage = await req.productImageUC.updateImageProduct(dataImage, id);
       if (resImage.isSuccess !== true) {
-        return res.status(resImage.status).json(resData.failed(resImage.reason));
+        return res
+          .status(resImage.status)
+          .json(resData.failed(resImage.reason));
       }
       res.status(200).json(resData.success());
+    } catch (e) {
+      next(e);
+    }
+  },
+  changeCoverImage: async (req, res, next) => {
+    let image_id = req.query.image_id;
+    let product_id = req.query.product_id;
+    try {
+      let resUpdate = await req.productImageUC.changeCoverImage(
+        image_id,
+        product_id
+      );
+      if (resUpdate.isSuccess !== true) {
+        return res
+          .status(resUpdate.status)
+          .json(resData.failed(resUpdate.reason));
+      }
+      res.status(resUpdate.status).json(resData.success());
     } catch (e) {
       next(e);
     }
@@ -195,7 +231,9 @@ module.exports = {
 
       let resImage = await req.productImageUC.deleteImageProduct(id);
       if (resImage.isSuccess !== true) {
-        return res.status(resImage.status).json(resData.failed(resImage.reason));
+        return res
+          .status(resImage.status)
+          .json(resData.failed(resImage.reason));
       }
       res.status(resImage.status).json(resData.success());
     } catch (e) {
