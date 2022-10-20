@@ -8,7 +8,6 @@ const apm = require('elastic-apm-node').start({
 });
 
 const express = require('express');
-
 const app = express();
 const socketIO = require('socket.io');
 const http = require('http');
@@ -143,4 +142,4 @@ io.on('connection', (socket) => {
     })
 })
 
-module.exports = app;
+module.exports = httpServer;
