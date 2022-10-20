@@ -1,8 +1,8 @@
-const email_message = require('../internal/constant/email_message')
 class Otp {
-    constructor(otpRepository, emailRepository) {
+    constructor(otpRepository, emailRepository, email_message) {
         this.otpRepository = otpRepository
         this.emailRepository = emailRepository
+        this.email_message = email_message
     }
     async generateOTP(email, otp_type) {
         let result = {
@@ -17,7 +17,7 @@ class Otp {
             return result
         }
 
-        let content = email_message[otp_type.toUpperCase()]
+        let content = this.email_message[otp_type.toUpperCase()]
         if (typeof content === undefined) {
            
             return result

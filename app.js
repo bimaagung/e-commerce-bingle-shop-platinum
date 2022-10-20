@@ -24,6 +24,7 @@ const generateToken = require("./helper/jwt");
 const googleOauth = require("./libs/google-auth");
 const func = require("./libs/function");
 const defaultImage = require("./internal/constant/defaultImage");
+const email_message = require("./internal/constant/defaultImage");
 
 const serverError = require("./middleware/serverError");
 
@@ -113,7 +114,11 @@ const orderUC = new OrderUseCase(
   new CategoryRepository()
 );
 
-const otpUC = new OtpUseCase(new OtpRepository(), new EmailRepository());
+const otpUC = new OtpUseCase(
+  new OtpRepository(),
+  new EmailRepository(),
+  email_message
+);
 
 // const ACCESS_LOG = process.env.ACCESS_LOG || './logs/access.log';
 // const ERROR_LOG = process.env.ERROR_LOG || './logs/errors.log';
