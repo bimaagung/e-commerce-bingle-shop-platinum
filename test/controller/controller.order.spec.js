@@ -1,5 +1,5 @@
 const orderController = require('../../controller/order');
-const resData = require('../../helper/response')
+const resData = require('../../helper/response');
 
 let mockOrderUC = {
     getPendingOrderByUserId: jest.fn().mockReturnValue(null),
@@ -7,6 +7,7 @@ let mockOrderUC = {
     getPendingOrderByUserId: jest.fn().mockReturnValue(null),
     updateStatusOrder: jest.fn().mockReturnValue(null),
     updateOrderSubmitted: jest.fn().mockReturnValue(null),
+    getOrderById: jest.fn().mockReturnValue(null),
 }
 
 const mockRequest = (body={}, query={}, params={}, user={}, useCases={}) => {
@@ -55,13 +56,23 @@ describe('Test Order', () => {
                     createdAt: "12-09-2022 23:30:00",
                     updatedAt: "12-09-2022 23:30:00",
                     ProductImage: [
-                    {
-                        id: 1,
-                        url: null,
-                        product_id: 10,
-                        createdAt: "12-09-2022 23:30:00",
-                        updatedAt: "12-09-2022 23:30:00",
-                    },
+                        {
+                            id: 1,
+                            name: "Asus ROG Zephyrush M16",
+                            description: "Laptop gaming dari asus",
+                            category_id: 1,
+                            sold: 4,
+                            price: 30000000,
+                            stock: 16,
+                            createdAt: "2022-10-09T08:37:32.315Z",
+                            updatedAt: "2022-10-12T11:22:13.280Z",
+                            ProductImages: [
+                                {
+                                    "id": 1,
+                                    "url": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815144/default%20image/default_product_w8fe1a.jpg"
+                                }
+                            ]
+                        },
                     ],
                 },
             ],
@@ -119,6 +130,12 @@ describe('Test Order', () => {
                 status: 'PENDING',
                 created_at: "2022-10-03T10:14:57.133Z",
                 updated_at: "2022-10-03T10:14:57.133Z",
+                user: {
+                    id: '1',
+                    name: 'Leslie Hayes',
+                    username: 'Bessie_Fadel',
+                    telp: '08487438',
+                },
                 products: [
                     {
                         "id": 106,
@@ -254,66 +271,6 @@ describe('Test Order', () => {
         });
     })
 
-    describe('getPendingOrderByUserId test', () => {
-
-        const order = [
-            {
-                id: "Ti9jtWs0FHhJMAmS",
-                user_id: 1,
-                status: "PROCESSED",
-                completed_date: null,
-                createdAt: "12-09-2022 23:30:00",
-                updatedAt: "12-09-2022 23:30:00",
-            }
-        ]
-
-        test('should status is 200 and data is true', async() => {
-
-            mockOrderUC.getPendingOrderByUserId = jest.fn().mockReturnValue(
-                {isSuccess: true, reason:null, data: order}
-            );
-
-            let req = mockRequest({},{},{},{id:1},{ orderUC: mockOrderUC });
-            let res = mockResponse();
-
-            await orderController.getPendingOrderByUserId(req, res, next);
-
-            expect(mockOrderUC.getPendingOrderByUserId).toHaveBeenCalled();
-            expect(res.status).toBeCalledWith(200)
-            expect(res.json).toBeCalledWith(resData.success(order));
-
-        });
-
-        test(`should status is 404 and reason is "order not found"`, async() => {
-             mockOrderUC.getPendingOrderByUserId = jest.fn().mockReturnValue(
-                {isSuccess: false, reason:'order not found', data: order}
-            );
-
-            let req = mockRequest({},{},{},{id:2},{ orderUC: mockOrderUC });
-            let res = mockResponse();
-
-            await orderController.getPendingOrderByUserId(req, res, next);
-
-            expect(mockOrderUC.getPendingOrderByUserId).toHaveBeenCalled();
-            expect(res.status).toBeCalledWith(404)
-            expect(res.json).toBeCalledWith(resData.failed('order not found'));
-        });
-
-         test("should status is 500 and message is 'internal server error'", async () => {
-            mockOrderUC.getPendingOrderByUserId = jest.fn().mockImplementation(() => {
-                throw new Error();
-            });
-
-            let req = mockRequest({},{},{},{id:1},{ orderUC: mockOrderUC });
-            let res = mockResponse();
-            let serverError = next();
-
-            await orderController.getPendingOrderByUserId(req, res, next);
-            expect(serverError().status).toEqual(500);
-            expect(serverError().json.message).toEqual('internal server error');
-        });
-    })
-
     describe('changeStatusOrder test', () => {
 
         test('should status is 200 and data is true', async() => {
@@ -335,7 +292,7 @@ describe('Test Order', () => {
 
         test(`should status is 404 and reason is "orders without pending status not found"`, async() => {
              mockOrderUC.updateStatusOrder = jest.fn().mockReturnValue(
-                {isSuccess: false, reason:'orders without pending status not found', data: null, statusCode: 404}
+                {isSuccess: false, reason:'order not found', data: null, statusCode: 404}
             );
 
             let req = mockRequest({status: "ORDER_COMPLETED"},{},{id:2},{},{ orderUC: mockOrderUC });
@@ -345,7 +302,7 @@ describe('Test Order', () => {
 
             expect(mockOrderUC.updateStatusOrder).toHaveBeenCalled();
             expect(res.status).toBeCalledWith(404)
-            expect(res.json).toBeCalledWith(resData.failed('orders without pending status not found'));
+            expect(res.json).toBeCalledWith(resData.failed('order not found'));
         });
 
           test(`should status is 400 and reason is "request status outside the specified options"`, async() => {
@@ -441,4 +398,77 @@ describe('Test Order', () => {
             expect(serverError().json.message).toEqual('internal server error');
         });
     })
+
+    describe('getOrderById test', () => {
+
+        const order = {
+                id: 1,
+                status: 'PROCESSED',
+                qty: 1,
+                total_price: 100000,
+                created_at: "2022-10-03T10:14:57.133Z",
+                updated_at: "2022-10-03T10:14:57.133Z",
+                user: {
+                    id: '1',
+                    name: 'Leslie Hayes',
+                    username: 'Bessie_Fadel',
+                    telp: '08487438',
+                },
+                products: [
+                    {
+                        "id": 106,
+                        "name": "Rustic Plastic Bike",
+                        "category": 1000,
+                        "price": 100000,
+                        "qty": 1,
+                        "total_price": 100000
+                    },
+                ]
+            
+        };
+
+        test("should status is 200 and data is return true", async () => {
+            mockOrderUC.getOrderById = jest.fn().mockReturnValue(
+                {isSuccess: true, reason:null, data: order}
+            );
+            
+            let req = mockRequest({},{},{},{id:1},{ orderUC: mockOrderUC });
+            let res = mockResponse();
+
+            await orderController.getOrderById(req, res, next);
+
+            expect(mockOrderUC.getOrderById).toHaveBeenCalled();
+            expect(res.status).toBeCalledWith(200)
+            expect(res.json).toBeCalledWith(resData.success(order));
+        });
+
+        test("should status is 404 and message is 'order not found'", async () => {
+            mockOrderUC.getOrderById = jest.fn().mockReturnValue(
+                {isSuccess : false, reason: 'order not found', data:null}
+               );
+
+            let req = mockRequest({},{},{},{id:2},{ orderUC: mockOrderUC });
+            let res = mockResponse();
+
+            await orderController.getOrderById(req, res, next);
+
+            expect(res.status).toBeCalledWith(404);
+            expect(res.json).toBeCalledWith(resData.failed('order not found'));
+        });
+
+         test("should status is 500 and message is 'internal server error'", async () => {
+            mockOrderUC.getPendingOrderByUserId = jest.fn().mockImplementation(() => {
+                throw new Error();
+            });
+
+            let req = mockRequest({},{},{},{id:1},{ orderUC: mockOrderUC });
+            let res = mockResponse();
+            let serverError = next();
+
+            await orderController.getPendingOrderByUserId(req, res, next);
+            expect(serverError().status).toEqual(500);
+            expect(serverError().json.message).toEqual('internal server error');
+        });
+
+    });
  })

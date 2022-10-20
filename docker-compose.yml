@@ -1,64 +1,97 @@
-version: '3.2'
-
+version: '2.2'
 services:
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.3
-    volumes:
-      - ./vendor/apm-elk/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-      - elasticsearch:/usr/share/elasticsearch/data
+  apm-server:
+    image: docker.elastic.co/apm/apm-server:7.13.2
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+      kibana:
+        condition: service_healthy
+    cap_add: ["CHOWN", "DAC_OVERRIDE", "SETGID", "SETUID"]
+    cap_drop: ["ALL"]
     ports:
-      - "9200:9200"
-      - "9300:9300"
-    environment:
-      ES_JAVA_OPTS: "-Xmx512m -Xms512m"
-      ELASTIC_PASSWORD: elastic1234
-      discovery.type: single-node
+    - 8200:8200
     networks:
-      - elk
-    logging:
-      driver: "json-file"
-      options:
-        max-file: "1"
-        max-size: "200m"
+    - elastic
+    command: >
+       apm-server -e
+         -E apm-server.rum.enabled=true
+         -E setup.kibana.host=kibana:5601
+         -E setup.template.settings.index.number_of_replicas=0
+         -E apm-server.kibana.enabled=true
+         -E apm-server.kibana.host=kibana:5601
+         -E output.elasticsearch.hosts=["elasticsearch:9200"]
+    healthcheck:
+      interval: 10s
+      retries: 12
+      test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:8200/
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.2
+    environment:
+    - bootstrap.memory_lock=true
+    - cluster.name=docker-cluster
+    - cluster.routing.allocation.disk.threshold_enabled=false
+    - discovery.type=single-node
+    - ES_JAVA_OPTS=-XX:UseAVX=2 -Xms1g -Xmx1g
+    ulimits:
+      memlock:
+        hard: -1
+        soft: -1
+    volumes:
+    - esdata:/usr/share/elasticsearch/data
+    ports:
+    - 9200:9200
+    networks:
+    - elastic
+    healthcheck:
+      interval: 20s
+      retries: 10
+      test: curl -s http://localhost:9200/_cluster/health | grep -vq '"status":"red"'
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.17.3
-    volumes:
-      - ./vendor/apm-elk/kibana.yml:/usr/share/kibana/config/kibana.yml
-    ports:
-      - "5601:5601"
-    networks:
-      - elk
+    image: docker.elastic.co/kibana/kibana:7.13.2
     depends_on:
-      - elasticsearch
-    logging:
-      driver: "json-file"
-      options:
-        max-file: "1"
-        max-size: "200m"
-  
-  apm-server:
-    image: docker.elastic.co/apm/apm-server:7.17.3
-    command:
-      - --strict.perms=false
-    volumes:
-      - ./vendor/apm-elk/apm-server.yml:/usr/share/apm-server/apm-server.yml
-    ports:
-      - '8200:8200'
-    
-    env_file:
-      - .env
+      elasticsearch:
+        condition: service_healthy
     environment:
-      ELASTIC_PASSWORD: elastic1234
-      
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    ports:
+    - 5601:5601
     networks:
-      - elk
+    - elastic
+    healthcheck:
+      interval: 10s
+      retries: 20
+      test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:5601/api/status
+  
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: 12345678
+    ports:
+      - '5431:5432'
+    expose:
+      - '5432'
+    networks:
+      - elastic
+  
+  platinum:
+    build: .
+    ports:
+      - '3000:3000'
+    expose:
+      - '3000'
+    networks:
+      - elastic
     depends_on:
-      - elasticsearch
-
-networks:
-  elk:
-    driver: bridge
+      - postgres
 
 volumes:
-  elasticsearch:
+  esdata:
+    driver: local
+
+networks:
+  elastic:
+    driver: bridge
