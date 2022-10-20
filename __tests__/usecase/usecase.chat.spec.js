@@ -19,7 +19,8 @@ describe('chat', () => {
 
     describe('getListChatByUserId', () => { 
         test('should isSucces is true and data is valid', async () => {
-            let res = await chatUC.getListChatByUserId(1)
+            const _ = require('lodash');
+            let res = await chatUC.getListChatById(1)
 
             expect(res.isSuccess).toBeTruthy();
 

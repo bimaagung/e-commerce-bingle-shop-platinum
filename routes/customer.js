@@ -6,6 +6,7 @@ const router = express.Router();
 const addressController = require('../controller/address');
 const orderController = require('../controller/order');
 const userController = require('../controller/user');
+const chatController = require('../controller/chat');
 
 const authorized = require('../middleware/jwt');
 const validation = require('../middleware/formValidation');
@@ -28,5 +29,8 @@ router.delete('/api/customer/address/delete/:id', authorized.customer, addressCo
 router.post('/api/customer/order/add', authorized.customer, orderController.createOrder);
 router.get('/api/customer/order/pending/', authorized.customer, orderController.getPendingOrderByUserId);
 router.patch('/api/customer/order/submit/', authorized.customer, orderController.submitOrder);
+
+// chat
+router.get('/api/customer/chat', authorized.customer, chatController.getListChatByUserId);
 
 module.exports = router;
