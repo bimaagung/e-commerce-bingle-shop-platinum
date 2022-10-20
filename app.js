@@ -140,7 +140,14 @@ const io = socketIO(httpServer);
 
 io.use(authorizeWebSocket);
 io.on('connection', (socket) => {
-    console.log('user is connected')
+    let userId = socket.handshake.auth.user.id
+    let room = `room_${userId}`
+    socket.join(room)
+
+    socket.on('sendMessage', async (message_data) => {
+      //To-Do: insert to DB  
+      socket.emit('onNewMessage', message_data)
+    })
 
     socket.on('disconnected', () => {
       console.log('user is disconnected')
