@@ -116,11 +116,7 @@ module.exports = {
         postal_code: req.body.postal_code,
         detail: req.body.detail,
         user_id: req.user.id,
-<<<<<<< HEAD
-        main_address: true,
-=======
         main_address: req.body.main_address
->>>>>>> dev
       };
       let isMain = address.main_address == true;
       if (isMain) {
