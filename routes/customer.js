@@ -24,7 +24,8 @@ router.put('/api/customer/reset-password/', authorized.customer, userController.
 // address
 router.get('/api/customer/address/:id', authorized.customer, addressController.getAddressByID);
 router.get('/api/customer/all/address/', authorized.customer, addressController.getAddressByUserID);
-router.post('/api/customer/address/add', authorized.customer, validation.address, addressController.addAddress);
+// TODO UPDATE ADDRESS VALIDATOR ADD
+router.post('/api/customer/address/add', authorized.customer, addressController.addAddress);
 router.put('/api/customer/address/update/:id', authorized.customer, validation.address, addressController.updateAddress);
 router.put('/api/customer/address/update-main-address/:address_id', authorized.customer,  addressController.changeMainAddress);
 router.delete('/api/customer/address/delete/:id', authorized.customer, addressController.deleteAddress);

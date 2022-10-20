@@ -22,6 +22,8 @@ const bcrypt = require('bcrypt');
 const _ = require('lodash');
 const cloudinary = require('./libs/handle_upload');
 const generateToken = require('./helper/jwt');
+const googleOauth = require('./libs/google-auth')
+const func = require('./libs/function')
 
 const serverError = require('./middleware/serverError');
 
@@ -66,12 +68,11 @@ const authUC = new AuthUseCase(
   new AuthRepository(),
   new UserRepository(),
   bcrypt,
-
   cloudinary,
-
   generateToken,
-
   _,
+  googleOauth,
+  func,
 );
 
 const productImageUC = new ProductImageUseCase(
