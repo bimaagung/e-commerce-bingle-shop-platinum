@@ -2,14 +2,15 @@
 const defaultImage = require('../internal/constant/defaultImage');
 
 class AuthUC {
-  constructor(AuthRepository, UserRepository, bcrypt, cloudinary, generateToken, _, googleOauth) {
+  constructor(AuthRepository, UserRepository, bcrypt, cloudinary, generateToken, _, googleOauth, func) {
     this.AuthRepository = AuthRepository;
     this.UserRepository = UserRepository;
     this.bcrypt = bcrypt;
     this.cloudinary = cloudinary;
     this.generateToken = generateToken;
     this._ = _;
-    this.googleOauth = googleOauth
+    this.googleOauth = googleOauth;
+    this.func = func;
   }
 
   async register(userData) {
@@ -89,17 +90,18 @@ class AuthUC {
     let data = await this.googleOauth(idToken)
     let user = await this.AuthRepository.loginWithGoogle(data.email);
     if (user == null) {
-  
+
       const userData = {
-        name : data.name,
-        username : data.family_name,
-        image : defaultImage.DEFAULT_AVATAR,
-        telp : null,
-        email : data.email,
-        password : null,
+        name: data.name,
+        username: data.given_name+this.func.generateRandomNumberic(3),
+        image: defaultImage.DEFAULT_AVATAR,
+        email: data.email,
+        is_admin: false
+
       }
-      user = await this.register(userData)
-     
+      user = await this.AuthRepository.registerUser(userData)
+      console.log(user)
+
     }
     let dataUser = this._.omit(user.dataValues, ['password']);
     let token = this.generateToken(dataUser);
