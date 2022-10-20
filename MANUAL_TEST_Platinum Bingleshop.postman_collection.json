@@ -168,7 +168,37 @@
 							"variable": [
 								{
 									"key": "product_id",
-									"value": "11"
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get image product by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/public/image/product/detail/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"public",
+								"image",
+								"product",
+								"detail",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
 								}
 							]
 						}
@@ -179,7 +209,13 @@
 					"name": "delete image product",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwidXNlcm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AbWFpbC5jb20iLCJpc19hZG1pbiI6dHJ1ZSwiaWF0IjoxNjY2MTkyNjIwLCJleHAiOjE2NjYyMTQyMjB9.LEk0oQhPfKR3zq-y-Yaub0CU6GdoVWytLSa9042bHwI",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "formdata",
 							"formdata": [
@@ -218,7 +254,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": null
+									"value": "10"
 								}
 							]
 						}
@@ -268,6 +304,45 @@
 								{
 									"key": "id",
 									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change cover image",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwidXNlcm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AbWFpbC5jb20iLCJpc19hZG1pbiI6dHJ1ZSwiaWF0IjoxNjY2MjI3MzM3LCJleHAiOjE2NjYyNDg5Mzd9._4DuctEAkhXZ8QaQUnrzlFilsndK9fG76bIt77xccto",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/admin/update-cover/product/?image_id=50&product_id=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"update-cover",
+								"product",
+								""
+							],
+							"query": [
+								{
+									"key": "image_id",
+									"value": "50"
+								},
+								{
+									"key": "product_id",
+									"value": "2"
 								}
 							]
 						}
@@ -963,6 +1038,86 @@
 								"user",
 								"add-image",
 								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update password",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6ImN1c3RvbWVyIiwidXNlcm5hbWUiOiJjdXN0b21lciIsImVtYWlsIjoiY3VzdG9tZXJuQG1haWwuY29tIiwiaXNfYWRtaW4iOmZhbHNlLCJpYXQiOjE2NjYyMzMyMTgsImV4cCI6MTY2NjI1NDgxOH0.iibV08iSi8GAqL2WYtQ4zb68QTuvew3RpW07XL6iXYU",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"oldPassword\" : \"123456\",\r\n    \"newPassword\" : \"123456\",\r\n    \"confirmNewPassword\" : \"123456\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/customer/update-password/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"customer",
+								"update-password",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset password",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6ImN1c3RvbWVyIiwidXNlcm5hbWUiOiJjdXN0b21lciIsImVtYWlsIjoiY3VzdG9tZXJuQG1haWwuY29tIiwiaXNfYWRtaW4iOmZhbHNlLCJpYXQiOjE2NjYyMzMyMTgsImV4cCI6MTY2NjI1NDgxOH0.iibV08iSi8GAqL2WYtQ4zb68QTuvew3RpW07XL6iXYU",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"oldPassword\" : \"123456\",\r\n    \"newPassword\" : \"123456\",\r\n    \"otp_code\" : \"123456\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/customer/reset-password/?email",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"customer",
+								"reset-password",
+								""
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": null
+								}
 							]
 						}
 					},
