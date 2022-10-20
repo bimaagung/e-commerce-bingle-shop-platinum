@@ -74,6 +74,7 @@ const chatUC = new ChatUseCase(new ChatRepository(), new UserRepository(), _);
 const authUC = new AuthUseCase(
   new AuthRepository(),
   new UserRepository(),
+  new OtpRepository(),
   bcrypt,
   cloudinary,
   generateToken,

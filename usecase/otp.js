@@ -12,7 +12,7 @@ class Otp {
             data: null,
         };
         let otp = await this.getOTPByEmail(email);
-        if (otp == null) {
+        if (otp !== null) {
             result.reason = "wait until : " + otp.expired_at
             return result
         }
