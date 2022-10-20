@@ -133,7 +133,12 @@ app.use('/docs/admin', swaggerUi.serveFiles(adminSwaggerDocument), swaggerUi.set
 app.use('/docs', swaggerUi.serveFiles(swaggerDocument), swaggerUi.setup(swaggerDocument));
 
 const httpServer = http.createServer(app)
+
+
+const authorizeWebSocket = require('./middleware/socket_io')
 const io = socketIO(httpServer);
+
+io.use(authorizeWebSocket);
 io.on('connection', (socket) => {
     console.log('user is connected')
 

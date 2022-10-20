@@ -29,9 +29,11 @@ function authorize( socket, next) {
         user: payload.user,
         is_admin: payload.is_admin
     }
+    socket.handshake.auth = auth
+    next()
 }   
     
-  
+module.exports = authorize
   
 
   
