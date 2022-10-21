@@ -28,7 +28,7 @@ class Otp {
         let html = content.html_value.replace('{otp}', otp.otp_code)
         await this.emailRepository.sendEmail('OTP Code', email, text, html)
 
-        result.is_success = true
+        result.isSuccess = true
         result.status = 200,
         result.reason = "check your email"
         return result

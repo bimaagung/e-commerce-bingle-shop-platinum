@@ -122,7 +122,7 @@ class AuthUC {
         is_admin: false,
       };
       user = await this.AuthRepository.registerUser(userData);
-      console.log(user);
+     
     }
     let dataUser = this._.omit(user.dataValues, ["password"]);
     let token = this.generateToken(dataUser);
