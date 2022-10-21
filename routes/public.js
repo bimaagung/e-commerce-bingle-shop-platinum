@@ -9,6 +9,7 @@ const imageController = require('../controller/image_product');
 
 // product
 router.get('/api/public/product', productController.getAllProducts);
+router.get('/api/public/product/keyword', productController.getProductByKeyword);
 router.get('/api/public/product/:id', productController.getProductById);
 
 // category

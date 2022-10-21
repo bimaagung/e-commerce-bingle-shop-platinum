@@ -11,6 +11,7 @@ class EmailRepository {
       html: html,
     });
   }
+
   async sendOrderEmail(email, data) {
     let content = email_message.ORDERCOMPLETED;
     let text = content.text_value

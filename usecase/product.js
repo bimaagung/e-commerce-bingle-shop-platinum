@@ -28,6 +28,23 @@ class ProductUC {
     result.data = getAllProducts;
     return result;
   }
+  async getProductByKeyword(keyword) {
+    let result = {
+      isSuccess: false,
+      status: 404,
+      reason: "",
+      data: [],
+    };
+    let product = await this.productRepository.getAllProducts(keyword);
+    if(product.length === 0){
+      result.reason = "no matching product "
+    }
+    result.isSuccess = true;
+    result.status = 200;
+    result.data = product;
+    return result;
+  }
+
 
   async getProductById(id) {
     let result = {

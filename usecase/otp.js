@@ -1,3 +1,4 @@
+
 class Otp {
     constructor(otpRepository, emailRepository, email_message) {
         this.otpRepository = otpRepository
@@ -16,7 +17,7 @@ class Otp {
             result.reason = "wait until : " + otp.expired_at
             return result
         }
-
+        console.log(otp)
         let content = this.email_message[otp_type.toUpperCase()]
         if (typeof content === undefined) {
            
@@ -24,6 +25,7 @@ class Otp {
         }
 
         otp = await this.otpRepository.generateOTP(email, otp_type)
+        console.log(otp)
         let text = content.text_value.replace('{otp}', otp.otp_code)
         let html = content.html_value.replace('{otp}', otp.otp_code)
         await this.emailRepository.sendEmail('OTP Code', email, text, html)

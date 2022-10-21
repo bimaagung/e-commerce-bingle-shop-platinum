@@ -25,7 +25,7 @@ const generateToken = require("./helper/jwt");
 const googleOauth = require("./libs/google-auth");
 const func = require("./libs/function");
 const defaultImage = require("./internal/constant/defaultImage");
-const email_message = require("./internal/constant/defaultImage");
+const email_message = require("./internal/constant/email_message");
 
 const serverError = require("./middleware/serverError");
 
