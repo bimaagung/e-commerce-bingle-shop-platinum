@@ -4,6 +4,7 @@ const orderSchemaReq = require('./docs/schema/request/order')
 const addressSchemaReq = require('./docs/schema/request/address')
 const userSchemaReq = require('./docs/schema/request/user')
 const authSchemaReq = require('./docs/schema/request/auth')
+const oauthSchemaReq = require('./docs/schema/request/oaut')
 
 const orderSchemaRes = require('./docs/schema/response/order') 
 const productSchemaRes = require('./docs/schema/response/product')
@@ -75,6 +76,9 @@ const doc = {
     notAvailable: authSchemaRes.notAvailable,
     passwordNotMatch: authSchemaRes.passwordNotMatch,
     unathorized: orderSchemaRes.unathorized,
+
+    // oaut
+    bodyLoginGoogle : oauthSchemaReq.loginGoogle
 
   },
 }

@@ -71,7 +71,6 @@ module.exports = {
 
   updatePassword: async (req, res, next) => {
     const response = Joi.object({
-      oldPassword: Joi.string().min(6).required(),
       newPassword: Joi.string().min(6).required(),
       confirmNewPassword: Joi.string().min(6).required(),
     }).validate(req.body);

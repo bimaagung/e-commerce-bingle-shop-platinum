@@ -13,6 +13,10 @@ module.exports = {
     loginWithGoogle :async (req, res, next) =>{
         /*
             #swagger.tags = ['Oauth']
+            #swagger.requestBody = {
+                required: true,
+                schema: { $ref: "#/definitions/bodyLoginGoogle" }
+            }
         */
         let idToken = req.body.idToken
         try {

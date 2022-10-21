@@ -70,14 +70,7 @@ class UserUC {
       result.reason = "user not found";
       return result;
     }
-    if (this.bcrypt.compareSync(user.newPassword, userById.password) == true) {
-      result.reason = "old password and new password can't be the same";
-      return result;
-    }
-    if (!this.bcrypt.compareSync(user.oldPassword, userById.password)) {
-      result.reason = "old password not match";
-      return result;
-    }
+    
     user.password = user.newPassword;
     user.password = this.bcrypt.hashSync(user.password, 10);
 

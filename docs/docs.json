@@ -104,14 +104,40 @@
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/bodyRegister"
-              }
-            },
-            "application/xml": {
-              "schema": {
-                "$ref": "#/components/schemas/bodyRegister"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "telp": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "confirmPassword": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "otp_code": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "product_id",
+                  "url"
+                ]
               }
             }
           }
@@ -1907,6 +1933,10 @@
           "detail": {
             "type": "string",
             "example": "Jl. Setiabudi, Kuningan, Jakarta Selatan"
+          },
+          "main_address": {
+            "type": "boolean",
+            "example": false
           }
         },
         "xml": {
@@ -2105,11 +2135,11 @@
       "bodyUpdatePassword": {
         "type": "object",
         "properties": {
-          "password": {
+          "newPassword": {
             "type": "string",
             "example": "123456789"
           },
-          "confirmPassword": {
+          "confirmNewPassword": {
             "type": "string",
             "example": "123456789"
           }
@@ -2367,6 +2397,18 @@
         },
         "xml": {
           "name": "unathorized"
+        }
+      },
+      "bodyLoginGoogle": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "idToken"
+          }
+        },
+        "xml": {
+          "name": "bodyLoginGoogle"
         }
       }
     },

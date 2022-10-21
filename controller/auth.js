@@ -24,10 +24,49 @@ module.exports = {
   register: async (req, res, next) => {
     /*
       #swagger.tags = ['Auth']
+      
+      #swagger.consumes = ['multipart/form-data']
       #swagger.requestBody = {
-        required: true,
-        schema: { $ref: "#/definitions/bodyRegister" }
-      }
+            required: true,
+            "@content": {
+                "multipart/form-data": {
+                    schema: {
+                        type: "object",
+                        properties: {
+                            name: {
+                                type: "string"
+                            },
+                            username: {
+                                type: "string"
+                            },
+                            image: {
+                                type: "string",
+                                format: "binary"
+                            },
+                            telp: {
+                                type: "string"
+                            },
+                            password: {
+                                type: "string"
+                            },
+                            confirmPassword: {
+                                type: "string"
+                            },
+                            email: {
+                                type: "string"
+                            },
+                            otp_code: {
+                                type: "string"
+                            },
+
+                        },
+                        required: ["product_id", "url"]
+                    }
+                }
+            }
+        }
+
+
       #swagger.responses[200] = {
         description: "Berhasil mengubah alamat",
           content: {

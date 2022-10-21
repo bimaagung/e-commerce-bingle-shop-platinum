@@ -104,14 +104,40 @@
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/bodyRegister"
-              }
-            },
-            "application/xml": {
-              "schema": {
-                "$ref": "#/components/schemas/bodyRegister"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "telp": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "confirmPassword": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "otp_code": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "product_id",
+                  "url"
+                ]
               }
             }
           }

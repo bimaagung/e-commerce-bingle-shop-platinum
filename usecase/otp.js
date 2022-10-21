@@ -12,10 +12,10 @@ class Otp {
             data: null,
         };
         let otp = await this.getOTPByEmail(email);
-        if (otp !== null) {
-            result.reason = "wait until : " + otp.expired_at
-            return result
-        }
+        // if (otp !== null) {
+        //     result.reason = "wait until : " + otp.expired_at
+        //     return result
+        // }
 
         let content = this.email_message[otp_type.toUpperCase()]
         if (typeof content === undefined) {
