@@ -178,6 +178,9 @@
     },
     "/api/public/product/keyword": {
       "get": {
+        "tags": [
+          "Product"
+        ],
         "description": "",
         "parameters": [
           {
@@ -735,9 +738,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Bad Request"
           },
           "401": {
             "description": "Akun tidak valid",

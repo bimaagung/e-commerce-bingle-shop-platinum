@@ -110,6 +110,9 @@ module.exports = {
     }
   },
   changeCoverImage: async (req, res, next) => {
+    /*
+      #swagger.tags = ['Product']
+    */
     let image_id = req.query.image_id;
     let product_id = req.query.product_id;
     try {

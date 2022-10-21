@@ -253,6 +253,9 @@ module.exports = {
     }
   },
   getProductByKeyword: async (req, res, next) => {
+    /*
+      #swagger.tags = ['Product']
+    */
     try {
       let keyword = req.query.keyword;
 

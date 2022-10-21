@@ -178,6 +178,9 @@
     },
     "/api/public/product/keyword": {
       "get": {
+        "tags": [
+          "Product"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1033,6 +1036,9 @@
     },
     "/api/admin/update-cover/product/": {
       "put": {
+        "tags": [
+          "Product"
+        ],
         "description": "",
         "parameters": [
           {
