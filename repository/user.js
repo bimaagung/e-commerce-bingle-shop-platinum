@@ -20,13 +20,6 @@ class UserRepository {
     });
   }
 
-  async updatePassword(newPassword, id) {
-    const password = await this.updatePassword(newPassword, {
-      where: { id },
-    });
-    return password;
-  }
-
   async getUserByID(id) {
     return await this.UserModel.findOne({
       where: { id }, 
@@ -37,7 +30,7 @@ class UserRepository {
 
   async updateUser(user, id) {
     return await this.UserModel.update(user, {
-      where: { id },
+      where: { id :id},
     });
   }
 }

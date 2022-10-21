@@ -19,8 +19,7 @@ class Otp {
     console.log(otp);
     let content = this.email_message[otp_type.toUpperCase()];
     if (typeof content === undefined) {
-      result.reason = "wrong otp type";
-      return result;
+      return;
     }
 
     otp = await this.otpRepository.generateOTP(email, otp_type);

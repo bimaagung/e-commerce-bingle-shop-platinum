@@ -282,7 +282,7 @@ module.exports = {
 
     let id = req.user.id
     let userData = {
-      newEmail: req.body.email,
+      email: req.body.email,
       otp_code: req.body.otp_code
     }
     try {
