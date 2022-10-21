@@ -29,7 +29,7 @@ class AuthUC {
   async register(userData) {
     let result = {
       isSuccess: false,
-      reason: "",
+      reason: '',
       status: 404,
       data: null,
       token: null,
@@ -46,14 +46,14 @@ class AuthUC {
     }
     let user = await this.UserRepository.getUserExist(
       userData.username,
-      userData.email
+      userData.email,
     );
     if (userData.password !== userData.confrimPassword) {
       result.reason = "password and confrim password not match";
       return result;
     }
     if (user !== null) {
-      result.reason = "username or email not aviable";
+      result.reason = 'username or email not aviable';
       return result;
     }
 
@@ -80,7 +80,7 @@ class AuthUC {
   async login(username, password) {
     let result = {
       isSuccess: false,
-      reason: "",
+      reason: '',
       status: 404,
       data: null,
       token: null,

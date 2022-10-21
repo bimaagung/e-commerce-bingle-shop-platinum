@@ -1,4 +1,7 @@
 /* eslint-disable no-return-await */
+const cloudinary = require('../libs/handle_upload');
+const defaultImage = require('../internal/constant/defaultImage');
+
 class ProductImageUC {
   constructor(
     ProductImageRepository,

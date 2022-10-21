@@ -31,6 +31,13 @@ const doc = {
         bearerFormat: 'JWT'
     }
   },
+  securityDefinitions: {
+    bearerAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT'
+    }
+  },
   definitions: {
     // order
     bodyCreateOrder: orderSchemaReq.createOrder,

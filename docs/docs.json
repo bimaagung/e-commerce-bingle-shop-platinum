@@ -247,7 +247,16 @@
           "Category"
         ],
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "product_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Berhasil melihat semua kategori",
@@ -614,9 +623,41 @@
         ],
         "responses": {
           "400": {
-            "description": "Bad Request"
+            "description": "Password dan confirmPassword tidak sesuai",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/notMatchPassword"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pengguna tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userNotFound"
+                }
+              }
+            }
           }
         },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1240,7 +1281,24 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Berhasil menghapus alamat berdasarkan id alamat",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/sucessAddress"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
           },
           "401": {
             "description": "Unauthorized"
@@ -2286,6 +2344,18 @@
             "type": "string",
             "example": "customerb@gmail.com"
           },
+          "telp": {
+            "type": "string",
+            "example": "08363372"
+          }
+        },
+        "xml": {
+          "name": "bodyUpdateUser"
+        }
+      },
+      "bodyUpdatePassword": {
+        "type": "object",
+        "properties": {
           "password": {
             "type": "string",
             "example": "123456"

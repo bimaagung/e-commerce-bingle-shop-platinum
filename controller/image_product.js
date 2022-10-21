@@ -19,7 +19,7 @@ module.exports = {
     let { product_id } = req.params;
     try {
       let resImage = await req.productImageUC.getImageProductByProductID(
-        product_id
+        product_id,
       );
       if (resImage.isSuccess !== true) {
         return res

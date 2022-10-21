@@ -46,6 +46,7 @@ describe('Image Product', () => {
             expect(res.isSuccess).toBeTruthy()
             expect(res.reason).toEqual("success")
         })
+<<<<<<< HEAD
     })
     describe('get image product by image ID', () => {
         test('isSuccess == true ', async () => {
@@ -53,14 +54,23 @@ describe('Image Product', () => {
         })
         test('isSuccess == false product not found', async () => {
             productValues.returnGetImageByID = null
+=======
+        test('isSuccess = false image not found', async () => {
+            imageProductValues.returnGetAllImageByProductID.length = 0
+>>>>>>> 76b55f78ae4812ad8d7648036e8991757058b44b
             productImageUC = new ProductImageUseCase(
                 mockImageProductRepo(imageProductValues),
                 mockProductRepo(productValues)
             )
             let res = await productImageUC.getImageByID()
 
+<<<<<<< HEAD
             expect(res.isSuccess).toBeFalsy()
            
+=======
+            expect(res.isSuccess).toBeTruthy()
+            expect(res.reason).toEqual("success")
+>>>>>>> 76b55f78ae4812ad8d7648036e8991757058b44b
         })
     })
 
