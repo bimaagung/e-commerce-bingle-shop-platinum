@@ -279,22 +279,6 @@
         }
       }
     },
-    "/api/public/image/product/detail/{id}": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {}
-      }
-    },
     "/api/customer/profil/user/": {
       "get": {
         "tags": [
@@ -595,21 +579,10 @@
         }
       }
     },
-    "/api/customer/address/{id}": {
-      "get": {
-        "tags": [
-          "Address"
-        ],
+    "/api/customer/update/email/": {
+      "put": {
         "description": "",
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
           {
             "name": "authorization",
             "in": "header",
@@ -619,42 +592,32 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Berhasil mengambil alamat berdasarkan id alamat",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/successAddAddress"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Alamat tidak ditemukan",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/addressNotFound"
-                }
-              }
-            }
-          },
           "401": {
-            "description": "Akun tidak valid",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/unathorized"
-                }
-              }
-            }
+            "description": "Unauthorized"
           }
         },
         "security": [
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "example": "any"
+                  },
+                  "otp_code": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/customer/all/address/": {
@@ -1118,6 +1081,60 @@
           },
           "404": {
             "description": "Belum membuat pesanan baru",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/orderNotFound"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/customer/order/cancel/": {
+      "delete": {
+        "tags": [
+          "Order"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil membatalkan pesanan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successOrder"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pesanan tidak ditemukan",
             "content": {
               "application/json": {
                 "schema": {

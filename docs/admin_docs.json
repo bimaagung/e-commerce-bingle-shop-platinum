@@ -279,22 +279,6 @@
         }
       }
     },
-    "/api/public/image/product/detail/{id}": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {}
-      }
-    },
     "/api/admin/category/add": {
       "post": {
         "tags": [
@@ -530,9 +514,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Bad Request"
           },
           "401": {
             "description": "Akun tidak valid",
@@ -965,67 +946,6 @@
                 }
               }
             }
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "product_id": {
-                    "type": "string"
-                  },
-                  "url": {
-                    "type": "string",
-                    "format": "binary"
-                  }
-                },
-                "required": [
-                  "product_id",
-                  "url"
-                ]
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/admin/update-image/product/{id}": {
-      "put": {
-        "tags": [
-          "Product"
-        ],
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
           }
         },
         "security": [

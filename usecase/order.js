@@ -10,7 +10,8 @@ class OrderUC {
     categoryRepository,
     emailRepository,
     userRepository,
-    _
+    _,
+    addressRepository
   ) {
     this.orderRepository = orderRepository;
     this.orderDetailRepository = orderDetailRepository;
@@ -19,6 +20,7 @@ class OrderUC {
     this.emailRepository = emailRepository;
     this.userRepository = userRepository;
     this._ = _;
+    this.addressRepository = addressRepository;
   }
 
   async getListOrder(status) {
@@ -73,6 +75,9 @@ class OrderUC {
     };
 
     const order = await this.orderRepository.getOrderById(orderId);
+    const mainAddress = await this.addressRepository.getMainAddress(
+      order.user.id
+    );
 
     if (order === null) {
       result.reason = "order not found";
@@ -90,7 +95,19 @@ class OrderUC {
       updated_at: order.updatedAt,
       qty: productInOrderDetail.totalQty,
       total_price: productInOrderDetail.totalPrice,
-      user: order.user,
+      user: {
+        id: order.user.id,
+        name: order.user.name,
+        username: order.user.username,
+        telp: order.user.telp,
+        address: {
+          id: mainAddress.id,
+          province: mainAddress.province,
+          city: mainAddress.city,
+          postal_code: mainAddress.postal_code,
+          detail: mainAddress.detail,
+        },
+      },
       products: productInOrderDetail.resultOrderDetail,
     };
 
@@ -136,6 +153,10 @@ class OrderUC {
       userId
     );
 
+    const mainAddress = await this.addressRepository.getMainAddress(
+      orderPending.user.id
+    );
+
     if (orderPending === null) {
       result.reason = "order not found";
       return result;
@@ -152,7 +173,19 @@ class OrderUC {
       updated_at: orderPending.updatedAt,
       qty: productInOrderDetail.totalQty,
       total_price: productInOrderDetail.totalPrice,
-      user: orderPending.user,
+      user: {
+        id: orderPending.user.id,
+        name: orderPending.user.name,
+        username: orderPending.user.username,
+        telp: orderPending.user.telp,
+        address: {
+          id: mainAddress.id,
+          province: mainAddress.province,
+          city: mainAddress.city,
+          postal_code: mainAddress.postal_code,
+          detail: mainAddress.detail,
+        },
+      },
       products: productInOrderDetail.resultOrderDetail,
     };
 
@@ -193,7 +226,7 @@ class OrderUC {
     );
 
     // check stock product
-    if (orderDetail.length < 1) {
+    if (orderDetail.length < products.length) {
       result.reason =
         "can't process the order, please check each product in order";
       return result;
@@ -230,7 +263,7 @@ class OrderUC {
         continue;
       }
 
-      if (getProductById.stock < 1) {
+      if (getProductById.stock < products[i].qty) {
         continue;
       }
 
@@ -452,8 +485,8 @@ class OrderUC {
         calProduct.sold = getProductById.sold + orderDetail[i].qty;
 
         await this.productRespository.updateProduct(
-          orderDetail[i].product_id,
-          calProduct
+          calProduct,
+          orderDetail[i].product_id
         );
 
         fixUpdateProduct.push(orderDetail[i].product_id);
@@ -465,8 +498,30 @@ class OrderUC {
     return fixUpdateProduct;
   }
 
-  // TODO: fungsi kirim email
-  // TODO:
+  async cancelOrderByCustomer(userId) {
+    let result = {
+      isSuccess: false,
+      reason: null,
+      data: null,
+    };
+
+    const orderPending = await this.orderRepository.getPendingOrderByUserId(
+      userId
+    );
+
+    if (orderPending === null) {
+      result.reason = "order not found";
+      return result;
+    }
+
+    await this.orderRepository.deleteOrderPending(orderPending.id);
+    await this.orderDetailRepository.deleteOrderDetailByOrderId(
+      orderPending.id
+    );
+
+    result.isSuccess = true;
+    return result;
+  }
 }
 
 module.exports = OrderUC;
