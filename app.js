@@ -7,9 +7,13 @@ require("dotenv").config();
 //   active: useAPM,
 // });
 
-const express = require("express");
-
+const express = require('express');
 const app = express();
+const socketIO = require('socket.io');
+const http = require('http');
+const cors = require('cors');
+const swaggerUi = require('swagger-ui-express'); // import swagger
+const express = require("express");
 const cors = require("cors");
 
 const swaggerUi = require("swagger-ui-express"); // import swagger
@@ -190,4 +194,26 @@ app.use(
   swaggerUi.setup(swaggerDocument)
 );
 
-module.exports = app;
+const httpServer = http.createServer(app)
+
+
+const authorizeWebSocket = require('./middleware/socket_io')
+const io = socketIO(httpServer);
+
+io.use(authorizeWebSocket);
+io.on('connection', (socket) => {
+    let userId = socket.handshake.auth.user.id
+    let room = `room_${userId}`
+    socket.join(room)
+
+    socket.on('sendMessage', async (message_data) => {
+      //To-Do: insert to DB  
+      socket.emit('onNewMessage', message_data)
+    })
+
+    socket.on('disconnected', () => {
+      console.log('user is disconnected')
+    })
+})
+
+module.exports = httpServer;
