@@ -25,6 +25,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
           }
         },
         "requestBody": {
@@ -117,6 +120,9 @@
     },
     "/login/google": {
       "get": {
+        "tags": [
+          "Oauth"
+        ],
         "description": "",
         "parameters": [],
         "responses": {}
@@ -124,7 +130,11 @@
       "post": {
         "description": "",
         "parameters": [],
-        "responses": {}
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        }
       }
     },
     "/api/public/product": {
@@ -514,6 +524,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad Request"
           },
           "401": {
             "description": "Akun tidak valid",
