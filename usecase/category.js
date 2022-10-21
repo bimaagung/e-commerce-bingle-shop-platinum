@@ -58,9 +58,10 @@ class CategoryUC {
     return result;
   }
 
-  async updateCategory(category, id) {
+  async putCategory(category, id) {
     let result = {
       isSuccess: false,
+      status: 404,
       reason: null,
       data: null,
     };
@@ -70,10 +71,11 @@ class CategoryUC {
       result.reason = 'category not found';
       return result;
     }
-    const updateCategory = await this.CategoryRepository.updateCategory(category, id);
+    const putCategory = await this.CategoryRepository.putCategory(category, id);
 
     result.isSuccess = true;
-    result.data = updateCategory;
+    result.status = 200;
+    result.data = putCategory;
     return result;
   }
 

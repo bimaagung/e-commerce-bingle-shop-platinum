@@ -160,20 +160,32 @@ module.exports = {
     */
     try {
       let { id } = req.params;
-      let category = req.body;
-
-      let categoryById = await req.categoryUC.getCategoryByID(id);
-
-      if (categoryById.isSuccess !== true) {
+      let category = {name: req.body.name};
+      let resCategory = await req.categoryUC.putCategory(category, id);
+      if (resCategory.isSuccess === false) {
         return res
-          .status(404)
-          .json(resData.failed(categoryById.reason, null));
-      }
+          .status(resCategory.status)
+          .json(resData.failed(resCategory.reason));
 
-      res.json(resData.success());
+      };
+      
+      res.status(resCategory.status).json(resData.success());
     } catch (e) {
       next(e);
     }
+
+    //   let categoryById = await req.categoryUC.getCategoryByID(id);
+
+    //   if (categoryById.isSuccess !== true) {
+    //     return res
+    //       .status(404)
+    //       .json(resData.failed(categoryById.reason, null));
+    //   }
+
+    //   res.json(resData.success());
+    // } catch (e) {
+    //   next(e);
+    // }
   },
 
   deleteCategory: async (req, res, next) => {

@@ -30,9 +30,9 @@ class CategoryRepository {
     return await this.CategoryModel.create(category);
   }
 
-  async updateCategory(category, id) {
+  async putCategory(category, id) {
     return await this.CategoryModel.update(category, {
-      where: { id },
+      where: { id: id },
     });
   }
 
