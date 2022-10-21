@@ -20,6 +20,7 @@ class EmailRepository {
       .replaceAll("{productPrice}", data.productPrice)
       .replaceAll("{qty}", data.qty)
       .replaceAll("{total_price}", data.total_price)
+      .replaceAll("{address}", data.address)
       .replaceAll("{completed_date}", data.completed_date);
 
     let html = content.html_value
@@ -29,6 +30,7 @@ class EmailRepository {
       .replaceAll("{productPrice}", data.productPrice)
       .replaceAll("{qty}", data.qty)
       .replaceAll("{total_price}", data.total_price)
+      .replaceAll("{address}", data.address)
       .replaceAll("{completed_date}", data.completed_date);
 
     await this.sendEmail("order", email, text, html);

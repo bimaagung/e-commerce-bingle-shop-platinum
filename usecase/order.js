@@ -393,6 +393,7 @@ class OrderUC {
       const product = await this.productRespository.getProductByID(
         dataDetail.product_id
       );
+      const address = await this.addressRepository.getMainAddress(user.id);
       let newData = {
         customerName: user.name,
         username: user.username,
@@ -400,6 +401,7 @@ class OrderUC {
         productPrice: product.price,
         qty: dataDetail.qty,
         total_price: dataDetail.total_price,
+        address: address.detail,
         completed_date: dataDetail.createdAt,
       };
 

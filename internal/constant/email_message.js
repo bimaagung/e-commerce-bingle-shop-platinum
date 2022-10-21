@@ -1,3 +1,4 @@
+const ejs = require("ejs");
 const email_message = {
   REGISTRATION: {
     text_value: "your otp code for registration: {otp}",
@@ -13,21 +14,18 @@ const email_message = {
   },
   ORDERCOMPLETED: {
     text_value: "qty {qty} total_price {total_price}",
-    html_value: `<body style="font-family: sans-serif;">
+    html_value:
+      // ejs.renderFile(__dirname + '/../../views/order_email.ejs')
+
+      `<body style="font-family: sans-serif;">
         <center>
-        <div style="background-color: black; width: 500px;">
-            <div style="background-color: darkorange; padding: 5px">
-                <h1><center>Trimakasih Telah Belanja di toko Kami (Maju Jaya)<br><span style="font-size: 16px; font-weight: 400; margin-top: 5px">Maju Jaya Sentosa Luar Biasa</span></center></h1>
+        <div style="background-color: aliceblue ; width: 500px;">
+            <div style="background-color: Magenta; padding: 5px">
+                <h1 style="color: white"><center>Hai.. {customerName} Trimakasih Telah Belanja di BingleShop<br><span style="font-size: 16px; font-weight: 400; margin-top: 5px">Maju Jaya Sentosa Luar Biasa</span></center></h1>
             </div>
-            <div style="color: aliceblue; padding-bottom: 10px">
-            <center><p>Detail Pesanan {customerName} </center>
-            
-            <div>name : {customerName} </div>
-            <div>username : {username}</div>
-            <div>Product : {productName}</div>
-            <div>Price : {productPrice}</div>
-            <div>qty : {qty}</div>
-            <div>total : {total_price}</div>
+            <div style="color: black; padding-bottom: 10px">
+            <center><p>Pesanan {customerName} sebesar Rp {total_price} akan segera diKirim ke : </center>
+            <div>alamat : {address} </div>
             <div>Order Date : {completed_date}</div>
             
             </div>

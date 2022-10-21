@@ -168,7 +168,7 @@ class UserUC {
     userBody.image = await this.cloudinary.uploadCloudinaryAvatar(
       userBody.image
     );
-
+      
     await this.UserRepository.updateUser(userBody, id);
 
     result.isSuccess = true;
