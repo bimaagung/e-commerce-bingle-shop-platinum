@@ -16,6 +16,6 @@ router.post('/api/user/register', handleUpload.upload.single('image'), auth.regi
 
 // OAUTH GOOGLE
 router.get('/login/google', oauth.loginWithGooglePage)
-router.post('/login/google', validation.loginWithGoogle,oauth.loginWithGoogle)
+router.post('/login/google', validation.loginWithGoogle, oauth.loginWithGoogle)
 
 module.exports = router;

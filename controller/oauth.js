@@ -2,7 +2,7 @@ const resData = require('../helper/response')
 module.exports = {
     loginWithGooglePage: async (req, res, next) => {
         /*
-        #swagger.tags = ['Oauth']
+            #swagger.tags = ['Oauth']
         */
         try {
             res.render('google-login')
@@ -12,9 +12,9 @@ module.exports = {
     },
     loginWithGoogle :async (req, res, next) =>{
         /*
-        #swagger.tags = ['Oauth']
+            #swagger.tags = ['Oauth']
         */
-        let idToken =req.body.idToken
+        let idToken = req.body.idToken
         try {
             let resUser = await req.authUC.loginGoogle(idToken);
             if (resUser.isSuccess !== true) {

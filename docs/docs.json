@@ -645,6 +645,9 @@
     },
     "/api/customer/all/address/": {
       "get": {
+        "tags": [
+          "Address"
+        ],
         "description": "",
         "parameters": [
           {
@@ -821,6 +824,9 @@
     },
     "/api/customer/address/update-main-address/{address_id}": {
       "put": {
+        "tags": [
+          "Address"
+        ],
         "description": "",
         "parameters": [
           {

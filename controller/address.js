@@ -2,6 +2,9 @@ const resData = require("../helper/response");
 
 module.exports = {
   getAddressByUserID: async (req, res, next) => {
+    /*
+      #swagger.tags = ['Address']
+    */
     try {
       let { id } = req.user;
       let address = await req.addressUC.getAddressByUserID(id);
@@ -201,7 +204,11 @@ module.exports = {
       next(e);
     }
   },
+  
   changeMainAddress: async (req, res, next) => {
+    /*
+      #swagger.tags = ['Address']
+    */
     let address_id = req.params.address_id;
     let user_id = req.user.id;
 
