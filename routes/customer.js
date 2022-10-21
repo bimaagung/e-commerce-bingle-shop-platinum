@@ -26,7 +26,7 @@ router.put('/api/customer/update/email/', authorized.customer, validation.update
 // address
 router.get('/api/customer/all/address/', authorized.customer, addressController.getAddressByUserID);
 // TODO UPDATE ADDRESS VALIDATOR ADD
-router.post('/api/customer/address/add', authorized.customer,validation.address, addressController.addAddress);
+router.post('/api/customer/address/add', authorized.customer, addressController.addAddress);
 router.put('/api/customer/address/update/:id', authorized.customer, validation.updatAddress, addressController.updateAddress);
 router.put('/api/customer/address/update-main-address/:address_id', authorized.customer, addressController.changeMainAddress);
 router.delete('/api/customer/address/delete/:id', authorized.customer, addressController.deleteAddress);
