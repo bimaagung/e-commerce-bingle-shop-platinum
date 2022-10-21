@@ -377,4 +377,54 @@ module.exports = {
       next(e);
     }
   },
+
+  cancelOrderByCustomer: async (req, res, next) => {
+    /*
+      #swagger.tags = ['Order']
+      #swagger.responses[200] = {
+        description: "Berhasil membatalkan pesanan",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/successOrder"
+                  }
+              }
+          }
+      }
+
+      #swagger.responses[404] = {
+        description: "Pesanan tidak ditemukan",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/orderNotFound"
+                  }
+              }
+          }
+      }
+
+      #swagger.responses[401] = {
+        description: "Akun tidak valid",
+          content: {
+              "application/json": {
+                  schema:{
+                      $ref: "#/definitions/unathorized"
+                  }
+              }
+          }
+      }
+    */
+    try {
+      const userId = req.user.id;
+
+      const order = await req.orderUC.cancelOrderByCustomer(userId);
+
+      if (order.isSuccess === false) {
+        return res.status(404).json(resData.failed(order.reason));
+      }
+      res.status(200).json(resData.success());
+    } catch (e) {
+      next(e);
+    }
+  },
 };

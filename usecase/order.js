@@ -421,6 +421,26 @@ class OrderUC {
     return fixUpdateProduct;
   }
 
+  async cancelOrderByCustomer(userId) {
+    let result = {
+      isSuccess: false,
+      reason: null,
+      data: null,
+    };
+
+    const orderPending = await this.orderRepository.getPendingOrderByUserId(userId);
+
+    if (orderPending === null) {
+      result.reason = 'order not found';
+      return result;
+    }
+
+    await this.orderRepository.deleteOrderPending(orderPending.id);
+
+    result.isSuccess = true;
+    return result;
+  }
+
   // TODO: fungsi kirim email
   // TODO:
 }

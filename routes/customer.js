@@ -21,21 +21,21 @@ router.put('/api/customer/update/', authorized.customer, validation.updateUser, 
 // TODO update validator reset password
 router.put('/api/customer/reset-password/', userController.resetPassword);
 // TODO ADD JOI RESET EMAIL
-router.put('/api/customer/update/email/',authorized.customer, userController.updateEmail);
-
+router.put('/api/customer/update/email/', authorized.customer, userController.updateEmail);
 
 // address
 router.get('/api/customer/all/address/', authorized.customer, addressController.getAddressByUserID);
 // TODO UPDATE ADDRESS VALIDATOR ADD
 router.post('/api/customer/address/add', authorized.customer, addressController.addAddress);
 router.put('/api/customer/address/update/:id', authorized.customer, validation.address, addressController.updateAddress);
-router.put('/api/customer/address/update-main-address/:address_id', authorized.customer,  addressController.changeMainAddress);
+router.put('/api/customer/address/update-main-address/:address_id', authorized.customer, addressController.changeMainAddress);
 router.delete('/api/customer/address/delete/:id', authorized.customer, addressController.deleteAddress);
 
 // order
 router.post('/api/customer/order/add', authorized.customer, orderController.createOrder);
 router.get('/api/customer/order/pending/', authorized.customer, orderController.getPendingOrderByUserId);
 router.patch('/api/customer/order/submit/', authorized.customer, orderController.submitOrder);
+router.delete('/api/customer/order/cancel/', authorized.customer, orderController.cancelOrderByCustomer);
 
 // chat
 router.get('/api/customer/chat', authorized.customer, chatController.getListChatByUserId);
