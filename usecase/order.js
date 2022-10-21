@@ -3,11 +3,18 @@
 const orderConstant = require('../internal/constant/order');
 
 class OrderUC {
-  constructor(orderRepository, orderDetailRepository, productRespository, categoryRepository) {
+  constructor(
+    orderRepository,
+    orderDetailRepository,
+    productRespository,
+    categoryRepository,
+    addressRepository,
+  ) {
     this.orderRepository = orderRepository;
     this.orderDetailRepository = orderDetailRepository;
     this.productRespository = productRespository;
     this.categoryRepository = categoryRepository;
+    this.addressRepository = addressRepository;
   }
 
   async getListOrder(status) {
@@ -60,6 +67,7 @@ class OrderUC {
     };
 
     const order = await this.orderRepository.getOrderById(orderId);
+    const mainAddress = await this.addressRepository.getMainAddress(order.user.id);
 
     if (order === null) {
       result.reason = 'order not found';
@@ -77,7 +85,19 @@ class OrderUC {
       updated_at: order.updatedAt,
       qty: productInOrderDetail.totalQty,
       total_price: productInOrderDetail.totalPrice,
-      user: order.user,
+      user: {
+        id: order.user.id,
+        name: order.user.name,
+        username: order.user.username,
+        telp: order.user.telp,
+        address: {
+          id: mainAddress.id,
+          province: mainAddress.province,
+          city: mainAddress.city,
+          postal_code: mainAddress.postal_code,
+          detail: mainAddress.detail,
+        },
+      },
       products: productInOrderDetail.resultOrderDetail,
     };
 
@@ -123,6 +143,8 @@ class OrderUC {
       userId,
     );
 
+    const mainAddress = await this.addressRepository.getMainAddress(orderPending.user.id);
+
     if (orderPending === null) {
       result.reason = 'order not found';
       return result;
@@ -139,7 +161,19 @@ class OrderUC {
       updated_at: orderPending.updatedAt,
       qty: productInOrderDetail.totalQty,
       total_price: productInOrderDetail.totalPrice,
-      user: orderPending.user,
+      user: {
+        id: orderPending.user.id,
+        name: orderPending.user.name,
+        username: orderPending.user.username,
+        telp: orderPending.user.telp,
+        address: {
+          id: mainAddress.id,
+          province: mainAddress.province,
+          city: mainAddress.city,
+          postal_code: mainAddress.postal_code,
+          detail: mainAddress.detail,
+        },
+      },
       products: productInOrderDetail.resultOrderDetail,
     };
 
