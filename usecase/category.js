@@ -1,6 +1,7 @@
 class CategoryUC {
-  constructor(categoryRepository) {
+  constructor(categoryRepository, productRepository) {
     this.categoryRepository = categoryRepository;
+    this.productRepository = productRepository; 
   }
 
   async getCategoryByID(id) {
@@ -9,6 +10,8 @@ class CategoryUC {
       reason: null,
       data: null,
     };
+    
+
 
     const category = await this.categoryRepository.getCategoryByID(id);
 
@@ -17,8 +20,18 @@ class CategoryUC {
       return result;
     }
 
+    const products = await this.productRepository.getProductByCategoryId(category.id);
+
+    let categories = {
+        id: category.id,
+        name: category.name,
+        createdAt: category.createdAt,
+        updatedAt: category.updatedAt,
+        products: products
+    }
+
     result.isSuccess = true;
-    result.data = category;
+    result.data = categories;
 
     return result;
   }

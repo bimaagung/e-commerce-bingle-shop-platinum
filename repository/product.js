@@ -33,6 +33,14 @@ class ProductRepository {
     });
   }
 
+   async getProductByCategoryId(id) {
+    return await this.ProductModel.findAll({
+      where: {
+        category_id: id,
+      }
+    });
+  }
+
   async addProduct(product) {
     return await this.ProductModel.create(product);
   }

@@ -18,7 +18,7 @@ class CategoryRepository {
         {
           model:Product,
           as: 'product',
-          // attribute: ['id', 'name', 'description', 'category_id', 'sold', 'price', 'stock', 'image'],
+          attributes: ['id', 'name', 'description', 'category_id', 'sold', 'price', 'stock', 'image'],
         },
       ],
       order: [

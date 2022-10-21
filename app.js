@@ -69,7 +69,7 @@ const addressUC = new AddressUseCase(
   new AddressRepository(),
   new UserRepository()
 );
-const categoryUC = new CategoryUseCase(new CategoryRepository());
+const categoryUC = new CategoryUseCase(new CategoryRepository(), new ProductRepository());
 
 const productUC = new ProductUseCase(
   new ProductRepository(),
