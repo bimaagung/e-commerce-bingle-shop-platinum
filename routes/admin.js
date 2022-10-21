@@ -21,12 +21,12 @@ router.delete('/api/admin/category/delete/:id', authorized.admin, categoryContro
 
 // Product
 // TODO Update category_id allow null
-router.post('/api/admin/product/add', authorized.admin,  productController.addProduct);
+router.post('/api/admin/product/add', authorized.admin, validation.product,  productController.addProduct);
 router.put('/api/admin/product/update/:id', authorized.admin, validation.product, productController.updateProduct);
 router.delete('/api/admin/product/delete/:id', authorized.admin, productController.deleteProduct);
 
 // Order
-router.patch('/api/admin/order/update-status/:id', authorized.admin, orderController.changeStatusOrder);
+router.patch('/api/admin/order/update-status/:id', authorized.admin, validation.statusOrder, orderController.changeStatusOrder);
 router.get('/api/admin/order', authorized.admin, orderController.getListOrder);
 router.get('/api/admin/order/:id', authorized.admin, orderController.getOrderById);
 

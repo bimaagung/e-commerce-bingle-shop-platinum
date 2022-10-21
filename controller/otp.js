@@ -1,6 +1,9 @@
 const resData = require('../helper/response');
 module.exports = {
     generateOTP: async (req, res, next) => {
+        /*
+            #swagger.tags = ['OTP']
+        */
         let otp_type = req.body.otp_type;
         let email = req.body.email;
 
@@ -18,6 +21,9 @@ module.exports = {
     },
 
     verifyOTP: async (req, res, next) => {
+        /*
+            #swagger.tags = ['OTP']
+        */
         let otp_code = req.query.otp_code;
         let otp_type = req.query.otp_type;
         let email = req.query.email;

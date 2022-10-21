@@ -253,6 +253,9 @@ module.exports = {
   },
   
   resetPassword : async (req, res, next)=>{
+    /*
+      #swagger.tags = ['User']
+    */
     let email = req.query.email
     let user = {
       newPassword: req.body.newPassword,
@@ -273,6 +276,10 @@ module.exports = {
     }
   },
   updateEmail: async (req, res, next) => {
+    /*
+      #swagger.tags = ['User']
+    */
+
     let id = req.user.id
     let userData = {
       newEmail: req.body.email,
