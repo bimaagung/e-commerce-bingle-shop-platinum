@@ -23,7 +23,7 @@ class ProductRepository {
       },
       include: [
         {
-          model: ProductImage
+          model: ProductImage,
         },
       ],
 

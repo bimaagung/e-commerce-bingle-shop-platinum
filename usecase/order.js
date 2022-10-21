@@ -392,8 +392,8 @@ class OrderUC {
         calProduct.sold = getProductById.sold - orderDetail[i].qty;
 
         await this.productRespository.updateProduct(
-          orderDetail[i].product_id,
           calProduct,
+          orderDetail[i].product_id,
         );
 
         fixUpdateProduct.push(orderDetail[i].product_id);
@@ -408,8 +408,8 @@ class OrderUC {
         calProduct.sold = getProductById.sold + orderDetail[i].qty;
 
         await this.productRespository.updateProduct(
-          orderDetail[i].product_id,
           calProduct,
+          orderDetail[i].product_id,
         );
 
         fixUpdateProduct.push(orderDetail[i].product_id);
