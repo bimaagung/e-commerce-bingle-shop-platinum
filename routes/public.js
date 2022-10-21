@@ -18,4 +18,5 @@ router.get('/api/public/category/:id', categoryController.getCategoryById);
 // image prodcut customer
 router.get('/api/public/image/product/:product_id', imageController.getImageProductByProductID);
 
+
 module.exports = router;

@@ -329,6 +329,7 @@ class OrderUC {
       order.completed_date = null;
     } else if (statusOrder === 'ORDER_COMPLETED') {
       order.status = orderConstant.ORDER_COMPLETED;
+      // TODO: fungsi kirim email
       order.completed_date = new Date();
     } else if (statusOrder === 'ORDER_CANCELED') {
       order.status = orderConstant.ORDER_CANCELED;
@@ -419,6 +420,9 @@ class OrderUC {
 
     return fixUpdateProduct;
   }
+
+  // TODO: fungsi kirim email
+  // TODO:
 }
 
 module.exports = OrderUC;

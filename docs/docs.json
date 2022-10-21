@@ -25,9 +25,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
           }
         },
         "requestBody": {
@@ -68,7 +65,6 @@
             }
           },
           "400": {
-            "description": "Bad Request",
             "content": {
               "application/json": {
                 "examples": {
@@ -98,7 +94,8 @@
                   ]
                 }
               }
-            }
+            },
+            "description": "Bad Request"
           }
         },
         "requestBody": {
@@ -116,6 +113,18 @@
             }
           }
         }
+      }
+    },
+    "/login/google": {
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      },
+      "post": {
+        "description": "",
+        "parameters": [],
+        "responses": {}
       }
     },
     "/api/public/product": {
@@ -268,6 +277,22 @@
             }
           }
         }
+      }
+    },
+    "/api/public/image/product/detail/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {}
       }
     },
     "/api/customer/profil/user/": {
@@ -535,6 +560,41 @@
         }
       }
     },
+    "/api/customer/reset-password/": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {},
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "newPassword": {
+                    "example": "any"
+                  },
+                  "confirmNewPassword": {
+                    "example": "any"
+                  },
+                  "otp_code": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/customer/address/{id}": {
       "get": {
         "tags": [
@@ -599,9 +659,6 @@
     },
     "/api/customer/all/address/": {
       "get": {
-        "tags": [
-          "Address"
-        ],
         "description": "",
         "parameters": [
           {
@@ -613,25 +670,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Berhasil mengambil semua alamat berdasarkan id pengguna",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/successGetAllAdressByUserId"
-                }
-              }
-            }
-          },
           "401": {
-            "description": "Akun tidak valid",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/unathorized"
-                }
-              }
-            }
+            "description": "Unauthorized"
           }
         },
         "security": [
@@ -666,9 +706,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Bad Request"
           },
           "401": {
             "description": "Akun tidak valid",
@@ -791,6 +828,38 @@
             }
           }
         }
+      }
+    },
+    "/api/customer/address/update-main-address/{address_id}": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "address_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/api/customer/address/delete/{id}": {
@@ -1063,6 +1132,89 @@
             "bearerAuth": []
           }
         ]
+      }
+    },
+    "/api/customer/chat": {
+      "get": {
+        "tags": [
+          "Chat"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/otp/verify": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "otp_code",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "otp_type",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/api/otp/request": {
+      "post": {
+        "description": "",
+        "parameters": [],
+        "responses": {},
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "otp_type": {
+                    "example": "any"
+                  },
+                  "email": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   },

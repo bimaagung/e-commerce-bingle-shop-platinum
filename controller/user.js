@@ -1,4 +1,4 @@
-const resData = require('../helper/response');
+const resData = require("../helper/response");
 
 module.exports = {
   getOneUser: async (req, res, next) => {
@@ -99,7 +99,6 @@ module.exports = {
       let user = {
         name: req.body.name,
         username: req.body.username,
-        email: req.body.email,
         telp: req.body.telp,
       };
 
@@ -232,13 +231,14 @@ module.exports = {
 
     */
     try {
-      let { id } = req.user;
-      let user = {
-        password: req.body.password,
-        confirmPassword: req.body.confirmPassword,
+      let { id } = req.user
+      let dataPassword = {
+        oldPassword: req.body.oldPassword,
+        newPassword: req.body.newPassword,
+        confirmNewPassword: req.body.confirmNewPassword,
       };
 
-      let updatePassword = await req.userUC.updatePassword(id, user);
+      let updatePassword = await req.userUC.updatePassword(dataPassword, id);
 
       if (updatePassword.isSuccess === false) {
         return res
@@ -249,6 +249,45 @@ module.exports = {
       res.status(updatePassword.statusCode).json(resData.success());
     } catch (error) {
       next(error);
+    }
+  },
+  
+  resetPassword : async (req, res, next)=>{
+    let email = req.query.email
+    let user = {
+      newPassword: req.body.newPassword,
+      confirmNewPassword: req.body.confirmNewPassword,
+      otp_code : req.body.otp_code
+    }
+    try {
+      resReset = await req.userUC.resetPassword(user, email)
+      if(resReset.isSuccess !== true){
+        return res
+        .status(resReset.statusCode)
+        .json(resData.failed(resReset.reason))
+      }
+      res.status(resReset.statusCode).json(resData.success())
+
+    } catch (e) {
+     next (e) 
+    }
+  },
+  updateEmail: async (req, res, next) => {
+    let id = req.user.id
+    let userData = {
+      newEmail: req.body.email,
+      otp_code: req.body.otp_code
+    }
+    try {
+
+      let resUpdate = await req.userUC.updateEmail(userData, id)
+      if (resUpdate.isSuccess !== true) {
+        return res
+          .status(resUpdate.status).json(resData.failed(resUpdate.reason))
+      }
+      res.status(resUpdate.status).json(resData.success())
+    } catch (e) {
+      next(e)
     }
   },
 };

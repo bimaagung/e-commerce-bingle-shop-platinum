@@ -1,21 +1,28 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('ProductImages', {
+    await queryInterface.createTable('Otps', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      url: {
-        type: Sequelize.STRING
+      email: {
+        type: Sequelize.STRING,
+        allowNull: false
       },
-      cover_image : {
-        type: Sequelize.BOOLEAN
+      otp_type: {
+        type: Sequelize.STRING,
+        allowNull: false
       },
-      product_id: {
-        type: Sequelize.INTEGER
+      otp_code: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      expired_at: {
+        type: Sequelize.DATE,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,
@@ -28,6 +35,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('ProductImages');
+    await queryInterface.dropTable('Otps');
   }
 };

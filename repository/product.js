@@ -23,8 +23,7 @@ class ProductRepository {
       },
       include: [
         {
-          model: ProductImage,
-          attributes: ['id', 'url'],
+          model: ProductImage
         },
       ],
 
@@ -35,7 +34,7 @@ class ProductRepository {
     return await this.ProductModel.create(product);
   }
 
-  async updateProduct(id, product) {
+  async updateProduct(product, id) {
     return await this.ProductModel.update(product, {
       where: {
         id,

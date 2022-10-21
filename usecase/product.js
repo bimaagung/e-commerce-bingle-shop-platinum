@@ -1,15 +1,24 @@
 /* eslint-disable no-return-await */
 class ProductUC {
-  constructor(productRepository, categoryRepository) {
+  constructor(
+    productRepository,
+    categoryRepository,
+    productImageRepository,
+    defaultImage,
+    _
+  ) {
     this.productRepository = productRepository;
     this.categoryRepository = categoryRepository;
+    this.productImageRepository = productImageRepository;
+    this.defaultImage = defaultImage;
+    this._ = _;
   }
 
   async getAllProducts(filters) {
     let result = {
       isSuccess: false,
       status: 404,
-      reason: '',
+      reason: "",
       data: [],
     };
     let getAllProducts = await this.productRepository.getAllProducts(filters);
@@ -24,13 +33,13 @@ class ProductUC {
     let result = {
       isSuccess: false,
       status: 404,
-      reason: '',
+      reason: "",
       data: null,
     };
 
     let getProductByID = await this.productRepository.getProductByID(id);
     if (getProductByID == null) {
-      result.reason = 'product not found';
+      result.reason = "product not found";
       return result;
     }
     result.isSuccess = true;
@@ -39,36 +48,51 @@ class ProductUC {
     return result;
   }
 
-  async addProduct(product) {
+  async addProduct(dataProduct) {
     let result = {
       isSuccess: false,
       status: 404,
-      reason: '',
+      reason: "",
       data: null,
     };
 
-    // to check whether the category exists
-    let existCategory = await this.categoryRepository.getCategoryByID(product.category_id);
-
+    let existCategory = await this.categoryRepository.getCategoryByID(
+      dataProduct.category_id
+    );
     if (existCategory === null) {
-      result.reason = 'failed to add, category not found';
+      result.reason = "failed to add, category not found";
       return result;
     }
 
-    // to add product to database
-    let addProduct = await this.productRepository.addProduct(product);
+    let product = await this.productRepository.addProduct(dataProduct);
+
+    const setImageAsCover = {
+      url: this.defaultImage.DEFAULT_PRODUCT_IMAGE,
+      cover_image: true,
+      product_id: product.id,
+    };
+    let cover_image = await this.productImageRepository.createImage(
+      setImageAsCover
+    );
+
+    const setCoverImageID = {
+      cover_imageID: cover_image.id,
+    };
+
+    await this.productRepository.updateProduct(setCoverImageID, product.id);
+    let getProduct = await this.productRepository.getProductByID(product.id);
 
     result.isSuccess = true;
-    result.data = addProduct;
+    result.data = getProduct;
     result.status = 201;
     return result;
   }
 
-  async updateProduct(id, product) {
+  async updateProduct(product, id) {
     let result = {
       isSuccess: false,
       status: 404,
-      reason: '',
+      reason: "",
       data: null,
     };
 
@@ -76,10 +100,10 @@ class ProductUC {
     let existProduct = await this.productRepository.getProductByID(id);
 
     if (existProduct === null) {
-      result.reason = 'product not found';
+      result.reason = "product not found";
       return result;
     }
-    let updateProduct = await this.productRepository.updateProduct(id, product);
+    let updateProduct = await this.productRepository.updateProduct(product, id);
 
     result.isSuccess = true;
     result.status = 200;
@@ -91,19 +115,33 @@ class ProductUC {
     let result = {
       isSuccess: false,
       statusCode: 404,
-      reason: '',
+      reason: "",
       data: null,
     };
-    let existProduct = await this.productRepository.getProductByID(id);
-    if (existProduct === null) {
-      result.reason = 'product not found';
+    let product = await this.productRepository.getProductByID(id);
+    if (product === null) {
+      result.reason = "product not found";
       return result;
     }
-    let deleteProduct = await this.productRepository.deleteProduct(id);
+    let image = await this.productImageRepository.getAllImageByProductID(
+      product.id
+    );
+    await this.deleteAllImageProduct(image);
+
     result.isSuccess = true;
     result.status = 200;
-    result.data = deleteProduct;
     return result;
+  }
+
+  async deleteAllImageProduct(image) {
+    await image.forEach((data) => {
+      if (data.product_id === data.product_id) {
+        this.productImageRepository.deleteImage(data.id);
+        if (data.length === 0) {
+          this.productRepository.deleteProduct(image.product_id);
+        }
+      }
+    });
   }
 }
 

@@ -13,8 +13,14 @@ class UserRepository {
       },
     });
   }
+  
+  async getUserByEmail(email) {
+    return await this.UserModel.findOne({
+      where: {email},
+    });
+  }
 
-  async updatePassword(id, newPassword) {
+  async updatePassword(newPassword, id) {
     const password = await this.updatePassword(newPassword, {
       where: { id },
     });
@@ -23,8 +29,9 @@ class UserRepository {
 
   async getUserByID(id) {
     return await this.UserModel.findOne({
-      where: { id },
-      attributes: { exclude: ['password', 'is_admin'] },
+      where: { id }, 
+      attributes: {exclude: ['password', 'is_admin']}
+     
     });
   }
 
