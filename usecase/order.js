@@ -470,6 +470,7 @@ class OrderUC {
     }
 
     await this.orderRepository.deleteOrderPending(orderPending.id);
+    await this.orderDetailRepository.deleteOrderDetailByOrderId(orderPending.id);
 
     result.isSuccess = true;
     return result;
