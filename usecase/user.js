@@ -70,7 +70,14 @@ class UserUC {
       result.reason = "user not found";
       return result;
     }
-    
+    if (this.bcrypt.compareSync(user.newPassword, userById.password) == true) {
+      result.reason = "old password and new password can't be the same";
+      return result;
+    }
+    if (!this.bcrypt.compareSync(user.oldPassword, userById.password)) {
+      result.reason = "old password not match";
+      return result;
+    }
     user.password = user.newPassword;
     user.password = this.bcrypt.hashSync(user.password, 10);
 
@@ -108,37 +115,12 @@ class UserUC {
     }
     userData.password = userData.newPassword;
     userData.password = this.bcrypt.hashSync(userData.password, 10);
-    await this.UserRepository.updateUser(userData.email, id);
+    await this.UserRepository.updateUser(userData, user.id);
     await this.OtpRepository.deleteAllOtp(email);
 
     result.isSuccess = true;
     result.statusCode = 200;
     return result;
-  }
-
-  async updateEmail (userData , id ){
-    let result = {
-      isSuccess : false,
-      reason : '',
-      status : 400,
-    }
-    let user = await this.UserRepository.getUserByID(id)
-    if(user === null){
-      result.reason = "user not found"
-      result.status = 404
-      return result
-    }
-    let otp = await this.OtpRepository.getOTP(userData.newEmail , userData.otp_code,"UPDATEEMAIL" )
-    if(otp === null){
-      result.reason = "invalid otp code"
-      return result
-    }
-    await this.UserRepository.updateUser(userData, id)
-    await this.OtpRepository.deleteAllOtp(userData.newEmail)
-    
-    result.isSuccess =true
-    result.status = 200
-    return result
   }
 
   async updateUserImage(userData, id) {
@@ -161,7 +143,7 @@ class UserUC {
     userBody.image = await this.cloudinary.uploadCloudinaryAvatar(
       userBody.image
     );
-      
+
     await this.UserRepository.updateUser(userBody, id);
 
     result.isSuccess = true;
