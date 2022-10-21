@@ -75,9 +75,7 @@ class OrderUC {
     };
 
     const order = await this.orderRepository.getOrderById(orderId);
-    const mainAddress = await this.addressRepository.getMainAddress(
-      order.user.id
-    );
+ 
 
     if (order === null) {
       result.reason = "order not found";
@@ -86,6 +84,10 @@ class OrderUC {
 
     const productInOrderDetail = await this.getProductByOrderDetail(
       order.order_details
+    );
+
+    const mainAddress = await this.addressRepository.getMainAddress(
+      order.user.id
     );
 
     const orderData = {

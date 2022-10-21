@@ -178,6 +178,9 @@
     },
     "/api/public/product/keyword": {
       "get": {
+        "tags": [
+          "Product"
+        ],
         "description": "",
         "parameters": [
           {
@@ -970,35 +973,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Berhasil menambahkan gambar di produk",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/addImageProduct"
-                }
-              }
-            }
-          },
           "401": {
-            "description": "Akun tidak valid",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/unathorized"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Produk tidak ditemukan",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/addImageNotFound"
-                }
-              }
-            }
+            "description": "Unauthorized"
           }
         },
         "security": [
@@ -1033,6 +1009,9 @@
     },
     "/api/admin/update-cover/product/": {
       "put": {
+        "tags": [
+          "Product"
+        ],
         "description": "",
         "parameters": [
           {
