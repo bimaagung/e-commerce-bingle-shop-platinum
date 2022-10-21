@@ -12,11 +12,7 @@ const app = express();
 const socketIO = require('socket.io');
 const http = require('http');
 const cors = require('cors');
-const swaggerUi = require('swagger-ui-express'); // import swagger
-const express = require("express");
-const cors = require("cors");
-
-const swaggerUi = require("swagger-ui-express"); // import swagger
+const swaggerUi = require('swagger-ui-express');
 
 let logger = require("morgan");
 const fs = require("fs");
