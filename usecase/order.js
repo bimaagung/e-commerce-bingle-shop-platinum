@@ -376,6 +376,22 @@ class OrderUC {
 
     let order = {};
 
+     // check order except status order pending is existing
+    const getOrderById =
+      await this.orderRepository.verifyOrderWithoutStatusPending(orderId);
+
+    if (getOrderById === null) {
+      result.reason = "order not found";
+      result.statusCode = 404;
+      return result;
+    }
+
+    if(getOrderById.status === orderConstant[statusOrder]){
+      result.reason = `status order still in ${getOrderById.status}`;
+      result.statusCode = 400;
+      return result;
+    }
+
     if (statusOrder === "ORDER_PROCESSED") {
       order.status = orderConstant.ORDER_PROCESSED;
       order.completed_date = null;
@@ -415,16 +431,6 @@ class OrderUC {
       order.status = null;
       result.reason = "request status outside the specified options";
 
-      return result;
-    }
-
-    // check order except status order pending is existing
-    const getOrderById =
-      await this.orderRepository.verifyOrderWithoutStatusPending(orderId);
-
-    if (getOrderById === null) {
-      result.reason = "order not found";
-      result.statusCode = 404;
       return result;
     }
 
