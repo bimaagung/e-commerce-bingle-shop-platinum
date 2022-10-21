@@ -3,11 +3,12 @@
 const orderConstant = require('../internal/constant/order');
 
 class OrderUC {
-  constructor(orderRepository, orderDetailRepository, productRespository, categoryRepository) {
+  constructor(orderRepository, orderDetailRepository, productRespository, categoryRepository, emailRepository) {
     this.orderRepository = orderRepository;
     this.orderDetailRepository = orderDetailRepository;
     this.productRespository = productRespository;
     this.categoryRepository = categoryRepository;
+    this.emailRepository = emailRepository
   }
 
   async getListOrder(status) {
@@ -329,8 +330,13 @@ class OrderUC {
       order.completed_date = null;
     } else if (statusOrder === 'ORDER_COMPLETED') {
       order.status = orderConstant.ORDER_COMPLETED;
-      // TODO: fungsi kirim email
       order.completed_date = new Date();
+
+    const detailOrder =  this.orderDetailRepository.getOrderDetailById(orderId)
+    await this.emailRepository.sendEmail(
+      orderConstant.ORDER_COMPLETED,detailOrder.user_id
+    )
+
     } else if (statusOrder === 'ORDER_CANCELED') {
       order.status = orderConstant.ORDER_CANCELED;
       order.completed_date = null;

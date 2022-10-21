@@ -52,6 +52,8 @@ const ProductImageRepository = require("./repository/product_image");
 const ProductImageUseCase = require("./usecase/product_image");
 
 const EmailRepository = require("./repository/email");
+
+
 const OtpRepository = require("./repository/otp");
 const OtpUseCase = require("./usecase/otp");
 
@@ -111,7 +113,8 @@ const orderUC = new OrderUseCase(
   new OrderRepository(),
   new OrderDetailRepository(),
   new ProductRepository(),
-  new CategoryRepository()
+  new CategoryRepository(),
+  new EmailRepository()
 );
 
 const otpUC = new OtpUseCase(
@@ -119,6 +122,8 @@ const otpUC = new OtpUseCase(
   new EmailRepository(),
   email_message
 );
+
+
 
 // const ACCESS_LOG = process.env.ACCESS_LOG || './logs/access.log';
 // const ERROR_LOG = process.env.ERROR_LOG || './logs/errors.log';

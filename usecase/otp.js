@@ -1,7 +1,8 @@
 class Otp {
-    constructor(otpRepository, emailRepository, email_message) {
+    constructor(otpRepository, emailRepository,orderDetailRepository, email_message) {
         this.otpRepository = otpRepository
         this.emailRepository = emailRepository
+        this.orderDetailRepository = orderDetailRepository
         this.email_message = email_message
     }
     async generateOTP(email, otp_type) {
@@ -23,12 +24,12 @@ class Otp {
             return result
         }
 
-        otp = await this.otpRepository.generateOTP(email, otp_type)
+        completeOrder = await this.otpRepository.generateOTP(email, otp_type)
         let text = content.text_value.replace('{otp}', otp.otp_code)
         let html = content.html_value.replace('{otp}', otp.otp_code)
         await this.emailRepository.sendEmail('OTP Code', email, text, html)
 
-        result.is_success = true
+        result.isSuccess = true
         result.status = 200,
         result.reason = "check your email"
         return result
