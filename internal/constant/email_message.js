@@ -1,4 +1,4 @@
-const ejs = require("ejs");
+
 const email_message = {
   REGISTRATION: {
     text_value: "your otp code for registration: {otp}",

@@ -1,4 +1,5 @@
 const { Product, ProductImage } = require('../models');
+const Op = require('sequelize').Op
 
 class ProductRepository {
   constructor() {
@@ -60,6 +61,17 @@ class ProductRepository {
       },
     });
   }
+  async getProductByKeyword (condition){
+    let keyword = ''
+     condition = []
+    condition.push("%" + keyword + "%" )
+    await this.ProductModel.findAll({
+      where : {condition},
+      
+      attributes: ['id', 'name'],
+    })
+  }
 }
+
 
 module.exports = ProductRepository;

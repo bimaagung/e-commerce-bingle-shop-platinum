@@ -25,9 +25,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
           }
         },
         "requestBody": {
@@ -102,7 +99,6 @@
           }
         },
         "requestBody": {
-          "required": true,
           "content": {
             "multipart/form-data": {
               "schema": {
@@ -133,11 +129,7 @@
                   "otp_code": {
                     "type": "string"
                   }
-                },
-                "required": [
-                  "product_id",
-                  "url"
-                ]
+                }
               }
             }
           }
@@ -180,6 +172,28 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/public/product/keyword": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }

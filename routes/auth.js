@@ -10,7 +10,7 @@ const handleUpload = require('../libs/handle_upload');
 const validation = require('../middleware/formValidation');
 
 // TODO UPDATE VALIDATION LOGIN
-router.post('/api/user/login', validation.login, auth.login);
+router.post('/api/user/login', auth.login);
 // TODO UPDATE VALIDATION Register OTP
 router.post('/api/user/register', handleUpload.upload.single('image'), auth.register);
 

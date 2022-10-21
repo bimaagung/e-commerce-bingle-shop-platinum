@@ -153,10 +153,6 @@ class OrderUC {
       userId
     );
 
-    const mainAddress = await this.addressRepository.getMainAddress(
-      orderPending.user.id
-    );
-
     if (orderPending === null) {
       result.reason = "order not found";
       return result;
@@ -164,6 +160,10 @@ class OrderUC {
 
     const productInOrderDetail = await this.getProductByOrderDetail(
       orderPending.order_details
+    );
+
+    const mainAddress = await this.addressRepository.getMainAddress(
+      orderPending.user.id
     );
 
     const orderData = {
@@ -477,8 +477,8 @@ class OrderUC {
         calProduct.sold = getProductById.sold - orderDetail[i].qty;
 
         await this.productRespository.updateProduct(
-          orderDetail[i].product_id,
-          calProduct
+          calProduct,
+          orderDetail[i].product_id
         );
 
         fixUpdateProduct.push(orderDetail[i].product_id);

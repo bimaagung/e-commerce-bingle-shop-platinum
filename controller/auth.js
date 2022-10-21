@@ -27,7 +27,6 @@ module.exports = {
       
       #swagger.consumes = ['multipart/form-data']
       #swagger.requestBody = {
-            required: true,
             "@content": {
                 "multipart/form-data": {
                     schema: {
@@ -60,7 +59,6 @@ module.exports = {
                             },
 
                         },
-                        required: ["product_id", "url"]
                     }
                 }
             }
@@ -119,7 +117,7 @@ module.exports = {
         telp: req.body.telp,
         email: req.body.email,
         password: req.body.password,
-        confrimPassword: req.body.confrimPassword,
+        confrimPassword: req.body.confirmPassword,
         is_admin: false,
         otp_code : req.body.otp_code
       };

@@ -1,20 +1,20 @@
 //Product Admin [Mas Irvan]
-- add product image default 
-- remove endpoint update-image
-- delete row image ketika produk di delete 
-- remove endpoint image detail
+- add product image default [fix]
+- remove endpoint update-image [fix]
+- delete row image ketika produk di delete [fix] 
+- remove endpoint image detail [fix]
 - swagger , ketika limit 
 	{
   "status": "failed",
   "message": "failed add image, maximum limit image"
 	}
 
-- get all product diurutin paling baru
+- get all product diurutin paling baru [fix]
 - add produk ketika user tidak input kategori maka default id [minor]
 
 //Category [Mas Faris]
--add detail product  di get category by id
--update category tidak jalan
+-add detail product  di get category by id [fix]
+-update category tidak jalan 
 -get all category diurutin paling baru
 -delete category tidak jalan 
 -kalau kategory di delete column product ke default id 100 "kategori" [minor]
