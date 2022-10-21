@@ -13,7 +13,7 @@ router.get('/api/public/product/:id', productController.getProductById);
 
 // category
 router.get('/api/public/category', categoryController.getAllCategory);
-router.get('/api/public/category/:id', categoryController.getCategoryById);
+router.get('/api/public/category/:id', categoryController.getCategoryByID);
 
 // image prodcut customer
 router.get('/api/public/image/product/:product_id', imageController.getImageProductByProductID);

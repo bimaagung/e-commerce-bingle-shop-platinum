@@ -1,6 +1,6 @@
 class CategoryUC {
-  constructor(categoryRepository) {
-    this.categoryRepository = categoryRepository;
+  constructor(CategoryRepository) {
+    this.CategoryRepository = CategoryRepository;
   }
 
   async getCategoryByID(id) {
@@ -10,7 +10,7 @@ class CategoryUC {
       data: null,
     };
 
-    const category = await this.categoryRepository.getCategoryByID(id);
+    const category = await this.CategoryRepository.getCategoryByID(id);
 
     if (category === null) {
       result.reason = 'category not found';
@@ -30,7 +30,7 @@ class CategoryUC {
       data: [],
     };
 
-    const category = await this.categoryRepository.getAllCategory();
+    const category = await this.CategoryRepository.getAllCategory();
 
     result.isSuccess = true;
     result.data = category;
@@ -45,7 +45,7 @@ class CategoryUC {
       data: null,
     };
 
-    const addCategory = await this.categoryRepository.addCategory(category);
+    const addCategory = await this.CategoryRepository.addCategory(category);
 
     if (addCategory === null) {
       result.reason = 'failed add category';
@@ -65,12 +65,12 @@ class CategoryUC {
       data: null,
     };
 
-    const cekCategory = await this.categoryRepository.getCategoryByID(id);
+    const cekCategory = await this.CategoryRepository.getCategoryByID(id);
     if (cekCategory === null) {
       result.reason = 'category not found';
       return result;
     }
-    const updateCategory = await this.categoryRepository.updateCategory(category, id);
+    const updateCategory = await this.CategoryRepository.updateCategory(category, id);
 
     result.isSuccess = true;
     result.data = updateCategory;
@@ -85,16 +85,22 @@ class CategoryUC {
       data: null,
     };
 
-    let category = await this.categoryRepository.getCategoryByID(id);
-    if (category === null) {
+    let availCategory = await this.CategoryRepository.getCategoryByID(id);
+    if (availCategory === null) {
       result.reason = 'category not found';
       result.status = 404;
       return result;
     }
-    await this.categoryRepository.deleteCategory(id);
+    let deleteCategory = await this.CategoryRepository.deleteCategory(id);
+
     result.isSuccess = true;
     result.status = 200;
+    result.data = deleteCategory;
     return result;
+    // await this.CategoryRepository.deleteCategory(id);
+    // result.isSuccess = true;
+    // result.status = 200;
+    // return result;
   }
 }
 

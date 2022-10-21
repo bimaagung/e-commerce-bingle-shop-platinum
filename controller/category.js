@@ -25,7 +25,7 @@ module.exports = {
     }
   },
 
-  getCategoryById: async (req, res, next) => {
+  getCategoryByID: async (req, res, next) => {
     /*
       #swagger.tags = ['Category']
       #swagger.responses[200] = {
@@ -216,15 +216,13 @@ module.exports = {
     */
     try {
       let { id } = req.params;
-
-      let category = await req.categoryUC.getCategoryByID(id);
-
-      if (category.isSuccess !== true) {
-        return res.status(404)
-          .json(resData.failed(category.reason, null));
+      let resCategory = await req.categoryUC.deleteCategory(id);
+      if (resCategory.isSuccess === false) {
+        return res
+          .status(resCategory.status)
+          .json(resData.failed(resCategory.reason));
       }
-
-      res.status(200).json(resData.success());
+      res.status(resCategory.status).json(resData.success());
     } catch (e) {
       next(e);
     }
