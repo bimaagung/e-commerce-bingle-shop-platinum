@@ -178,7 +178,7 @@ class OrderUC {
     );
 
     // check stock product
-    if (orderDetail.length < 1) {
+    if (orderDetail.length < products.length) {
       result.reason = 'can\'t process the order, please check each product in order';
       return result;
     }
@@ -214,7 +214,7 @@ class OrderUC {
         continue;
       }
 
-      if (getProductById.stock < 1) {
+      if (getProductById.stock < products[i].qty) {
         continue;
       }
 
