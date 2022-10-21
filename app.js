@@ -114,7 +114,8 @@ const orderUC = new OrderUseCase(
   new ProductRepository(),
   new CategoryRepository(),
   new EmailRepository(),
-  new UserRepository()
+  new UserRepository(),
+  _
 );
 
 const otpUC = new OtpUseCase(

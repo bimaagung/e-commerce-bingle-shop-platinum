@@ -63,6 +63,7 @@ class ProductUC {
       result.reason = "failed to add, category not found";
       return result;
     }
+   
 
     let product = await this.productRepository.addProduct(dataProduct);
 

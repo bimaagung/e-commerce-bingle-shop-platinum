@@ -1,38 +1,37 @@
-const nodemailer_transport = require('../libs/nodemailer')
+const nodemailer_transport = require("../libs/nodemailer");
+const email_message = require("../internal/constant/email_message");
+class EmailRepository {
+  constructor() {}
+  async sendEmail(subject, recipient, text, html) {
+    await nodemailer_transport.sendMail({
+      from: `"${process.env.MAILER_SENDER_NAME}" <${process.env.MAILER_SENDER_EMAIL}>`,
+      to: recipient,
+      subject: subject,
+      text: text,
+      html: html,
+    });
+  }
+  async sendOrderEmail(email, data) {
+    let content = email_message.ORDERCOMPLETED;
+    let text = content.text_value
+      .replaceAll("{customerName}", data.customerName)
+      .replaceAll("{username}", data.username)
+      .replaceAll("{productName}", data.productName)
+      .replaceAll("{productPrice}", data.productPrice)
+      .replaceAll("{qty}", data.qty)
+      .replaceAll("{total_price}", data.total_price)
+      .replaceAll("{completed_date}", data.completed_date);
 
-class EmailRepository{
-    constructor(){
-    }
-    async sendEmail(subject, recipient, text, html){
-        await nodemailer_transport.sendMail({
-            from : `"${process.env.MAILER_SENDER_NAME}" <${process.env.MAILER_SENDER_EMAIL}>`,
-            to : recipient,
-            subject:subject,
-            text:text,
-            html:html
-        })
-    }
-    
+    let html = content.html_value
+      .replaceAll("{customerName}", data.customerName)
+      .replaceAll("{username}", data.username)
+      .replaceAll("{productName}", data.productName)
+      .replaceAll("{productPrice}", data.productPrice)
+      .replaceAll("{qty}", data.qty)
+      .replaceAll("{total_price}", data.total_price)
+      .replaceAll("{completed_date}", data.completed_date);
+
+    await this.sendEmail("order", email, text, html);
+  }
 }
-module.exports = EmailRepository
-
-
-//  sendMail({
-//     from: `"Bima" <${process.env.EMAIL_FROM}>`,
-//     to: process.env.EMAIL_TO,
-//     subject: "Submission: Chapter-9 Challenge#Bima Agung Setya Budi",
-//     text: "Favorite Song: I'm Good (Blue) | link github: https://github.com/bimaagung/nodemailer-chapter-9.git",
-//     html: `<body style="font-family: sans-serif;">
-//             <center>
-//             <div style="background-color: black; width: 500px;">
-//                 <div style="background-color: darkorange; padding: 5px">
-//                     <h1><center>I'm Good (Blue)<br><span style="font-size: 16px; font-weight: 400; margin-top: 5px">David Guetta, Bebe Rexha</span></center></h1>
-//                 </div>
-//                 <div style="color: aliceblue; padding-bottom: 10px">
-//                 <center><p>https://github.com/bimaagung/nodemailer-chapter-9.git</p></center>
-//                 </div>
-//                 </div>
-//             </center>
-//             </body>`
-//         })
-     
+module.exports = EmailRepository;
