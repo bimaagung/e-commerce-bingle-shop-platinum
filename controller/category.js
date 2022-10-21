@@ -162,7 +162,7 @@ module.exports = {
       let { id } = req.params;
       let category = req.body;
 
-      let categoryById = await req.categoryUC.getCategoryByID(id);
+      let categoryById = await req.categoryUC.updateCategory(category, id);
 
       if (categoryById.isSuccess !== true) {
         return res
@@ -217,7 +217,7 @@ module.exports = {
     try {
       let { id } = req.params;
 
-      let category = await req.categoryUC.getCategoryByID(id);
+      let category = await req.categoryUC.deleteCategory(id);
 
       if (category.isSuccess !== true) {
         return res.status(404)

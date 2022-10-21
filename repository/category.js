@@ -1,4 +1,4 @@
-const { Category } = require('../models');
+const { Category, Product } = require('../models');
 
 class CategoryRepository {
   constructor() {
@@ -16,10 +16,13 @@ class CategoryRepository {
       },
       inculude: [
         {
-          model:Category,
+          model:Product,
           as: 'product',
-          attribute: ['id', 'name', 'description', 'category_id', 'sold', 'price', 'stock', 'image'],
+          // attribute: ['id', 'name', 'description', 'category_id', 'sold', 'price', 'stock', 'image'],
         },
+      ],
+      order: [
+        ['createdAt', 'DESC'],
       ],
     });
 

@@ -13,6 +13,9 @@ class ProductRepository {
           attributes: ['id', 'url'],
         },
       ],
+      order: [
+        ['createdAt', 'DESC'],
+      ],
     });
   }
 
