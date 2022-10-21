@@ -30,4 +30,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: majujaya/platinum:latest
+          tags: bimaagung/platinum-maju-jaya:latest
