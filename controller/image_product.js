@@ -56,38 +56,6 @@ module.exports = {
             }
         }
 
-    #swagger.responses[200] = {
-        description: "Berhasil menambahkan gambar di produk",
-          content: {
-              "application/json": {
-                  schema:{
-                      $ref: "#/definitions/addImageProduct"
-                  }
-              }
-          }
-      }
-
-      #swagger.responses[404] = {
-        description: "Produk tidak ditemukan",
-          content: {
-              "application/json": {
-                  schema:{
-                      $ref: "#/definitions/addImageNotFound"
-                  }
-              }
-          }
-      }
-
-      #swagger.responses[401] = {
-        description: "Akun tidak valid",
-          content: {
-              "application/json": {
-                  schema:{
-                      $ref: "#/definitions/unathorized"
-                  }
-              }
-          }
-      }
     */
     try {
       let dataImage = {
