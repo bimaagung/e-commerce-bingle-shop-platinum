@@ -1,7 +1,5 @@
 /* eslint-disable consistent-return */
 
-const orderConstant = require("../internal/constant/order");
-
 class OrderUC {
   constructor(
     orderRepository,
@@ -11,7 +9,8 @@ class OrderUC {
     emailRepository,
     userRepository,
     _,
-    addressRepository
+    addressRepository,
+    orderConstant,
   ) {
     this.orderRepository = orderRepository;
     this.orderDetailRepository = orderDetailRepository;
@@ -21,6 +20,7 @@ class OrderUC {
     this.userRepository = userRepository;
     this._ = _;
     this.addressRepository = addressRepository;
+    this.orderConstant = orderConstant;
   }
 
   async getListOrder(status) {
@@ -34,6 +34,9 @@ class OrderUC {
       where: {
         status: null,
       },
+      order: [
+        ['createdAt', 'DESC'],
+      ],
     };
 
     let listOrder = [];
@@ -41,7 +44,7 @@ class OrderUC {
     // check there is a query
     if (status !== undefined) {
       const statusUpperCase = status.toUpperCase();
-      const splitStatus = statusUpperCase.split(",");
+      const splitStatus = statusUpperCase.split(',');
       let multipleStatus = [];
 
       // check single or multiple query status
@@ -55,7 +58,7 @@ class OrderUC {
       });
 
       listOrder = await this.orderRepository.getListOrderMultipleQuery(
-        multipleStatus
+        multipleStatus,
       );
     } else {
       // get all order in db
@@ -75,20 +78,25 @@ class OrderUC {
     };
 
     const order = await this.orderRepository.getOrderById(orderId);
- 
 
     if (order === null) {
-      result.reason = "order not found";
+      result.reason = 'order not found';
       return result;
     }
 
     const productInOrderDetail = await this.getProductByOrderDetail(
-      order.order_details
+      order.order_details,
     );
 
     const mainAddress = await this.addressRepository.getMainAddress(
-      order.user.id
+      order.user.id,
     );
+
+    if (mainAddress === null) {
+      result.reason = 'main address user not found in detail user';
+      result.statusCode = 400;
+      return result;
+    }
 
     const orderData = {
       id: order.id,
@@ -129,12 +137,12 @@ class OrderUC {
     const order = await this.orderRepository.getOrderPendingById(orderId);
 
     if (order === null) {
-      result.reason = "order not found";
+      result.reason = 'order not found';
       return result;
     }
 
-    if (order.status !== orderConstant.ORDER_PENDING) {
-      result.reason = "order not found";
+    if (order.status !== this.orderConstant.ORDER_PENDING) {
+      result.reason = 'order not found';
       return result;
     }
 
@@ -152,21 +160,27 @@ class OrderUC {
     };
 
     const orderPending = await this.orderRepository.getPendingOrderByUserId(
-      userId
+      userId,
     );
 
     if (orderPending === null) {
-      result.reason = "order not found";
+      result.reason = 'order not found';
       return result;
     }
 
     const productInOrderDetail = await this.getProductByOrderDetail(
-      orderPending.order_details
+      orderPending.order_details,
     );
 
     const mainAddress = await this.addressRepository.getMainAddress(
-      orderPending.user.id
+      orderPending.user.id,
     );
+
+    if (mainAddress === null) {
+      result.reason = 'main address user not found in detail user';
+      result.statusCode = 400;
+      return result;
+    }
 
     const orderData = {
       id: orderPending.id,
@@ -207,16 +221,24 @@ class OrderUC {
     const orders = {
       id: orderId,
       user_id: userId,
-      status: orderConstant.ORDER_PENDING,
+      status: this.orderConstant.ORDER_PENDING,
     };
 
     // check user have pending order
     const getPendingOrder = await this.orderRepository.getPendingOrderByUserId(
-      userId
+      userId,
     );
 
     if (getPendingOrder !== null) {
-      result.reason = "user already has pending order";
+      result.reason = 'user already has pending order';
+      return result;
+    }
+
+    const mainAddress = await this.addressRepository.getMainAddress(userId);
+
+    if (mainAddress === null) {
+      result.reason = 'please complete the main address before create an order';
+      result.statusCode = 400;
       return result;
     }
 
@@ -224,13 +246,12 @@ class OrderUC {
     const orderDetail = await this.addProductInDetailOrder(
       userId,
       orderId,
-      products
+      products,
     );
 
     // check stock product
     if (orderDetail.length < products.length) {
-      result.reason =
-        "can't process the order, please check each product in order";
+      result.reason = "can't process the order, please check each product in order";
       return result;
     }
 
@@ -258,7 +279,7 @@ class OrderUC {
 
       // check stock product if existing
       const getProductById = await this.productRespository.getProductByID(
-        products[i].id
+        products[i].id,
       );
 
       if (getProductById === null) {
@@ -297,7 +318,7 @@ class OrderUC {
 
     for (let i = 0; i < orderDetail.length; i += 1) {
       const product = await this.productRespository.getProductByID(
-        orderDetail[i].product_id
+        orderDetail[i].product_id,
       );
 
       if (product === null) {
@@ -305,7 +326,7 @@ class OrderUC {
       }
 
       const category = await this.categoryRepository.getCategoryByID(
-        product.category_id
+        product.category_id,
       );
 
       const resultProduct = {
@@ -335,27 +356,26 @@ class OrderUC {
     };
 
     const order = {
-      status: orderConstant.ORDER_SUBMITTED,
+      status: this.orderConstant.ORDER_SUBMITTED,
       completed_date: null,
     };
 
     const orderPending = await this.orderRepository.getPendingOrderByUserId(
-      userId
+      userId,
     );
 
     if (orderPending === null) {
-      result.reason = "order not found";
+      result.reason = 'order not found';
       return result;
     }
 
     const reduceStock = await this.updateStockSoldProduct(
       orderPending.id,
-      orderConstant.ORDER_SUBMITTED
+      this.orderConstant.ORDER_SUBMITTED,
     );
 
     if (reduceStock.length !== orderPending.order_details.length) {
-      result.reason =
-        "recheck the product, make sure the product is still in stock";
+      result.reason = 'recheck the product, make sure the product is still in stock';
       result.statusCode = 400;
       return result;
     }
@@ -378,40 +398,41 @@ class OrderUC {
 
     let order = {};
 
-     // check order except status order pending is existing
-    const getOrderById =
-      await this.orderRepository.verifyOrderWithoutStatusPending(orderId);
+    // check order except status order pending is existing
+    const getOrderById = await this.orderRepository.verifyOrderWithoutStatusPending(orderId);
 
     if (getOrderById === null) {
-      result.reason = "order not found";
+      result.reason = 'order not found';
       result.statusCode = 404;
       return result;
     }
 
-    if(getOrderById.status === orderConstant[statusOrder]){
+    if (getOrderById.status === this.orderConstant[statusOrder]) {
       result.reason = `status order still in ${getOrderById.status}`;
       result.statusCode = 400;
       return result;
     }
 
-    if (statusOrder === "ORDER_PROCESSED") {
-      order.status = orderConstant.ORDER_PROCESSED;
+    if (statusOrder === 'ORDER_PROCESSED') {
+      order.status = this.orderConstant.ORDER_PROCESSED;
       order.completed_date = null;
-    } else if (statusOrder === "ORDER_COMPLETED") {
-      order.status = orderConstant.ORDER_COMPLETED;
+    } else if (statusOrder === 'ORDER_COMPLETED') {
+      order.status = this.orderConstant.ORDER_COMPLETED;
       order.completed_date = new Date();
 
       const orderDetail = await this.orderDetailRepository.getOrderDetailById(
-        orderId
+        orderId,
       );
 
-      let dataDetail = this._.map(orderDetail, "dataValues")[0];
+      let dataDetail = this._.map(orderDetail, 'dataValues')[0];
 
       const user = await this.userRepository.getUserByID(dataDetail.user_id);
       const product = await this.productRespository.getProductByID(
-        dataDetail.product_id
+        dataDetail.product_id,
       );
+
       const address = await this.addressRepository.getMainAddress(user.id);
+
       let newData = {
         customerName: user.name,
         username: user.username,
@@ -424,21 +445,21 @@ class OrderUC {
       };
 
       await this.emailRepository.sendOrderEmail(user.email, newData);
-    } else if (statusOrder === "ORDER_CANCELED") {
-      order.status = orderConstant.ORDER_CANCELED;
+    } else if (statusOrder === 'ORDER_CANCELED') {
+      order.status = this.orderConstant.ORDER_CANCELED;
       order.completed_date = null;
 
       await this.updateStockSoldProduct(orderId, order.status);
     } else {
       order.status = null;
-      result.reason = "request status outside the specified options";
+      result.reason = 'request status outside the specified options';
 
       return result;
     }
 
     const updateStatusOrder = await this.orderRepository.updateOrder(
       orderId,
-      order
+      order,
     );
 
     result.isSuccess = true;
@@ -455,7 +476,7 @@ class OrderUC {
 
     // get order details
     const orderDetail = await this.orderDetailRepository.getOrderDetailById(
-      orderId
+      orderId,
     );
 
     // process each product
@@ -463,14 +484,14 @@ class OrderUC {
       let calProduct = {};
 
       const getProductById = await this.productRespository.getProductByID(
-        orderDetail[i].product_id
+        orderDetail[i].product_id,
       );
 
       if (getProductById === null) {
         continue;
       }
 
-      if (statusOrder === orderConstant.ORDER_CANCELED) {
+      if (statusOrder === this.orderConstant.ORDER_CANCELED) {
         /*
         Returning the stock of the product that was canceled
         after the stock was reduced because it was submitted
@@ -480,11 +501,11 @@ class OrderUC {
 
         await this.productRespository.updateProduct(
           calProduct,
-          orderDetail[i].product_id
+          orderDetail[i].product_id,
         );
 
         fixUpdateProduct.push(orderDetail[i].product_id);
-      } else if (statusOrder === orderConstant.ORDER_SUBMITTED) {
+      } else if (statusOrder === this.orderConstant.ORDER_SUBMITTED) {
         // check stock
         if (getProductById.stock < orderDetail[i].qty) {
           continue;
@@ -496,7 +517,7 @@ class OrderUC {
 
         await this.productRespository.updateProduct(
           calProduct,
-          orderDetail[i].product_id
+          orderDetail[i].product_id,
         );
 
         fixUpdateProduct.push(orderDetail[i].product_id);
@@ -516,17 +537,17 @@ class OrderUC {
     };
 
     const orderPending = await this.orderRepository.getPendingOrderByUserId(
-      userId
+      userId,
     );
 
     if (orderPending === null) {
-      result.reason = "order not found";
+      result.reason = 'order not found';
       return result;
     }
 
     await this.orderRepository.deleteOrderPending(orderPending.id);
     await this.orderDetailRepository.deleteOrderDetailByOrderId(
-      orderPending.id
+      orderPending.id,
     );
 
     result.isSuccess = true;
