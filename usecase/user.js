@@ -80,30 +80,67 @@ class UserUC {
     return result;
   }
 
-
-  async updateEmail (userData , id ){
+  async updateEmail(userData, id) {
     let result = {
-      isSuccess : false,
-      reason : '',
-      status : 400,
+      isSuccess: false,
+      reason: "",
+      status: 400,
+    };
+    let user = await this.UserRepository.getUserByID(id);
+    if (user === null) {
+      result.reason = "user not found";
+      result.status = 404;
+      return result;
     }
-    let user = await this.UserRepository.getUserByID(id)
-    if(user === null){
-      result.reason = "user not found"
-      result.status = 404
-      return result
-    }
-    let otp = await this.OtpRepository.getOTP(userData.email , userData.otp_code,"UPDATEEMAIL" )
-    if(otp === null){
-      result.reason = "invalid otp code"
-      return result
+    let otp = await this.OtpRepository.getOTP(
+      userData.email,
+      userData.otp_code,
+      "UPDATEEMAIL"
+    );
+    if (otp === null) {
+      result.reason = "invalid otp code";
+      return result;
     }
     await this.UserRepository.updateUser(userData, id);
-    await this.OtpRepository.deleteAllOtp(userData.email)
+    await this.OtpRepository.deleteAllOtp(userData.email);
 
-    result.isSuccess =true
+    result.isSuccess = true;
+    result.status = 200;
+    return result;
+  }
+  async resetPassword(userData, email) {
+    let result = {
+      is_success: false,
+      reason: "",
+      status: 400,
+    };
+    if (userData.newPassword !== userData.confrimNewPassword) {
+      result.reason = "confrim new password not match";
+      return result;
+    }
+    let user = await this.userRepository.getUserByEmail(email);
+    if (user === null) {
+      result.reason = "user not found";
+      result.status = 400;
+      return result;
+    }
+    let otp = await this.otpRepository.getOTP(
+      email,
+      userData.otp_code,
+      "RESETPASSWORD"
+    );
+    if (otp === null) {
+      result.reason = "invalid otp code";
+      return result;
+    }
+    userData.password = userData.newPassword;
+    userData.password = this.bcrypt.hashSync(userData.password, 10);
+    await this.userRepository.updatePassword(userData, user.id);
+    await this.otpRepository.deleteAllOtp(email);
+
+    result.is_success = true 
     result.status = 200
-    return result
+    return result;
   }
 
   async updateUserImage(userData, id) {

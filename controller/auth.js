@@ -1,5 +1,5 @@
-const resData = require('../helper/response');
-const defaultImage = require('../internal/constant/defaultImage');
+const resData = require("../helper/response");
+const defaultImage = require("../internal/constant/defaultImage");
 
 module.exports = {
   login: async (req, res, next) => {
@@ -12,10 +12,12 @@ module.exports = {
       if (resUser.isSuccess !== true) {
         return res.status(resUser.status).json(resData.failed(resUser.reason));
       }
-      res.status(200).json(resData.success({
-        user: resUser.data,
-        token: resUser.token,
-      }));
+      res.status(200).json(
+        resData.success({
+          user: resUser.data,
+          token: resUser.token,
+        })
+      );
     } catch (e) {
       next(e);
     }
@@ -119,26 +121,26 @@ module.exports = {
         password: req.body.password,
         confrimPassword: req.body.confirmPassword,
         is_admin: false,
-        otp_code : req.body.otp_code
+        otp_code: req.body.otp_code,
       };
 
       let image = null;
       if (req.file !== undefined) {
-        image = (req.file.path);
+        image = req.file.path;
       } else {
         image = defaultImage.DEFAULT_AVATAR;
       }
       userData.image = image;
       let resUser = await req.authUC.register(userData);
       if (resUser.isSuccess !== true) {
-        return res
-          .status(resUser.status)
-          .json(resData.failed(resUser.reason));
+        return res.status(resUser.status).json(resData.failed(resUser.reason));
       }
-      res.status(200).json(resData.success({
-        user: resUser.data,
-        token: resUser.token,
-      }));
+      res.status(200).json(
+        resData.success({
+          user: resUser.data,
+          token: resUser.token,
+        })
+      );
     } catch (e) {
       next(e);
     }
