@@ -288,10 +288,10 @@ module.exports = {
       let resUpdate = await req.userUC.updateEmail(userData, id);
       if (resUpdate.isSuccess !== true) {
         return res
-          .status(resUpdate.status)
+          .status(resUpdate.statusCode)
           .json(resData.failed(resUpdate.reason));
       }
-      res.status(resUpdate.status).json(resData.success());
+      res.status(resUpdate.statusCode).json(resData.success());
     } catch (e) {
       next(e);
     }
