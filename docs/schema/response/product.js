@@ -1,4 +1,19 @@
 module.exports = {
+    successGetImageByProductId: {
+        "status": "ok",
+        "message": "success",
+        "data": [
+            {
+            "id": 1,
+            "url": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815144/default%20image/default_product_w8fe1a.jpg",
+            "cover_image": true,
+            "product_id": 1,
+            "createdAt": "2022-10-21T11:36:16.082Z",
+            "updatedAt": "2022-10-21T11:36:16.082Z"
+            }
+        ]
+    },
+    
     successGetAllProduct: {
         "status": "ok",
         "message": "success",
@@ -23,7 +38,7 @@ module.exports = {
         ]
     },
 
-    successGetProductById: {
+    successGetProductById:{
         "status": "ok",
         "message": "success",
         "data": {
@@ -31,16 +46,21 @@ module.exports = {
             "name": "Asus ROG Zephyrush M16",
             "description": "Laptop gaming dari asus",
             "category_id": 1,
-            "sold": 23,
+            "sold": 3,
             "price": 30000000,
-            "stock": 0,
-            "createdAt": "2022-10-13T09:31:19.370Z",
-            "updatedAt": "2022-10-17T06:48:59.632Z",
+            "stock": 17,
+            "cover_imageID": 1,
+            "createdAt": "2022-10-21T11:36:16.349Z",
+            "updatedAt": "2022-10-21T11:40:27.101Z",
             "ProductImages": [
-                {
-                    "id": 1,
-                    "url": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815144/default%20image/default_product_w8fe1a.jpg"
-                }
+            {
+                "id": 1,
+                "url": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815144/default%20image/default_product_w8fe1a.jpg",
+                "cover_image": true,
+                "product_id": 1,
+                "createdAt": "2022-10-21T11:36:16.082Z",
+                "updatedAt": "2022-10-21T11:36:16.082Z"
+            }
             ]
         }
     },

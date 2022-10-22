@@ -247,16 +247,7 @@
           "Category"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "product_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "Berhasil melihat semua kategori",
@@ -623,41 +614,9 @@
         ],
         "responses": {
           "400": {
-            "description": "Password dan confirmPassword tidak sesuai",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/notMatchPassword"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Akun tidak valid",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/unathorized"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Pengguna tidak ditemukan",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/userNotFound"
-                }
-              }
-            }
+            "description": "Bad Request"
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1281,24 +1240,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Berhasil menghapus alamat berdasarkan id alamat",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/sucessAddress"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Akun tidak valid",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/unathorized"
-                }
-              }
-            }
+            "description": "OK"
           },
           "401": {
             "description": "Unauthorized"
@@ -1772,7 +1714,7 @@
               },
               "sold": {
                 "type": "number",
-                "example": 23
+                "example": 3
               },
               "price": {
                 "type": "number",
@@ -1780,15 +1722,19 @@
               },
               "stock": {
                 "type": "number",
-                "example": 0
+                "example": 17
+              },
+              "cover_imageID": {
+                "type": "number",
+                "example": 1
               },
               "createdAt": {
                 "type": "string",
-                "example": "2022-10-13T09:31:19.370Z"
+                "example": "2022-10-21T11:36:16.349Z"
               },
               "updatedAt": {
                 "type": "string",
-                "example": "2022-10-17T06:48:59.632Z"
+                "example": "2022-10-21T11:40:27.101Z"
               },
               "ProductImages": {
                 "type": "array",
@@ -1802,6 +1748,22 @@
                     "url": {
                       "type": "string",
                       "example": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815144/default%20image/default_product_w8fe1a.jpg"
+                    },
+                    "cover_image": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "product_id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2022-10-21T11:36:16.082Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2022-10-21T11:36:16.082Z"
                     }
                   }
                 }
@@ -1950,15 +1912,63 @@
               },
               "name": {
                 "type": "string",
-                "example": "Camera"
+                "example": "Laptop"
               },
               "createdAt": {
                 "type": "string",
-                "example": "2022-10-13T09:31:19.311Z"
+                "example": "2022-10-21T11:36:16.277Z"
               },
               "updatedAt": {
                 "type": "string",
-                "example": "2022-10-13T09:31:19.311Z"
+                "example": "2022-10-21T11:36:16.277Z"
+              },
+              "products": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 2
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Macbook pro M2"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "Laptop gaming dari apple"
+                    },
+                    "category_id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "sold": {
+                      "type": "number",
+                      "example": 0
+                    },
+                    "price": {
+                      "type": "number",
+                      "example": 25000000
+                    },
+                    "stock": {
+                      "type": "number",
+                      "example": 30
+                    },
+                    "cover_imageID": {
+                      "type": "number",
+                      "example": 2
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2022-10-21T11:36:16.349Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2022-10-21T11:36:16.349Z"
+                    }
+                  }
+                }
               }
             }
           }
@@ -2344,18 +2354,6 @@
             "type": "string",
             "example": "customerb@gmail.com"
           },
-          "telp": {
-            "type": "string",
-            "example": "08363372"
-          }
-        },
-        "xml": {
-          "name": "bodyUpdateUser"
-        }
-      },
-      "bodyUpdatePassword": {
-        "type": "object",
-        "properties": {
           "password": {
             "type": "string",
             "example": "123456"
