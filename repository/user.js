@@ -33,6 +33,7 @@ class UserRepository {
       where: { id :id},
     });
   }
+  
 }
 
 module.exports = UserRepository;

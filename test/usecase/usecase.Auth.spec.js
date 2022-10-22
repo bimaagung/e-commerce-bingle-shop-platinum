@@ -1,9 +1,10 @@
 const AuthUseCase = require("../../usecase/auth");
 const mockAuthRepo = require("../mock/repository.auth.mock");
 const mockUserRepo = require("../mock/repository.user.mock");
+const mockOtpRepo = require("../mock/repository.otp.mock")
 
 let authValues,
-  userValues = {};
+  userValues, otpValues = {};
 let authUC = null;
 
 const bcrypt = {
@@ -30,9 +31,16 @@ describe("auth", () => {
     userValues = {
       returnGetUserExist: true,
     };
+    otpValues = {
+      returnDeleteAllOtp :true,
+      returnGenerateOtp : true,
+      returnGetOtp :true,
+      returnGetOtpByEmail :true
+    }
     authUC = new AuthUseCase(
       mockAuthRepo(authValues),
       mockUserRepo(userValues),
+      mockOtpRepo(otpValues),
       bcrypt,
       cloudinary, _
     );
@@ -40,9 +48,16 @@ describe("auth", () => {
   describe("Test Register", () => {
     test("should return true", async () => {
       userValues.returnGetUserExist = null;
+otpValues.returnGetOtp = {
+   email : "customer@mail",
+        otp_code : "123456",
+        otp_type : "REGISTRATION",
+        expired_at : "12-09-2022 23:30:00"
+}
       authUC = new AuthUseCase(
         mockAuthRepo(authValues),
         mockUserRepo(userValues),
+        mockOtpRepo(otpValues),
         bcrypt,
         cloudinary,_
       );

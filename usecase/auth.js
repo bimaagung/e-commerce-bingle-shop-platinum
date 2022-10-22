@@ -1,6 +1,5 @@
 /* eslint-disable consistent-return */
 
-
 class AuthUC {
   constructor(
     AuthRepository,
@@ -23,13 +22,13 @@ class AuthUC {
     this._ = _;
     this.googleOauth = googleOauth;
     this.func = func;
-    this.defaultImage = defaultImage
+    this.defaultImage = defaultImage;
   }
 
   async register(userData) {
     let result = {
       isSuccess: false,
-      reason: '',
+      reason: "",
       status: 404,
       data: null,
       token: null,
@@ -46,14 +45,14 @@ class AuthUC {
     }
     let user = await this.UserRepository.getUserExist(
       userData.username,
-      userData.email,
+      userData.email
     );
     if (userData.password !== userData.confrimPassword) {
       result.reason = "password and confrim password not match";
       return result;
     }
     if (user !== null) {
-      result.reason = 'username or email not aviable';
+      result.reason = "username or email not aviable";
       return result;
     }
 
@@ -80,7 +79,7 @@ class AuthUC {
   async login(username, password) {
     let result = {
       isSuccess: false,
-      reason: '',
+      reason: "",
       status: 404,
       data: null,
       token: null,
@@ -122,7 +121,6 @@ class AuthUC {
         is_admin: false,
       };
       user = await this.AuthRepository.registerUser(userData);
-     
     }
     let dataUser = this._.omit(user.dataValues, ["password"]);
     let token = this.generateToken(dataUser);
