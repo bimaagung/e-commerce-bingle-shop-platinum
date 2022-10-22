@@ -1,4 +1,4 @@
-const { Category, Product } = require('../models');
+const { Category } = require('../models');
 
 class CategoryRepository {
   constructor() {

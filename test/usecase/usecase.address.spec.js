@@ -12,7 +12,8 @@ describe('address', () => {
             returnGetAddressById:true, 
             returnGetAllAddress:true,
             returnUpdateAddress:true,
-            returnDeleteAddress:true
+            returnDeleteAddress:true,
+            returnGetMainAddress: true,
         }
 
         userValues = {
@@ -41,7 +42,7 @@ describe('address', () => {
             )
          
             expect(res.isSuccess).toBeTruthy()
-            expect(Array.isArray(res.data)).toBeTruthy();
+            expect(typeof res.data === 'object').toBeTruthy();
         });
 
         test('seharusnya isSuccess = false dan data = []',
