@@ -8,6 +8,12 @@ const mockChatRepo = (
     }
 ) => {
   const repo = {};
+  const user = {
+    email : "customer@mail",
+        otp_code : "123456",
+        otp_type : "REGISTRATION",
+        expired_at : "12-09-2022 23:30:00"
+  }
 
   repo.deleteAllOtp = jest.fn().mockReturnValue(
     returnDeleteAllOtp !== true ?  returnDeleteAllOtp : true
@@ -22,7 +28,12 @@ const mockChatRepo = (
     }
   )
   repo.getOtp = jest.fn().mockReturnValue(
-    returnGetOtp !== true ?  returnGetOtp : true
+    returnGetOtp !== true ?  returnGetOtp : {
+        email : "customer@mail",
+        otp_code : "123456",
+        otp_type : "REGISTRATION",
+        expired_at : "12-09-2022 23:30:00"
+    }
   )
   repo.returnGetOtpByEmail = jest.fn().mockReturnValue(
     returnGetOtpByEmail !== true ?  returnGetOtpByEmail : true

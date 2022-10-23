@@ -38,8 +38,7 @@ const mockAddressRepo = (
   );
 
   repo.deleteAddress = jest.fn().mockReturnValue(
-    returnDeleteAddress !== true ? returnDeleteAddress :
-    true
+    returnDeleteAddress !== true ? returnDeleteAddress : true
   );
 
    repo.getMainAddress = jest.fn().mockReturnValue(

@@ -7,12 +7,16 @@ const categoryController = require('../controller/category');
 const imageController = require('../controller/image_product');
 const orderController = require('../controller/order');
 const chatController = require('../controller/chat');
+const userController = require('../controller/user');
 
 const authorized = require('../middleware/jwt');
 const validation = require('../middleware/formValidation');
 const handleUpload = require('../libs/handle_upload');
 
 const router = express.Router();
+
+// User
+router.patch('/api/admin/update-password/', authorized.admin, validation.updatePassword, userController.updatePassword);
 
 // Category
 router.post('/api/admin/category/add', authorized.admin, validation.category, categoryController.addCategory);

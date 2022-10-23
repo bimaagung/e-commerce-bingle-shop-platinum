@@ -132,6 +132,22 @@ describe('address', () => {
 
     describe('delete address', ()=>{
         test('seharusnya isSuccess  = true', async () => { 
+            addressValues.returnGetAddressById =  {
+                id: 1,
+                province: 'Banten',
+                city: 'Bumi Serpong',
+                postal_code: '15345',
+                detail: 'The Breeze BSD',
+                user_id: 2,
+                main_address: false,
+                createdAt: "12-09-2022 23:30:00",
+                updatedAt: "12-09-2022 23:30:00"
+            }
+
+            addressUC = new AddressUseCase(
+            mockAddressRepo(addressValues), 
+            mockUserRepo(userValues)
+        )
             let res = await addressUC.deleteAddress(1)
 
             expect(res.isSuccess).toBeTruthy()

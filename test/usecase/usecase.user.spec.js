@@ -1,7 +1,8 @@
 const UserUseCase = require('../../usecase/user');
 const mockUserRepo = require('../mock/repository.user.mock')
+const mockOtpRepo = require('../mock/repository.otp.mock')
 
-let userValues = {}
+let userValues, otpValues = {}
 let userUC = null
 
 const bcrypt = {
@@ -19,6 +20,11 @@ describe('users', () => {
             returnGetUserByID: true,
             returnUpdatePassword: true,
             returnUpdateUser: true
+        }
+
+        otpValues = {
+            returnGetOTP: true,
+            returnDeleteAllOtp: true,
         }
 
 
@@ -109,7 +115,7 @@ describe('users', () => {
         let res = await userUC.updatePassword({
                 newPassword : '12345678',
                 confirmNewPassword: '12345678'
-            });
+            },2);
 
         expect(res.isSuccess).toBeTruthy();
         expect(res.statusCode).toEqual(200)
@@ -118,11 +124,11 @@ describe('users', () => {
     test('should isSuccess is false and reason is "user not found"', async () => {
         userValues.returnGetUserByID = null
         userUC = new UserUseCase(mockUserRepo(userValues));
-        let res = await userUC.updatePassword(2,
+        let res = await userUC.updatePassword(
             {
                 newPassword : '12345678',
                 confirmNewPassword: '12345678'
-            });
+            },2);
 
         expect(res.isSuccess).toBeFalsy();
         expect(res.reason).toEqual('user not found');
@@ -131,11 +137,11 @@ describe('users', () => {
     });
 
     test('should isSuccess is false and reason is "password not match"', async () => {
-        let res = await userUC.updatePassword(2,
+        let res = await userUC.updatePassword(
             {
                 newPassword : '12345678',
-                confirmNewPassword: '12345678'
-            });
+                confirmNewPassword: '123456789'
+            },2);
 
         expect(res.isSuccess).toBeFalsy();
         expect(res.reason).toEqual('password not match');

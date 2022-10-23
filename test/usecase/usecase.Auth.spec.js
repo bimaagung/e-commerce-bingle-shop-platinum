@@ -1,7 +1,10 @@
 const AuthUseCase = require("../../usecase/auth");
 const mockAuthRepo = require("../mock/repository.auth.mock");
 const mockUserRepo = require("../mock/repository.user.mock");
-const mockOtpRepo = require("../mock/repository.otp.mock")
+const mockOtpRepo = require("../mock/repository.otp.mock");
+const defaultImage = require("../../internal/constant/defaultImage");
+const googleOauth = require('../../libs/google-auth');
+const func = require('../../libs/function');
 
 let authValues,
   userValues, otpValues = {};
@@ -13,11 +16,13 @@ const bcrypt = {
     .mockReturnValue("sdjsdkjnfjfw&*23672(%^SHGHGSjhsjkh87623"),
   compareSync: jest.fn().mockReturnValue(true),
 };
+
 const cloudinary = {
   uploadCloudinaryAvatar: jest
     .fn()
     .mockReturnValue("https://cloudinary.com/avatars/image.jpg"),
 };
+
 const _ = {
   omit : jest.fn().mockReturnValue()
 }
@@ -42,18 +47,23 @@ describe("auth", () => {
       mockUserRepo(userValues),
       mockOtpRepo(otpValues),
       bcrypt,
-      cloudinary, _
+      cloudinary, 
+      _,
+      googleOauth,
+      func,
+      defaultImage,
     );
   });
   describe("Test Register", () => {
     test("should return true", async () => {
       userValues.returnGetUserExist = null;
-otpValues.returnGetOtp = {
-   email : "customer@mail",
+      otpValues.returnGetOtp = {
+        email : "customer@mail",
         otp_code : "123456",
         otp_type : "REGISTRATION",
         expired_at : "12-09-2022 23:30:00"
-}
+      }
+
       authUC = new AuthUseCase(
         mockAuthRepo(authValues),
         mockUserRepo(userValues),
@@ -61,6 +71,7 @@ otpValues.returnGetOtp = {
         bcrypt,
         cloudinary,_
       );
+
       let res = await authUC.register({
         name: "kian",
         username: "kian28",
@@ -69,6 +80,8 @@ otpValues.returnGetOtp = {
         telp: "0823155511",
         email: "kian@gmail.com",
         is_admin: false,
+        password: "12345678",
+        confrimPassword: "12345678"
       });
 
       expect(res.isSuccess).toBeTruthy();

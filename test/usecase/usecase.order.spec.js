@@ -2,10 +2,15 @@ const OrderUseCase = require('../../usecase/order');
 const mockOrderRepo = require('../mock/repository.order.mock') 
 const mockProductRepo = require('../mock/repository.product.mock') 
 const mockOrderDetailRepo = require('../mock/respository.order_detail.mock') 
-const mockCategoryDetailRepo = require('../mock/repository.category.mock') 
+const mockCategoryRepo = require('../mock/repository.category.mock') 
+const mockAddressRepo = require('../mock/repository.address.mock') 
+const mockUserRepo = require('../mock/repository.user.mock')
+const _ = require('lodash');
+const orderConstant = require('../../internal/constant/order');
+const mockEmailRepo = require('../mock/repository.email.mock')
 
 
-let orderValues, productValues, orderDetailValues = {}
+let orderValues, productValues, orderDetailValues, addressValues, userValues, emailValues = {}
 let orderUC = null
 
 describe('orders', () => {
@@ -37,7 +42,19 @@ describe('orders', () => {
       returnGetCategoryByID: true
     }
 
-   orderUC = new OrderUseCase(mockOrderRepo(orderValues),mockOrderDetailRepo(orderDetailValues),mockProductRepo(productValues), mockCategoryDetailRepo(categoryValues));
+    addressValues ={
+      returnGetMainAddress: true
+    }
+
+    userValues ={
+      returnGetUserByID: true
+    }
+
+    emailValues = {
+      returnSendOrderEmail: true
+    }
+
+   orderUC = new OrderUseCase(mockOrderRepo(orderValues), mockOrderDetailRepo(orderDetailValues),mockProductRepo(productValues), mockCategoryRepo(categoryValues), mockEmailRepo(emailValues), mockUserRepo(userValues), _, mockAddressRepo(addressValues), orderConstant);
   })
 
   describe('getListOrder test', () => {
@@ -122,7 +139,7 @@ describe('orders', () => {
     });
 
     test(`with body status order = processed should isSuccess is false and reason is "order not found"`, async () => {
-      const repo = mockOrderRepo(
+      orderValues.returnGetOrderPendingById = 
         { 
           returnGetOrderPendingById  : {
             id: 'Ti9jtWs0FHhJMAmS',
@@ -133,11 +150,11 @@ describe('orders', () => {
             updatedAt: "12-09-2022 23:30:00",
           }
         }
-      );
 
-      const orderUC = new OrderUseCase(repo);
+      orderUC = new OrderUseCase(mockOrderRepo(orderValues), mockOrderDetailRepo(orderDetailValues),mockProductRepo(productValues), mockCategoryRepo(categoryValues), mockEmailRepo(emailValues), mockUserRepo(userValues), _, mockAddressRepo(addressValues), orderConstant);
 
       let res = await orderUC.getPendingOrderById(10);
+
       expect(res.isSuccess).toBeFalsy();
       expect(res.reason).toEqual('order not found');
       expect(res.data).toEqual(null);
@@ -207,12 +224,8 @@ describe('orders', () => {
     });
 
     test(`should isSuccess is false and reason is "order not found"`, async () => {
-      orderValues.returnGetPendingOrderByUserId = null
-      orderUC = new OrderUseCase(
-        mockOrderRepo(orderValues),
-        mockOrderDetailRepo(orderDetailValues), 
-        mockProductRepo(productValues)
-      );
+     orderValues.returnGetPendingOrderByUserId = null
+     orderUC = new OrderUseCase(mockOrderRepo(orderValues), mockOrderDetailRepo(orderDetailValues),mockProductRepo(productValues), mockCategoryRepo(categoryValues), mockEmailRepo(emailValues), mockUserRepo(userValues), _, mockAddressRepo(addressValues), orderConstant);
 
       let res = await orderUC.updateOrderSubmitted(2);
 
@@ -222,11 +235,7 @@ describe('orders', () => {
 
     test("when product not found or stock product is empty should isSuccess is false and reason is 'recheck the product, make sure the product is still in stock'", async () => {
       productValues.returnGetProductByID = null
-      orderUC = new OrderUseCase(
-        mockOrderRepo(orderValues),
-        mockOrderDetailRepo(orderDetailValues), 
-        mockProductRepo(productValues)
-      );
+      orderUC = new OrderUseCase(mockOrderRepo(orderValues), mockOrderDetailRepo(orderDetailValues),mockProductRepo(productValues), mockCategoryRepo(categoryValues), mockEmailRepo(emailValues), mockUserRepo(userValues), _, mockAddressRepo(addressValues), orderConstant);
 
 
       let res = await orderUC.updateOrderSubmitted(10);
@@ -240,11 +249,8 @@ describe('orders', () => {
   describe('createOrder test', () => {
     test('should isSucess is true and data type is object', async () => {
       orderValues.returnGetPendingOrderByUserId = null
-      orderUC = new OrderUseCase(
-        mockOrderRepo(orderValues),
-        mockOrderDetailRepo(orderDetailValues), 
-        mockProductRepo(productValues)
-      );
+      orderUC = new OrderUseCase(mockOrderRepo(orderValues), mockOrderDetailRepo(orderDetailValues),mockProductRepo(productValues), mockCategoryRepo(categoryValues), mockEmailRepo(emailValues), mockUserRepo(userValues), _, mockAddressRepo(addressValues), orderConstant);
+
 
       let res = await orderUC.createOrder(1,1, [{ id:1, qty: 1}]);
 
@@ -253,11 +259,7 @@ describe('orders', () => {
     });
 
     test("should isSucess is false and reason is 'user already has pending order'", async () => {
-      orderUC = new OrderUseCase(
-        mockOrderRepo(orderValues),
-        mockOrderDetailRepo(orderDetailValues), 
-        mockProductRepo(productValues)
-      );
+      orderUC = new OrderUseCase(mockOrderRepo(orderValues), mockOrderDetailRepo(orderDetailValues),mockProductRepo(productValues), mockCategoryRepo(categoryValues), mockEmailRepo(emailValues), mockUserRepo(userValues), _, mockAddressRepo(addressValues), orderConstant);
 
       let res = await orderUC.createOrder(1,1, [{ id:1, qty: 1}]);
 
@@ -268,16 +270,12 @@ describe('orders', () => {
     test("should isSuccess is false message is 'can\'t process the order, please check each product in order'", async () => {
       orderValues.returnGetPendingOrderByUserId = null;
       productValues.returnGetProductByID = null;
-      productValues = {
-      returnGetProductByID: null,
-      returnUpdateProduct: true
-      }
+      productValues.returnGetProductByID = null,
+      productValues.returnUpdateProduct = true
+      
 
-      orderUC = new OrderUseCase(
-        mockOrderRepo(orderValues),
-        mockOrderDetailRepo(orderDetailValues), 
-        mockProductRepo(productValues)
-      );
+      orderUC = new OrderUseCase(mockOrderRepo(orderValues), mockOrderDetailRepo(orderDetailValues),mockProductRepo(productValues), mockCategoryRepo(categoryValues), mockEmailRepo(emailValues), mockUserRepo(userValues), _, mockAddressRepo(addressValues), orderConstant);
+
       let res = await orderUC.createOrder(1,1, [{ id:1, qty: 1}]);
 
       expect(res.isSuccess).toBeFalsy();
@@ -321,11 +319,7 @@ describe('orders', () => {
       });
 
       test(`should isSuccess is true and reason is "request status outside the specified options"`, async () => {
-        orderUC = new OrderUseCase(
-          mockOrderRepo(orderValues),
-          mockOrderDetailRepo(orderDetailValues), 
-          mockProductRepo(productValues)
-        );
+        orderUC = new OrderUseCase(mockOrderRepo(orderValues), mockOrderDetailRepo(orderDetailValues),mockProductRepo(productValues), mockCategoryRepo(categoryValues), mockEmailRepo(emailValues), mockUserRepo(userValues), _, mockAddressRepo(addressValues), orderConstant);
 
         let res = await orderUC.updateStatusOrder(1,'WAITING');
 
@@ -384,12 +378,7 @@ describe('orders', () => {
       });
        test('when product not found should return empty array product id with length = 0 ', async () => {
         productValues.returnGetProductByID = null
-        orderUC = new OrderUseCase(
-          mockOrderRepo(orderValues),
-          mockOrderDetailRepo(orderDetailValues), 
-          mockProductRepo(productValues),
-          mockCategoryDetailRepo(categoryValues)
-        );
+        orderUC = new OrderUseCase(mockOrderRepo(orderValues), mockOrderDetailRepo(orderDetailValues),mockProductRepo(productValues), mockCategoryRepo(categoryValues), mockEmailRepo(emailValues), mockUserRepo(userValues), _, mockAddressRepo(addressValues), orderConstant);
         let res = await orderUC.getProductByOrderDetail([
              {
               product_id:2,
