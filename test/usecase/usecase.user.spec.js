@@ -23,7 +23,7 @@ describe('users', () => {
 
 
 
-        userUC = new UserUseCase(mockUserRepo(userValues), bcrypt, cloudinary);
+        userUC = new UserUseCase(mockUserRepo(userValues), mockOtpRepo(otpValues), bcrypt, cloudinary);
   })
   
   describe('getUserExist test', () => { 
@@ -106,10 +106,9 @@ describe('users', () => {
    describe('updatePassword test', () => { 
 
     test('should isSuccess is true', async () => {
-        let res = await userUC.updatePassword(1,
-            {
-                password : '12345678',
-                retype_password: '12345678'
+        let res = await userUC.updatePassword({
+                newPassword : '12345678',
+                confirmNewPassword: '12345678'
             });
 
         expect(res.isSuccess).toBeTruthy();
@@ -121,8 +120,8 @@ describe('users', () => {
         userUC = new UserUseCase(mockUserRepo(userValues));
         let res = await userUC.updatePassword(2,
             {
-                password : '12345678',
-                retype_password: '12345678'
+                newPassword : '12345678',
+                confirmNewPassword: '12345678'
             });
 
         expect(res.isSuccess).toBeFalsy();
@@ -134,8 +133,8 @@ describe('users', () => {
     test('should isSuccess is false and reason is "password not match"', async () => {
         let res = await userUC.updatePassword(2,
             {
-                password : '12345678',
-                retype_password: '123456789'
+                newPassword : '12345678',
+                confirmNewPassword: '12345678'
             });
 
         expect(res.isSuccess).toBeFalsy();
