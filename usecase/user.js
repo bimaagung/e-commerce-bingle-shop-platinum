@@ -21,7 +21,7 @@ class UserUC {
     const user = await this.UserRepository.getUserByID(id);
 
     if (user === null) {
-      result.reason = "user not found";
+      result.reason = 'user not found';
       return result;
     }
 
@@ -35,13 +35,13 @@ class UserUC {
   async updateUserProfile(userData, id) {
     let result = {
       isSuccess: false,
-      reason: "success",
+      reason: 'success',
       statusCode: 404,
       data: null,
     };
     let user = await this.UserRepository.getUserByID(id);
     if (user == null) {
-      result.reason = "user not found";
+      result.reason = 'user not found';
       return result;
     }
     user = await this.UserRepository.updateUser(userData, id);
@@ -53,13 +53,13 @@ class UserUC {
   async updatePassword(user, id) {
     let result = {
       isSuccess: false,
-      reason: "success",
+      reason: 'success',
       statusCode: 404,
       data: null,
     };
 
     if (user.newPassword !== user.confirmNewPassword) {
-      result.reason = "password not match";
+      result.reason = 'password not match';
       result.statusCode = 400;
       return result;
     }
@@ -67,7 +67,7 @@ class UserUC {
     let userById = await this.UserRepository.getUserByID(id);
 
     if (userById === null) {
-      result.reason = "user not found";
+      result.reason = 'user not found';
       return result;
     }
     user.password = user.newPassword;
@@ -80,30 +80,29 @@ class UserUC {
     return result;
   }
 
-
-  async updateEmail (userData , id ){
+  async updateEmail(userData, id) {
     let result = {
-      isSuccess : false,
-      reason : '',
-      status : 400,
+      isSuccess: false,
+      reason: '',
+      status: 400,
+    };
+    let user = await this.UserRepository.getUserByID(id);
+    if (user === null) {
+      result.reason = 'user not found';
+      result.status = 404;
+      return result;
     }
-    let user = await this.UserRepository.getUserByID(id)
-    if(user === null){
-      result.reason = "user not found"
-      result.status = 404
-      return result
-    }
-    let otp = await this.OtpRepository.getOTP(userData.email , userData.otp_code,"UPDATEEMAIL" )
-    if(otp === null){
-      result.reason = "invalid otp code"
-      return result
+    let otp = await this.OtpRepository.getOTP(userData.email, userData.otp_code, 'UPDATEEMAIL');
+    if (otp === null) {
+      result.reason = 'invalid otp code';
+      return result;
     }
     await this.UserRepository.updateUser(userData, id);
-    await this.OtpRepository.deleteAllOtp(userData.email)
+    await this.OtpRepository.deleteAllOtp(userData.email);
 
-    result.isSuccess =true
-    result.status = 200
-    return result
+    result.isSuccess = true;
+    result.status = 200;
+    return result;
   }
 
   async updateUserImage(userData, id) {
@@ -119,12 +118,12 @@ class UserUC {
     let user = await this.UserRepository.getUserByID(id);
 
     if (user === null) {
-      result.reason = "user not found";
+      result.reason = 'user not found';
       return result;
     }
 
     userBody.image = await this.cloudinary.uploadCloudinaryAvatar(
-      userBody.image
+      userBody.image,
     );
 
     await this.UserRepository.updateUser(userBody, id);
