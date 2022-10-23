@@ -1,4 +1,4 @@
-const mockProductRepo = (
+const mockOtpRepo = (
     {
         returnGetProductByID, 
         returnUpdateProduct,
@@ -111,4 +111,4 @@ const mockProductRepo = (
   return repo;
 };
 
-module.exports = mockProductRepo;
+module.exports = mockOtpRepo;
