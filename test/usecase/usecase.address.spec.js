@@ -164,5 +164,38 @@ describe('address', () => {
             expect(res.reason).toEqual('address not found');
         });
     });
+
+     describe('change address main', ()=>{
+        test('seharusnya isSuccess  = true', async () => { 
+            let res = await addressUC.changeMainAddress(1,1)
+
+            expect(res.isSuccess).toBeTruthy()
+            expect(res.status).toEqual(200)
+        });
+
+        test('seharusnya isSuccess  = false dan reason = address not found', async () => { 
+            addressValues.returnGetAddressById = null
+            addressUC = new AddressUseCase(
+                mockAddressRepo(addressValues), 
+                mockUserRepo(userValues)
+            )
+            let res = await addressUC.changeMainAddress(1,1)
+            
+            expect(res.isSuccess).toBeFalsy(),
+            expect(res.reason).toEqual('address not found');
+        });
+
+        test('seharusnya isSuccess  = false dan reason = customer not have address', async () => { 
+            addressValues.returnGetMainAddress = null
+            addressUC = new AddressUseCase(
+                mockAddressRepo(addressValues), 
+                mockUserRepo(userValues)
+            )
+            let res = await addressUC.changeMainAddress(1,1)
+            
+            expect(res.isSuccess).toBeFalsy(),
+            expect(res.reason).toEqual('customer not have address');
+        });
+    });
 })
 

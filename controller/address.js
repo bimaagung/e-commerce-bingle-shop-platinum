@@ -8,11 +8,6 @@ module.exports = {
     try {
       let { id } = req.user;
       let address = await req.addressUC.getAddressByUserID(id);
-      if (address.isSuccess !== true) {
-        return res
-          .status(address.status)
-          .json(resData.failed(address.reason, address.data));
-      }
       res.status(address.status).json(resData.success(address.data));
     } catch (e) {
       next(e);

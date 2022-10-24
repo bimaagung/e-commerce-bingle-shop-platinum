@@ -103,6 +103,7 @@ services:
       MAILER_AUTH_PASSWORD: 2d41ee0da2a5cd
       MAILER_SENDER_NAME: majujaya
       MAILER_SENDER_EMAIL: noreaplymajujaya@gmail.com
+      SERVER_URL_APM: apm-server
     ports:
       - '3000:3000'
     expose:

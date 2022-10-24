@@ -3,7 +3,6 @@ const mockAuthRepo = require("../mock/repository.auth.mock");
 const mockUserRepo = require("../mock/repository.user.mock");
 const mockOtpRepo = require("../mock/repository.otp.mock");
 const defaultImage = require("../../internal/constant/defaultImage");
-const googleOauth = require('../../libs/google-auth');
 const func = require('../../libs/function');
 const _ = require('lodash');
 // const generateToken = require('../../helper/jwt');
@@ -20,15 +19,17 @@ const bcrypt = {
   compareSync: jest.fn().mockReturnValue(true),
 };
 
+const googleOauth = jest.fn().mockReturnValue({
+        name: "kian",
+        email: "kian@gmail.com",
+})
+
 const cloudinary = {
   uploadCloudinaryAvatar: jest
     .fn()
     .mockReturnValue("https://cloudinary.com/avatars/image.jpg"),
 };
 
-// const _ = {
-//   omit : jest.fn().mockReturnValue()
-// }
 
 const generateToken = jest.fn().mockReturnValue(`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
     eyJpZCI6MiwibmFtZSI6ImN1c3RvbWVyIiwidXNlcm5hbWUiOiJjdXN0b21lciIsImVtYWlsIjoiY3VzdG9tZX
@@ -41,6 +42,8 @@ describe("auth", () => {
     authValues = {
       returnRegisterUser: true,
       returnLoginUser: true,
+      returnLoginWithGoogle: true,
+
     };
     userValues = {
       returnGetUserExist: true,
@@ -182,5 +185,45 @@ describe("auth", () => {
         expect(res.reason).toEqual("incorect email or password");
       });
     });
+
+     describe("Test Login Google", () => {
+      const idToken = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+          eyJpZCI6MiwibmFtZSI6ImN1c3RvbWVyIiwidXNlcm5hbWUiOiJjdXN0b21lciIsImVtYWlsIjoiY3VzdG9tZX
+          JuQG1haWwuY29tIiwiaXNfYWRtaW4iOmZhbHNlLCJpYXQiOjE2NjY1Njk0ODgsImV4cCI6MTY2NjU5MTA4OH0.
+          vtMW_4uev15R141j_MNIru9nbi1uLGu1swNtfm5-19M
+          `
+      test("should return true success login", async () => {
+
+        let res = await authUC.loginGoogle(idToken);
+
+        expect(res.isSuccess).toBeTruthy();
+        expect(typeof res.data === 'object').toBeTruthy();
+      });
+
+      test("should return true success login with login google is null", async () => {
+        authValues.returnLoginWithGoogle = null
+
+        authUC = new AuthUseCase(
+          mockAuthRepo(authValues),
+          mockUserRepo(userValues),
+          mockOtpRepo(otpValues),
+          bcrypt,
+          cloudinary, 
+          generateToken,
+          _,
+          googleOauth,
+          func,
+          defaultImage,
+        );
+
+        let res = await authUC.loginGoogle(idToken);
+
+        expect(res.isSuccess).toBeTruthy();
+        expect(typeof res.data === 'object').toBeTruthy();
+      });
+
+    
+    });
+
   });
 });

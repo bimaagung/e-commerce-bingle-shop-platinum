@@ -1,5 +1,8 @@
 ### Model Aplikasi E-commerce
 
+![ERD PLATINUM](https://user-images.githubusercontent.com/107734134/197455237-204a9764-d401-4166-9ae9-7e4959f7e723.png)
+
+
 Sesuai module / Bingle Shop
 
 ### Installation
@@ -44,19 +47,29 @@ Request:
 	
 Body :
 
-```json
+```
+json
 	{
 		"email or username" : "abc"
 		"password" : "abcd100"
 	}
 ```
-Response :
+Response success:
 
-```json
+```
+json
 	{
 		"status" : "ok"
 		"message": "success"
 		"token"  : "nsajdkasjdbhqwuu&^&%^bhjasc"
+	}
+```
+Response failed:
+```
+json
+	{
+		"status" : "failed"
+		"message": "incorect email or password"
 	}
 ```
 
@@ -68,36 +81,120 @@ Request:
 	
 Body :
   
-```json
+```
+From data
 	{
 		"nama"    : "abc"
 		"username": "abc"
+		"image"   : seleect file
 		"email"   : "abc@domain.com"
 		"password": "abcd100"
+		"confirmPassword : "abcd100"
+		"otp_code : "512312"
 	}
 ```
 
-Response :
+Response success :
   
-```json
-	{
-		"status" : "ok"
-		"message": "success"
-		"data" : {
-			"nama"     : "abc"
-			"username" : "abc"
-			"email"    : "abc@domain.com"
-		}
-	}
 ```
+json
+			{
+		  "status": "ok",
+		  "message": "success",
+		  "data": {
+		    "user": {
+		      "id": 72,
+		      "name": "Customer B",
+		      "username": "customer_b",
+		      "image": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815145/default%20image/profile_xzrsh7.png",
+		      "telp": "083637267",
+		      "email": "customerb@gmail.com",
+		      "is_admin": false,
+		      "updatedAt": "2022-10-18T02:01:39.871Z",
+		      "createdAt": "2022-10-18T02:01:39.871Z"
+		    },
+		    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzI"
+		  }
+		}
+```
+response failed :
+  
+```
+json
+		{
+		  "status": "failed",
+		  "message": "invalid otp code"
+		}
+```
+response failed :
+  
+```
+json
+		
+		 {
+		  "status": "failed",
+		  "message": "password and confrim password not match"
+		 }
+		
+```
+response failed :
+  
+```
+json
+		
+		 {
+		  "status": "failed",
+		  "message": "username or email not aviable"
+		 }
+		
+```
+### Login & Register with Google OAuth
 
-### // TODO : Masih dalam pembahasan
+Request:
+
+	- Method : POST
+	- Endpoint : `/login/google`
+	
+Body :
+
+```
+json
+	{
+		"idToken" : {
+			      "eyJhbGciOiJSUzI1NiIsImtpZCI6ImVlMWI5Zjg4Y2ZlMzE1MWRkZDI4NGE2MWJmOGNlY"
+			    }
+```
+Response success:
+
+```
+json
+	{
+		    "status": "ok",
+		    "message": "success",
+		    "data": {
+			"user": {
+			    "id": 3,
+			    "name": "customer Name",
+			    "username": "Custmer874",
+			    "image": "https://res.cloudinary.com/dnvltueqb/image/upload/defaultimage",
+			    "email": "customer8@gmail.com",
+			    "is_admin": false,
+			    "updatedAt": "2022-10-24T04:10:05.429Z",
+			    "createdAt": "2022-10-24T04:10:05.429Z",
+			    "telp": null
+			},
+			"token":  "eyJhbGciOiJSUzI1NiIsImtpZCI6ImVlMWI5Zjg4Y2ZlMzE1MWRkZDI4NGE2MWJmOGNlY"
+		    }
+}
+
+
+```
 ### Lihat data user
 
 Request:
 
 	- Method : GET
-	- Endpoint : `api/user/profile/`
+	- Endpoint : `/api/customer/profil/user/`
 
 Header :
 
@@ -105,11 +202,21 @@ Header :
 	
 Response :
 
-```json
+```
+json
 	{
-		"status" : "ok"
-		"message": "success"
-		"data" : "{}"
+		  "status": "ok",
+		  "message": "success",
+		  "data": {
+		    "id": 2,
+		    "name": "customer",
+		    "username": "customer",
+		    "image": null,
+		    "telp": "0823111111",
+		    "email": "customer@mail.com",
+		    "createdAt": "2022-10-24T01:33:25.885Z",
+		    "updatedAt": "2022-10-24T01:33:25.885Z"
+ 	 		}
 	}
 ```
 
@@ -118,7 +225,7 @@ Response :
 Request:
 
 	- Method : PUT
-	- Endpoint : `api/user/`
+	- Endpoint : `api/customer/update/`
 	
 Header :
 	
@@ -126,7 +233,8 @@ Header :
 	
 Body :
 
-```json
+```
+json
 	{
 		"nama"     : "abc"
 		"username" : "abc"
@@ -135,72 +243,12 @@ Body :
 		"telp"     : "08736272767"
 	}
 ```
-
-Response :
-
-```json
-	{
-		"status" : "ok"
-		"message": "success"
-		"data" : {
-			"nama"     : "abc"
-			"username" : "abc"
-			"email"    : "abc@domain.com"
-			"alamat"   : "Jakarta"
-			"telp"     : "08736272767"
-		}
-	}
-```
-
-### Lihat pesanan
-
-Request:
-
-	- Method : GET
-	- Endpoint : `api/order/`
-	
-Header :
-	
-	- Authorization : Bearer Token
-	
-Response :
-
-```json
-	{
-		"status" : "ok"
-		"message": "success"
-		"data" : {
-			"order_id"    : "1"
-			"status"      : "Submit"
-			"total_item"  : "2"
-			"total_price" : "20000"
-			"user": {
-				"name" : "abc"
-			},
-			"order_detail" : [
-				{
-					"name"        : "barang1"
-					"category"    : "category A"
-					"qty"         : "10"
-					"total_price" : "10000"
-				},
-				{
-					"name"        : "barang2"
-					"category"    : "category A"
-					"qty"         : "10"
-					"total_price" : "10000"
-				}
-			]
-		}
-	}
-```
-
-### Update pesanan
+### Update password user
 
 Request:
 
 	- Method : PUT
-	- Endpoint : `api/order/`
+	- Endpoint : `/api/customer/update-password/`
 	
 Header :
 	
@@ -208,50 +256,306 @@ Header :
 	
 Body :
 
-```json
+```
+json
 	{
-		"order_id"    : "1"
-		"user_id"     : "1"
-		"order_detail" : [
-			{
-				"id"    : "barang1"
-				"name"  : "category A"
-				"qty"   : "10"
-			},
-			{
-				"id"    : "barang2"
-				"name"  : "category B"
-				"qty"   : "10"
-			}
-		]
+	  "newPassword": "123456789",
+	  "confirmNewPassword": "123456789"
 	}
 ```
 
 Response :
 
-```json
+```
+json
 	{
-		"status" : "ok"
-		"message"  : "success"
-		"data" : {
-			"order_id"    : "1"
-			"user_id"     : "1"
-			"order_detail" : [
-				{
-					"id"    : "barang1"
-					"name"  : "category A"
-					"qty"   : "10"
-				},
-				{
-					"id"    : "barang2"
-					"name"  : "category B"
-					"qty"   : "10"
-				}
-			]
-		}
+	  "status": "ok",
+	  "message": "success"
 	}
+```
+### Forget password user
+
+Request:
+
+	- Method : PUT
+	- Endpoint : `/api/customer/reset-password/`
+	
+Header :
+	
+	- Authorization : Bearer Token
+	
+Body :
 
 ```
+json
+	  {
+		  "newPassword": "password",
+		  "confirmNewPassword": "password",
+		  "otp_code": "512315"
+	}
+```
+
+Response :
+
+```
+json
+	{
+	  "status": "ok",
+	  "message": "success"
+	}
+```
+### Update Email user
+
+Request:
+
+	- Method : PUT
+	- Endpoint : `/api/update/email/`
+	
+Header :
+	
+	- Authorization : Bearer Token
+	
+Body :
+
+```
+json
+		{
+		  "email": "newemail@mail.com",
+		  "otp_code": "122351"
+		}
+```
+
+Response :
+
+```
+json
+	{
+	  "status": "ok",
+	  "message": "success"
+	}
+```
+
+### Lihat Alamat  (User)
+Request:
+
+	- Method : GET
+	- Endpoint : `api/customer/all/address/`
+header :
+	
+	- Authorization : Bearer Token
+	
+Response :
+  
+```
+json
+			{
+		  "status": "ok",
+		  "message": "success",
+		  "data": [
+		    {
+		      "id": 1,
+		      "province": "Jawa Barat",
+		      "city": "Garut",
+		      "postal_code": "44151",
+		      "detail": "Jl.Pembangunan no 56 kec.Sukaregang",
+		      "user_id": 2,
+		      "main_address": true,
+		      "createdAt": "2022-10-24T01:33:25.308Z",
+		      "updatedAt": "2022-10-24T01:33:25.308Z"
+		    }
+		  ]
+		}
+```
+
+
+### Update Alamat 
+Request:
+
+	- Method : PUT
+	- Endpoint : `/api/customer/address/update/:id`
+ header :
+	
+	- Authorization : Bearer Token
+	
+	
+Response :
+  
+```
+json
+		{
+		  "status": "ok",
+		  "message": "success"
+		}
+```
+### Ubah Alamat Utama
+Request:
+
+	- Method : PUT
+	- Endpoint : `api/customer/address/update-main-address/:id`
+ header :
+	
+	- Authorization : Bearer Token
+	
+	
+Response :
+  
+```
+json
+		{
+		  "status": "ok",
+		  "message": "success"
+		}
+```
+
+### Delete Alamat
+
+Request:
+
+	- Method : Delete
+	- Endpoint : `api/admin/product/delete/:id`
+ header :
+	
+	- Authorization : Bearer Token
+	
+Response :
+
+```
+json
+	{
+	 "status": "ok",
+	  "message": "success"
+	}
+```
+### TAMBAH PESANAN
+
+Request:
+
+	- Method : PUT
+	- Endpoint : `api/customer/order/add`
+	
+Header :
+	
+	- Authorization : Bearer Token
+	
+Body :
+
+```
+json
+	{
+  "products": [
+    {
+      "id": 1,
+      "qty": 3
+    }
+  ]
+}
+```
+
+Response :
+
+```
+json
+			{
+		  "status": "ok",
+		  "message": "success",
+		  "data": {
+		    "order_id": "bQ660uV5EW6vSXe-",
+		    "products": [
+		      {
+			"id": 1,
+			"name": "Asus ROG Zephyrush M16",
+			"description": "Laptop gaming dari asus",
+			"category_id": 1,
+			"sold": 20,
+			"price": 30000000,
+			"stock": 10,
+			"createdAt": "2022-10-13T09:31:19.370Z",
+			"updatedAt": "2022-10-14T04:51:49.715Z",
+			"ProductImages": [
+			  {
+			    "id": 1,
+			    "url": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815144/default%20image/default_product_w8fe1a.jpg"
+			  }
+			]
+		      }
+		    ]
+		  }
+		}
+
+```
+### Lihat pesanan
+
+Request:
+
+	- Method : GET
+	- Endpoint : `api/customer/order/pending`
+	
+Header :
+	
+	- Authorization : Bearer Token
+	
+Response :
+
+```
+json
+		{
+		  "status": "ok",
+		  "message": "success",
+		  "data": {
+		    "id": "aX4Rjf6-jm342b4T",
+		    "status": "PENDING",
+		    "created_at": "2022-10-24T04:45:44.384Z",
+		    "updated_at": "2022-10-24T04:45:44.384Z",
+		    "qty": 3,
+		    "total_price": 90000000,
+		    "user": {
+		      "id": 2,
+		      "name": "Customer A",
+		      "username": "customer",
+		      "telp": "08363372",
+		      "address": {
+			"id": 1,
+			"province": "Jawa Tengah",
+			"city": "Semarang",
+			"postal_code": "50139",
+			"detail": "Jl. Pemuda, Semarang Tengah"
+		      }
+		    },
+		    "products": [
+		      {
+			"id": 1,
+			"name": "Asus ROG Zephyrush M16",
+			"category": "other",
+			"price": 30000000,
+			"qty": 3,
+			"total_price": 90000000
+		      }
+		    ]
+		  }
+		}
+```
+
+### DELETE PESANAN
+
+Request:
+
+	- Method : Delete
+	- Endpoint : `/api/customer/order/cancel`
+ header :
+	
+	- Authorization : Bearer Token
+	
+Response :
+
+```
+json
+	{
+	 "status": "ok",
+	  "message": "success"
+	}
+```
+
+
 ### Lihat data barang Product (item)
 Request:
 
@@ -260,7 +564,8 @@ Request:
 	
 Response :
   
-```json
+```
+json
 	{
 		"status" : "ok"
 		"message": "success"
@@ -273,50 +578,149 @@ Response :
 		}
 	}
 ```
-
-
-### Lihat data barang Product (item) Detail
+### PUBLIC END POINT
+### Lihat Semua data barang Product 
 Request:
 
 	- Method : GET
-	- Endpoint : `api/user/product/:id`
+	- Endpoint : `api/public/product`
+	
+Response :
+  
+```
+json
+			{
+		  "status": "ok",
+		  "message": "success",
+		  "data": [
+		    {
+		      "id": 1,
+		      "name": "Asus ROG Zephyrush M16",
+		      "description": "Laptop gaming dari asus",
+		      "category_id": 10,
+		      "sold": 0,
+		      "price": 30000000,
+		      "stock": 20,
+		      "cover_imageID": 1,
+		      "createdAt": "2022-10-24T01:33:25.895Z",
+		      "updatedAt": "2022-10-24T02:39:47.435Z",
+		      "ProductImages": [
+			{
+			  "id": 1,
+			  "url": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815144/default%20image/default_product_w8fe1a.jpg"
+			}
+		      ]
+		    },
+		    {
+		      "id": 2,
+		      "name": "Macbook pro M2",
+		      "description": "Laptop gaming dari apple",
+		      "category_id": 10,
+		      "sold": 0,
+		      "price": 25000000,
+		      "stock": 30,
+		      "cover_imageID": 2,
+		      "createdAt": "2022-10-24T01:33:25.895Z",
+		      "updatedAt": "2022-10-24T02:39:47.107Z",
+		      "ProductImages": [
+			{
+			  "id": 2,
+			  "url": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815144/default%20image/default_product_w8fe1a.jpg"
+			}
+		      ]
+		    }
+		      ]
+		    }
+		  ]
+		}
+```
+### Lihat Semua image  Product 
+Request:
+
+	- Method : GET
+	- Endpoint : `/api/public/image/product/:id`
 	
 Response :
   
 ```json
-	{
-		"status" : "ok"
-		"message": "success"
-		"data" : {
-			"id" 	       : "1" 
-			"nama"         : "abc"
-			"price"        : "20000"
-			"stock"	       : "10"
-			"sold"	       : "3"
-			"image"        : "<img>"
-			"description"  : "lorem ipsum"
-			"category_id"   : "3"
+		{
+  "status": "ok",
+  "message": "success",
+  "data": [
+    {
+      "id": 1,
+      "url": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815144/default%20image/default_product_w8fe1a.jpg",
+      "cover_image": true,
+      "product_id": 1,
+      "createdAt": "2022-10-24T01:33:25.238Z",
+      "updatedAt": "2022-10-24T01:33:25.238Z"
+    }
+  ]
+}
+```
+### Lihat data barang Product (item) Detail
+Request:
 
-		}
-	}
+	- Method : GET
+	- Endpoint : `/api/public/product/:id`
+	
+Response :
+  
+```json
+			{
+			  "status": "ok",
+			  "message": "success",
+			  "data": {
+			    "id": 1,
+			    "name": "Asus ROG Zephyrush M16",
+			    "description": "Laptop gaming dari asus",
+			    "category_id": 10,
+			    "sold": 0,
+			    "price": 30000000,
+			    "stock": 20,
+			    "cover_imageID": 1,
+			    "createdAt": "2022-10-24T01:33:25.895Z",
+			    "updatedAt": "2022-10-24T02:39:47.435Z",
+			    "ProductImages": [
+			      {
+				"id": 1,
+				"url": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815144/default%20image/default_product_w8fe1a.jpg",
+				"cover_image": true,
+				"product_id": 1,
+				"createdAt": "2022-10-24T01:33:25.238Z",
+				"updatedAt": "2022-10-24T01:33:25.238Z"
+			      }
+			    ]
+			  }
+			}
 ```
 ### Lihat data Category (item)
 Request:
 
 	- Method : GET
-	- Endpoint : `api/user/category`
+	- Endpoint : `api/public/category`
 	
 Response :
   
 ```json
-	{
-		"status" : "ok"
-		"message": "success"
-		"data" : {
-			"id" 	      : "1" 
-			"nama"        : "abc"
-				}
-	}
+			{
+			  "status": "ok",
+			  "message": "success",
+			  "data": [
+			    {
+			      "id": 1,
+			      "name": "Laptop",
+			      "createdAt": "2022-10-24T01:33:25.748Z",
+			      "updatedAt": "2022-10-24T01:33:25.748Z"
+			    },
+			    {
+			      "id": 10,
+			      "name": "other",
+			      "createdAt": "2022-10-24T02:39:47.038Z",
+			      "updatedAt": "2022-10-24T02:39:47.038Z"
+			    }
+			  ]
+			}
 ```
 
 
@@ -324,103 +728,80 @@ Response :
 Request:
 
 	- Method : GET
-	- Endpoint : `api/user/category/product`
+	- Endpoint : `/api/public/category/:id`
 	
 Response :
   
 ```json
-	{
-		"status" : "ok"
-		"message": "success"
-		"data" : {
-			"id"       : "1" 
-			"nama"     : "abc"
-			"Products" : [
-				{
-					"id" 	      : "1" 
-					"nama"        : "abc"
-					"image"		  : "<img>"
-					"price"       : "20000"
-					"sold"		  : "3"
-				},
-				{
-					"id" 	      : "2" 
-					"nama"        : "abc"
-					"image"		  : "<img>"
-					"price"       : "15000"
-					"sold"		  : "10"
-				}
-			]
+		{
+		  "status": "ok",
+		  "message": "success",
+		  "data": [
+		    {
+		      "id": 1,
+		      "name": "Camera",
+		      "createdAt": "2022-10-13T09:31:19.311Z",
+		      "updatedAt": "2022-10-13T09:31:19.311Z"
+		    }
+		  ]
 		}
-	}
 ```
-### Admin
-
-### Login
-Request:
-
-	- Method : POST
-	- Endpoint : `api/admin/login`
-	
-Body :
-
-```json
-	{
-		"email or username" : "abc"
-		"password" : "abcd100"
-	}
-```
-Response :
-
-```json
-	{
-		"status" : "ok"
-		"message": "success"
-		"token"  : "nsajdkasjdbhqwuu&^&%^bhjasc"
-	}
-```
+### ADMIN END POINT
 
 ### Add data barang (product)
 Request:
 
 	- Method : POST
 	- Endpoint : `api/admin/product/add`
+header :
+	
+	- Authorization : Bearer Token
+	
 	
 Body :
   
-```json
-	 {
-			"nama"         : "abc"
-			"price"        : "20000"
-			"stock"	       : "10"
-			"image"        : "<img>"
-			"description"  : "lorem ipsum"
-			"category_id"   : "3"
-
-	}
+```
+json
+	      {
+		  "name": "Microsoft Surface Laptop Studio i7",
+		  "description": "Microsoft Surface Studio i7 Generation 11 with Ram 16GB, SSD 512GB, and RTX 3050",
+		  "category_id": 1,
+		  "price": 34000000,
+		  "stock": 30
+		}
 ```
 
 
 Response :
   
-```json
-	{
-		"status" : "ok"
-		"message": "success"
-		"data" : {
-			"id" 	       : "1" 
-			"nama"         : "abc"
-			"price"        : "20000"
-			"stock"        : "10"
-			"sold"	       : "3"
-			"image"        : "<img>"
-			"description"  : "lorem ipsum"
-			"category_id   : "3"
-			"updatedAt"    : "2022-09-04T02:29:43.937Z",
-        		"createdAt"    : "2022-09-04T02:29:43.937Z"
-
+```
+json
+		{
+		  "status": "ok",
+		  "message": "success",
+		  "data": {
+		    "id": 10,
+		    "name": "Microsoft Surface Laptop Studio i7",
+		    "description": "Microsoft Surface Studio i7 Generation 11 with Ram 16GB, SSD 512GB, and RTX 3050",
+		    "category_id": 1,
+		    "sold": 0,
+		    "price": 34000000,
+		    "stock": 30,
+		    "cover_imageID": 10,
+		    "createdAt": "2022-10-24T05:08:56.444Z",
+		    "updatedAt": "2022-10-24T05:08:56.458Z",
+		    "ProductImages": [
+		      {
+			"id": 10,
+			"url": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815144/default%20image/default_product_w8fe1a.jpg",
+			"cover_image": true,
+			"product_id": 10,
+			"createdAt": "2022-10-24T05:08:56.451Z",
+			"updatedAt": "2022-10-24T05:08:56.451Z"
+		      }
+		    ]
+		  }
 		}
-	}
 ```
 
 
@@ -429,46 +810,103 @@ Response :
 Request:
 
 	- Method : PUT
-	- Endpoint : `api/admin/product/update`
+	- Endpoint : `api/admin/product/update/:id`
+header :
+	
+	- Authorization : Bearer Token
+	
 	
 Body :
   
-```json
-	{
-		"nama"         : "abc"
-		"price"        : "20000"
-		"stock"		   : "10"
-		"image"        : "<img>"
-		"description"  : "lorem ipsum"
-		"category_id"   : "3"
-
-	
-	}
 ```
+json
+		{
+		  "name": "Microsoft Surface Laptop Studio i7",
+		  "description": "Microsoft Surface Studio i7 Generation 11 with Ram 16GB, SSD 512GB, and RTX 3050",
+		  "category_id": 1,
+		  "price": 31000000,
+		  "stock": 50
+		}
 
 
 Response :
   
-```json
-	{
-		"status" : "ok"
-		"message": "success"
-		"data" : {
-			"id" 	       : "1" 
-			"nama"         : "abc"
-			"price"        : "20000"
-			"stock"		   : "10"
-			"sold"		   : "3"
-			"image"        : "<img>"
-			"description"  : "lorem ipsum"
-			"category_id"   : "3"
-			"updatedAt"	   : "2022-09-04T02:29:43.937Z"
-        	"createdAt"    : "2022-09-04T02:29:43.937Z"
-
-		}
-	}
 ```
+json
+		{
+		  "status": "ok",
+		  "message": "success"
+		}
+```
+```
+### Update cover Image
 
+Request:
+
+	- Method : PUT
+	- Endpoint : `api/admin/update-cover/`
+header :
+	
+	- Authorization : Bearer Token
+	
+	
+Body :
+  
+```
+query
+		image_id : 4
+		product_id :1
+
+
+Response :
+  
+```
+json
+		{
+		  "status": "ok",
+		  "message": "success"
+		}
+```
+```
+### Tambah image product
+
+Request:
+
+	- Method : PUT
+	- Endpoint : `api/admin/update-cover/`
+header :
+	
+	- Authorization : Bearer Token
+	
+	
+Body :
+  
+```
+from data
+		image_id : 4
+		url : your imgae url
+
+
+Response :
+  
+```
+json
+```
+		{
+    "status": "ok",
+    "message": "success",
+    "data": {
+        "id": 12,
+        "url": "http://res.cloudinary.com/dnvltueqb/image/upload/v1666588826/product/1666588824864_download_z0asyk.jpg",
+        "product_id": 5,
+        "cover_image": false,
+        "updatedAt": "2022-10-24T05:20:26.575Z",
+        "createdAt": "2022-10-24T05:20:26.575Z"
+    }
+}
+
+
+```
 ### Delete data barang
 
 Request:
@@ -478,23 +916,23 @@ Request:
 	
 Response :
 
-```json
+```
+json
 	{
-    	"status": "ok"
-    	"message": "Berhasil menghapus product"
-    	"data": {
-        	"is_success": true,
-       		 "product": 1
-   	 	}
+	  "status": "ok",
+	  "message": "success"
 	}
 ```
 
-### Add data barang (Category)
+### Tambah Category
 
 Request:
 
 	- Method : POST
 	- Endpoint : `api/admin/category/add`
+header :
+	
+	- Authorization : Bearer Token
 	
 Body :
   
@@ -502,7 +940,6 @@ Body :
 	{
 
 		"nama"   : "abc"
-
 	}
 ```
 
@@ -521,16 +958,20 @@ Response :
     }
 }
 ```
-### Update data barang (Category)
+### Update category
 
 Request:
 
 	- Method : PUT
 	- Endpoint : `api/admin/category/update`
+header :
+	
+	- Authorization : Bearer Token
 	
 Body :
   
-```json
+```
+json
 	{
 		"nama"   : "abc"
 	}
@@ -539,17 +980,12 @@ Body :
 
 Response :
   
-```json
+```
+json
 	{
-    "status"	: "ok"
-    "message"	: "Berhasil menanbahkan Category"
-    "data"		: {
-       		"id"		: 3
-        	"name"		: "Celana"
-        	"updatedAt" : "2022-09-04T02:44:47.607Z"
-        	"createdAt" : "2022-09-04T02:44:47.607Z"
-    }
-}
+	  "status": "ok",
+	  "message": "success"
+	}
 ```
 ### Delete data Category
 
@@ -557,7 +993,7 @@ Response :
 Request:
 
 	- Method : Delete
-	- Endpoint : `api/admin/category/delete/:id`
+	- Endpoint : `api/admin/category/update/:id`
 	
 Response :
 

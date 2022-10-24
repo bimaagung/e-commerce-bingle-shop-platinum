@@ -29,16 +29,17 @@ const mockResponse = () => {
 
 const next = () => jest.fn().mockReturnValue(
     {
-        status: 500,
-        json: {
+        status: 500, 
+        json:{
             status: 'failed',
             message: 'internal server error',
         }
     }
 );
 
+
 describe('Test Address', () => {
-    describe('get all address test', () => {
+    describe('get all address by user id test', () => {
         const address = [
             {
                 id: 1,
@@ -81,25 +82,38 @@ describe('Test Address', () => {
             expect(res.status).toBeCalledWith(200)
             expect(res.json).toBeCalledWith(resData.success([]))
         })
+
+          test('should status 200 and data empty', async () => {
+            mockAddressUC.getAddressByUserID = jest.fn().mockReturnValue(
+                { isSuccess: true, reason: null, data: [], status: 200 }
+            )
+            let req = mockRequest({}, {}, {}, {}, { addressUC: mockAddressUC })
+            let res = mockResponse()
+
+            await addressController.getAddressByUserID(req, res, next)
+
+            expect(mockAddressUC.getAddressByUserID).toHaveBeenCalled()
+            expect(res.status).toBeCalledWith(200)
+            expect(res.json).toBeCalledWith(resData.success([]))
+        })
+
+         test("should status is 500 and message is 'internal server error'", async () => {
+            mockAddressUC.getAddressByUserID = jest.fn().mockImplementation(() => {
+                throw new Error();
+            });
+
+            let req = mockRequest({},{},{},{id:1},{ addressUC: mockAddressUC });
+            let res = mockResponse();
+            let serverError = next();
+
+            await addressController.getAddressByUserID(req, res, next)
+
+            expect(serverError().status).toEqual(500);
+            expect(serverError().json.message).toEqual('internal server error');
+        });
     })
 
-    describe('get address by Id', () => {
-
-        const address = [
-            {
-                id: 1,
-                province: 'Banten',
-                city: 'Bumi Serpong',
-                postal_code: '15345',
-                detail: 'The Breeze BSD',
-                user_id: 2,
-                main_address: true,
-                createdAt: "12-09-2022 23:30:00",
-                updatedAt: "12-09-2022 23:30:00"
-            }
-        ]
-
-    describe('delete address ', () => {
+    describe('delete address test', () => {
 
         const address =
         {
@@ -142,9 +156,24 @@ describe('Test Address', () => {
             expect(res.status).toBeCalledWith(404)
             expect(res.json).toBeCalledWith(resData.failed('address not found'))
         })
+
+        test("should status is 500 and message is 'internal server error'", async () => {
+            mockAddressUC.deleteAddress = jest.fn().mockImplementation(() => {
+                throw new Error();
+            });
+
+            let req = mockRequest({},{},{},{id:2},{ addressUC: mockAddressUC });
+            let res = mockResponse();
+            let serverError = next();
+
+            await addressController.deleteAddress(req, res, next)
+            
+            expect(serverError().status).toEqual(500);
+            expect(serverError().json.message).toEqual('internal server error');
+        });
     })
 
-    describe('create address ', () => {
+    describe('add address test', () => {
 
         const address =
         {
@@ -186,7 +215,73 @@ describe('Test Address', () => {
             expect(res.status).toBeCalledWith(404)
             expect(res.json).toBeCalledWith(resData.failed('failed to add, address not found', null))
         })
+
+        test("should status is 500 and message is 'internal server error'", async () => {
+            mockAddressUC.addAddress = jest.fn().mockImplementation(() => {
+                throw new Error();
+            });
+
+            let req = mockRequest({},{},{},{id:2},{ addressUC: mockAddressUC });
+            let res = mockResponse();
+            let serverError = next();
+
+            await addressController.addAddress(req, res, next)
+            
+            expect(serverError().status).toEqual(500);
+            expect(serverError().json.message).toEqual('internal server error');
+        });
     })
 
-})
+    describe('update address test', () => {
+        const address =
+        {
+            province: 'Banten',
+            city: 'Bumi Serpong',
+            postal_code: '15345',
+            detail: 'The Breeze BSD',
+        }
+        test('should status 200 and data is object', async () => {
+            mockAddressUC.updateAddress = jest.fn().mockReturnValue(
+                { isSuccess: true, reason: null, data: null, status: 200 })
+
+            let req = mockRequest(address, {}, {}, {}, { addressUC: mockAddressUC })
+            let res = mockResponse()
+
+            await addressController.updateAddress(req, res, next)
+
+
+            expect(mockAddressUC.updateAddress).toHaveBeenCalled()
+            expect(res.status).toBeCalledWith(200)
+            expect(res.json).toBeCalledWith(resData.success())
+        })
+
+        test('should status 404 and message is address not found', async () => {
+           mockAddressUC.updateAddress = jest.fn().mockReturnValue(
+                { isSuccess: false, reason: 'address not found', data: null, status: 404 })
+
+            let req = mockRequest(address, {}, {}, {}, { addressUC: mockAddressUC })
+            let res = mockResponse()
+
+            await addressController.updateAddress(req, res, next)
+
+
+            expect(res.status).toBeCalledWith(404)
+            expect(res.json).toBeCalledWith(resData.failed('address not found'))
+        })
+
+        test("should status is 500 and message is 'internal server error'", async () => {
+            mockAddressUC.updateAddress = jest.fn().mockImplementation(() => {
+                throw new Error();
+            });
+
+            let req = mockRequest(address, {}, {}, {}, { addressUC: mockAddressUC })
+            let res = mockResponse();
+            let serverError = next();
+
+             await addressController.updateAddress(req, res, next)
+            
+            expect(serverError().status).toEqual(500);
+            expect(serverError().json.message).toEqual('internal server error');
+        });
+    })
 })
