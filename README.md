@@ -50,13 +50,20 @@ Body :
 		"password" : "abcd100"
 	}
 ```
-Response :
+Response success:
 
 ```json
 	{
 		"status" : "ok"
 		"message": "success"
 		"token"  : "nsajdkasjdbhqwuu&^&%^bhjasc"
+	}
+```
+Response failed:
+```json
+	{
+		"status" : "failed"
+		"message": "incorect email or password"
 	}
 ```
 
@@ -68,29 +75,68 @@ Request:
 	
 Body :
   
-```json
+```From data
 	{
 		"nama"    : "abc"
 		"username": "abc"
+		"image"   : seleect file
 		"email"   : "abc@domain.com"
 		"password": "abcd100"
+		"confirmPassword : "abcd100"
+		"otp_code : "512312"
 	}
 ```
 
-Response :
+Response success :
   
 ```json
-	{
-		"status" : "ok"
-		"message": "success"
-		"data" : {
-			"nama"     : "abc"
-			"username" : "abc"
-			"email"    : "abc@domain.com"
+			{
+		  "status": "ok",
+		  "message": "success",
+		  "data": {
+		    "user": {
+		      "id": 72,
+		      "name": "Customer B",
+		      "username": "customer_b",
+		      "image": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815145/default%20image/profile_xzrsh7.png",
+		      "telp": "083637267",
+		      "email": "customerb@gmail.com",
+		      "is_admin": false,
+		      "updatedAt": "2022-10-18T02:01:39.871Z",
+		      "createdAt": "2022-10-18T02:01:39.871Z"
+		    },
+		    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzI"
+		  }
 		}
-	}
 ```
-
+response failed :
+  
+```json
+		{
+		  "status": "failed",
+		  "message": "invalid otp code"
+		}
+```
+response failed :
+  
+```json
+		
+		 {
+		  "status": "failed",
+		  "message": "password and confrim password not match"
+		 }
+		
+```
+response failed :
+  
+```json
+		
+		 {
+		  "status": "failed",
+		  "message": "username or email not aviable"
+		 }
+		
+```
 ### // TODO : Masih dalam pembahasan
 ### Lihat data user
 
