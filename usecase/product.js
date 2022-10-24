@@ -36,10 +36,7 @@ class ProductUC {
       reason: '',
       data: [],
     };
-    let product = await this.productRepository.getAllProducts(keyword);
-    if (product.length === 0) {
-      result.reason = 'no matching product ';
-    }
+    let product = await this.productRepository.getProductByKeyword(keyword);
     result.isSuccess = true;
     result.status = 200;
     result.data = product;
