@@ -37,7 +37,7 @@
                     "example": "customer"
                   },
                   "password": {
-                    "example": "12345678"
+                    "example": "password"
                   }
                 }
               }

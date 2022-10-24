@@ -37,7 +37,7 @@
                     "example": "admin"
                   },
                   "password": {
-                    "example": "123456"
+                    "example": "ini_password "
                   }
                 }
               }
@@ -707,19 +707,12 @@
         "tags": [
           "Order"
         ],
-        "description": "",
+        "description": "status : ORDER_PROCESSED,ORDER_COMPLETED dan ORDER_CANCELED",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
             "schema": {
               "type": "string"
             }
