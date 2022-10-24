@@ -6,11 +6,13 @@ const defaultImage = require('../../internal/constant/defaultImage');
 const _ = require('lodash');
 
 let imageProductValues, productValues = {}
+
 const cloudinary = {
     uploadCloudinaryProduct: jest
       .fn()
       .mockReturnValue("https://cloudinary.com/product/image.jpg"),
   };
+
 describe('Image Product', () => {
     beforeEach(() => {
         imageProductValues = {
@@ -18,12 +20,14 @@ describe('Image Product', () => {
             returnGetAllImageByProductID: true,
             returnCreateImage: true,
             returnUpdateImage: true,
-            returnDeleteImage: true
+            returnDeleteImage: true,
+            returnGetCoverImage: true,
         }
 
         productValues = {
             returnGetProductByID: true,
         }
+
         productImageUC = new ProductImageUseCase(
             mockImageProductRepo(imageProductValues),
             mockProductRepo(productValues),
@@ -62,6 +66,18 @@ describe('Image Product', () => {
             expect(res.isSuccess).toBeTruthy()
             expect(res.reason).toEqual("success")
         })
+
+        test('isSuccess = false product not found', async () => {
+            productValues.returnGetProductByID = null
+            productImageUC = new ProductImageUseCase(
+                mockImageProductRepo(imageProductValues),
+                mockProductRepo(productValues)
+            )
+            let res = await productImageUC.getImageProductByProductID()
+
+            expect(res.isSuccess).toBeFalsy()
+            expect(res.reason).toEqual("product not found")
+        })
     })
 
     describe('create image product', () => {
@@ -88,8 +104,23 @@ describe('Image Product', () => {
             expect(res.isSuccess).toBeFalsy()
             expect(res.reason).toEqual("failed add image, product not found")
         })
+
+         test('isSucces = failed upload, please insert file', async () => {
+            productImageUC = new ProductImageUseCase(
+                mockImageProductRepo(imageProductValues),
+                mockProductRepo(productValues)
+            )
+            let res = await productImageUC.createImageProduct({
+                id: 1,
+                url: null,
+                product_id: 1
+            })
+            expect(res.isSuccess).toBeFalsy()
+            expect(res.reason).toEqual("failed upload, please insert file")
+        })
        
     })
+
     describe('delete image product', ()=>{
         test('isSuccess = true', async ()=>{
             let res = await productImageUC.deleteImageProduct()
@@ -104,6 +135,38 @@ describe('Image Product', () => {
                 mockProductRepo(productValues)
             )
             let res = await productImageUC.deleteImageProduct()
+            
+            expect(res.isSuccess).toBeFalsy()
+            expect(res.reason).toEqual("image not found")
+        })
+    })
+
+    describe('change cover image', ()=>{
+        test('isSuccess = true', async ()=>{
+            let res = await productImageUC.changeCoverImage()
+            
+            expect(res.isSuccess).toBeTruthy()
+        })
+
+        test('isSuccess = false image not found',async ()=>{
+            imageProductValues.returnGetAllImageByProductID = null
+            productImageUC = new ProductImageUseCase(
+                mockImageProductRepo(imageProductValues),
+                mockProductRepo(productValues)
+            )
+           let res = await productImageUC.changeCoverImage()
+            
+            expect(res.isSuccess).toBeFalsy()
+            expect(res.reason).toEqual("image not found")
+        })
+
+        test('isSuccess = false image not found',async ()=>{
+            imageProductValues.returnGetCoverImage = null
+            productImageUC = new ProductImageUseCase(
+                mockImageProductRepo(imageProductValues),
+                mockProductRepo(productValues)
+            )
+           let res = await productImageUC.changeCoverImage()
             
             expect(res.isSuccess).toBeFalsy()
             expect(res.reason).toEqual("image not found")
