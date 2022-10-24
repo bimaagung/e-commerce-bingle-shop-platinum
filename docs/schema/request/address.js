@@ -4,7 +4,8 @@ module.exports = {
         province: "Jakarta",
         city: "Jakarta",
         postal_code: 12940,
-        detail: "Jl. Setiabudi, Kuningan, Jakarta Selatan"
+        detail: "Jl. Setiabudi, Kuningan, Jakarta Selatan",
+        main_address: false
     },
     updateAddress: 
     {

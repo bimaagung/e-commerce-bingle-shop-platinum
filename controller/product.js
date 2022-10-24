@@ -1,4 +1,4 @@
-const resData = require('../helper/response');
+const resData = require("../helper/response");
 
 module.exports = {
   getAllProducts: async (req, res, next) => {
@@ -19,11 +19,7 @@ module.exports = {
     try {
       let getAllProduct = await req.productUC.getAllProducts();
 
-      res.status(200).json(
-        resData.success(
-          getAllProduct.data,
-        ),
-      );
+      res.status(200).json(resData.success(getAllProduct.data));
     } catch (e) {
       next(e);
     }
@@ -60,7 +56,9 @@ module.exports = {
 
       let product = await req.productUC.getProductById(id);
       if (product.isSuccess === false) {
-        return res.status(404).json(resData.failed(product.reason, product.data));
+        return res
+          .status(404)
+          .json(resData.failed(product.reason, product.data));
       }
 
       res.status(200).json(resData.success(product.data));
@@ -129,11 +127,7 @@ module.exports = {
           .json(resData.failed(productUC.reason, productUC.data));
       }
 
-      res.status(201).json(
-        resData.success(
-          productUC.data,
-        ),
-      );
+      res.status(201).json(resData.success(productUC.data));
     } catch (e) {
       next(e);
     }
@@ -199,9 +193,7 @@ module.exports = {
           .status(404)
           .json(resData.failed(updateProduct.reason, updateProduct.data));
       }
-      res.status(200).json(
-        resData.success(),
-      );
+      res.status(200).json(resData.success());
     } catch (e) {
       next(e);
     }
@@ -255,9 +247,25 @@ module.exports = {
           .json(resData.failed(deleteProduct.reason, deleteProduct.data));
       }
 
-      res.status(200).json(
-        resData.success(),
-      );
+      res.status(200).json(resData.success());
+    } catch (e) {
+      next(e);
+    }
+  },
+  getProductByKeyword: async (req, res, next) => {
+    /*
+      #swagger.tags = ['Product']
+    */
+    try {
+      let keyword = req.query.keyword;
+
+      let resProduct = await req.productUC.getProductByKeyword(keyword);
+      if (resProduct.isSuccess === false) {
+        return res
+          .status(404)
+          .json(resData.failed(resProduct.reason, resProduct.data));
+      }
+      res.status(200).json(resData.success(resProduct.data));
     } catch (e) {
       next(e);
     }

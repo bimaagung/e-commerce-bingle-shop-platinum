@@ -8,7 +8,7 @@ class AddressUC {
     let result = {
       isSuccess: false,
       status: 404,
-      reason: "",
+      reason: null,
       data: null,
     };
     let address = await this.AddressRepository.getAddressByID(id);
@@ -27,7 +27,7 @@ class AddressUC {
   async getAddressByUserID(userId) {
     let result = {
       isSuccess: false,
-      reason: "",
+      reason: null,
       data: [],
     };
 
@@ -42,7 +42,7 @@ class AddressUC {
     let result = {
       isSuccess: false,
       status: 404,
-      reason: "",
+      reason: null,
       data: null,
     };
 
@@ -52,11 +52,13 @@ class AddressUC {
       result.reason = "user id not found";
       return result;
     }
-    let limitAddress = await this.AddressRepository.getAddressByUserID(address.user_id)
-    if(limitAddress.length === 3){
-      result.reason = "cannot add address, maximal limit"
-      result.status = 400
-      return result
+    let limitAddress = await this.AddressRepository.getAddressByUserID(
+      address.user_id
+    );
+    if (limitAddress.length === 3) {
+      result.reason = "cannot add address, maximal limit";
+      result.status = 400;
+      return result;
     }
     let main_address = await this.AddressRepository.getMainAddress(
       address.user_id
@@ -78,7 +80,7 @@ class AddressUC {
     let result = {
       isSuccess: false,
       status: 404,
-      reason: "",
+      reason: null,
       data: null,
     };
 
@@ -97,7 +99,7 @@ class AddressUC {
   async changeMainAddress(address_id, user_id) {
     let result = {
       isSuccess: false,
-      reason: "",
+      reason: null,
       status: 404,
     };
     let existAddress = await this.AddressRepository.getAddressByID(address_id);
@@ -132,7 +134,7 @@ class AddressUC {
     let result = {
       isSuccess: false,
       status: 404,
-      reason: "",
+      reason: null,
       data: null,
     };
 
@@ -156,52 +158,5 @@ class AddressUC {
     result.data = deleteAddress;
     return result;
   }
-
-  // async isMainExist(userId) {
-  // let existMainAddress = await this.AddressRepository.getAddressByUserID(userId);
-  // let newArray = new Array();
-  // for(let i = 0; i < existMainAddress.length; i++) {
-  //   if (existMainAddress[i].main_address == true) {
-     
-  //     return existMainAddress[i]
-  //   } 
-  // }
-  // }
-
-  async updateMainAddress(userId) {
-    console.log(userId)
-    // let mainAddress = await this.isMainExist(userId);
-    let existMainAddress = await this.AddressRepository.getAddressByUserID(userId);
-    for(let i = 0; i < existMainAddress.length; i++) {
-      if ( existMainAddress[i].main_address) {
-        let newAddress = {
-          province: existMainAddress[i].province,
-        city: existMainAddress[i].city,
-        postal_code: existMainAddress[i].postal_code,
-        detail: existMainAddress[i].detail,
-        user_id: existMainAddress[i].user_id,
-        main_address: false
-        }
-        await this.updateAddress(existMainAddress[i].id, newAddress)
-      }
-    }
-
-    //  if (mainAddress != null) {
-    //   let newAddress = {
-    //     province: mainAddress.province,
-    //     city: mainAddress.city,
-    //     postal_code: mainAddress.postal_code,
-    //     detail: mainAddress.detail,
-    //     user_id: mainAddress.user_id,
-    //     main_address: false
-    //   }
-    
-    //   console.log(newAddress);
-
-    //   let checkStatus = await this.updateAddress(mainAddress.id, newAddress)
-    //   console.log(checkStatus)
-    //  }
-  }
-
 }
 module.exports = AddressUC;

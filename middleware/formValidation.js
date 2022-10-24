@@ -4,6 +4,45 @@ const resData = require('../helper/response');
 
 module.exports = {
 
+  generateOTP: async (req, res, next) => {
+    const response = Joi.object({
+      otp_type: Joi.string().required(),
+      email: Joi.string().email().required(),
+    }).validate(req.body);
+
+    if (response.error) {
+      return res.status(400).json(resData.failed(response.error.details[0].message));
+    }
+
+    next();
+  },
+
+  loginWithGoogle: async (req, res, next) => {
+    const response = Joi.object({
+      idToken: Joi.string().required(),
+    }).validate(req.body);
+
+    if (response.error) {
+      return res.status(400).json(resData.failed(response.error.details[0].message));
+    }
+
+    next();
+  },
+
+
+  updateEmail: async (req, res, next) => {
+    const response = Joi.object({
+      email: Joi.string().email().required(),
+      otp_code: Joi.number().min(6).required(),
+    }).validate(req.body);
+
+    if (response.error) {
+      return res.status(400).json(resData.failed(response.error.details[0].message));
+    }
+
+    next();
+  },
+
   updateImage: async (req, res, next) => {
     const response = Joi.object({
       image: Joi.string().required(),
@@ -16,10 +55,24 @@ module.exports = {
     next();
   },
 
+  resetPassword: async (req, res, next) => {
+    const response = Joi.object({
+      newPassword: Joi.string().min(6).required(),
+      confirmNewPassword: Joi.string().min(6).required(),
+      otp_code: Joi.number().min(6).required(),
+    }).validate(req.body);
+
+    if (response.error) {
+      return res.status(400).json(resData.failed(response.error.details[0].message));
+    }
+
+    next();
+  },
+
   updatePassword: async (req, res, next) => {
     const response = Joi.object({
-      password: Joi.string().min(6),
-      confirmPassword: Joi.ref('password'),
+      newPassword: Joi.string().min(6).required(),
+      confirmNewPassword: Joi.string().min(6).required(),
     }).validate(req.body);
 
     if (response.error) {
@@ -65,7 +118,7 @@ module.exports = {
   login: async (req, res, next) => {
     const response = Joi.object({
       username: Joi.string().required(),
-      password: Joi.string().min(6),
+      password: Joi.string().min(6).required(),
     }).validate(req.body);
 
     if (response.error) {
@@ -103,7 +156,7 @@ module.exports = {
     const response = Joi.object({
       name: Joi.string().required(),
       description: Joi.string(),
-      category_id: Joi.number().required(),
+      category_id: Joi.number(),
       price: Joi.number().required(),
       stock: Joi.number().required(),
     }).validate(req.body);
@@ -118,6 +171,22 @@ module.exports = {
   category: async (req, res, next) => {
     const response = Joi.object({
       name: Joi.string().required(),
+    }).validate(req.body);
+
+    if (response.error) {
+      return res.status(400).json(resData.failed(response.error.details[0].message));
+    }
+
+    next();
+  },
+
+  updatAddress: async (req, res, next) => {
+    const response = Joi.object({
+      province: Joi.string().required(),
+      city: Joi.string().required(),
+      postal_code: Joi.number().required(),
+      detail: Joi.string().required(),
+      main_address: Joi.boolean(),
     }).validate(req.body);
 
     if (response.error) {

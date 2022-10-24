@@ -21,6 +21,19 @@ class ChatRepository {
 
     return chats;
   }
+
+  async addChat(chatData) {
+    let chat = null;
+
+    try {
+      chat = await this.ChatRepository.create(chatData);
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+
+    return chat;
+  }
 }
 
 module.exports = ChatRepository;

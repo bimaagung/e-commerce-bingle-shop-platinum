@@ -1,7 +1,8 @@
 const UserUseCase = require('../../usecase/user');
 const mockUserRepo = require('../mock/repository.user.mock')
+const mockOtpRepo = require('../mock/repository.otp.mock')
 
-let userValues = {}
+let userValues, otpValues = {}
 let userUC = null
 
 const bcrypt = {
@@ -21,9 +22,14 @@ describe('users', () => {
             returnUpdateUser: true
         }
 
+        otpValues = {
+            returnGetOTP: true,
+            returnDeleteAllOtp: true,
+        }
 
 
-        userUC = new UserUseCase(mockUserRepo(userValues), bcrypt, cloudinary);
+
+        userUC = new UserUseCase(mockUserRepo(userValues), mockOtpRepo(otpValues), bcrypt, cloudinary);
   })
   
   describe('getUserExist test', () => { 
@@ -106,11 +112,10 @@ describe('users', () => {
    describe('updatePassword test', () => { 
 
     test('should isSuccess is true', async () => {
-        let res = await userUC.updatePassword(1,
-            {
-                password : '12345678',
-                retype_password: '12345678'
-            });
+        let res = await userUC.updatePassword({
+                newPassword : '12345678',
+                confirmNewPassword: '12345678'
+            },2);
 
         expect(res.isSuccess).toBeTruthy();
         expect(res.statusCode).toEqual(200)
@@ -119,11 +124,11 @@ describe('users', () => {
     test('should isSuccess is false and reason is "user not found"', async () => {
         userValues.returnGetUserByID = null
         userUC = new UserUseCase(mockUserRepo(userValues));
-        let res = await userUC.updatePassword(2,
+        let res = await userUC.updatePassword(
             {
-                password : '12345678',
-                retype_password: '12345678'
-            });
+                newPassword : '12345678',
+                confirmNewPassword: '12345678'
+            },2);
 
         expect(res.isSuccess).toBeFalsy();
         expect(res.reason).toEqual('user not found');
@@ -132,11 +137,11 @@ describe('users', () => {
     });
 
     test('should isSuccess is false and reason is "password not match"', async () => {
-        let res = await userUC.updatePassword(2,
+        let res = await userUC.updatePassword(
             {
-                password : '12345678',
-                retype_password: '123456789'
-            });
+                newPassword : '12345678',
+                confirmNewPassword: '123456789'
+            },2);
 
         expect(res.isSuccess).toBeFalsy();
         expect(res.reason).toEqual('password not match');

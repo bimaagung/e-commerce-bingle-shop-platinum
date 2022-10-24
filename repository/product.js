@@ -13,6 +13,9 @@ class ProductRepository {
           attributes: ['id', 'url'],
         },
       ],
+      order: [
+        ['createdAt', 'DESC'],
+      ],
     });
   }
 
@@ -23,10 +26,18 @@ class ProductRepository {
       },
       include: [
         {
-          model: ProductImage
+          model: ProductImage,
         },
       ],
 
+    });
+  }
+
+  async getProductByCategoryId(id) {
+    return await this.ProductModel.findAll({
+      where: {
+        category_id: id,
+      },
     });
   }
 
@@ -47,6 +58,17 @@ class ProductRepository {
       where: {
         id,
       },
+    });
+  }
+
+  async getProductByKeyword(condition) {
+    let keyword = '';
+    condition = [];
+    condition.push(`%${keyword}%`);
+    await this.ProductModel.findAll({
+      where: { condition },
+
+      attributes: ['id', 'name'],
     });
   }
 }

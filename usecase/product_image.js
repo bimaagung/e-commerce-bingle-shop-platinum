@@ -1,11 +1,20 @@
 /* eslint-disable no-return-await */
-const defaultImage = require("../internal/constant/defaultImage");
+const cloudinary = require('../libs/handle_upload');
+const defaultImage = require('../internal/constant/defaultImage');
+
 class ProductImageUC {
-  constructor(ProductImageRepository, ProductRepository, cloudinary, _) {
+  constructor(
+    ProductImageRepository,
+    ProductRepository,
+    cloudinary,
+    _,
+    defaultImage
+  ) {
     this.productImageRepository = ProductImageRepository;
     this.productRepository = ProductRepository;
     this.cloudinary = cloudinary;
     this._ = _;
+    this.defaultImage = defaultImage;
   }
 
   async getImageProductByProductID(product_id) {
@@ -29,23 +38,6 @@ class ProductImageUC {
     result.status = 200;
     result.data = image;
 
-    return result;
-  }
-  async getImageProductByID(imageId) {
-    let result = {
-      isSuccess: false,
-      reason: "failed",
-      status: 404,
-      data: null,
-    };
-    let image = await this.productImageRepository.getImageByID(imageId);
-    if (image === null) {
-      result.reason = "image not found";
-      return result;
-    }
-    result.isSuccess = true;
-    result.status = 200;
-    result.data = image;
     return result;
   }
 
@@ -116,7 +108,7 @@ class ProductImageUC {
     );
     if (images.length === 0) {
       let dataImage = {
-        url: defaultImage.DEFAULT_PRODUCT_IMAGE,
+        url: this.defaultImage.DEFAULT_PRODUCT_IMAGE,
         cover_image: true,
         product_id: product_id,
       };
@@ -145,30 +137,10 @@ class ProductImageUC {
 
   async deleteDefaultImage(image) {
     await image.forEach((data) => {
-      if (data.url === defaultImage.DEFAULT_PRODUCT_IMAGE) {
+      if (data.url === this.defaultImage.DEFAULT_PRODUCT_IMAGE) {
         this.deleteImageProduct(data.id);
       }
     });
-  }
-
-  async updateImageProduct(imageData, id) {
-    let result = {
-      isSuccess: false,
-      reason: "success",
-      status: 404,
-      data: null,
-    };
-    let image = await this.productImageRepository.getImageByID(id);
-    if (image == null) {
-      result.reason = "image not found";
-      return result;
-    }
-    imageData.url = await cloudinary.uploadCloudinaryProduct(imageData.url);
-    image = await this.productImageRepository.updateImage(imageData, id);
-    result.isSuccess = true;
-    result.status = 200;
-    result.data = image;
-    return result;
   }
 
   async changeCoverImage(image_id, product_id) {

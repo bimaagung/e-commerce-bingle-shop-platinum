@@ -1,0 +1,50 @@
+//Product Admin [Mas Irvan]
+- add product image default [fix]
+- remove endpoint update-image [fix]
+- delete row image ketika produk di delete [fix] 
+- remove endpoint image detail [fix]
+- swagger , ketika limit 
+	{
+  "status": "failed",
+  "message": "failed add image, maximum limit image"
+	}
+
+- get all product diurutin paling baru [fix]
+- add produk ketika user tidak input kategori maka default id [minor]
+
+//Category [Mas Faris]
+-add detail product  di get category by id [fix]
+-update category tidak jalan 
+-get all category diurutin paling baru
+-delete category tidak jalan 
+-kalau kategory di delete column product ke default id 100 "kategori" [minor]
+
+// Order [Bima]
+- create order dicek apabila stock produk masih ada atau tidak
+- tambah endpoint cancel
+- stock tidak jalan ketika di completed
+- add mailer in order [Mas Irvan]
+- add address di order
+
+// Address 
+- hapus endpoint getAddressById [Mas Irvan]
+- update address joi allow null [Bima]
+
+// User 
+- is_admin dan password dihapus di getUser by id
+- reset password fixing
+- fixing response request otp
+- swagger form registration [Bima]
+- swagger login google [Bima]
+
+// CI [Bima]
+- tambah CI docker
+
+// testing [Bima]
+// fixing and build testing
+
+// Joi [Bima]
+fixing joi all router 
+
+//  Chat
+websocket chat [fix]

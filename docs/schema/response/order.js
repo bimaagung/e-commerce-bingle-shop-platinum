@@ -37,17 +37,24 @@ module.exports = {
         "status": "ok",
         "message": "success",
         "data": {
-            "id": "bQ660uV5EW6vSXe-",
-            "status": "PENDING",
-            "created_at": "2022-10-17T05:28:32.419Z",
-            "updated_at": "2022-10-17T05:28:32.419Z",
+            "id": "LordYqkZTuUVjL5k",
+            "status": "COMPLETED",
+            "created_at": "2022-10-21T11:40:10.444Z",
+            "updated_at": "2022-10-22T03:57:00.524Z",
             "qty": 3,
             "total_price": 90000000,
             "user": {
-            "id": 61,
-            "name": "Bima",
+            "id": 3,
+            "name": "bima",
             "username": "bima",
-            "telp": "08554637"
+            "telp": "034984",
+            "address": {
+                "id": 3,
+                "province": "Semarang",
+                "city": "Jakarta",
+                "postal_code": "12940",
+                "detail": "Jl. Setiabudi, Kuningan, Jakarta Selatan"
+            }
             },
             "products": [
             {
@@ -60,7 +67,7 @@ module.exports = {
             }
             ]
         }
-    },
+    },    
     successOrder : {
         "status": "ok",
         "message": "success"

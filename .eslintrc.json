@@ -16,6 +16,7 @@
 //         "prefer-const":"off",
 //         "consistent-return":"off",
 //         "linebreak-style":"off",
-//         "no-return-await":"off"
+//         "no-return-await":"off",
+//         "no-param-reassign":"off"
 //     }
 // }

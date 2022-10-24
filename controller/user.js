@@ -99,7 +99,6 @@ module.exports = {
       let user = {
         name: req.body.name,
         username: req.body.username,
-        email: req.body.email,
         telp: req.body.telp,
       };
 
@@ -232,7 +231,7 @@ module.exports = {
 
     */
     try {
-      let { id } = req.user
+      let { id } = req.user;
       let dataPassword = {
         oldPassword: req.body.oldPassword,
         newPassword: req.body.newPassword,
@@ -252,25 +251,49 @@ module.exports = {
       next(error);
     }
   },
-  
-  resetPassword : async (req, res, next)=>{
-    let email = req.query.email
+
+  resetPassword: async (req, res, next) => {
+    /*
+      #swagger.tags = ['User']
+    */
+    let email = req.query.email;
     let user = {
       newPassword: req.body.newPassword,
-      confrimNewPassword: req.body.confrimNewPassword,
-      otp_code: req.body.otp_code
-    }
+      confirmNewPassword: req.body.confirmNewPassword,
+      otp_code: req.body.otp_code,
+    };
     try {
-      resReset = await req.userUC.resetPassword(user, email)
-      if(resReset.isSuccess !== true){
+      resReset = await req.userUC.resetPassword(user, email);
+      if (resReset.isSuccess !== true) {
         return res
-        .status(resReset.statusCode)
-        .json(resData.failed(resReset.reason))
+          .status(resReset.statusCode)
+          .json(resData.failed(resReset.reason));
       }
-      res.status(resReset.statusCode).json(resData.success())
-
+      res.status(resReset.statusCode).json(resData.success());
     } catch (e) {
-     next (e) 
+      next(e);
     }
-  }
+  },
+  updateEmail: async (req, res, next) => {
+    /*
+      #swagger.tags = ['User']
+    */
+
+    let id = req.user.id;
+    let userData = {
+      email: req.body.email,
+      otp_code: req.body.otp_code,
+    };
+    try {
+      let resUpdate = await req.userUC.updateEmail(userData, id);
+      if (resUpdate.isSuccess !== true) {
+        return res
+          .status(resUpdate.statusCode)
+          .json(resData.failed(resUpdate.reason));
+      }
+      res.status(resUpdate.statusCode).json(resData.success());
+    } catch (e) {
+      next(e);
+    }
+  },
 };

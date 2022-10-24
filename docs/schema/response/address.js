@@ -17,16 +17,17 @@ module.exports = {
         "status": "ok",
         "message": "success",
         "data": [
-            {
-            "id": 33,
+           {
+            "id": 5,
             "province": "Jakarta",
             "city": "Jakarta",
             "postal_code": "12940",
             "detail": "Jl. Setiabudi, Kuningan, Jakarta Selatan",
-            "user_id": 61,
-            "createdAt": "2022-10-17T10:22:27.508Z",
-            "updatedAt": "2022-10-17T10:22:27.508Z"
-            }
+            "user_id": 4,
+            "main_address": false,
+            "createdAt": "2022-10-22T03:29:24.202Z",
+            "updatedAt": "2022-10-22T03:29:31.904Z"
+            },
         ]
     },
     addressNotFound: {

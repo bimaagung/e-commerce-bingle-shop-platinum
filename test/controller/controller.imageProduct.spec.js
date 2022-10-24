@@ -129,56 +129,6 @@ describe("Test upload image", () => {
       expect(res.json).toBeCalledWith(resData.success([]));
     })
   });
-  describe("update image by product id ", () => {
-    const imageProduct = [{
-      id: 1,
-      url: 'https://res.cloudinary.com/dnvltueqb/image/upload/v1663815144/default%20image/default_product_w8fe1a.jpg',
-      product_id: 1,
-      updatedAt: "2022-10-14T05:15:42.095Z",
-      createdAt: "2022-10-14T05:15:42.095Z",
-    }]
-
-    test("should status 200 isSucces = true", async () => {
-      mockImageProductUC.updateImageProduct = jest
-        .fn()
-        .mockReturnValue({ isSuccess: true, reason: "", data: imageProduct });
-      let req = mockRequest(
-        {},
-        {},
-        {},
-        { file: urlImage.DEFAULT_PRODUCT_IMAGE },
-        { productImageUC: mockImageProductUC }
-      );
-      let res = mockResponse();
-
-      await imageProductController.updateImageProduct(req, res, next);
-
-      expect(mockImageProductUC.updateImageProduct).toHaveBeenCalled();
-
-      expect(res.json).toBeCalledWith(resData.success());
-    })
-
-    test("should status 404 isSucces = true", async () => {
-      mockImageProductUC.updateImageProduct = jest
-        .fn()
-        .mockReturnValue({ isSuccess: false, reason: "image not found", data: imageProduct });
-      let req = mockRequest(
-        {},
-        {},
-        {},
-        { file: urlImage.DEFAULT_PRODUCT_IMAGE },
-        { productImageUC: mockImageProductUC }
-      );
-      let res = mockResponse();
-
-      await imageProductController.updateImageProduct(req, res, next);
-
-      expect(mockImageProductUC.updateImageProduct).toHaveBeenCalled();
-
-      expect(res.json).toBeCalledWith(resData.failed("image not found"));
-    })
-
-  })
   describe("delete image", () => {
     test("should status 200 isSucces = true", async () => {
       mockImageProductUC.deleteImageProduct = jest

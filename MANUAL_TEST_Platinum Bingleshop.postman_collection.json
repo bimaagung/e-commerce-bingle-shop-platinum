@@ -1083,17 +1083,11 @@
 				{
 					"name": "reset password",
 					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6ImN1c3RvbWVyIiwidXNlcm5hbWUiOiJjdXN0b21lciIsImVtYWlsIjoiY3VzdG9tZXJuQG1haWwuY29tIiwiaXNfYWRtaW4iOmZhbHNlLCJpYXQiOjE2NjYyMzMyMTgsImV4cCI6MTY2NjI1NDgxOH0.iibV08iSi8GAqL2WYtQ4zb68QTuvew3RpW07XL6iXYU",
-								"type": "text"
-							}
-						],
+						"method": "PUT",
+						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"oldPassword\" : \"123456\",\r\n    \"newPassword\" : \"123456\",\r\n    \"otp_code\" : \"123456\"\r\n\r\n}",
+							"raw": "{\r\n    \"newPassword\" : \"1\",\r\n    \"confirmNewPassword\" :\"1\",\r\n    \"otp_code\" :\"703839\"\r\n\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1101,7 +1095,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/customer/reset-password/?email",
+							"raw": "http://localhost:3000/api/customer/reset-password/?email=kian@gmail.com",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1116,8 +1110,48 @@
 							"query": [
 								{
 									"key": "email",
-									"value": null
+									"value": "kian@gmail.com"
+								},
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "otp",
+			"item": [
+				{
+					"name": "request otp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"otp_type\" :\"RESETPASSWORD\",\r\n    \"email\" : \"kian@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/otp/request",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"otp",
+								"request"
 							]
 						}
 					},
@@ -1150,6 +1184,35 @@
 						"api",
 						"user",
 						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login with google",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"idToken\" : \"eyJhbGciOiJSUzI1NiIsImtpZCI6ImVlMWI5Zjg4Y2ZlMzE1MWRkZDI4NGE2MWJmOGNlY2Y2NTliMTMwY2YiLCJ0eXAiOiJKV1QifQ\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/login/google",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"login",
+						"google"
 					]
 				}
 			},
@@ -1196,6 +1259,11 @@
 						{
 							"key": "email",
 							"value": "kian@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "otp_code",
+							"value": "",
 							"type": "text"
 						}
 					]

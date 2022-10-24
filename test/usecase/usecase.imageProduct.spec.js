@@ -46,21 +46,16 @@ describe('Image Product', () => {
             expect(res.isSuccess).toBeTruthy()
             expect(res.reason).toEqual("success")
         })
-    })
-    describe('get image product by image ID', () => {
-        test('isSuccess == true ', async () => {
-            let res = await productImageUC.getImageByID()
-        })
-        test('isSuccess == false product not found', async () => {
-            productValues.returnGetImageByID = null
+        test('isSuccess = false image not found', async () => {
+            imageProductValues.returnGetAllImageByProductID.length = 0
             productImageUC = new ProductImageUseCase(
                 mockImageProductRepo(imageProductValues),
                 mockProductRepo(productValues)
             )
             let res = await productImageUC.getImageByID()
 
-            expect(res.isSuccess).toBeFalsy()
-           
+            expect(res.isSuccess).toBeTruthy()
+            expect(res.reason).toEqual("success")
         })
     })
 

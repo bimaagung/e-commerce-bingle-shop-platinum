@@ -14,12 +14,8 @@ class CategoryRepository {
       where: {
         id,
       },
-      inculude: [
-        {
-          model:Category,
-          as: 'product',
-          attribute: ['id', 'name', 'description', 'category_id', 'sold', 'price', 'stock', 'image'],
-        },
+      order: [
+        ['createdAt', 'DESC'],
       ],
     });
 

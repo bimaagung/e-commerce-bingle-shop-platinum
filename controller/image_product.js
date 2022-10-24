@@ -1,6 +1,4 @@
 const resData = require("../helper/response");
-const defaultImage = require("../internal/constant/defaultImage");
-
 module.exports = {
   getImageProductByProductID: async (req, res, next) => {
     /*
@@ -21,7 +19,7 @@ module.exports = {
     let { product_id } = req.params;
     try {
       let resImage = await req.productImageUC.getImageProductByProductID(
-        product_id
+        product_id,
       );
       if (resImage.isSuccess !== true) {
         return res
@@ -33,22 +31,6 @@ module.exports = {
       next(e);
     }
   },
-
-  getImageProductByID: async (req, res, next) => {
-    let { id } = req.params;
-    try {
-      let resImage = await req.productImageUC.getImageProductByID(id);
-      if (resImage.isSuccess !== true) {
-        return res
-          .status(resImage.status)
-          .json(resData.failed(resImage.reason));
-      }
-      res.status(resImage.status).json(resData.success(resImage.data));
-    } catch (e) {
-      next(e);
-    }
-  },
-
   addProductImage: async (req, res, next) => {
     /*
     #swagger.tags = ['Product']
@@ -74,38 +56,6 @@ module.exports = {
             }
         }
 
-    #swagger.responses[200] = {
-        description: "Berhasil menambahkan gambar di produk",
-          content: {
-              "application/json": {
-                  schema:{
-                      $ref: "#/definitions/addImageProduct"
-                  }
-              }
-          }
-      }
-
-      #swagger.responses[404] = {
-        description: "Produk tidak ditemukan",
-          content: {
-              "application/json": {
-                  schema:{
-                      $ref: "#/definitions/addImageNotFound"
-                  }
-              }
-          }
-      }
-
-      #swagger.responses[401] = {
-        description: "Akun tidak valid",
-          content: {
-              "application/json": {
-                  schema:{
-                      $ref: "#/definitions/unathorized"
-                  }
-              }
-          }
-      }
     */
     try {
       let dataImage = {
@@ -127,50 +77,10 @@ module.exports = {
       next(e);
     }
   },
-  updateImageProduct: async (req, res, next) => {
-    /*
-    #swagger.tags = ['Product']
-    #swagger.consumes = ['multipart/form-data']
-    #swagger.requestBody = {
-            required: true,
-            "@content": {
-                "multipart/form-data": {
-                    schema: {
-                        type: "object",
-                        properties: {
-                            product_id: {
-                                type: "string"
-                            },
-                            url: {
-                                type: "string",
-                                format: "binary"
-                            }
-                        },
-                        required: ["product_id", "url"]
-                    }
-                }
-            }
-        }
-
-    */
-    try {
-      let { id } = req.params;
-      let dataImage = {
-        url: req.file.path,
-        product_id: req.body.product_id,
-      };
-      let resImage = await req.productImageUC.updateImageProduct(dataImage, id);
-      if (resImage.isSuccess !== true) {
-        return res
-          .status(resImage.status)
-          .json(resData.failed(resImage.reason));
-      }
-      res.status(200).json(resData.success());
-    } catch (e) {
-      next(e);
-    }
-  },
   changeCoverImage: async (req, res, next) => {
+    /*
+      #swagger.tags = ['Product']
+    */
     let image_id = req.query.image_id;
     let product_id = req.query.product_id;
     try {

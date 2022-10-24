@@ -9,6 +9,7 @@ const imageController = require('../controller/image_product');
 
 // product
 router.get('/api/public/product', productController.getAllProducts);
+router.get('/api/public/product/keyword', productController.getProductByKeyword);
 router.get('/api/public/product/:id', productController.getProductById);
 
 // category
@@ -17,6 +18,6 @@ router.get('/api/public/category/:id', categoryController.getCategoryById);
 
 // image prodcut customer
 router.get('/api/public/image/product/:product_id', imageController.getImageProductByProductID);
-router.get('/api/public/image/product/detail/:id', imageController.getImageProductByID);
+
 
 module.exports = router;
