@@ -230,64 +230,24 @@
         ],
         "description": "",
         
-        "responses": {
-          "200": {
-            "description": "Berhasil memperbaharui password pengguna",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/successUser"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Password dan confirmPassword tidak sesuai",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/notMatchPassword"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Akun tidak valid",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/unathorized"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Pengguna tidak ditemukan",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/userNotFound"
-                }
-              }
-            }
-          }
-        },
         "security": [
           {
             "bearerAuth": []
           }
         ],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/bodyUpdatePassword"
-              }
-            },
-            "application/xml": {
-              "schema": {
-                "$ref": "#/components/schemas/bodyUpdatePassword"
+                "type": "object",
+                "properties": {
+                  "newPassword": {
+                    "example": "password123"
+                  },
+                  "confirmNewPassword": {
+                    "example": "password123"
+                  }
+                }
               }
             }
           }
