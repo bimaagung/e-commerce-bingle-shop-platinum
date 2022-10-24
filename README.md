@@ -28,7 +28,7 @@ test each endpoint in swagger
 
 Installation project - docker
 
-- customize env in docker compose -> platinum
+- customize env in file docker-compose.yml -> platinum
 - run docker compose in project
 - open terminal container platinum in docker 
 - create db `sequelize db:create`
