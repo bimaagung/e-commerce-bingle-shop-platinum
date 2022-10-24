@@ -34,10 +34,10 @@
                 "type": "object",
                 "properties": {
                   "username": {
-                    "example": "any"
+                    "example": "admin"
                   },
                   "password": {
-                    "example": "any"
+                    "example": "123456"
                   }
                 }
               }
@@ -797,16 +797,9 @@
         "description": "",
         "parameters": [
           {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "name": "status",
             "in": "query",
-            "description": "Ada dapat memilih semua pesanan dengan mengkosongkan query atau mengisi query untuk filter status dengan satu dan mix parameter [SUBMITTED, PROCESSED, COMPLETED, CANCELED]",
+            "description": "Ada dapat memilih semua pesanan dengan mengkosongkan semua body atau mengisi query seperti contoh ini untuk filter status dengan satu dan mix parameter [SUBMITTED, PROCESSED, COMPLETED, CANCELED]",
             "schema": {
               "$ref": "#/components/schemas/queryStatus"
             }
