@@ -27,9 +27,15 @@ const mockResponse = () => {
     return res
 }
 
-const next = (error) => {
-    console.log(error.message)
-}
+const next = () => jest.fn().mockReturnValue(
+    {
+        status: 500, 
+        json:{
+            status: 'failed',
+            message: 'internal server error',
+        }
+    }
+);
 
 describe('Test Product', () => {
     describe('get all products', () => {
@@ -77,6 +83,21 @@ describe('Test Product', () => {
             expect(res.json).toBeCalledWith(resData.success([]))
         })
         
+          test("should status is 500 and message is 'internal server error'", async () => {
+                mockProductUC.getAllProducts = jest.fn().mockImplementation(() => {
+                    throw new Error();
+                });
+
+               let req = mockRequest({},{},{},{},{ productUC: mockProductUC })
+                let res = mockResponse();
+                let serverError = next();
+
+                await productController.getAllProducts(req, res, next)
+                
+                expect(serverError().status).toEqual(500);
+                expect(serverError().json.message).toEqual('internal server error');
+            });
+
     })
 
     describe('get product by Id', () => {
@@ -124,6 +145,21 @@ describe('Test Product', () => {
             expect(res.status).toBeCalledWith(404)
             expect(res.json).toBeCalledWith(resData.failed('product not found', null))
         })
+
+          test("should status is 500 and message is 'internal server error'", async () => {
+                mockProductUC.getProductById = jest.fn().mockImplementation(() => {
+                    throw new Error();
+                });
+
+                let req = mockRequest({},{},{id:2},{},{ productUC: mockProductUC})
+                let res = mockResponse();
+                let serverError = next();
+
+                await productController.getProductById(req, res, next)
+                
+                expect(serverError().status).toEqual(500);
+                expect(serverError().json.message).toEqual('internal server error');
+            });
     })
 
 
@@ -180,6 +216,22 @@ describe('Test Product', () => {
                 expect(res.status).toBeCalledWith(404)
                 expect(res.json).toBeCalledWith(resData.failed('failed to add, category not found', null))
         })
+
+          test("should status is 500 and message is 'internal server error'", async () => {
+                mockProductUC.addProduct  = jest.fn().mockImplementation(() => {
+                    throw new Error();
+                });
+
+                let req = mockRequest(productBody,{},{},{},{ productUC: mockProductUC})
+                let res = mockResponse();
+                let serverError = next();
+
+                await productController.addProduct(req, res, next)
+                
+                expect(serverError().status).toEqual(500);
+                expect(serverError().json.message).toEqual('internal server error');
+            });
+
     })
 
     describe('update product', () => {
@@ -227,6 +279,21 @@ describe('Test Product', () => {
                 expect(res.status).toBeCalledWith(404)
                 expect(res.json).toBeCalledWith(resData.failed('product not found', null))
         })
+
+           test("should status is 500 and message is 'internal server error'", async () => {
+                mockProductUC.updateProduct  = jest.fn().mockImplementation(() => {
+                    throw new Error();
+                });
+
+                let req = mockRequest({},{},{id:2},{},{ productUC: mockProductUC})
+                let res = mockResponse();
+                let serverError = next();
+
+                await productController.updateProduct(req, res, next)
+                
+                expect(serverError().status).toEqual(500);
+                expect(serverError().json.message).toEqual('internal server error');
+            });
         
     })
 
@@ -275,5 +342,21 @@ describe('Test Product', () => {
             expect(res.status).toBeCalledWith(404)
             expect(res.json).toBeCalledWith(resData.failed('product not found', null))
         })
+
+          test("should status is 500 and message is 'internal server error'", async () => {
+             mockProductUC.deleteProduct  = jest.fn().mockImplementation(() => {
+                throw new Error();
+            });
+
+            let req = mockRequest({},{},{id:2},{},{ productUC: mockProductUC})
+            let res = mockResponse();
+            let serverError = next();
+
+            await productController.deleteProduct(req, res, next)
+            
+            expect(serverError().status).toEqual(500);
+            expect(serverError().json.message).toEqual('internal server error');
+        });
+        
     })
 })

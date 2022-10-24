@@ -31,9 +31,17 @@ const mockResponse = () => {
   return res;
 };
 
-const next = (error) => {
-  console.log(error.message);
-};
+const next = () => jest.fn().mockReturnValue(
+    {
+        status: 500, 
+        json:{
+            status: 'failed',
+            message: 'internal server error',
+        }
+    }
+);
+
+
 describe("Test upload image", () => {
   describe("createImage test", () => {
     const imageProduct = {
@@ -82,6 +90,27 @@ describe("Test upload image", () => {
 
       expect(res.json).toBeCalledWith(resData.failed("failed add image, product not found"));
     });
+
+     test("should status is 500 and message is 'internal server error'", async () => {
+        mockImageProductUC.createImageProduct = jest.fn().mockImplementation(() => {
+            throw new Error();
+        });
+
+        let req = mockRequest(
+          {},
+          {},
+          {},
+          { file: urlImage.DEFAULT_PRODUCT_IMAGE },
+          { productImageUC: mockImageProductUC }
+        );
+        let res = mockResponse();
+        let serverError = next();
+
+       await imageProductController.addProductImage(req, res, next);
+        
+        expect(serverError().status).toEqual(500);
+        expect(serverError().json.message).toEqual('internal server error');
+    });
   });
   describe("get image by product id ", () => {
     const imageProduct = [{
@@ -128,6 +157,26 @@ describe("Test upload image", () => {
       expect(mockImageProductUC.getImageProductByProductID).toHaveBeenCalled();
       expect(res.json).toBeCalledWith(resData.success([]));
     })
+     test("should status is 500 and message is 'internal server error'", async () => {
+        mockImageProductUC.getImageProductByProductID = jest.fn().mockImplementation(() => {
+            throw new Error();
+        });
+
+        let req = mockRequest(
+          {},
+          {},
+          {},
+          {},
+          { productImageUC: mockImageProductUC }
+        );
+        let res = mockResponse();
+        let serverError = next();
+
+      await imageProductController.getImageProductByProductID(req, res, next);
+        
+        expect(serverError().status).toEqual(500);
+        expect(serverError().json.message).toEqual('internal server error');
+    });
   });
   describe("delete image", () => {
     test("should status 200 isSucces = true", async () => {
@@ -169,5 +218,26 @@ describe("Test upload image", () => {
 
       expect(res.json).toBeCalledWith(resData.failed("image not found"));
     })
+     test("should status is 500 and message is 'internal server error'", async () => {
+        mockImageProductUC.deleteImageProduct = jest.fn().mockImplementation(() => {
+            throw new Error();
+        });
+
+        let req = mockRequest(
+          {},
+          {},
+          {},
+          {},
+          { productImageUC: mockImageProductUC }
+        );
+        let res = mockResponse();
+        let serverError = next();
+        
+        await imageProductController.deleteImageProduct(req, res, next);
+
+        
+        expect(serverError().status).toEqual(500);
+        expect(serverError().json.message).toEqual('internal server error');
+    });
   })
 })
