@@ -90,6 +90,11 @@ class OrderRepository {
     const order = await this.OrderModel.update(orders, { where: { id: orderId } });
     return order;
   }
+
+  async deleteOrderPending(id) {
+    const order = await this.OrderModel.destroy({ where: { id } });
+    return order;
+  }
 }
 
 module.exports = OrderRepository;

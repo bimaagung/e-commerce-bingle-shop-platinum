@@ -1,9 +1,12 @@
 const ProductUseCase = require("../../usecase/product");
 const mockProductRepo = require("../mock/repository.product.mock");
 const mockCategoryRepo = require("../mock/repository.category.mock");
+const mockProductCategoryRepo = require("../mock/repository.imageProduct.mock");
+const defaultImage = require('../../internal/constant/defaultImage');
+const _ = require('lodash');
 
 //object
-let productValues, categoryValues = {}
+let productValues, categoryValues , productImageValues= {}
 //class
 let productUC = null;
 
@@ -21,7 +24,15 @@ describe('product', () => {
           returnGetCategoryByID: true
         }
 
-        productUC = new ProductUseCase(mockProductRepo(productValues), mockCategoryRepo(categoryValues));
+        productImageValues = {
+          returnGetImageByID : true,
+          returnGetAllImageByProductID : true,
+          returnCreateImage : true,
+          returnUpdateImage : true,
+          returnDeleteImage : true,
+        }
+
+        productUC = new ProductUseCase(mockProductRepo(productValues), mockCategoryRepo(categoryValues), mockProductCategoryRepo(productImageValues), defaultImage, _);
     });
 
     describe('get all products', () => {

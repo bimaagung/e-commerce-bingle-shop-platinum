@@ -1,10 +1,11 @@
-const mockProductRepo = (
+const mockOtpRepo = (
     {
         returnGetProductByID, 
         returnUpdateProduct,
         returnGetAllProducts,
         returnAddProduct,
-        returnDeleteProduct
+        returnDeleteProduct,
+        returnGetProductByCategoryId
     }
 ) => {
 
@@ -73,6 +74,26 @@ const mockProductRepo = (
   repo.addProduct = jest.fn().mockReturnValue(
     returnAddProduct !== true ? returnAddProduct : {
       id: 10,
+      name: 'ASUS ROG Phone 6 Pro 18/512Gb',
+      description: 'Smarphone dari asus',
+      category_id: 2,
+      sold: 3,
+      price: 26500000,
+      stock: 7,
+      image: null,
+      createdAt: "12-09-2022 23:30:00",
+      updatedAt: "12-09-2022 23:30:00"
+    }
+  )
+
+  repo.deleteProduct = jest.fn().mockReturnValue(
+    returnDeleteProduct !== true ?  returnDeleteProduct : true
+    )
+
+  repo.getProductByCategoryId = jest.fn().mockReturnValue(
+    returnGetProductByCategoryId !== true ? returnGetProductByCategoryId : [
+      {
+        id: 10,
         name: 'ASUS ROG Phone 6 Pro 18/512Gb',
         description: 'Smarphone dari asus',
         category_id: 2,
@@ -82,15 +103,12 @@ const mockProductRepo = (
         image: null,
         createdAt: "12-09-2022 23:30:00",
         updatedAt: "12-09-2022 23:30:00"
-    }
+      }
+    ]
   )
-
-  repo.deleteProduct = jest.fn().mockReturnValue(
-    returnDeleteProduct !== true ?  returnDeleteProduct : true
-    )
 
 
   return repo;
 };
 
-module.exports = mockProductRepo;
+module.exports = mockOtpRepo;

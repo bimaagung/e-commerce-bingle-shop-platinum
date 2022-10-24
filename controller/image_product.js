@@ -1,6 +1,4 @@
-const resData = require('../helper/response');
-const defaultImage = require('../internal/constant/defaultImage');
-
+const resData = require("../helper/response");
 module.exports = {
   getImageProductByProductID: async (req, res, next) => {
     /*
@@ -33,7 +31,6 @@ module.exports = {
       next(e);
     }
   },
-
   addProductImage: async (req, res, next) => {
     /*
     #swagger.tags = ['Product']
@@ -59,95 +56,44 @@ module.exports = {
             }
         }
 
-    #swagger.responses[200] = {
-        description: "Berhasil menambahkan gambar di produk",
-          content: {
-              "application/json": {
-                  schema:{
-                      $ref: "#/definitions/addImageProduct"
-                  }
-              }
-          }
-      }
-
-      #swagger.responses[404] = {
-        description: "Produk tidak ditemukan",
-          content: {
-              "application/json": {
-                  schema:{
-                      $ref: "#/definitions/addImageNotFound"
-                  }
-              }
-          }
-      }
-
-      #swagger.responses[401] = {
-        description: "Akun tidak valid",
-          content: {
-              "application/json": {
-                  schema:{
-                      $ref: "#/definitions/unathorized"
-                  }
-              }
-          }
-      }
     */
     try {
       let dataImage = {
         url: null,
         product_id: req.body.product_id,
+        cover_image: false,
       };
-      let image = null;
       if (req.file !== undefined) {
-        image = (req.file.path);
+        dataImage.url = req.file.path;
       }
-      dataImage.url = image;
       let resImage = await req.productImageUC.createImageProduct(dataImage);
       if (resImage.isSuccess !== true) {
-        return res.status(resImage.status).json(resData.failed(resImage.reason));
+        return res
+          .status(resImage.status)
+          .json(resData.failed(resImage.reason));
       }
       res.status(resImage.status).json(resData.success(resImage.data));
     } catch (e) {
       next(e);
     }
   },
-  updateImageProduct: async (req, res, next) => {
+  changeCoverImage: async (req, res, next) => {
     /*
-    #swagger.tags = ['Product']
-    #swagger.consumes = ['multipart/form-data']
-    #swagger.requestBody = {
-            required: true,
-            "@content": {
-                "multipart/form-data": {
-                    schema: {
-                        type: "object",
-                        properties: {
-                            product_id: {
-                                type: "string"
-                            },
-                            url: {
-                                type: "string",
-                                format: "binary"
-                            }
-                        },
-                        required: ["product_id", "url"]
-                    }
-                }
-            }
-        }
-
+      #swagger.tags = ['Product']
     */
+    let image_id = req.query.image_id;
+    let product_id = req.query.product_id;
     try {
-      let { id } = req.params;
-      let dataImage = {
-        url: req.file.path,
-        product_id: req.body.product_id,
-      };
-      let resImage = await req.productImageUC.updateImageProduct(dataImage, id);
-      if (resImage.isSuccess !== true) {
-        return res.status(resImage.status).json(resData.failed(resImage.reason));
+      let resUpdate = await req.productImageUC.changeCoverImage(
+        image_id,
+        product_id
+      );
+      if (resUpdate.isSuccess !== true) {
+        return res
+          .status(resUpdate.status)
+          .json(resData.failed(resUpdate.reason));
       }
-      res.status(200).json(resData.success());
+      res.status(resUpdate.status).json(resData.success());
     } catch (e) {
       next(e);
     }
@@ -195,7 +141,9 @@ module.exports = {
 
       let resImage = await req.productImageUC.deleteImageProduct(id);
       if (resImage.isSuccess !== true) {
-        return res.status(resImage.status).json(resData.failed(resImage.reason));
+        return res
+          .status(resImage.status)
+          .json(resData.failed(resImage.reason));
       }
       res.status(resImage.status).json(resData.success());
     } catch (e) {

@@ -1,5 +1,5 @@
-const resData = require('../helper/response');
-const defaultImage = require('../internal/constant/defaultImage');
+const resData = require("../helper/response");
+const defaultImage = require("../internal/constant/defaultImage");
 
 module.exports = {
   login: async (req, res, next) => {
@@ -12,10 +12,12 @@ module.exports = {
       if (resUser.isSuccess !== true) {
         return res.status(resUser.status).json(resData.failed(resUser.reason));
       }
-      res.status(200).json(resData.success({
-        user: resUser.data,
-        token: resUser.token,
-      }));
+      res.status(200).json(
+        resData.success({
+          user: resUser.data,
+          token: resUser.token,
+        })
+      );
     } catch (e) {
       next(e);
     }
@@ -24,10 +26,47 @@ module.exports = {
   register: async (req, res, next) => {
     /*
       #swagger.tags = ['Auth']
+      
+      #swagger.consumes = ['multipart/form-data']
       #swagger.requestBody = {
-        required: true,
-        schema: { $ref: "#/definitions/bodyRegister" }
-      }
+            "@content": {
+                "multipart/form-data": {
+                    schema: {
+                        type: "object",
+                        properties: {
+                            name: {
+                                type: "string"
+                            },
+                            username: {
+                                type: "string"
+                            },
+                            image: {
+                                type: "string",
+                                format: "binary"
+                            },
+                            telp: {
+                                type: "string"
+                            },
+                            password: {
+                                type: "string"
+                            },
+                            confirmPassword: {
+                                type: "string"
+                            },
+                            email: {
+                                type: "string"
+                            },
+                            otp_code: {
+                                type: "string"
+                            },
+
+                        },
+                    }
+                }
+            }
+        }
+
+
       #swagger.responses[200] = {
         description: "Berhasil mengubah alamat",
           content: {
@@ -80,27 +119,28 @@ module.exports = {
         telp: req.body.telp,
         email: req.body.email,
         password: req.body.password,
-        confrimPassword: req.body.confrimPassword,
+        confrimPassword: req.body.confirmPassword,
         is_admin: false,
+        otp_code: req.body.otp_code,
       };
 
       let image = null;
       if (req.file !== undefined) {
-        image = (req.file.path);
+        image = req.file.path;
       } else {
         image = defaultImage.DEFAULT_AVATAR;
       }
       userData.image = image;
       let resUser = await req.authUC.register(userData);
       if (resUser.isSuccess !== true) {
-        return res
-          .status(resUser.status)
-          .json(resData.failed(resUser.reason));
+        return res.status(resUser.status).json(resData.failed(resUser.reason));
       }
-      res.status(200).json(resData.success({
-        user: resUser.data,
-        token: resUser.token,
-      }));
+      res.status(200).json(
+        resData.success({
+          user: resUser.data,
+          token: resUser.token,
+        })
+      );
     } catch (e) {
       next(e);
     }

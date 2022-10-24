@@ -4,6 +4,7 @@ const orderSchemaReq = require('./docs/schema/request/order')
 const addressSchemaReq = require('./docs/schema/request/address')
 const userSchemaReq = require('./docs/schema/request/user')
 const authSchemaReq = require('./docs/schema/request/auth')
+const oauthSchemaReq = require('./docs/schema/request/oaut')
 
 const orderSchemaRes = require('./docs/schema/response/order') 
 const productSchemaRes = require('./docs/schema/response/product')
@@ -23,6 +24,13 @@ const doc = {
   },
   host: 'localhost:3000',
   schemes: ['http'],
+  securityDefinitions: {
+    bearerAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT'
+    }
+  },
   securityDefinitions: {
     bearerAuth: {
         type: 'http',
@@ -76,11 +84,14 @@ const doc = {
     passwordNotMatch: authSchemaRes.passwordNotMatch,
     unathorized: orderSchemaRes.unathorized,
 
+    // oaut
+    bodyLoginGoogle : oauthSchemaReq.loginGoogle
+
   },
 }
 
 const outputFile = './docs/docs.json'
-const endpointsFiles = ['./routes/auth.js', './routes/public.js', './routes/customer.js']
+const endpointsFiles = ['./routes/auth.js', './routes/public.js', './routes/customer.js', './routes/otp.js']
 
 /* NOTE: if you use the express Router, you must pass in the
    'endpointsFiles' only the root file where the route starts,

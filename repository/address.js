@@ -8,25 +8,32 @@ class AddressRepository {
   async getAddressByID(id) {
     return await this.AddressModel.findOne({
       where: {
-        id : id,
+        id,
       },
     });
   }
 
   async getAddressByUserID(user_id) {
     return await this.AddressModel.findAll({
-      where : {user_id : user_id}
-     });
-   }
+      where: { user_id },
+    });
+  }
 
   async addAddress(reqAddress) {
     return await this.AddressModel.create(reqAddress);
   }
 
-  async updateAddress(id, Address) {
-    return await this.AddressModel.update(Address, {
+  async updateAddress(address, id) {
+    return await this.AddressModel.update(address, {
+      where: { id },
+    });
+  }
+
+  async getMainAddress(user_id) {
+    return await this.AddressModel.findOne({
       where: {
-        id,
+        user_id,
+        main_address: true,
       },
     });
   }
