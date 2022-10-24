@@ -44,7 +44,8 @@ Request:
 	
 Body :
 
-```json
+```
+json
 	{
 		"email or username" : "abc"
 		"password" : "abcd100"
@@ -52,7 +53,8 @@ Body :
 ```
 Response success:
 
-```json
+```
+json
 	{
 		"status" : "ok"
 		"message": "success"
@@ -60,7 +62,8 @@ Response success:
 	}
 ```
 Response failed:
-```json
+```
+json
 	{
 		"status" : "failed"
 		"message": "incorect email or password"
@@ -75,7 +78,8 @@ Request:
 	
 Body :
   
-```From data
+```
+From data
 	{
 		"nama"    : "abc"
 		"username": "abc"
@@ -89,7 +93,8 @@ Body :
 
 Response success :
   
-```json
+```
+json
 			{
 		  "status": "ok",
 		  "message": "success",
@@ -111,7 +116,8 @@ Response success :
 ```
 response failed :
   
-```json
+```
+json
 		{
 		  "status": "failed",
 		  "message": "invalid otp code"
@@ -119,7 +125,8 @@ response failed :
 ```
 response failed :
   
-```json
+```
+json
 		
 		 {
 		  "status": "failed",
@@ -129,7 +136,8 @@ response failed :
 ```
 response failed :
   
-```json
+```
+json
 		
 		 {
 		  "status": "failed",
@@ -146,7 +154,8 @@ Request:
 	
 Body :
 
-```json
+```
+json
 	{
 		"idToken" : {
 			      "eyJhbGciOiJSUzI1NiIsImtpZCI6ImVlMWI5Zjg4Y2ZlMzE1MWRkZDI4NGE2MWJmOGNlY"
@@ -154,7 +163,8 @@ Body :
 ```
 Response success:
 
-```json
+```
+json
 	{
 		    "status": "ok",
 		    "message": "success",
@@ -189,7 +199,8 @@ Header :
 	
 Response :
 
-```json
+```
+json
 	{
 		  "status": "ok",
 		  "message": "success",
@@ -219,7 +230,8 @@ Header :
 	
 Body :
 
-```json
+```
+json
 	{
 		"nama"     : "abc"
 		"username" : "abc"
@@ -241,7 +253,8 @@ Header :
 	
 Body :
 
-```json
+```
+json
 	{
 	  "newPassword": "123456789",
 	  "confirmNewPassword": "123456789"
@@ -250,7 +263,8 @@ Body :
 
 Response :
 
-```json
+```
+json
 	{
 	  "status": "ok",
 	  "message": "success"
@@ -269,7 +283,8 @@ Header :
 	
 Body :
 
-```json
+```
+json
 	  {
 		  "newPassword": "password",
 		  "confirmNewPassword": "password",
@@ -279,7 +294,8 @@ Body :
 
 Response :
 
-```json
+```
+json
 	{
 	  "status": "ok",
 	  "message": "success"
@@ -298,7 +314,8 @@ Header :
 	
 Body :
 
-```json
+```
+json
 		{
 		  "email": "newemail@mail.com",
 		  "otp_code": "122351"
@@ -307,7 +324,8 @@ Body :
 
 Response :
 
-```json
+```
+json
 	{
 	  "status": "ok",
 	  "message": "success"
@@ -325,7 +343,8 @@ header :
 	
 Response :
   
-```json
+```
+json
 			{
 		  "status": "ok",
 		  "message": "success",
@@ -358,7 +377,8 @@ Request:
 	
 Response :
   
-```json
+```
+json
 		{
 		  "status": "ok",
 		  "message": "success"
@@ -376,7 +396,8 @@ Request:
 	
 Response :
   
-```json
+```
+json
 		{
 		  "status": "ok",
 		  "message": "success"
@@ -395,7 +416,8 @@ Request:
 	
 Response :
 
-```json
+```
+json
 	{
 	 "status": "ok",
 	  "message": "success"
@@ -414,7 +436,8 @@ Header :
 	
 Body :
 
-```json
+```
+json
 	{
   "products": [
     {
@@ -427,7 +450,8 @@ Body :
 
 Response :
 
-```json
+```
+json
 			{
 		  "status": "ok",
 		  "message": "success",
@@ -469,7 +493,8 @@ Header :
 	
 Response :
 
-```json
+```
+json
 		{
 		  "status": "ok",
 		  "message": "success",
@@ -519,7 +544,8 @@ Request:
 	
 Response :
 
-```json
+```
+json
 	{
 	 "status": "ok",
 	  "message": "success"
@@ -535,7 +561,8 @@ Request:
 	
 Response :
   
-```json
+```
+json
 	{
 		"status" : "ok"
 		"message": "success"
@@ -557,7 +584,8 @@ Request:
 	
 Response :
   
-```json
+```
+json
 			{
 		  "status": "ok",
 		  "message": "success",
@@ -729,7 +757,8 @@ header :
 	
 Body :
   
-```json
+```
+json
 	      {
 		  "name": "Microsoft Surface Laptop Studio i7",
 		  "description": "Microsoft Surface Studio i7 Generation 11 with Ram 16GB, SSD 512GB, and RTX 3050",
@@ -742,7 +771,8 @@ Body :
 
 Response :
   
-```json
+```
+json
 		{
 		  "status": "ok",
 		  "message": "success",
@@ -785,7 +815,8 @@ header :
 	
 Body :
   
-```json
+```
+json
 		{
 		  "name": "Microsoft Surface Laptop Studio i7",
 		  "description": "Microsoft Surface Studio i7 Generation 11 with Ram 16GB, SSD 512GB, and RTX 3050",
@@ -797,13 +828,14 @@ Body :
 
 Response :
   
-```json
+```
+json
 		{
 		  "status": "ok",
 		  "message": "success"
 		}
 ```
-
+```
 ### Update cover Image
 
 Request:
@@ -817,18 +849,21 @@ header :
 	
 Body :
   
-```query
+```
+query
 		image_id : 4
 		product_id :1
 
 
 Response :
   
-```json
+```
+json
 		{
 		  "status": "ok",
 		  "message": "success"
 		}
+```
 ```
 ### Tambah image product
 
@@ -843,14 +878,16 @@ header :
 	
 Body :
   
-```from data
+```
+from data
 		image_id : 4
 		url : your imgae url
 
 
 Response :
   
-```json
+```
+json
 		{
     "status": "ok",
     "message": "success",
@@ -865,7 +902,7 @@ Response :
 }
 ```
 
-
+```
 ### Delete data barang
 
 Request:
@@ -875,7 +912,8 @@ Request:
 	
 Response :
 
-```json
+```
+json
 	{
 	  "status": "ok",
 	  "message": "success"
@@ -916,16 +954,20 @@ Response :
     }
 }
 ```
-### Update data barang (Category)
+### Update category
 
 Request:
 
 	- Method : PUT
 	- Endpoint : `api/admin/category/update`
+header :
+	
+	- Authorization : Bearer Token
 	
 Body :
   
-```json
+```
+json
 	{
 		"nama"   : "abc"
 	}
@@ -934,17 +976,12 @@ Body :
 
 Response :
   
-```json
+```
+json
 	{
-    "status"	: "ok"
-    "message"	: "Berhasil menanbahkan Category"
-    "data"		: {
-       		"id"		: 3
-        	"name"		: "Celana"
-        	"updatedAt" : "2022-09-04T02:44:47.607Z"
-        	"createdAt" : "2022-09-04T02:44:47.607Z"
-    }
-}
+	  "status": "ok",
+	  "message": "success"
+	}
 ```
 ### Delete data Category
 
@@ -952,7 +989,7 @@ Response :
 Request:
 
 	- Method : Delete
-	- Endpoint : `api/admin/category/delete/:id`
+	- Endpoint : `api/admin/category/update/:id`
 	
 Response :
 
