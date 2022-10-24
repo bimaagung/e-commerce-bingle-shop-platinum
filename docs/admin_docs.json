@@ -332,6 +332,85 @@
         }
       }
     },
+    "/api/admin/update-password/": {
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil memperbaharui password pengguna",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successUser"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Password dan confirmPassword tidak sesuai",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/notMatchPassword"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pengguna tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userNotFound"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyUpdatePassword"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyUpdatePassword"
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/admin/category/add": {
       "post": {
         "tags": [
@@ -1372,19 +1451,19 @@
             "properties": {
               "id": {
                 "type": "string",
-                "example": "bQ660uV5EW6vSXe-"
+                "example": "LordYqkZTuUVjL5k"
               },
               "status": {
                 "type": "string",
-                "example": "PENDING"
+                "example": "COMPLETED"
               },
               "created_at": {
                 "type": "string",
-                "example": "2022-10-17T05:28:32.419Z"
+                "example": "2022-10-21T11:40:10.444Z"
               },
               "updated_at": {
                 "type": "string",
-                "example": "2022-10-17T05:28:32.419Z"
+                "example": "2022-10-22T03:57:00.524Z"
               },
               "qty": {
                 "type": "number",
@@ -1399,11 +1478,11 @@
                 "properties": {
                   "id": {
                     "type": "number",
-                    "example": 61
+                    "example": 3
                   },
                   "name": {
                     "type": "string",
-                    "example": "Bima"
+                    "example": "bima"
                   },
                   "username": {
                     "type": "string",
@@ -1411,7 +1490,32 @@
                   },
                   "telp": {
                     "type": "string",
-                    "example": "08554637"
+                    "example": "034984"
+                  },
+                  "address": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                        "example": 3
+                      },
+                      "province": {
+                        "type": "string",
+                        "example": "Semarang"
+                      },
+                      "city": {
+                        "type": "string",
+                        "example": "Jakarta"
+                      },
+                      "postal_code": {
+                        "type": "string",
+                        "example": "12940"
+                      },
+                      "detail": {
+                        "type": "string",
+                        "example": "Jl. Setiabudi, Kuningan, Jakarta Selatan"
+                      }
+                    }
                   }
                 }
               },
@@ -1682,7 +1786,7 @@
               },
               "sold": {
                 "type": "number",
-                "example": 23
+                "example": 3
               },
               "price": {
                 "type": "number",
@@ -1690,15 +1794,19 @@
               },
               "stock": {
                 "type": "number",
-                "example": 0
+                "example": 17
+              },
+              "cover_imageID": {
+                "type": "number",
+                "example": 1
               },
               "createdAt": {
                 "type": "string",
-                "example": "2022-10-13T09:31:19.370Z"
+                "example": "2022-10-21T11:36:16.349Z"
               },
               "updatedAt": {
                 "type": "string",
-                "example": "2022-10-17T06:48:59.632Z"
+                "example": "2022-10-21T11:40:27.101Z"
               },
               "ProductImages": {
                 "type": "array",
@@ -1712,6 +1820,22 @@
                     "url": {
                       "type": "string",
                       "example": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815144/default%20image/default_product_w8fe1a.jpg"
+                    },
+                    "cover_image": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "product_id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2022-10-21T11:36:16.082Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2022-10-21T11:36:16.082Z"
                     }
                   }
                 }
@@ -1739,7 +1863,7 @@
             "properties": {
               "id": {
                 "type": "number",
-                "example": 40
+                "example": 10
               },
               "name": {
                 "type": "string",
@@ -1765,13 +1889,49 @@
                 "type": "number",
                 "example": 30
               },
-              "updatedAt": {
-                "type": "string",
-                "example": "2022-10-18T03:01:09.630Z"
+              "cover_imageID": {
+                "type": "number",
+                "example": 10
               },
               "createdAt": {
                 "type": "string",
-                "example": "2022-10-18T03:01:09.630Z"
+                "example": "2022-10-22T03:36:20.888Z"
+              },
+              "updatedAt": {
+                "type": "string",
+                "example": "2022-10-22T03:36:20.899Z"
+              },
+              "ProductImages": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 10
+                    },
+                    "url": {
+                      "type": "string",
+                      "example": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815144/default%20image/default_product_w8fe1a.jpg"
+                    },
+                    "cover_image": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "product_id": {
+                      "type": "number",
+                      "example": 10
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2022-10-22T03:36:20.894Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2022-10-22T03:36:20.894Z"
+                    }
+                  }
+                }
               }
             }
           }
@@ -1936,15 +2096,63 @@
               },
               "name": {
                 "type": "string",
-                "example": "Camera"
+                "example": "Laptop"
               },
               "createdAt": {
                 "type": "string",
-                "example": "2022-10-13T09:31:19.311Z"
+                "example": "2022-10-21T11:36:16.277Z"
               },
               "updatedAt": {
                 "type": "string",
-                "example": "2022-10-13T09:31:19.311Z"
+                "example": "2022-10-21T11:36:16.277Z"
+              },
+              "products": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 2
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Macbook pro M2"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "Laptop gaming dari apple"
+                    },
+                    "category_id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "sold": {
+                      "type": "number",
+                      "example": 0
+                    },
+                    "price": {
+                      "type": "number",
+                      "example": 25000000
+                    },
+                    "stock": {
+                      "type": "number",
+                      "example": 30
+                    },
+                    "cover_imageID": {
+                      "type": "number",
+                      "example": 2
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2022-10-21T11:36:16.349Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2022-10-21T11:36:16.349Z"
+                    }
+                  }
+                }
               }
             }
           }

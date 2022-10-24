@@ -70,6 +70,11 @@ class UserUC {
       return result;
     }
 
+    user.password = user.newPassword;
+    user.password = this.bcrypt.hashSync(user.password, 10);
+
+    await this.UserRepository.updateUser(user, id);
+
     result.isSuccess = true;
     result.statusCode = 200;
     return result;

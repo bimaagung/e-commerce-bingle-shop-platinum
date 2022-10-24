@@ -1476,19 +1476,19 @@
             "properties": {
               "id": {
                 "type": "string",
-                "example": "bQ660uV5EW6vSXe-"
+                "example": "LordYqkZTuUVjL5k"
               },
               "status": {
                 "type": "string",
-                "example": "PENDING"
+                "example": "COMPLETED"
               },
               "created_at": {
                 "type": "string",
-                "example": "2022-10-17T05:28:32.419Z"
+                "example": "2022-10-21T11:40:10.444Z"
               },
               "updated_at": {
                 "type": "string",
-                "example": "2022-10-17T05:28:32.419Z"
+                "example": "2022-10-22T03:57:00.524Z"
               },
               "qty": {
                 "type": "number",
@@ -1503,11 +1503,11 @@
                 "properties": {
                   "id": {
                     "type": "number",
-                    "example": 61
+                    "example": 3
                   },
                   "name": {
                     "type": "string",
-                    "example": "Bima"
+                    "example": "bima"
                   },
                   "username": {
                     "type": "string",
@@ -1515,7 +1515,32 @@
                   },
                   "telp": {
                     "type": "string",
-                    "example": "08554637"
+                    "example": "034984"
+                  },
+                  "address": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                        "example": 3
+                      },
+                      "province": {
+                        "type": "string",
+                        "example": "Semarang"
+                      },
+                      "city": {
+                        "type": "string",
+                        "example": "Jakarta"
+                      },
+                      "postal_code": {
+                        "type": "string",
+                        "example": "12940"
+                      },
+                      "detail": {
+                        "type": "string",
+                        "example": "Jl. Setiabudi, Kuningan, Jakarta Selatan"
+                      }
+                    }
                   }
                 }
               },
@@ -2120,7 +2145,7 @@
               "properties": {
                 "id": {
                   "type": "number",
-                  "example": 33
+                  "example": 5
                 },
                 "province": {
                   "type": "string",
@@ -2140,15 +2165,19 @@
                 },
                 "user_id": {
                   "type": "number",
-                  "example": 61
+                  "example": 4
+                },
+                "main_address": {
+                  "type": "boolean",
+                  "example": false
                 },
                 "createdAt": {
                   "type": "string",
-                  "example": "2022-10-17T10:22:27.508Z"
+                  "example": "2022-10-22T03:29:24.202Z"
                 },
                 "updatedAt": {
                   "type": "string",
-                  "example": "2022-10-17T10:22:27.508Z"
+                  "example": "2022-10-22T03:29:31.904Z"
                 }
               }
             }

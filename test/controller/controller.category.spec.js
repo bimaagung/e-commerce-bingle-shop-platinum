@@ -1,11 +1,9 @@
-// const { query } = require('express')
-//  const category = require('../../controller/category')
 const categoryController = require ('../../controller/category')
 const resData = require('../../helper/response')
 
 let mockCategoryUC = {
     getCategoryByID: jest.fn().mockReturnValue(null),
-    putCategory: jest.fn().mockReturnValue(null),
+    updateCategory: jest.fn().mockReturnValue(null),
     getAllCategory: jest.fn().mockReturnValue(null),
     addCategory: jest.fn().mockReturnValue(null),
     deleteCategory: jest.fn().mockReturnValue(null),  
@@ -73,4 +71,180 @@ describe('Test Category', () => {
         expect(res.json).toBeCalledWith(resData.success([]))
         })
     })
+
+    describe('get category by Id', () => {
+
+        const category = 
+        {
+            id: "1",
+            name: "laptop",
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            products: [{
+                id: 1,
+                name: 'Asus ROG Zephyrush M16',
+                describe: 'Laptop dari asus',
+                category_id:1,
+                sold:10,
+                price: 34000000,
+                stock: 5,
+                image: [
+                    {
+                        id:1, url:'https://cloudinary.com/avatars/image.jpg'
+                    }
+                ],
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            }]
+        }
+        
+    
+
+        test('should status 200 and data is object', async () => {
+            mockCategoryUC.getCategoryByID = jest.fn().mockReturnValue(
+                {isSuccess: true, reason: null, data: category})
+        
+            let req = mockRequest({},{},{id:1},{},{ categoryUC: mockCategoryUC })
+            let res = mockResponse()
+
+            await categoryController.getCategoryById(req, res, next)
+            
+
+            expect(mockCategoryUC.getCategoryByID).toHaveBeenCalled()
+            expect(res.status).toBeCalledWith(200)
+            expect(res.json).toBeCalledWith(resData.success(category))
+        })
+    
+
+        test('should status 404 and message is category not found', async () => {
+            mockCategoryUC.getCategoryByID = jest.fn().mockReturnValue(
+                {isSuccess: false, reason: 'category not found', data:null})
+        
+            let req = mockRequest({},{},{id:2},{},{ categoryUC: mockCategoryUC})
+            let res = mockResponse()
+
+             await categoryController.getCategoryById(req, res, next)
+
+            expect(res.status).toBeCalledWith(404)
+            expect(res.json).toBeCalledWith(resData.failed('category not found', null))
+        })
+    })
+
+    describe('add category', () => {
+
+        const category = 
+        {
+            id: "1",
+            name: "laptop",
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        }
+        
+        
+        let categoryBody = 
+            {
+                name: "Iphone 13 Pro",
+            }
+
+            
+        test('should status 200 and data is object', async () => {
+            mockCategoryUC.addCategory = jest.fn().mockReturnValue(
+                {isSuccess: true, reason:null, data:category})
+            
+                let req = mockRequest(categoryBody,{},{},{},{ categoryUC: mockCategoryUC })
+                let res = mockResponse()
+    
+                await categoryController.addCategory(req, res, next)
+                
+    
+                expect(mockCategoryUC.addCategory).toHaveBeenCalled()
+                expect(res.status).toBeCalledWith(201)
+                expect(res.json).toBeCalledWith(resData.success(category))
+            })
+    
+        test('should status 404 and message is failed add category', async () => {
+             mockCategoryUC.addCategory = jest.fn().mockReturnValue(
+                {isSuccess: false, reason: 'failed add category', data:null})
+            
+                let req = mockRequest(categoryBody,{},{},{},{ categoryUC: mockCategoryUC})
+                let res = mockResponse()
+        
+                await categoryController.addCategory(req, res, next)
+        
+                expect(res.status).toBeCalledWith(404)
+                expect(res.json).toBeCalledWith(resData.failed('failed add category', null))
+        })
+    })
+
+     describe('update category', () => {
+
+        
+        const categoryBody = 
+            {
+                name: 'Drone',       
+            }
+
+        
+        test('should status 200 and data object', async () => {
+            mockCategoryUC.updateCategory = jest.fn().mockReturnValue(
+                {isSuccess: true, reason: null, data: null})
+            
+                let req = mockRequest(categoryBody,{},{id:1},{},{ categoryUC: mockCategoryUC})
+                let res = mockResponse()
+    
+                await categoryController.putCategory(req, res, next)
+                
+    
+                expect(mockCategoryUC.updateCategory).toHaveBeenCalled()
+                expect(res.status).toBeCalledWith(200)
+                expect(res.json).toBeCalledWith(resData.success())
+            })
+    
+        test('should status 404 and message is category not found', async () => {
+            mockCategoryUC.updateCategory = jest.fn().mockReturnValue(
+                {isSuccess: false, reason: 'category not found', data:null})
+            
+                let req = mockRequest({},{},{id:2},{},{ categoryUC: mockCategoryUC})
+                let res = mockResponse()
+        
+                await categoryController.putCategory(req, res, next)
+        
+                expect(res.status).toBeCalledWith(404)
+                expect(res.json).toBeCalledWith(resData.failed('category not found', null))
+        })
+        
+    })
+
+    describe('delete category', () => {
+
+        test('should status 200 and data is object', async () => {
+            mockCategoryUC.deleteCategory = jest.fn().mockReturnValue(
+                {isSuccess: true, reason: null, data: null})
+        
+            let req = mockRequest({},{},{id:1},{},{ categoryUC: mockCategoryUC })
+            let res = mockResponse()
+
+            await categoryController.deleteCategory(req, res, next)
+            
+
+            expect(mockCategoryUC.deleteCategory).toHaveBeenCalled()
+            expect(res.status).toBeCalledWith(200)
+            expect(res.json).toBeCalledWith(resData.success())
+        })
+    
+
+        test('should status 404 and message is category not found', async () => {
+            mockCategoryUC.deleteCategory = jest.fn().mockReturnValue(
+                {isSuccess: false, reason: 'category not found', data:null})
+        
+            let req = mockRequest({},{},{id:2},{},{ categoryUC: mockCategoryUC})
+            let res = mockResponse()
+
+            await categoryController.deleteCategory(req, res, next)
+
+            expect(res.status).toBeCalledWith(404)
+            expect(res.json).toBeCalledWith(resData.failed('category not found', null))
+        })
+    })
+
 })
