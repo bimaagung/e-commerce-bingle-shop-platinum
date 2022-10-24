@@ -1,4 +1,4 @@
-version: '2.2'
+version: '3.4'
 services:
   apm-server:
     image: docker.elastic.co/apm/apm-server:7.13.2
@@ -12,7 +12,7 @@ services:
     ports:
     - 8200:8200
     networks:
-    - elastic
+    - platinum
     command: >
        apm-server -e
          -E apm-server.rum.enabled=true
@@ -43,7 +43,7 @@ services:
     ports:
     - 9200:9200
     networks:
-    - elastic
+    - platinum
     healthcheck:
       interval: 20s
       retries: 10
@@ -60,12 +60,12 @@ services:
     ports:
     - 5601:5601
     networks:
-    - elastic
+    - platinum
     healthcheck:
       interval: 10s
       retries: 20
       test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:5601/api/status
-  
+
   postgres:
     image: postgres:latest
     environment:
@@ -75,16 +75,43 @@ services:
     expose:
       - '5432'
     networks:
-      - elastic
-  
+    - platinum
+
   platinum:
-    build: .
+    image: bimaagung/platinum-maju-jaya:latest
+    environment: 
+      APP_NAME: PLATINUM_MAJU_JAYA
+      VERSION: 1.0.0
+      PORT: 3000
+      HOST: 0.0.0.0
+      DB_USERNAME: postgres
+      DB_PASSWORD: 12345678
+      DB_HOSTNAME: postgres
+      DB_PORT: 5432
+      DB_NAME: platinum_db
+      DB_DIALECT: postgres
+      USE_APM: true
+      JWT_KEY_SECRET: JHJH768tnjsl%^%&^567565HGHf87GJsdHGHJ
+      ITEM_URL : https://res.cloudinary.com/dnvltueqb/image/upload/v1663815144/default%20image/default_product_w8fe1a.jpg
+      PROFIL_URL : https://res.cloudinary.com/dnvltueqb/image/upload/v1663815145/default%20image/profile_xzrsh7.png
+      CLOUD_NAME : dnvltueqb
+      API_KEY : 131712519741951
+      API_SECRET : hj0ZgOKOwG8l5o8vpnSwPtR6US0
+      CLIENT_ID : 323482346507-e7l0nhioj752q174j326t11ja8v9oq28.apps.googleusercontent.com
+      MAILER_SMTP_HOST: smtp.mailtrap.io
+      MAILER_SMTP_PORT: 465
+      MAILER_SECURE: false
+      MAILER_AUTH_USER: ec437b9b5faefa
+      MAILER_AUTH_PASSWORD: 2d41ee0da2a5cd
+      MAILER_SENDER_NAME: majujaya
+      MAILER_SENDER_EMAIL: noreaplymajujaya@gmail.com
+      SERVER_URL: http://apm-server:8200
     ports:
       - '3000:3000'
     expose:
       - '3000'
     networks:
-      - elastic
+    - platinum
     depends_on:
       - postgres
 
@@ -93,5 +120,5 @@ volumes:
     driver: local
 
 networks:
-  elastic:
+  platinum:
     driver: bridge

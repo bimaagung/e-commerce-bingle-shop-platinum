@@ -1,0 +1,2225 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Admin - API E-commerce Platinum Maju Jaya",
+    "description": "API ecommerce App for project platinum for admin, create by Maju Jaya",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "platinum.majujaya@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/"
+    }
+  ],
+  "paths": {
+    "/api/user/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "example": "any"
+                  },
+                  "password": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Berhasil mengubah alamat",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successRegister"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "have_order_pending": {
+                    "value": {
+                      "status": "failed",
+                      "message": "username or email not aviable"
+                    },
+                    "summary": "username atau email tidak tersedia"
+                  },
+                  "product_order_empty": {
+                    "value": {
+                      "status": "failed",
+                      "message": "password and confrim password not match"
+                    },
+                    "summary": "Password and Confirm Password tidak sesuai"
+                  }
+                },
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/notAvailable"
+                    },
+                    {
+                      "$ref": "#/components/schemas/passwordNotMatch"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "telp": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "confirmPassword": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "otp_code": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login/google": {
+      "get": {
+        "tags": [
+          "Oauth"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      },
+      "post": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/public/product": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Berhasil melihat semua produk",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successGetAllProduct"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/public/product/keyword": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/public/product/{id}": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil melihat produk berdasarkan id produk",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successGetProductById"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Produk tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/productNotFound"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/public/category": {
+      "get": {
+        "tags": [
+          "Category"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Berhasil melihat semua kategori",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successGetAllCategory"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/public/category/{id}": {
+      "get": {
+        "tags": [
+          "Category"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil melihat semua kategori",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successGetAllCategory"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Kategori tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/categoryNotFound"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/public/image/product/{product_id}": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "product_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil melihat semua gambar produk berdasarkan id produk",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/imageProduct"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/update-password/": {
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil memperbaharui password pengguna",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successUser"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Password dan confirmPassword tidak sesuai",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/notMatchPassword"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pengguna tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userNotFound"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyUpdatePassword"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyUpdatePassword"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/category/add": {
+      "post": {
+        "tags": [
+          "Category"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil membuat kategori baru",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successGetAllCategory"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyAddCategory"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyAddCategory"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/category/update/{id}": {
+      "put": {
+        "tags": [
+          "Category"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil memperbarui kategori",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successCategory"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Kategori tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/categoryNotFound"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyUpdateCategory"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyUpdateCategory"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/category/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Category"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menghapus kategori",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successCategory"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Kategori tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/categoryNotFound"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/admin/product/add": {
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Berhasil menambahkan produk baru",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successAddProduct"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Kategori untuk produk tersebut tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/categoryProductNotFound"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyAddProduct"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyAddProduct"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/product/update/{id}": {
+      "put": {
+        "tags": [
+          "Product"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil mengubah produk",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successProduct"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Produk tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/productNotFound"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyUpdateProduct"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyUpdateProduct"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/product/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Product"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menghapus produk",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successProduct"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Produk tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/productNotFound"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/admin/order/update-status/{id}": {
+      "patch": {
+        "tags": [
+          "Order"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil memperbaharui status pesanan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successOrder"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Pesanan tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/outsideOptionStatus"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pesanan tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/orderNotFound"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyUpdateStatusOrder"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyUpdateStatusOrder"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/order": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Ada dapat memilih semua pesanan dengan mengkosongkan query atau mengisi query untuk filter status dengan satu dan mix parameter [SUBMITTED, PROCESSED, COMPLETED, CANCELED]",
+            "schema": {
+              "$ref": "#/components/schemas/queryStatus"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil melihat semua pesanan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successGetListOrder"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/admin/order/{id}": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil mendapatkan pesanan sesuai id pesanan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successGetOrderPending"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pesanan tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/orderNotFound"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/admin/add-image/product": {
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "product_id": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": [
+                  "product_id",
+                  "url"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/update-cover/product/": {
+      "put": {
+        "tags": [
+          "Product"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "image_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "product_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/admin/delete-image/product/{id}": {
+      "delete": {
+        "tags": [
+          "Product"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menghapus gambar produk",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successProduct"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Gambar produk tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/imageProductNotFound"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/admin/chat/": {
+      "get": {
+        "tags": [
+          "Chat"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "bodyCreateOrder": {
+        "type": "object",
+        "properties": {
+          "products": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "qty": {
+                  "type": "number",
+                  "example": 3
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "bodyCreateOrder"
+        }
+      },
+      "bodyUpdateStatusOrder": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ORDER_COMPLETED"
+          }
+        },
+        "xml": {
+          "name": "bodyUpdateStatusOrder"
+        }
+      },
+      "queryStatus": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "PROCESSED,COMPLETED"
+          }
+        },
+        "xml": {
+          "name": "queryStatus"
+        }
+      },
+      "successCreateOrder": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "order_id": {
+                "type": "string",
+                "example": "bQ660uV5EW6vSXe-"
+              },
+              "products": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Asus ROG Zephyrush M16"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "Laptop gaming dari asus"
+                    },
+                    "category_id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "sold": {
+                      "type": "number",
+                      "example": 20
+                    },
+                    "price": {
+                      "type": "number",
+                      "example": 30000000
+                    },
+                    "stock": {
+                      "type": "number",
+                      "example": 10
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2022-10-13T09:31:19.370Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2022-10-14T04:51:49.715Z"
+                    },
+                    "ProductImages": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "number",
+                            "example": 1
+                          },
+                          "url": {
+                            "type": "string",
+                            "example": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815144/default%20image/default_product_w8fe1a.jpg"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successCreateOrder"
+        }
+      },
+      "successGetListOrder": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "-PR2tfcIjnhD8BXP"
+                },
+                "user_id": {
+                  "type": "number",
+                  "example": 4
+                },
+                "status": {
+                  "type": "string",
+                  "example": "COMPLETED"
+                },
+                "completed_date": {
+                  "type": "string",
+                  "example": "2022-10-13T09:31:40.363Z"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "example": "2022-10-13T09:31:39.585Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "example": "2022-10-13T09:31:40.365Z"
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successGetListOrder"
+        }
+      },
+      "failCreateProductOrder": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "can't process the order, please check each product in order"
+          }
+        },
+        "xml": {
+          "name": "failCreateProductOrder"
+        }
+      },
+      "failHaveOrderPending": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "user already has pending order"
+          }
+        },
+        "xml": {
+          "name": "failHaveOrderPending"
+        }
+      },
+      "successGetOrderPending": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "LordYqkZTuUVjL5k"
+              },
+              "status": {
+                "type": "string",
+                "example": "COMPLETED"
+              },
+              "created_at": {
+                "type": "string",
+                "example": "2022-10-21T11:40:10.444Z"
+              },
+              "updated_at": {
+                "type": "string",
+                "example": "2022-10-22T03:57:00.524Z"
+              },
+              "qty": {
+                "type": "number",
+                "example": 3
+              },
+              "total_price": {
+                "type": "number",
+                "example": 90000000
+              },
+              "user": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 3
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "bima"
+                  },
+                  "username": {
+                    "type": "string",
+                    "example": "bima"
+                  },
+                  "telp": {
+                    "type": "string",
+                    "example": "034984"
+                  },
+                  "address": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                        "example": 3
+                      },
+                      "province": {
+                        "type": "string",
+                        "example": "Semarang"
+                      },
+                      "city": {
+                        "type": "string",
+                        "example": "Jakarta"
+                      },
+                      "postal_code": {
+                        "type": "string",
+                        "example": "12940"
+                      },
+                      "detail": {
+                        "type": "string",
+                        "example": "Jl. Setiabudi, Kuningan, Jakarta Selatan"
+                      }
+                    }
+                  }
+                }
+              },
+              "products": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Asus ROG Zephyrush M16"
+                    },
+                    "category": {
+                      "type": "string",
+                      "example": "Laptop"
+                    },
+                    "price": {
+                      "type": "number",
+                      "example": 30000000
+                    },
+                    "qty": {
+                      "type": "number",
+                      "example": 3
+                    },
+                    "total_price": {
+                      "type": "number",
+                      "example": 90000000
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successGetOrderPending"
+        }
+      },
+      "successOrder": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          }
+        },
+        "xml": {
+          "name": "successOrder"
+        }
+      },
+      "checkProductOrderBeforeSumbit": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "recheck the product, make sure the product is still in stock"
+          }
+        },
+        "xml": {
+          "name": "checkProductOrderBeforeSumbit"
+        }
+      },
+      "orderNotFound": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "order not found"
+          }
+        },
+        "xml": {
+          "name": "orderNotFound"
+        }
+      },
+      "outsideOptionStatus": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "request status outside the specified options"
+          }
+        },
+        "xml": {
+          "name": "outsideOptionStatus"
+        }
+      },
+      "bodyAddProduct": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Microsoft Surface Laptop Studio i7"
+          },
+          "description": {
+            "type": "string",
+            "example": "Microsoft Surface Studio i7 Generation 11 with Ram 16GB, SSD 512GB, and RTX 3050"
+          },
+          "category_id": {
+            "type": "number",
+            "example": 1
+          },
+          "price": {
+            "type": "number",
+            "example": 34000000
+          },
+          "stock": {
+            "type": "number",
+            "example": 30
+          }
+        },
+        "xml": {
+          "name": "bodyAddProduct"
+        }
+      },
+      "bodyUpdateProduct": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Microsoft Surface Laptop Studio i7"
+          },
+          "description": {
+            "type": "string",
+            "example": "Microsoft Surface Studio i7 Generation 11 with Ram 16GB, SSD 512GB, and RTX 3050"
+          },
+          "category_id": {
+            "type": "number",
+            "example": 1
+          },
+          "price": {
+            "type": "number",
+            "example": 31000000
+          },
+          "stock": {
+            "type": "number",
+            "example": 50
+          }
+        },
+        "xml": {
+          "name": "bodyUpdateProduct"
+        }
+      },
+      "successGetAllProduct": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Asus ROG Zephyrush M16"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Laptop gaming dari asus"
+                },
+                "category_id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "sold": {
+                  "type": "number",
+                  "example": 23
+                },
+                "price": {
+                  "type": "number",
+                  "example": 30000000
+                },
+                "stock": {
+                  "type": "number",
+                  "example": 0
+                },
+                "createdAt": {
+                  "type": "string",
+                  "example": "2022-10-13T09:31:19.370Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "example": "2022-10-17T06:48:59.632Z"
+                },
+                "ProductImages": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "url": {
+                        "type": "string",
+                        "example": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815144/default%20image/default_product_w8fe1a.jpg"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successGetAllProduct"
+        }
+      },
+      "successGetProductById": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 1
+              },
+              "name": {
+                "type": "string",
+                "example": "Asus ROG Zephyrush M16"
+              },
+              "description": {
+                "type": "string",
+                "example": "Laptop gaming dari asus"
+              },
+              "category_id": {
+                "type": "number",
+                "example": 1
+              },
+              "sold": {
+                "type": "number",
+                "example": 3
+              },
+              "price": {
+                "type": "number",
+                "example": 30000000
+              },
+              "stock": {
+                "type": "number",
+                "example": 17
+              },
+              "cover_imageID": {
+                "type": "number",
+                "example": 1
+              },
+              "createdAt": {
+                "type": "string",
+                "example": "2022-10-21T11:36:16.349Z"
+              },
+              "updatedAt": {
+                "type": "string",
+                "example": "2022-10-21T11:40:27.101Z"
+              },
+              "ProductImages": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "url": {
+                      "type": "string",
+                      "example": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815144/default%20image/default_product_w8fe1a.jpg"
+                    },
+                    "cover_image": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "product_id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2022-10-21T11:36:16.082Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2022-10-21T11:36:16.082Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successGetProductById"
+        }
+      },
+      "successAddProduct": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 10
+              },
+              "name": {
+                "type": "string",
+                "example": "Microsoft Surface Laptop Studio i7"
+              },
+              "description": {
+                "type": "string",
+                "example": "Microsoft Surface Studio i7 Generation 11 with Ram 16GB, SSD 512GB, and RTX 3050"
+              },
+              "category_id": {
+                "type": "number",
+                "example": 1
+              },
+              "sold": {
+                "type": "number",
+                "example": 0
+              },
+              "price": {
+                "type": "number",
+                "example": 34000000
+              },
+              "stock": {
+                "type": "number",
+                "example": 30
+              },
+              "cover_imageID": {
+                "type": "number",
+                "example": 10
+              },
+              "createdAt": {
+                "type": "string",
+                "example": "2022-10-22T03:36:20.888Z"
+              },
+              "updatedAt": {
+                "type": "string",
+                "example": "2022-10-22T03:36:20.899Z"
+              },
+              "ProductImages": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 10
+                    },
+                    "url": {
+                      "type": "string",
+                      "example": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815144/default%20image/default_product_w8fe1a.jpg"
+                    },
+                    "cover_image": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "product_id": {
+                      "type": "number",
+                      "example": 10
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2022-10-22T03:36:20.894Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2022-10-22T03:36:20.894Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successAddProduct"
+        }
+      },
+      "successProduct": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          }
+        },
+        "xml": {
+          "name": "successProduct"
+        }
+      },
+      "productNotFound": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "product not found"
+          },
+          "data": {
+            "type": "string",
+            "example": "null"
+          }
+        },
+        "xml": {
+          "name": "productNotFound"
+        }
+      },
+      "categoryProductNotFound": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "failed to add, category not found"
+          },
+          "data": {
+            "type": "string",
+            "example": "null"
+          }
+        },
+        "xml": {
+          "name": "categoryProductNotFound"
+        }
+      },
+      "imageProductNotFound": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "image not found"
+          }
+        },
+        "xml": {
+          "name": "imageProductNotFound"
+        }
+      },
+      "bodyAddCategory": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Camera"
+          }
+        },
+        "xml": {
+          "name": "bodyAddCategory"
+        }
+      },
+      "bodyUpdateCategory": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Drone"
+          }
+        },
+        "xml": {
+          "name": "bodyUpdateCategory"
+        }
+      },
+      "successGetAllCategory": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Camera"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "example": "2022-10-13T09:31:19.311Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "example": "2022-10-13T09:31:19.311Z"
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successGetAllCategory"
+        }
+      },
+      "successGetCategoryById": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 1
+              },
+              "name": {
+                "type": "string",
+                "example": "Laptop"
+              },
+              "createdAt": {
+                "type": "string",
+                "example": "2022-10-21T11:36:16.277Z"
+              },
+              "updatedAt": {
+                "type": "string",
+                "example": "2022-10-21T11:36:16.277Z"
+              },
+              "products": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 2
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Macbook pro M2"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "Laptop gaming dari apple"
+                    },
+                    "category_id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "sold": {
+                      "type": "number",
+                      "example": 0
+                    },
+                    "price": {
+                      "type": "number",
+                      "example": 25000000
+                    },
+                    "stock": {
+                      "type": "number",
+                      "example": 30
+                    },
+                    "cover_imageID": {
+                      "type": "number",
+                      "example": 2
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2022-10-21T11:36:16.349Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2022-10-21T11:36:16.349Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successGetCategoryById"
+        }
+      },
+      "categoryNotFound": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "category not found"
+          },
+          "data": {
+            "type": "string",
+            "example": "null"
+          }
+        },
+        "xml": {
+          "name": "categoryNotFound"
+        }
+      },
+      "successCategory": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          }
+        },
+        "xml": {
+          "name": "successCategory"
+        }
+      },
+      "unathorized": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "unauthorized"
+          }
+        },
+        "xml": {
+          "name": "unathorized"
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

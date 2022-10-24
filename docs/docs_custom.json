@@ -1,0 +1,2472 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Customer - API E-commerce Platinum Maju Jaya",
+    "description": "API ecommerce App for project platinum for customer, create by Maju Jaya",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "platinum.majujaya@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/"
+    }
+  ],
+  "paths": {
+    "/api/user/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "example": "customer"
+                  },
+                  "password": {
+                    "example": "password"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Berhasil mengubah alamat",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successRegister"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "have_order_pending": {
+                    "value": {
+                      "status": "failed",
+                      "message": "username or email not aviable"
+                    },
+                    "summary": "username atau email tidak tersedia"
+                  },
+                  "product_order_empty": {
+                    "value": {
+                      "status": "failed",
+                      "message": "password and confrim password not match"
+                    },
+                    "summary": "Password and Confirm Password tidak sesuai"
+                  }
+                },
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/notAvailable"
+                    },
+                    {
+                      "$ref": "#/components/schemas/passwordNotMatch"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "telp": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "confirmPassword": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "otp_code": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login/google": {
+      "get": {
+        "tags": [
+          "Oauth"
+        ],
+        "description": "endpoint untuk mendapatkan id token dari google | gunakan email (dfmrisusanto@gmail.com) untuk oauth ",
+        "parameters": [],
+        "responses": {}
+      },
+      "post": {
+        "description": "endpoint untuk memasukkan id token google",
+        "parameters": [],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+         "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idToken": {
+                    "example": "id token"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/public/product": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Berhasil melihat semua produk",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successGetAllProduct"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/public/product/keyword": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/public/product/{id}": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil melihat produk berdasarkan id produk",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successGetProductById"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Produk tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/productNotFound"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/public/category": {
+      "get": {
+        "tags": [
+          "Category"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Berhasil melihat semua kategori",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successGetAllCategory"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/public/category/{id}": {
+      "get": {
+        "tags": [
+          "Category"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil melihat semua kategori",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successGetAllCategory"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Kategori tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/categoryNotFound"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/public/image/product/{product_id}": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "product_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil melihat semua gambar produk berdasarkan id produk",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/imageProduct"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/customer/profil/user/": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Berhasil melihat profil berdasarkan id pengguna",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successGetUserById"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pengguna tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userNotFound"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/customer/update-password/": {
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "description": "",
+        
+        "responses": {
+          "200": {
+            "description": "Berhasil memperbaharui password pengguna",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successUser"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Password dan confirmPassword tidak sesuai",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/notMatchPassword"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pengguna tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userNotFound"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyUpdatePassword"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyUpdatePassword"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/customer/update-image/": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "description": "",
+        
+        "responses": {
+          "200": {
+            "description": "Berhasil memperbaharui password pengguna",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successUser"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/customer/update/": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil memperbaharui profil pengguna",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successUser"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pengguna tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userNotFound"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "example": "Customer A"
+                  },
+                  "username": {
+                    "example": "customer"
+                  },
+                  "telp": {
+                    "example": "08363372"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/customer/reset-password/": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "newPassword": {
+                    "example": "123456789"
+                  },
+                  "confirmNewPassword": {
+                    "example": "123456789"
+                  },
+                  "otp_code": {
+                    "example": "123456789"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/customer/update/email/": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "description": "",
+        
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "example": "customer123@gmail.com"
+                  },
+                  "otp_code": {
+                    "example": "985784"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/customer/all/address/": {
+      "get": {
+        "tags": [
+          "Address"
+        ],
+        "description": "",
+        
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/customer/address/add": {
+      "post": {
+        "tags": [
+          "Address"
+        ],
+        "description": "",
+        
+        "responses": {
+          "201": {
+            "description": "Berhasil menambahkan alamat",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successAddAddress"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pengguna tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userNotFound"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "province": {
+                    "example": "Jakarta"
+                  },
+                  "city": {
+                    "example": "Jakarta"
+                  },
+                  "postal_code": {
+                    "example": "12940"
+                  },
+                  "detail": {
+                    "example": "Jl. Setiabudi, Kuningan, Jakarta Selatan"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/customer/address/update/{id}": {
+      "put": {
+        "tags": [
+          "Address"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil mengubah alamat",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/sucessAddress"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Alamat tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/addressNotFound"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyUpdateAddress"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyUpdateAddress"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/customer/address/update-main-address/{address_id}": {
+      "put": {
+        "tags": [
+          "Address"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "address_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/customer/address/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Address"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menghapus alamat berdasarkan id alamat",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/sucessAddress"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Alamat tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/addressNotFound"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/customer/order/add": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "description": "",
+        
+        "responses": {
+          "201": {
+            "description": "Berhasil membuat pesanan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successCreateOrder"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "have_order_pending": {
+                    "value": {
+                      "status": "failed",
+                      "message": "user already has pending order"
+                    },
+                    "summary": "Pelanggan masih mempunyai pesanan yang belum di submit"
+                  },
+                  "product_order_empty": {
+                    "value": {
+                      "status": "failed",
+                      "message": "can't process the order, please check each product in order"
+                    },
+                    "summary": "Salah satu produk yang dipesan kosong atau tidak ada"
+                  }
+                },
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/failHaveOrderPending"
+                    },
+                    {
+                      "$ref": "#/components/schemas/failCreateProductOrder"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyCreateOrder"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/bodyCreateOrder"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/customer/order/pending/": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "description": "",
+        
+        "responses": {
+          "200": {
+            "description": "Berhasil melihat pesanan yang belum di submit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successGetOrderPending"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Belum membuat pesanan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/orderNotFound"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/customer/order/submit/": {
+      "patch": {
+        "tags": [
+          "Order"
+        ],
+        "description": "",
+        
+        "responses": {
+          "200": {
+            "description": "Berhasil submit pesanan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successOrder"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Produk yang diorder stoknya sudah habis atau tidak ada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/checkProductOrderBeforeSumbit"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Belum membuat pesanan baru",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/orderNotFound"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/customer/order/cancel/": {
+      "delete": {
+        "tags": [
+          "Order"
+        ],
+        "description": "",
+        
+        "responses": {
+          "200": {
+            "description": "Berhasil membatalkan pesanan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successOrder"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Akun tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unathorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pesanan tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/orderNotFound"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/customer/chat": {
+      "get": {
+        "tags": [
+          "Chat"
+        ],
+        "description": "",
+        
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/otp/verify": {
+      "get": {
+        "tags": [
+          "OTP"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "otp_code",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "otp_type",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/api/otp/request": {
+      "post": {
+        "tags": [
+          "OTP"
+        ],
+        "description": "otp type example : RESETPASSWORD,UPDATEEMAIL,REGISTRATION",
+        "parameters": [],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "otp_type": {
+                    "example": "REGISTRATION"
+                  },
+                  "email": {
+                    "example": "customer123@gmail.com"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "bodyCreateOrder": {
+        "type": "object",
+        "properties": {
+          "products": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "qty": {
+                  "type": "number",
+                  "example": 3
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "bodyCreateOrder"
+        }
+      },
+      "successCreateOrder": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "order_id": {
+                "type": "string",
+                "example": "bQ660uV5EW6vSXe-"
+              },
+              "products": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Asus ROG Zephyrush M16"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "Laptop gaming dari asus"
+                    },
+                    "category_id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "sold": {
+                      "type": "number",
+                      "example": 20
+                    },
+                    "price": {
+                      "type": "number",
+                      "example": 30000000
+                    },
+                    "stock": {
+                      "type": "number",
+                      "example": 10
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2022-10-13T09:31:19.370Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2022-10-14T04:51:49.715Z"
+                    },
+                    "ProductImages": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "number",
+                            "example": 1
+                          },
+                          "url": {
+                            "type": "string",
+                            "example": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815144/default%20image/default_product_w8fe1a.jpg"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successCreateOrder"
+        }
+      },
+      "failCreateProductOrder": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "can't process the order, please check each product in order"
+          }
+        },
+        "xml": {
+          "name": "failCreateProductOrder"
+        }
+      },
+      "failHaveOrderPending": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "user already has pending order"
+          }
+        },
+        "xml": {
+          "name": "failHaveOrderPending"
+        }
+      },
+      "successGetOrderPending": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "LordYqkZTuUVjL5k"
+              },
+              "status": {
+                "type": "string",
+                "example": "COMPLETED"
+              },
+              "created_at": {
+                "type": "string",
+                "example": "2022-10-21T11:40:10.444Z"
+              },
+              "updated_at": {
+                "type": "string",
+                "example": "2022-10-22T03:57:00.524Z"
+              },
+              "qty": {
+                "type": "number",
+                "example": 3
+              },
+              "total_price": {
+                "type": "number",
+                "example": 90000000
+              },
+              "user": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 3
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "bima"
+                  },
+                  "username": {
+                    "type": "string",
+                    "example": "bima"
+                  },
+                  "telp": {
+                    "type": "string",
+                    "example": "034984"
+                  },
+                  "address": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                        "example": 3
+                      },
+                      "province": {
+                        "type": "string",
+                        "example": "Semarang"
+                      },
+                      "city": {
+                        "type": "string",
+                        "example": "Jakarta"
+                      },
+                      "postal_code": {
+                        "type": "string",
+                        "example": "12940"
+                      },
+                      "detail": {
+                        "type": "string",
+                        "example": "Jl. Setiabudi, Kuningan, Jakarta Selatan"
+                      }
+                    }
+                  }
+                }
+              },
+              "products": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Asus ROG Zephyrush M16"
+                    },
+                    "category": {
+                      "type": "string",
+                      "example": "Laptop"
+                    },
+                    "price": {
+                      "type": "number",
+                      "example": 30000000
+                    },
+                    "qty": {
+                      "type": "number",
+                      "example": 3
+                    },
+                    "total_price": {
+                      "type": "number",
+                      "example": 90000000
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successGetOrderPending"
+        }
+      },
+      "successOrder": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          }
+        },
+        "xml": {
+          "name": "successOrder"
+        }
+      },
+      "checkProductOrderBeforeSumbit": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "recheck the product, make sure the product is still in stock"
+          }
+        },
+        "xml": {
+          "name": "checkProductOrderBeforeSumbit"
+        }
+      },
+      "orderNotFound": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "order not found"
+          }
+        },
+        "xml": {
+          "name": "orderNotFound"
+        }
+      },
+      "successGetAllProduct": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Asus ROG Zephyrush M16"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Laptop gaming dari asus"
+                },
+                "category_id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "sold": {
+                  "type": "number",
+                  "example": 23
+                },
+                "price": {
+                  "type": "number",
+                  "example": 30000000
+                },
+                "stock": {
+                  "type": "number",
+                  "example": 0
+                },
+                "createdAt": {
+                  "type": "string",
+                  "example": "2022-10-13T09:31:19.370Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "example": "2022-10-17T06:48:59.632Z"
+                },
+                "ProductImages": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "url": {
+                        "type": "string",
+                        "example": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815144/default%20image/default_product_w8fe1a.jpg"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successGetAllProduct"
+        }
+      },
+      "successGetProductById": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 1
+              },
+              "name": {
+                "type": "string",
+                "example": "Asus ROG Zephyrush M16"
+              },
+              "description": {
+                "type": "string",
+                "example": "Laptop gaming dari asus"
+              },
+              "category_id": {
+                "type": "number",
+                "example": 1
+              },
+              "sold": {
+                "type": "number",
+                "example": 3
+              },
+              "price": {
+                "type": "number",
+                "example": 30000000
+              },
+              "stock": {
+                "type": "number",
+                "example": 17
+              },
+              "cover_imageID": {
+                "type": "number",
+                "example": 1
+              },
+              "createdAt": {
+                "type": "string",
+                "example": "2022-10-21T11:36:16.349Z"
+              },
+              "updatedAt": {
+                "type": "string",
+                "example": "2022-10-21T11:40:27.101Z"
+              },
+              "ProductImages": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "url": {
+                      "type": "string",
+                      "example": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815144/default%20image/default_product_w8fe1a.jpg"
+                    },
+                    "cover_image": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "product_id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2022-10-21T11:36:16.082Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2022-10-21T11:36:16.082Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successGetProductById"
+        }
+      },
+      "productNotFound": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "product not found"
+          },
+          "data": {
+            "type": "string",
+            "example": "null"
+          }
+        },
+        "xml": {
+          "name": "productNotFound"
+        }
+      },
+      "addImageProduct": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 43
+              },
+              "url": {
+                "type": "string",
+                "example": "http://res.cloudinary.com/dnvltueqb/image/upload/v1666095182/product/1666095182744_flower_hzk1cc.jpg"
+              },
+              "product_id": {
+                "type": "number",
+                "example": 9
+              },
+              "updatedAt": {
+                "type": "string",
+                "example": "2022-10-18T12:13:05.400Z"
+              },
+              "createdAt": {
+                "type": "string",
+                "example": "2022-10-18T12:13:05.400Z"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "addImageProduct"
+        }
+      },
+      "addImageNotFound": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "failed add image, product not found"
+          }
+        },
+        "xml": {
+          "name": "addImageNotFound"
+        }
+      },
+      "successGetAllCategory": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Camera"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "example": "2022-10-13T09:31:19.311Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "example": "2022-10-13T09:31:19.311Z"
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successGetAllCategory"
+        }
+      },
+      "successGetCategoryById": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 1
+              },
+              "name": {
+                "type": "string",
+                "example": "Laptop"
+              },
+              "createdAt": {
+                "type": "string",
+                "example": "2022-10-21T11:36:16.277Z"
+              },
+              "updatedAt": {
+                "type": "string",
+                "example": "2022-10-21T11:36:16.277Z"
+              },
+              "products": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 2
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Macbook pro M2"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "Laptop gaming dari apple"
+                    },
+                    "category_id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "sold": {
+                      "type": "number",
+                      "example": 0
+                    },
+                    "price": {
+                      "type": "number",
+                      "example": 25000000
+                    },
+                    "stock": {
+                      "type": "number",
+                      "example": 30
+                    },
+                    "cover_imageID": {
+                      "type": "number",
+                      "example": 2
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2022-10-21T11:36:16.349Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2022-10-21T11:36:16.349Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successGetCategoryById"
+        }
+      },
+      "categoryNotFound": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "category not found"
+          },
+          "data": {
+            "type": "string",
+            "example": "null"
+          }
+        },
+        "xml": {
+          "name": "categoryNotFound"
+        }
+      },
+      "bodyAddAddress": {
+        "type": "object",
+        "properties": {
+          "province": {
+            "type": "string",
+            "example": "Jakarta"
+          },
+          "city": {
+            "type": "string",
+            "example": "Jakarta"
+          },
+          "postal_code": {
+            "type": "number",
+            "example": 12940
+          },
+          "detail": {
+            "type": "string",
+            "example": "Jl. Setiabudi, Kuningan, Jakarta Selatan"
+          },
+          "main_address": {
+            "type": "boolean",
+            "example": false
+          }
+        },
+        "xml": {
+          "name": "bodyAddAddress"
+        }
+      },
+      "bodyUpdateAddress": {
+        "type": "object",
+        "properties": {
+          "province": {
+            "type": "string",
+            "example": "Jawa Tengah"
+          },
+          "city": {
+            "type": "string",
+            "example": "Semarang"
+          },
+          "postal_code": {
+            "type": "number",
+            "example": 50139
+          },
+          "detail": {
+            "type": "string",
+            "example": "Jl. Pemuda, Semarang Tengah"
+          }
+        },
+        "xml": {
+          "name": "bodyUpdateAddress"
+        }
+      },
+      "successAddAddress": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 33
+              },
+              "province": {
+                "type": "string",
+                "example": "Jakarta"
+              },
+              "city": {
+                "type": "string",
+                "example": "Jakarta"
+              },
+              "postal_code": {
+                "type": "string",
+                "example": "12940"
+              },
+              "detail": {
+                "type": "string",
+                "example": "Jl. Setiabudi, Kuningan, Jakarta Selatan"
+              },
+              "user_id": {
+                "type": "number",
+                "example": 61
+              },
+              "updatedAt": {
+                "type": "string",
+                "example": "2022-10-17T10:22:27.508Z"
+              },
+              "createdAt": {
+                "type": "string",
+                "example": "2022-10-17T10:22:27.508Z"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successAddAddress"
+        }
+      },
+      "successGetAllAdressByUserId": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 5
+                },
+                "province": {
+                  "type": "string",
+                  "example": "Jakarta"
+                },
+                "city": {
+                  "type": "string",
+                  "example": "Jakarta"
+                },
+                "postal_code": {
+                  "type": "string",
+                  "example": "12940"
+                },
+                "detail": {
+                  "type": "string",
+                  "example": "Jl. Setiabudi, Kuningan, Jakarta Selatan"
+                },
+                "user_id": {
+                  "type": "number",
+                  "example": 4
+                },
+                "main_address": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "createdAt": {
+                  "type": "string",
+                  "example": "2022-10-22T03:29:24.202Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "example": "2022-10-22T03:29:31.904Z"
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successGetAllAdressByUserId"
+        }
+      },
+      "sucessAddress": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          }
+        },
+        "xml": {
+          "name": "sucessAddress"
+        }
+      },
+      "addressNotFound": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "address not found"
+          }
+        },
+        "xml": {
+          "name": "addressNotFound"
+        }
+      },
+      "bodyUpdateUser": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Customer A"
+          },
+          "username": {
+            "type": "string",
+            "example": "customer"
+          },
+          "email": {
+            "type": "string",
+            "example": "custome@gmail.com"
+          },
+          "telp": {
+            "type": "string",
+            "example": "08363372"
+          }
+        },
+        "xml": {
+          "name": "bodyUpdateUser"
+        }
+      },
+      "bodyUpdatePassword": {
+        "type": "object",
+        "properties": {
+          "newPassword": {
+            "type": "string",
+            "example": "123456789"
+          },
+          "confirmNewPassword": {
+            "type": "string",
+            "example": "123456789"
+          }
+        },
+        "xml": {
+          "name": "bodyUpdatePassword"
+        }
+      },
+      "successUser": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          }
+        },
+        "xml": {
+          "name": "successUser"
+        }
+      },
+      "successGetUserById": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 2
+              },
+              "name": {
+                "type": "string",
+                "example": "customer"
+              },
+              "username": {
+                "type": "string",
+                "example": "customer"
+              },
+              "image": {
+                "type": "string",
+                "example": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815145/default%20image/profile_xzrsh7.png"
+              },
+              "telp": {
+                "type": "string",
+                "example": "0823111111"
+              },
+              "email": {
+                "type": "string",
+                "example": "customern@mail.com"
+              },
+              "createdAt": {
+                "type": "string",
+                "example": "2022-10-13T09:31:19.367Z"
+              },
+              "updatedAt": {
+                "type": "string",
+                "example": "2022-10-13T09:31:19.367Z"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successGetUserById"
+        }
+      },
+      "notMatchPassword": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "password not match"
+          }
+        },
+        "xml": {
+          "name": "notMatchPassword"
+        }
+      },
+      "userNotFound": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "user id not found"
+          },
+          "data": {
+            "type": "string",
+            "example": "null"
+          }
+        },
+        "xml": {
+          "name": "userNotFound"
+        }
+      },
+      "bodyRegister": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Customer B"
+          },
+          "username": {
+            "type": "string",
+            "example": "customer_b"
+          },
+          "telp": {
+            "type": "string",
+            "example": "083637267"
+          },
+          "email": {
+            "type": "string",
+            "example": "customerb@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "123456"
+          },
+          "confrimPassword": {
+            "type": "string",
+            "example": "123456"
+          }
+        },
+        "xml": {
+          "name": "bodyRegister"
+        }
+      },
+      "successRegister": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "user": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 72
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Customer B"
+                  },
+                  "username": {
+                    "type": "string",
+                    "example": "customer_b"
+                  },
+                  "image": {
+                    "type": "string",
+                    "example": "https://res.cloudinary.com/dnvltueqb/image/upload/v1663815145/default%20image/profile_xzrsh7.png"
+                  },
+                  "telp": {
+                    "type": "string",
+                    "example": "083637267"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "customerb@gmail.com"
+                  },
+                  "is_admin": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "example": "2022-10-18T02:01:39.871Z"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "example": "2022-10-18T02:01:39.871Z"
+                  }
+                }
+              },
+              "token": {
+                "type": "string",
+                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzIsIm5hbWUiOiJDdXN0b21lciBCIiwidXNlcm5hbWUiOiJjdXN0b21lcl9iIiwiZW1haWwiOiJjdXN0b21lcmJAZ21haWwuY29tIiwiaXNfYWRtaW4iOmZhbHNlLCJpYXQiOjE2NjYwNTg0OTksImV4cCI6MTY2NjA4MDA5OX0.TbD6tj-2S_gFWyERrlFHukuNak55csfeal3gmfdGYhg"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "successRegister"
+        }
+      },
+      "notAvailable": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "username or email not aviable"
+          }
+        },
+        "xml": {
+          "name": "notAvailable"
+        }
+      },
+      "passwordNotMatch": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "password and confrim password not match"
+          }
+        },
+        "xml": {
+          "name": "passwordNotMatch"
+        }
+      },
+      "unathorized": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failed"
+          },
+          "message": {
+            "type": "string",
+            "example": "unauthorized"
+          }
+        },
+        "xml": {
+          "name": "unathorized"
+        }
+      },
+      "bodyLoginGoogle": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "idToken"
+          }
+        },
+        "xml": {
+          "name": "bodyLoginGoogle"
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

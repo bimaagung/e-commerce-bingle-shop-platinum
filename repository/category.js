@@ -8,18 +8,23 @@ class CategoryRepository {
   async getAllCategory() {
     return await this.CategoryModel.findAll();
   }
+  
+  async getDefaultCategory(name) {
+    return await this.CategoryModel.findOne({
+      where : {
+        name : name
+      }
+    });
+  }
+
 
   async getCategoryByID(id) {
     const category = await this.CategoryModel.findOne({
       where: {
         id,
       },
-      inculude: [
-        {
-          model:Category,
-          as: 'product',
-          attribute: ['id', 'name', 'description', 'category_id', 'sold', 'price', 'stock', 'image'],
-        },
+      order: [
+        ['createdAt', 'DESC'],
       ],
     });
 

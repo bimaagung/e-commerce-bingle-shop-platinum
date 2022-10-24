@@ -1,6 +1,7 @@
 class CategoryUC {
-  constructor(categoryRepository) {
+  constructor(categoryRepository, productRepository) {
     this.categoryRepository = categoryRepository;
+    this.productRepository = productRepository;
   }
 
   async getCategoryByID(id) {
@@ -17,8 +18,18 @@ class CategoryUC {
       return result;
     }
 
+    const products = await this.productRepository.getProductByCategoryId(category.id);
+
+    let categories = {
+      id: category.id,
+      name: category.name,
+      createdAt: category.createdAt,
+      updatedAt: category.updatedAt,
+      products,
+    };
+
     result.isSuccess = true;
-    result.data = category;
+    result.data = categories;
 
     return result;
   }
@@ -91,10 +102,40 @@ class CategoryUC {
       result.status = 404;
       return result;
     }
+    if (category.name === "other") {
+      result.reason = 'cant not delet default category'
+      result.status = 400
+      return result
+    }
+    let product = await this.productRepository.getProductByCategoryId(id)
+    await this.setDefaultCategory(product)
     await this.categoryRepository.deleteCategory(id);
     result.isSuccess = true;
     result.status = 200;
     return result;
+  }
+
+  async setDefaultCategory(products) {
+    for (let i = 0; i < products.length; i++) {
+
+      let defaultCategory = await this.categoryRepository.getDefaultCategory("other")
+      if (defaultCategory === null) {
+        let dataCreate = {
+          name: "other"
+        }
+        let newCategory = await this.categoryRepository.addCategory(dataCreate)
+        let newProduct = {
+          category_id: newCategory.id
+        }
+        await this.productRepository.updateProduct(newProduct, products[i].id)
+      } else {
+        let updateData = {
+          category_id: defaultCategory.id
+        }
+        await this.productRepository.updateProduct(updateData, products[i].id)
+      }
+
+    }
   }
 }
 

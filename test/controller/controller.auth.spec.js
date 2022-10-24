@@ -24,9 +24,16 @@ const mockResponse = () => {
 
     return res
 }
-const next = (error) => {
-    console.log(error.message)
-}
+
+const next = () => jest.fn().mockReturnValue(
+    {
+        status: 500, 
+        json:{
+            status: 'failed',
+            message: 'internal server error',
+        }
+    }
+);
 
 describe('test login', () => {
     describe('login success', () => {
@@ -77,6 +84,24 @@ describe('test login', () => {
             expect(mockAuthUC.login).toHaveBeenCalled()
             expect(res.json).toBeCalledWith(resData.failed("username or password incorect"))
         })
+
+        test("should status is 500 and message is 'internal server error'", async () => {
+            mockAuthUC.login = jest.fn().mockImplementation(() => {
+                throw new Error();
+            });
+
+             let req = mockRequest(
+                { username: "irvan", password: "password" },
+                {}, {}, {}, { authUC: mockAuthUC }
+            )
+            let res = mockResponse();
+            let serverError = next();
+
+            await authController.login(req, res, next)
+            
+            expect(serverError().status).toEqual(500);
+            expect(serverError().json.message).toEqual('internal server error');
+        });
     })
     describe('register success', () => {
         const user = {
@@ -131,6 +156,27 @@ describe('test login', () => {
             expect(mockAuthUC.register).toHaveBeenCalled()
             expect(res.status).toBeCalledWith(404)
         })
+
+        test("should status is 500 and message is 'internal server error'", async () => {
+            mockAuthUC.register = jest.fn().mockImplementation(() => {
+                throw new Error();
+            });
+
+            let req = mockRequest(
+                {},
+                {},
+                {},
+                {},
+                { authUC: mockAuthUC }
+            )
+            let res = mockResponse();
+            let serverError = next();
+
+            await authController.register(req, res, next)
+            
+            expect(serverError().status).toEqual(500);
+            expect(serverError().json.message).toEqual('internal server error');
+        });
 
     })
 })

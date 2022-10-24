@@ -12,7 +12,8 @@ describe('address', () => {
             returnGetAddressById:true, 
             returnGetAllAddress:true,
             returnUpdateAddress:true,
-            returnDeleteAddress:true
+            returnDeleteAddress:true,
+            returnGetMainAddress: true,
         }
 
         userValues = {
@@ -41,7 +42,7 @@ describe('address', () => {
             )
          
             expect(res.isSuccess).toBeTruthy()
-            expect(Array.isArray(res.data)).toBeTruthy();
+            expect(typeof res.data === 'object').toBeTruthy();
         });
 
         test('seharusnya isSuccess = false dan data = []',
@@ -131,6 +132,22 @@ describe('address', () => {
 
     describe('delete address', ()=>{
         test('seharusnya isSuccess  = true', async () => { 
+            addressValues.returnGetAddressById =  {
+                id: 1,
+                province: 'Banten',
+                city: 'Bumi Serpong',
+                postal_code: '15345',
+                detail: 'The Breeze BSD',
+                user_id: 2,
+                main_address: false,
+                createdAt: "12-09-2022 23:30:00",
+                updatedAt: "12-09-2022 23:30:00"
+            }
+
+            addressUC = new AddressUseCase(
+            mockAddressRepo(addressValues), 
+            mockUserRepo(userValues)
+        )
             let res = await addressUC.deleteAddress(1)
 
             expect(res.isSuccess).toBeTruthy()
@@ -145,6 +162,39 @@ describe('address', () => {
             
             expect(res.isSuccess).toBeFalsy(),
             expect(res.reason).toEqual('address not found');
+        });
+    });
+
+     describe('change address main', ()=>{
+        test('seharusnya isSuccess  = true', async () => { 
+            let res = await addressUC.changeMainAddress(1,1)
+
+            expect(res.isSuccess).toBeTruthy()
+            expect(res.status).toEqual(200)
+        });
+
+        test('seharusnya isSuccess  = false dan reason = address not found', async () => { 
+            addressValues.returnGetAddressById = null
+            addressUC = new AddressUseCase(
+                mockAddressRepo(addressValues), 
+                mockUserRepo(userValues)
+            )
+            let res = await addressUC.changeMainAddress(1,1)
+            
+            expect(res.isSuccess).toBeFalsy(),
+            expect(res.reason).toEqual('address not found');
+        });
+
+        test('seharusnya isSuccess  = false dan reason = customer not have address', async () => { 
+            addressValues.returnGetMainAddress = null
+            addressUC = new AddressUseCase(
+                mockAddressRepo(addressValues), 
+                mockUserRepo(userValues)
+            )
+            let res = await addressUC.changeMainAddress(1,1)
+            
+            expect(res.isSuccess).toBeFalsy(),
+            expect(res.reason).toEqual('customer not have address');
         });
     });
 })

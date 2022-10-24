@@ -1,4 +1,5 @@
 const { Product, ProductImage } = require('../models');
+const { Op } = require('sequelize');
 
 class ProductRepository {
   constructor() {
@@ -13,6 +14,9 @@ class ProductRepository {
           attributes: ['id', 'url'],
         },
       ],
+      order: [
+        ['createdAt', 'DESC'],
+      ],
     });
   }
 
@@ -24,10 +28,17 @@ class ProductRepository {
       include: [
         {
           model: ProductImage,
-          attributes: ['id', 'url'],
         },
       ],
 
+    });
+  }
+
+  async getProductByCategoryId(id) {
+    return await this.ProductModel.findAll({
+      where: {
+        category_id: id,
+      },
     });
   }
 
@@ -35,7 +46,7 @@ class ProductRepository {
     return await this.ProductModel.create(product);
   }
 
-  async updateProduct(id, product) {
+  async updateProduct(product, id) {
     return await this.ProductModel.update(product, {
       where: {
         id,
@@ -48,6 +59,16 @@ class ProductRepository {
       where: {
         id,
       },
+    });
+  }
+
+  async getProductByKeyword(keyword) {
+    let condition = []
+    condition.push({ name: { [Op.like]: "%" + keyword + "%" } })
+
+    return await this.ProductModel.findAll({
+      where: condition,
+
     });
   }
 }

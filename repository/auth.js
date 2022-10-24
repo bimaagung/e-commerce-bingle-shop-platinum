@@ -15,6 +15,12 @@ class AuthRepository {
       
     });
   }
+  async loginWithGoogle(email) {
+    return await this.UserModel.findOne({
+      where: { email },
+      
+    });
+  }
   
 
 }

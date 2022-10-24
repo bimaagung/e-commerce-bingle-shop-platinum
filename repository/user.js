@@ -13,26 +13,32 @@ class UserRepository {
       },
     });
   }
-
-  async updatePassword(id, newPassword) {
-    const password = await this.updatePassword(newPassword, {
-      where: { id },
+  
+  async getUserByEmail(email) {
+    return await this.UserModel.findOne({
+      where: {email},
     });
-    return password;
+  }
+  async getUserByUsername(username) {
+    return await this.UserModel.findOne({
+      where: {username},
+    });
   }
 
   async getUserByID(id) {
     return await this.UserModel.findOne({
-      where: { id },
-      attributes: { exclude: ['password', 'is_admin'] },
+      where: { id }, 
+      attributes: {exclude: ['password', 'is_admin']}
+     
     });
   }
 
   async updateUser(user, id) {
     return await this.UserModel.update(user, {
-      where: { id },
+      where: { id :id},
     });
   }
+  
 }
 
 module.exports = UserRepository;

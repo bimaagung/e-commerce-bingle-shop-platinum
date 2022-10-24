@@ -1,14 +1,18 @@
 const ProductImageUseCase = require('../../usecase/product_image')
-const mockImageProductRepo = require('../mock/repository.imageProduct')
+const mockImageProductRepo = require('../mock/repository.imageProduct.mock')
 const mockProductRepo = require('../mock/repository.product.mock')
 const urlImage = require('../../internal/constant/defaultImage')
+const defaultImage = require('../../internal/constant/defaultImage');
+const _ = require('lodash');
 
 let imageProductValues, productValues = {}
+
 const cloudinary = {
     uploadCloudinaryProduct: jest
       .fn()
       .mockReturnValue("https://cloudinary.com/product/image.jpg"),
   };
+
 describe('Image Product', () => {
     beforeEach(() => {
         imageProductValues = {
@@ -16,15 +20,20 @@ describe('Image Product', () => {
             returnGetAllImageByProductID: true,
             returnCreateImage: true,
             returnUpdateImage: true,
-            returnDeleteImage: true
+            returnDeleteImage: true,
+            returnGetCoverImage: true,
         }
 
         productValues = {
             returnGetProductByID: true,
         }
+
         productImageUC = new ProductImageUseCase(
             mockImageProductRepo(imageProductValues),
-            mockProductRepo(productValues),cloudinary
+            mockProductRepo(productValues),
+            cloudinary,
+            _,
+            defaultImage,
         )
     })
     describe('get image product by product_id', () => {
@@ -47,7 +56,7 @@ describe('Image Product', () => {
             expect(res.reason).toEqual("success")
         })
         test('isSuccess = false image not found', async () => {
-            imageProductValues.returnGetAllImageByProductID.length = 0
+            imageProductValues.returnGetAllImageByProductID = 0
             productImageUC = new ProductImageUseCase(
                 mockImageProductRepo(imageProductValues),
                 mockProductRepo(productValues)
@@ -57,7 +66,20 @@ describe('Image Product', () => {
             expect(res.isSuccess).toBeTruthy()
             expect(res.reason).toEqual("success")
         })
+
+        test('isSuccess = false product not found', async () => {
+            productValues.returnGetProductByID = null
+            productImageUC = new ProductImageUseCase(
+                mockImageProductRepo(imageProductValues),
+                mockProductRepo(productValues)
+            )
+            let res = await productImageUC.getImageProductByProductID()
+
+            expect(res.isSuccess).toBeFalsy()
+            expect(res.reason).toEqual("product not found")
+        })
     })
+
     describe('create image product', () => {
         test('isSuccess = true', async () => {
             let res = await productImageUC.createImageProduct({
@@ -82,33 +104,23 @@ describe('Image Product', () => {
             expect(res.isSuccess).toBeFalsy()
             expect(res.reason).toEqual("failed add image, product not found")
         })
+
+         test('isSucces = failed upload, please insert file', async () => {
+            productImageUC = new ProductImageUseCase(
+                mockImageProductRepo(imageProductValues),
+                mockProductRepo(productValues)
+            )
+            let res = await productImageUC.createImageProduct({
+                id: 1,
+                url: null,
+                product_id: 1
+            })
+            expect(res.isSuccess).toBeFalsy()
+            expect(res.reason).toEqual("failed upload, please insert file")
+        })
        
     })
-    // describe('update image product', () => {
-    //     test('isSuccess = true', async () => {
-    //         let res = await productImageUC.updateImageProduct(
-    //             {image: 'https://res.cloudinary.com/dnvltueqb/image/upload/v1663815144/default%20image/default_product_w8fe1a.jpg'})
-           
-        
-    //         expect(res.isSuccess).toBeTruthy()
-    //         expect(res.data === null).toEqual(false)
-    //     })
-    //     test('isSuccess = product wrong product id',async () => {
-    //         imageProductValues.returnGetImageByID = null
-    //         productImageUC = new ProductImageUseCase(
-    //             mockImageProductRepo(imageProductValues),
-    //             mockProductRepo(productValues)
-    //         )
-    //         let res = await productImageUC.updateImageProduct({
-    //             id: 1,
-    //             url: urlImage.DEFAULT_PRODUCT_IMAGE,
-    //             product_id: 1
-    //         }, 1)
-    //         expect(res.isSuccess).toBeFalsy()
-    //         expect(res.reason).toEqual("image not found")
-    //     })
-       
-    // })
+
     describe('delete image product', ()=>{
         test('isSuccess = true', async ()=>{
             let res = await productImageUC.deleteImageProduct()
@@ -123,6 +135,38 @@ describe('Image Product', () => {
                 mockProductRepo(productValues)
             )
             let res = await productImageUC.deleteImageProduct()
+            
+            expect(res.isSuccess).toBeFalsy()
+            expect(res.reason).toEqual("image not found")
+        })
+    })
+
+    describe('change cover image', ()=>{
+        test('isSuccess = true', async ()=>{
+            let res = await productImageUC.changeCoverImage()
+            
+            expect(res.isSuccess).toBeTruthy()
+        })
+
+        test('isSuccess = false image not found',async ()=>{
+            imageProductValues.returnGetAllImageByProductID = null
+            productImageUC = new ProductImageUseCase(
+                mockImageProductRepo(imageProductValues),
+                mockProductRepo(productValues)
+            )
+           let res = await productImageUC.changeCoverImage()
+            
+            expect(res.isSuccess).toBeFalsy()
+            expect(res.reason).toEqual("image not found")
+        })
+
+        test('isSuccess = false image not found',async ()=>{
+            imageProductValues.returnGetCoverImage = null
+            productImageUC = new ProductImageUseCase(
+                mockImageProductRepo(imageProductValues),
+                mockProductRepo(productValues)
+            )
+           let res = await productImageUC.changeCoverImage()
             
             expect(res.isSuccess).toBeFalsy()
             expect(res.reason).toEqual("image not found")
