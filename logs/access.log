@@ -79,7 +79,6 @@
 127.0.0.1 - - [2022-10-24T20:06:04+07:00] "GET /docs/swagger-ui-init.js HTTP/1.1" 200 70401 "http://localhost:3000/docs/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
 127.0.0.1 - - [2022-10-24T20:06:04+07:00] "GET /docs/swagger-ui-standalone-preset.js HTTP/1.1" 304 - "http://localhost:3000/docs/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
 127.0.0.1 - - [2022-10-24T20:06:05+07:00] "GET /docs/favicon-32x32.png HTTP/1.1" 304 - "http://localhost:3000/docs/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
-
 127.0.0.1 - - [2022-10-24T20:26:02+07:00] "GET /docs/admin/ HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
 127.0.0.1 - - [2022-10-24T20:26:02+07:00] "GET /docs/admin/swagger-ui.css HTTP/1.1" 200 144726 "http://localhost:3000/docs/admin/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
 127.0.0.1 - - [2022-10-24T20:26:02+07:00] "GET /docs/admin/swagger-ui-standalone-preset.js HTTP/1.1" 200 311812 "http://localhost:3000/docs/admin/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
@@ -100,3 +99,4 @@
 127.0.0.1 - - [2022-10-24T21:04:42+07:00] "POST /api/user/login HTTP/1.1" 500 53 "http://localhost:3000/docs/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
 127.0.0.1 - - [2022-10-24T21:05:59+07:00] "POST /api/user/login HTTP/1.1" 404 58 "http://localhost:3000/docs/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
 127.0.0.1 - - [2022-10-24T21:06:09+07:00] "POST /api/user/login HTTP/1.1" 200 614 "http://localhost:3000/docs/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+

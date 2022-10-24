@@ -48,12 +48,14 @@ class UserUC {
     }
     
     let usernameExist = await this.UserRepository.getUserByUsername(userData.username)
+
+    
     if(user.username === usernameExist.username){
       result.reason = 'please enter a new username'
       result.status = 400
       return result
     }
-    if(usernameExist !== null){
+    if(usernameExist.username !== null){
       result.reason = 'username not aviable'
       result.status = 400
       return result
