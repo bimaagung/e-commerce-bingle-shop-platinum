@@ -7,7 +7,7 @@ Sesuai module / Bingle Shop
 
 ### Installation
 
-Installation project
+Installation project - manual
 
 - clone project `git clone https://github.com/bimaagung/maju-jaya-platinum-kelompok-1-BEJ.git`
 - add node modules `npm install`
@@ -15,16 +15,27 @@ Installation project
 - configuration db in file .env
 - create db `sequelize db:create`
 - migrate table `sequelize db:migrate`
+- fill the table with dummy data `sequelize db:seed:all`
+- run docker elk apm and customize .env
+
+test each endpoint in swagger
+
+- enter swagger for customer : localhost:3000/docs - for customer
+- enter swagger for admin : localhost:3000/docs/admin
+- login and get token  
+- add token in authorization (in accordance auth)
+- testing all endpoint
+
+Installation project - docker
+
+- customize env in docker compose -> platinum
+- run docker compose in project
+- open terminal container platinum in docker 
+- create db `sequelize db:create`
+- migrate table `sequelize db:migrate`
 - fill the table with dummy data `sequelize db:migrate:all`
-- create file `access.log` and `errors.log` in folder `logs`
-
-test each endpoint in postman
-
-- open postman
-- import file platinum-maju-jaya.postman_collection.json in postman
-- import file platinum-maju-jaya.postman_environment.json in postman
-- change environment to `Platinum Maju Jaya`
-- choose folder Platinum Maju Jaya and run
+- open kibana in open browser
+- open localhost:3000 in browswe
 
 
 ### Entity
