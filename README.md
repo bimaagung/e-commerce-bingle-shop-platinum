@@ -888,6 +888,7 @@ Response :
   
 ```
 json
+```
 		{
     "status": "ok",
     "message": "success",
@@ -900,7 +901,7 @@ json
         "createdAt": "2022-10-24T05:20:26.575Z"
     }
 }
-```
+
 
 ```
 ### Delete data barang
