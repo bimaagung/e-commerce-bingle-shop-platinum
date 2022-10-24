@@ -229,7 +229,11 @@
           "User"
         ],
         "description": "",
-        
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
         "security": [
           {
             "bearerAuth": []
