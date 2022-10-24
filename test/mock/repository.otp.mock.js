@@ -1,4 +1,4 @@
-const mockChatRepo = (
+const mockOTPRepo = (
     {
         returnDeleteAllOtp,
         returnGenerateOtp,
@@ -27,7 +27,7 @@ const mockChatRepo = (
         expired_at : "12-09-2022 23:30:00"
     }
   )
-  repo.getOtp = jest.fn().mockReturnValue(
+  repo.getOTP = jest.fn().mockReturnValue(
     returnGetOtp !== true ?  returnGetOtp : {
         email : "customer@mail",
         otp_code : "123456",
@@ -38,7 +38,9 @@ const mockChatRepo = (
   repo.returnGetOtpByEmail = jest.fn().mockReturnValue(
     returnGetOtpByEmail !== true ?  returnGetOtpByEmail : true
   )
+
+  return repo
 };
 
-module.exports = mockChatRepo;
+module.exports = mockOTPRepo;
 

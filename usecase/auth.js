@@ -96,10 +96,12 @@ class AuthUC {
     }
     let dataUser = this._.omit(user.dataValues, ["password"]);
     let token = this.generateToken(dataUser);
+
     result.isSuccess = true;
     result.status = 200;
     result.data = dataUser;
     result.token = token;
+    
     return result;
   }
   async loginGoogle(idToken) {

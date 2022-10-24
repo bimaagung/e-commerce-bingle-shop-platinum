@@ -19,7 +19,7 @@ module.exports = {
     try {
       let category = await req.categoryUC.getAllCategory();
 
-      return res.json(resData.success(category.data));
+      return res.status(200).json(resData.success(category.data));
     } catch (e) {
       next(e);
     }
