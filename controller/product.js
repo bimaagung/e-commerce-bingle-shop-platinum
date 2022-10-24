@@ -265,6 +265,7 @@ module.exports = {
           .status(404)
           .json(resData.failed(resProduct.reason, resProduct.data));
       }
+      
       res.status(200).json(resData.success(resProduct.data));
     } catch (e) {
       next(e);
