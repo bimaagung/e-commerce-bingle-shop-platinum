@@ -51,8 +51,8 @@ Installation project - docker
 - create db `sequelize db:create`
 - migrate table `sequelize db:migrate`
 - fill the table with dummy data `sequelize db:migrate:all`
-- open kibana in open browser
-- open localhost:3000 in browser
+- open kibana `localhost:5601` in browser
+- open app `localhost:3000` in browser
 
 
 ### Entity
