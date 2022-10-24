@@ -286,6 +286,17 @@ describe('orders', () => {
 
   describe('updateStatusOrder test', () => {
       test('when param status is processed should isSuccess is true', async () => {
+        orderValues.returnVerifyOrderWithoutStatusPending = {
+          id: 'Ti9jtWs0FHhJMAmS',
+          user_id: 1,
+          status: 'SUBMITTED',
+          completed_date: null,
+          createdAt: "12-09-2022 23:30:00",
+          updatedAt: "12-09-2022 23:30:00",
+        }
+
+         orderUC = new OrderUseCase(mockOrderRepo(orderValues), mockOrderDetailRepo(orderDetailValues),mockProductRepo(productValues), mockCategoryRepo(categoryValues), mockEmailRepo(emailValues), mockUserRepo(userValues), _, mockAddressRepo(addressValues), orderConstant);
+
         let res = await orderUC.updateStatusOrder(1,'ORDER_PROCESSED');
 
         expect(res.isSuccess).toBeTruthy();
@@ -293,6 +304,21 @@ describe('orders', () => {
       });
 
       test('when param status is completed should isSuccess is true', async () => {
+        orderDetailValues.returnGetOrderDetailById = [
+          {
+            dataValues:{
+              id: 'Ti9jtWs0FHhJMAmS',
+              user_id: 1,
+              status: 'SUBMITTED',
+              completed_date: null,
+              createdAt: "12-09-2022 23:30:00",
+              updatedAt: "12-09-2022 23:30:00",
+            }
+          }
+        ]
+
+         orderUC = new OrderUseCase(mockOrderRepo(orderValues), mockOrderDetailRepo(orderDetailValues),mockProductRepo(productValues), mockCategoryRepo(categoryValues), mockEmailRepo(emailValues), mockUserRepo(userValues), _, mockAddressRepo(addressValues), orderConstant);
+
         let res = await orderUC.updateStatusOrder(1,'ORDER_COMPLETED');
 
         expect(res.isSuccess).toBeTruthy();
