@@ -19,6 +19,11 @@ class UserRepository {
       where: {email},
     });
   }
+  async getUserByUsername(username) {
+    return await this.UserModel.findOne({
+      where: {username},
+    });
+  }
 
   async getUserByID(id) {
     return await this.UserModel.findOne({

@@ -8,11 +8,6 @@ module.exports = {
     try {
       let { id } = req.user;
       let address = await req.addressUC.getAddressByUserID(id);
-      if (address.isSuccess !== true) {
-        return res
-          .status(address.status)
-          .json(resData.failed(address.reason, address.data));
-      }
       res.status(address.status).json(resData.success(address.data));
     } catch (e) {
       next(e);
@@ -61,31 +56,27 @@ module.exports = {
       }
 
     */
-    try {
-      let address = {
-        province: req.body.province,
-        city: req.body.city,
-        postal_code: req.body.postal_code,
-        detail: req.body.detail,
-        user_id: req.user.id,
-        main_address: req.body.main_address,
-      };
-      let isMain = address.main_address == true;
-      if (isMain) {
-        console.log(isMain);
-        await req.addressUC.updateMainAddress(address.user_id);
+      try {
+        let address = {
+          province: req.body.province,
+          city: req.body.city,
+          postal_code: req.body.postal_code,
+          detail: req.body.detail,
+          user_id: req.user.id,
+          main_address: true,
+        }
+  
+        let createRes = await req.addressUC.addAddress(address);
+        if (createRes.isSuccess !== true) {
+          return res
+            .status(createRes.status)
+            .json(resData.failed(createRes.reason));
+        }
+        res.status(createRes.status).json(resData.success(createRes.data));
+      } catch (e) {
+        next(e);
       }
-      let resAddress = await req.addressUC.addAddress(address);
-      if (resAddress.isSuccess === false) {
-        return res
-          .status(resAddress.status)
-          .json(resData.failed(resAddress.reason, resAddress.data));
-      }
-      res.status(resAddress.status).json(resData.success(resAddress.data));
-    } catch (e) {
-      next(e);
-    }
-  },
+    },
 
   updateAddress: async (req, res, next) => {
     /*

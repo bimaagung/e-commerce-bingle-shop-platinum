@@ -1,4 +1,4 @@
-version: '2.2'
+version: '3.4'
 services:
   apm-server:
     image: docker.elastic.co/apm/apm-server:7.13.2
@@ -12,7 +12,7 @@ services:
     ports:
     - 8200:8200
     networks:
-    - elastic
+    - platinum
     command: >
        apm-server -e
          -E apm-server.rum.enabled=true
@@ -43,7 +43,7 @@ services:
     ports:
     - 9200:9200
     networks:
-    - elastic
+    - platinum
     healthcheck:
       interval: 20s
       retries: 10
@@ -60,11 +60,12 @@ services:
     ports:
     - 5601:5601
     networks:
-    - elastic
+    - platinum
     healthcheck:
       interval: 10s
       retries: 20
       test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:5601/api/status
+
   postgres:
     image: postgres:latest
     environment:
@@ -74,8 +75,8 @@ services:
     expose:
       - '5432'
     networks:
-      - elastic
-  
+    - platinum
+
   platinum:
     image: bimaagung/platinum-maju-jaya:latest
     environment: 
@@ -86,6 +87,7 @@ services:
       DB_USERNAME: postgres
       DB_PASSWORD: 12345678
       DB_HOSTNAME: postgres
+      DB_PORT: 5432
       DB_NAME: platinum_db
       DB_DIALECT: postgres
       USE_APM: true
@@ -103,12 +105,13 @@ services:
       MAILER_AUTH_PASSWORD: 2d41ee0da2a5cd
       MAILER_SENDER_NAME: majujaya
       MAILER_SENDER_EMAIL: noreaplymajujaya@gmail.com
+      SERVER_URL: http://apm-server:8200
     ports:
       - '3000:3000'
     expose:
       - '3000'
     networks:
-      - elastic
+    - platinum
     depends_on:
       - postgres
 
@@ -117,5 +120,5 @@ volumes:
     driver: local
 
 networks:
-  elastic:
+  platinum:
     driver: bridge

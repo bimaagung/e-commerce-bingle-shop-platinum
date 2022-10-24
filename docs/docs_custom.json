@@ -34,10 +34,10 @@
                 "type": "object",
                 "properties": {
                   "username": {
-                    "example": "any"
+                    "example": "customer"
                   },
                   "password": {
-                    "example": "any"
+                    "example": "password"
                   }
                 }
               }
@@ -141,16 +141,30 @@
         "tags": [
           "Oauth"
         ],
-        "description": "",
+        "description": "endpoint untuk mendapatkan id token dari google | gunakan email (dfmrisusanto@gmail.com) untuk oauth ",
         "parameters": [],
         "responses": {}
       },
       "post": {
-        "description": "",
+        "description": "endpoint untuk memasukkan id token google",
         "parameters": [],
         "responses": {
           "400": {
             "description": "Bad Request"
+          }
+        },
+         "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idToken": {
+                    "example": "id token"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -338,15 +352,6 @@
           "User"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Berhasil melihat profil berdasarkan id pengguna",
@@ -392,15 +397,7 @@
           "User"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        
         "responses": {
           "200": {
             "description": "Berhasil memperbaharui password pengguna",
@@ -471,15 +468,7 @@
           "User"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        
         "responses": {
           "200": {
             "description": "Berhasil memperbaharui password pengguna",
@@ -581,16 +570,21 @@
           }
         ],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/bodyUpdateUser"
-              }
-            },
-            "application/xml": {
-              "schema": {
-                "$ref": "#/components/schemas/bodyUpdateUser"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "example": "Customer A"
+                  },
+                  "username": {
+                    "example": "customer"
+                  },
+                  "telp": {
+                    "example": "08363372"
+                  }
+                }
               }
             }
           }
@@ -624,13 +618,13 @@
                 "type": "object",
                 "properties": {
                   "newPassword": {
-                    "example": "any"
+                    "example": "123456789"
                   },
                   "confirmNewPassword": {
-                    "example": "any"
+                    "example": "123456789"
                   },
                   "otp_code": {
-                    "example": "any"
+                    "example": "123456789"
                   }
                 }
               }
@@ -645,15 +639,7 @@
           "User"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        
         "responses": {
           "400": {
             "description": "Bad Request"
@@ -674,10 +660,10 @@
                 "type": "object",
                 "properties": {
                   "email": {
-                    "example": "any"
+                    "example": "customer123@gmail.com"
                   },
                   "otp_code": {
-                    "example": "any"
+                    "example": "985784"
                   }
                 }
               }
@@ -692,15 +678,7 @@
           "Address"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        
         "responses": {
           "401": {
             "description": "Unauthorized"
@@ -719,15 +697,7 @@
           "Address"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        
         "responses": {
           "201": {
             "description": "Berhasil menambahkan alamat",
@@ -766,16 +736,24 @@
           }
         ],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/bodyAddAddress"
-              }
-            },
-            "application/xml": {
-              "schema": {
-                "$ref": "#/components/schemas/bodyAddAddress"
+                "type": "object",
+                "properties": {
+                  "province": {
+                    "example": "Jakarta"
+                  },
+                  "city": {
+                    "example": "Jakarta"
+                  },
+                  "postal_code": {
+                    "example": "12940"
+                  },
+                  "detail": {
+                    "example": "Jl. Setiabudi, Kuningan, Jakarta Selatan"
+                  }
+                }
               }
             }
           }
@@ -965,15 +943,7 @@
           "Order"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        
         "responses": {
           "201": {
             "description": "Berhasil membuat pesanan",
@@ -1057,15 +1027,7 @@
           "Order"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        
         "responses": {
           "200": {
             "description": "Berhasil melihat pesanan yang belum di submit",
@@ -1111,15 +1073,7 @@
           "Order"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        
         "responses": {
           "200": {
             "description": "Berhasil submit pesanan",
@@ -1175,15 +1129,7 @@
           "Order"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        
         "responses": {
           "200": {
             "description": "Berhasil membatalkan pesanan",
@@ -1229,15 +1175,7 @@
           "Chat"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        
         "responses": {
           "200": {
             "description": "OK"
@@ -1290,7 +1228,7 @@
         "tags": [
           "OTP"
         ],
-        "description": "",
+        "description": "otp type example : RESETPASSWORD,UPDATEEMAIL,REGISTRATION",
         "parameters": [],
         "responses": {
           "400": {
@@ -1304,10 +1242,10 @@
                 "type": "object",
                 "properties": {
                   "otp_type": {
-                    "example": "any"
+                    "example": "REGISTRATION"
                   },
                   "email": {
-                    "example": "any"
+                    "example": "customer123@gmail.com"
                   }
                 }
               }
@@ -2229,6 +2167,10 @@
           "username": {
             "type": "string",
             "example": "customer"
+          },
+          "email": {
+            "type": "string",
+            "example": "custome@gmail.com"
           },
           "telp": {
             "type": "string",

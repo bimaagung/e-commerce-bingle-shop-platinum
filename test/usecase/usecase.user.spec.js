@@ -19,7 +19,9 @@ describe('users', () => {
             returnGetUserExist: true,
             returnGetUserByID: true,
             returnUpdatePassword: true,
-            returnUpdateUser: true
+            returnUpdateUser: true,
+            returnGetUserByEmail: true,
+            returnGetUserByUsername: true,
         }
 
         otpValues = {
@@ -77,19 +79,6 @@ describe('users', () => {
    })
 
   describe('updateUserProfile test', () => { 
-
-    test('should isSuccess is true', async () => {
-        let res = await userUC.updateUserProfile(
-            {
-                name: 'user',
-                username: 'user2',
-                image: 'http://localhost:8080/images/user1.jpg',
-                telp: '0847383672',
-                email: 'user@example.com'
-            },1);
-
-        expect(res.isSuccess).toBeTruthy();
-    });
 
     test('should isSuccess is false and reason is "user not found"', async () => {
         userValues.returnGetUserByID = null
@@ -170,6 +159,79 @@ describe('users', () => {
         expect(res.data).toBeNull();
         expect(res.statusCode).toEqual(404);
     });
+
+   })
+
+    describe('updateEmail test', () => { 
+
+        test('should isSuccess is true', async () => {
+            let res = await userUC.updateEmail({
+                    email: 'user@gmail.com',
+                    otp_code: 467365,
+                },1);
+
+            expect(res.isSuccess).toBeTruthy();
+            expect(res.statusCode).toEqual(200)
+        });
+
+        test('should isSuccess is false and reason is "user not found"', async () => {
+            userValues.returnGetUserByID = null
+            userUC = new UserUseCase(mockUserRepo(userValues), mockOtpRepo(otpValues), bcrypt, cloudinary);
+            
+            let res = await userUC.updateEmail({
+                email: 'user@gmail.com',
+                otp_code: 467365,
+            },1);
+
+            expect(res.isSuccess).toBeFalsy();
+            expect(res.reason).toEqual('user not found');
+            expect(res.status).toEqual(404);
+        });
+
+   })
+
+   describe('resetPassword test', () => { 
+
+        test('should isSuccess is true', async () => {
+            let res = await userUC.resetPassword({
+                    newPassword: '12345678',
+                    confirmNewPassword: '12345678',
+                    otp_code : 467365,
+                },1);
+
+            expect(res.isSuccess).toBeTruthy();
+            expect(res.statusCode).toEqual(200)
+        });
+
+        test('should isSuccess is false and reason is "confrim new password not match"', async () => {
+            userUC = new UserUseCase(mockUserRepo(userValues), mockOtpRepo(otpValues), bcrypt, cloudinary);
+            
+            let res = await userUC.resetPassword({
+                newPassword: '12345678',
+                confirmNewPassword: '123456789',
+                otp_code : 467365,
+            },1);
+
+            expect(res.isSuccess).toBeFalsy();
+            expect(res.reason).toEqual('confrim new password not match');
+            expect(res.statusCode).toEqual(400);
+        });
+
+        test('should isSuccess is false and reason is "user not found"', async () => {
+           userValues.returnGetUserByEmail = null
+           userUC = new UserUseCase(mockUserRepo(userValues), mockOtpRepo(otpValues), bcrypt, cloudinary);
+           
+             let res = await userUC.resetPassword({
+                newPassword: '12345678',
+                confirmNewPassword: '12345678',
+                otp_code : 467365,
+            },1);
+
+
+            expect(res.isSuccess).toBeFalsy();
+            expect(res.reason).toEqual('user not found');
+            expect(res.statusCode).toEqual(400)
+        });
 
    })
 

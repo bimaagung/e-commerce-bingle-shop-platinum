@@ -46,6 +46,21 @@ class UserUC {
       result.reason = 'user not found';
       return result;
     }
+    
+    let usernameExist = await this.UserRepository.getUserByUsername(userData.username)
+
+    
+    if(user.username === usernameExist.username){
+      result.reason = 'please enter a new username'
+      result.status = 400
+      return result
+    }
+    if(usernameExist.username !== null){
+      result.reason = 'username not aviable'
+      result.status = 400
+      return result
+    }
+
     user = await this.UserRepository.updateUser(userData, id);
     result.isSuccess = true;
     result.statusCode = 200;
@@ -86,12 +101,14 @@ class UserUC {
       reason: null,
       status: 400,
     };
+    
     let user = await this.UserRepository.getUserByID(id);
     if (user === null) {
       result.reason = "user not found";
       result.status = 404;
       return result;
     }
+
     let otp = await this.OtpRepository.getOTP(
       userData.email,
       userData.otp_code,
@@ -108,12 +125,18 @@ class UserUC {
     result.statusCode = 200;
     return result;
   }
+
   async resetPassword(userData, email) {
     let result = {
       isSuccess: false,
       reason: null,
       statusCode: 400,
     };
+    if(email === undefined || email ===null){
+      result.reason = "please insert email"
+      return result
+    }
+
     if (userData.newPassword !== userData.confirmNewPassword) {
       result.reason = "confrim new password not match";
       return result;

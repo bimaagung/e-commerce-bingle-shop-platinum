@@ -84,9 +84,8 @@ module.exports = {
 
   updateUser: async (req, res, next) => {
     const response = Joi.object({
-      name: Joi.string().required(),
-      username: Joi.string().required(),
-      email: Joi.string().email().required(),
+      name: Joi.string().required().min(6).max(30),
+      username: Joi.string().required().min(6).max(30),
       telp: Joi.number().required(),
     }).validate(req.body);
 

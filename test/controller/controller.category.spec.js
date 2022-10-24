@@ -27,9 +27,16 @@ const mockResponse = () => {
     return res
 }
 
-const next = (error) => {
-    console.log(error.message)
-}
+const next = () => jest.fn().mockReturnValue(
+    {
+        status: 500, 
+        json:{
+            status: 'failed',
+            message: 'internal server error',
+        }
+    }
+);
+
 
 describe('Test Category', () => {
     describe('get all category', () => {
@@ -69,7 +76,23 @@ describe('Test Category', () => {
         expect(mockCategoryUC.getAllCategory).toHaveBeenCalled()
         expect(res.status).toBeCalledWith(200)
         expect(res.json).toBeCalledWith(resData.success([]))
-        })
+    })
+
+    test("should status is 500 and message is 'internal server error'", async () => {
+        mockCategoryUC.getAllCategory = jest.fn().mockImplementation(() => {
+            throw new Error();
+        });
+
+        let req = mockRequest({},{},{},{},{ categoryUC: mockCategoryUC})
+        let res = mockResponse();
+        let serverError = next();
+
+        await categoryController.getAllCategory(req, res, next)
+        
+        expect(serverError().status).toEqual(500);
+        expect(serverError().json.message).toEqual('internal server error');
+    });
+
     })
 
     describe('get category by Id', () => {
@@ -128,6 +151,21 @@ describe('Test Category', () => {
             expect(res.status).toBeCalledWith(404)
             expect(res.json).toBeCalledWith(resData.failed('category not found', null))
         })
+
+        test("should status is 500 and message is 'internal server error'", async () => {
+            mockCategoryUC.getCategoryByID = jest.fn().mockImplementation(() => {
+                throw new Error();
+            });
+
+            let req = mockRequest({},{},{id:2},{},{ categoryUC: mockCategoryUC})
+            let res = mockResponse();
+            let serverError = next();
+
+            await categoryController.getCategoryById(req, res, next)
+            
+            expect(serverError().status).toEqual(500);
+            expect(serverError().json.message).toEqual('internal server error');
+        });
     })
 
     describe('add category', () => {
@@ -174,6 +212,21 @@ describe('Test Category', () => {
                 expect(res.status).toBeCalledWith(404)
                 expect(res.json).toBeCalledWith(resData.failed('failed add category', null))
         })
+
+        test("should status is 500 and message is 'internal server error'", async () => {
+            mockCategoryUC.addCategory = jest.fn().mockImplementation(() => {
+                throw new Error();
+            });
+
+            let req = mockRequest(categoryBody,{},{},{},{ categoryUC: mockCategoryUC})
+            let res = mockResponse();
+            let serverError = next();
+
+            await categoryController.addCategory(req, res, next)
+            
+            expect(serverError().status).toEqual(500);
+            expect(serverError().json.message).toEqual('internal server error');
+        });
     })
 
      describe('update category', () => {
@@ -212,6 +265,21 @@ describe('Test Category', () => {
                 expect(res.status).toBeCalledWith(404)
                 expect(res.json).toBeCalledWith(resData.failed('category not found', null))
         })
+
+        test("should status is 500 and message is 'internal server error'", async () => {
+            mockCategoryUC.updateCategory = jest.fn().mockImplementation(() => {
+                throw new Error();
+            });
+
+            let req = mockRequest({},{},{id:2},{},{ categoryUC: mockCategoryUC})
+            let res = mockResponse();
+            let serverError = next();
+
+            await categoryController.putCategory(req, res, next)
+            
+            expect(serverError().status).toEqual(500);
+            expect(serverError().json.message).toEqual('internal server error');
+        });
         
     })
 
@@ -245,6 +313,22 @@ describe('Test Category', () => {
             expect(res.status).toBeCalledWith(404)
             expect(res.json).toBeCalledWith(resData.failed('category not found', null))
         })
+
+               test("should status is 500 and message is 'internal server error'", async () => {
+            mockCategoryUC.deleteCategory = jest.fn().mockImplementation(() => {
+                throw new Error();
+            });
+
+            let req = mockRequest({},{},{id:2},{},{ categoryUC: mockCategoryUC})
+            let res = mockResponse();
+            let serverError = next();
+
+            await categoryController.deleteCategory(req, res, next)
+
+            
+            expect(serverError().status).toEqual(500);
+            expect(serverError().json.message).toEqual('internal server error');
+        });
     })
 
 })
