@@ -89,3 +89,4 @@
 127.0.0.1 - - [2022-10-22T19:16:29+07:00] "PUT /api/customer/address/update-main-address/4 HTTP/1.1" 404 57 "http://localhost:3000/docs/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
 127.0.0.1 - - [2022-10-22T19:16:44+07:00] "PUT /api/customer/address/update-main-address/4 HTTP/1.1" 404 57 "http://localhost:3000/docs/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
 127.0.0.1 - - [2022-10-22T19:18:05+07:00] "GET /favicon.ico HTTP/1.1" 404 150 "http://localhost:3000/docs/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+127.0.0.1 - - [2022-10-24T10:17:41+07:00] "POST /api/user/login HTTP/1.1" 404 58 "http://localhost:3000/docs/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
