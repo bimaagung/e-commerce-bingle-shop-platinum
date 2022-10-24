@@ -213,7 +213,7 @@ describe('Test Address', () => {
             await addressController.addAddress(req, res, next)
 
             expect(res.status).toBeCalledWith(404)
-            expect(res.json).toBeCalledWith(resData.failed('failed to add, address not found', null))
+            expect(res.json).toBeCalledWith(resData.failed('failed to add, address not found'))
         })
 
         test("should status is 500 and message is 'internal server error'", async () => {

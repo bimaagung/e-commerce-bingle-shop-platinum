@@ -21,6 +21,7 @@ describe('users', () => {
             returnUpdatePassword: true,
             returnUpdateUser: true,
             returnGetUserByEmail: true,
+            returnGetUserByUsername: true,
         }
 
         otpValues = {
@@ -78,19 +79,6 @@ describe('users', () => {
    })
 
   describe('updateUserProfile test', () => { 
-
-    test('should isSuccess is true', async () => {
-        let res = await userUC.updateUserProfile(
-            {
-                name: 'user',
-                username: 'user2',
-                image: 'http://localhost:8080/images/user1.jpg',
-                telp: '0847383672',
-                email: 'user@example.com'
-            },1);
-
-        expect(res.isSuccess).toBeTruthy();
-    });
 
     test('should isSuccess is false and reason is "user not found"', async () => {
         userValues.returnGetUserByID = null

@@ -5,7 +5,8 @@ const mockUserRepo = (
         returnGetUserByID,
         returnUpdatePassword,
         returnUpdateUser,
-        returnGetUserByEmail
+        returnGetUserByEmail,
+        returnGetUserByUsername
     }
 ) => {
     const repo = {}
@@ -41,6 +42,17 @@ const mockUserRepo = (
 
      repo.getUserByEmail = jest.fn().mockReturnValue(
         returnGetUserByEmail !== true ? returnGetUserByEmail : {
+            id: 1,
+            name: 'user',
+            username: 'user1',
+            image: 'http://localhost:8080/images/user1.jpg',
+            telp: '0847383672',
+            email: 'user@example.com',
+        }
+    )
+
+     repo.getUserByUsername = jest.fn().mockReturnValue(
+        returnGetUserByUsername !== true ? returnGetUserByUsername : {
             id: 1,
             name: 'user',
             username: 'user1',
