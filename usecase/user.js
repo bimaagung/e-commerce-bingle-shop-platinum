@@ -47,8 +47,8 @@ class UserUC {
       return result;
     }
     
-    let oldUsername = await this.UserRepository.getUserByUsername(user.username)
-    if(userData.username === oldUsername){
+    let oldUsername = await this.UserRepository.getUserByUsername(userData.username)
+    if(user.username === oldUsername){
       result.reason = 'please enter a new username'
       result.status = 400
       return result
