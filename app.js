@@ -179,8 +179,8 @@ app.use('/', otpRouter);
 // handle server error
 app.use(serverError);
 
-const swaggerDocument = require('./docs/docs.json');
-const adminSwaggerDocument = require('./docs/admin_docs.json');
+const swaggerDocument = require('./docs/docs_custom.json');
+const adminSwaggerDocument = require('./docs/admin_docs_custom.json');
 
 app.use(
   '/docs/admin',
