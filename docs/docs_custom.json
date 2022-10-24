@@ -34,10 +34,10 @@
                 "type": "object",
                 "properties": {
                   "username": {
-                    "example": "any"
+                    "example": "customer"
                   },
                   "password": {
-                    "example": "any"
+                    "example": "12345678"
                   }
                 }
               }
@@ -151,6 +151,20 @@
         "responses": {
           "400": {
             "description": "Bad Request"
+          }
+        },
+         "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idToken": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -506,7 +520,15 @@
           "User"
         ],
         "description": "",
-        
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Berhasil memperbaharui profil pengguna",
@@ -548,16 +570,21 @@
           }
         ],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/bodyUpdateUser"
-              }
-            },
-            "application/xml": {
-              "schema": {
-                "$ref": "#/components/schemas/bodyUpdateUser"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "example": "Customer A"
+                  },
+                  "username": {
+                    "example": "customer"
+                  },
+                  "telp": {
+                    "example": "08363372"
+                  }
+                }
               }
             }
           }
@@ -591,13 +618,13 @@
                 "type": "object",
                 "properties": {
                   "newPassword": {
-                    "example": "any"
+                    "example": "123456789"
                   },
                   "confirmNewPassword": {
-                    "example": "any"
+                    "example": "123456789"
                   },
                   "otp_code": {
-                    "example": "any"
+                    "example": "123456789"
                   }
                 }
               }
@@ -633,10 +660,10 @@
                 "type": "object",
                 "properties": {
                   "email": {
-                    "example": "any"
+                    "example": "customer123@gmail.com"
                   },
                   "otp_code": {
-                    "example": "any"
+                    "example": "985784"
                   }
                 }
               }
@@ -1193,7 +1220,7 @@
         "tags": [
           "OTP"
         ],
-        "description": "",
+        "description": "otp type example : RESETPASSWORD,UPDATEEMAIL,REGISTRATION",
         "parameters": [],
         "responses": {
           "400": {
@@ -1207,10 +1234,10 @@
                 "type": "object",
                 "properties": {
                   "otp_type": {
-                    "example": "any"
+                    "example": "REGISTRATION"
                   },
                   "email": {
-                    "example": "any"
+                    "example": "customer123@gmail.com"
                   }
                 }
               }
