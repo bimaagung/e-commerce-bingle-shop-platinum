@@ -61,14 +61,13 @@ class ProductRepository {
     });
   }
 
-  async getProductByKeyword(condition) {
-    let keyword = '';
-    condition = [];
-    condition.push(`%${keyword}%`);
-    await this.ProductModel.findAll({
-      where: { condition },
+  async getProductByKeyword(keyword) {
+    let condition = []
+    condition.push({ name: { [Op.like]: "%" + keyword + "%" } })
 
-      attributes: ['id', 'name'],
+    return await this.ProductModel.findAll({
+      where: condition,
+
     });
   }
 }

@@ -46,6 +46,20 @@ class UserUC {
       result.reason = 'user not found';
       return result;
     }
+    
+    let oldUsername = await this.UserRepository.getUserByUsername(user.username)
+    if(userData.username === oldUsername){
+      result.reason = 'please enter a new username'
+      result.status = 400
+      return result
+    }
+    let usernameExist = await this.UserRepository.getUserByUsername(userData.username)
+    if(usernameExist !== null){
+      result.reason = 'username not aviable'
+      result.status = 400
+      return result
+    }
+
     user = await this.UserRepository.updateUser(userData, id);
     result.isSuccess = true;
     result.statusCode = 200;
@@ -117,6 +131,11 @@ class UserUC {
       reason: null,
       statusCode: 400,
     };
+    if(email === undefined || email ===null){
+      result.reason = "please insert email"
+      return result
+    }
+
     if (userData.newPassword !== userData.confirmNewPassword) {
       result.reason = "confrim new password not match";
       return result;
