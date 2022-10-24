@@ -9,7 +9,6 @@
     "start-dev": "nodemon server.js",
     "swagger-autogen": "node ./swagger.js",
     "swagger-autogen-admin": "node ./swagger_admin.js",
-    "swagger-autogen-admin": "node ./swagger_admin.js",
     "lint": "eslint ./"
   },
   "repository": {
