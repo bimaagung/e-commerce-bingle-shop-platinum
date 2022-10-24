@@ -141,12 +141,12 @@
         "tags": [
           "Oauth"
         ],
-        "description": "",
+        "description": "endpoint untuk mendapatkan id token dari google | gunakan email (dfmrisusanto@gmail.com) untuk oauth ",
         "parameters": [],
         "responses": {}
       },
       "post": {
-        "description": "",
+        "description": "endpoint untuk memasukkan id token google",
         "parameters": [],
         "responses": {
           "400": {
@@ -160,7 +160,7 @@
                 "type": "object",
                 "properties": {
                   "idToken": {
-                    "example": "any"
+                    "example": "id token"
                   }
                 }
               }
@@ -736,16 +736,24 @@
           }
         ],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/bodyAddAddress"
-              }
-            },
-            "application/xml": {
-              "schema": {
-                "$ref": "#/components/schemas/bodyAddAddress"
+                "type": "object",
+                "properties": {
+                  "province": {
+                    "example": "Jakarta"
+                  },
+                  "city": {
+                    "example": "Jakarta"
+                  },
+                  "postal_code": {
+                    "example": "12940"
+                  },
+                  "detail": {
+                    "example": "Jl. Setiabudi, Kuningan, Jakarta Selatan"
+                  }
+                }
               }
             }
           }
