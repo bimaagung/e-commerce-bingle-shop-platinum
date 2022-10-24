@@ -41,7 +41,7 @@ testing chat
 }
 ```
 - add `sendMessage` in the input next to the send button
-- send
+- click send
 
 Installation project - docker
 
