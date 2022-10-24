@@ -47,7 +47,7 @@ Installation project - docker
 
 - customize env in file docker-compose.yml -> platinum
 - run docker compose in project
-- open terminal container platinum in docker 
+- open terminal container platinum in docker app 
 - create db `sequelize db:create`
 - migrate table `sequelize db:migrate`
 - fill the table with dummy data `sequelize db:migrate:all`
