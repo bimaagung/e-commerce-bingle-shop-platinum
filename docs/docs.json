@@ -338,6 +338,15 @@
           "User"
         ],
         "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Berhasil melihat profil berdasarkan id pengguna",
@@ -2220,10 +2229,6 @@
           "username": {
             "type": "string",
             "example": "customer"
-          },
-          "email": {
-            "type": "string",
-            "example": "custome@gmail.com"
           },
           "telp": {
             "type": "string",

@@ -1,4 +1,5 @@
 const { Product, ProductImage } = require('../models');
+const { Op } = require('sequelize');
 
 class ProductRepository {
   constructor() {
