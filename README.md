@@ -35,7 +35,7 @@ Installation project - docker
 - migrate table `sequelize db:migrate`
 - fill the table with dummy data `sequelize db:migrate:all`
 - open kibana in open browser
-- open localhost:3000 in browswe
+- open localhost:3000 in browser
 
 
 ### Entity
