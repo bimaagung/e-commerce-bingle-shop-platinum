@@ -2,6 +2,8 @@ const ProductImageUseCase = require('../../usecase/product_image')
 const mockImageProductRepo = require('../mock/repository.imageProduct.mock')
 const mockProductRepo = require('../mock/repository.product.mock')
 const urlImage = require('../../internal/constant/defaultImage')
+const defaultImage = require('../../internal/constant/defaultImage');
+const _ = require('lodash');
 
 let imageProductValues, productValues = {}
 const cloudinary = {
@@ -24,7 +26,10 @@ describe('Image Product', () => {
         }
         productImageUC = new ProductImageUseCase(
             mockImageProductRepo(imageProductValues),
-            mockProductRepo(productValues),cloudinary
+            mockProductRepo(productValues),
+            cloudinary,
+            _,
+            defaultImage,
         )
     })
     describe('get image product by product_id', () => {
@@ -47,12 +52,12 @@ describe('Image Product', () => {
             expect(res.reason).toEqual("success")
         })
         test('isSuccess = false image not found', async () => {
-            imageProductValues.returnGetAllImageByProductID.length = 0
+            imageProductValues.returnGetAllImageByProductID = 0
             productImageUC = new ProductImageUseCase(
                 mockImageProductRepo(imageProductValues),
                 mockProductRepo(productValues)
             )
-            let res = await productImageUC.getImageByID()
+            let res = await productImageUC.getImageProductByProductID()
 
             expect(res.isSuccess).toBeTruthy()
             expect(res.reason).toEqual("success")

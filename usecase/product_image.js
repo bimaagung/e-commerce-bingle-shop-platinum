@@ -1,6 +1,4 @@
 /* eslint-disable no-return-await */
-const cloudinary = require('../libs/handle_upload');
-const defaultImage = require('../internal/constant/defaultImage');
 
 class ProductImageUC {
   constructor(
@@ -195,11 +193,13 @@ class ProductImageUC {
       data: null,
     };
     let image = await this.productImageRepository.getImageByID(id);
-    let product_id = image.product_id;
+  
     if (image == null) {
       result.reason = "image not found";
       return result;
     }
+
+    let product_id = image.product_id;
 
     await this.productImageRepository.deleteImage(id);
     await this.setCoverImageByProductId(product_id);
