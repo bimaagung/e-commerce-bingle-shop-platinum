@@ -20,11 +20,28 @@ Installation project - manual
 
 test each endpoint in swagger
 
-- enter swagger for customer : localhost:3000/docs - for customer
-- enter swagger for admin : localhost:3000/docs/admin
+- enter swagger for customer : `localhost:3000/docs` - for customer
+- enter swagger for admin : `localhost:3000/docs/admin`
 - login and get token  
 - add token in authorization (in accordance auth)
 - testing all endpoint
+
+testing chat
+- new websocket request
+- make sure socket io url
+- add url `localhost:3000`
+- add Header `Bearer token`
+- add Event `onNewMessage` and listen on connect
+- change body to json
+- body :  
+```
+{
+    "recipient_id": 1,
+    "content": "Halo"
+}
+```
+- add `sendMessage` in the input next to the send button
+- click send
 
 Installation project - docker
 
