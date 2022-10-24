@@ -383,15 +383,7 @@
           "User"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        
         "responses": {
           "200": {
             "description": "Berhasil memperbaharui password pengguna",
@@ -462,15 +454,7 @@
           "User"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        
         "responses": {
           "200": {
             "description": "Berhasil memperbaharui password pengguna",
@@ -522,15 +506,7 @@
           "User"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        
         "responses": {
           "200": {
             "description": "Berhasil memperbaharui profil pengguna",
@@ -636,15 +612,7 @@
           "User"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        
         "responses": {
           "400": {
             "description": "Bad Request"
@@ -683,15 +651,7 @@
           "Address"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        
         "responses": {
           "401": {
             "description": "Unauthorized"
@@ -710,15 +670,7 @@
           "Address"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        
         "responses": {
           "201": {
             "description": "Berhasil menambahkan alamat",
@@ -956,15 +908,7 @@
           "Order"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        
         "responses": {
           "201": {
             "description": "Berhasil membuat pesanan",
@@ -1048,15 +992,7 @@
           "Order"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        
         "responses": {
           "200": {
             "description": "Berhasil melihat pesanan yang belum di submit",
@@ -1102,15 +1038,7 @@
           "Order"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        
         "responses": {
           "200": {
             "description": "Berhasil submit pesanan",
@@ -1166,15 +1094,7 @@
           "Order"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        
         "responses": {
           "200": {
             "description": "Berhasil membatalkan pesanan",
@@ -1220,15 +1140,7 @@
           "Chat"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        
         "responses": {
           "200": {
             "description": "OK"

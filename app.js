@@ -3,8 +3,8 @@ require('dotenv').config();
 const useAPM = process.env.USE_APM || false;
 const apm = require('elastic-apm-node').start({
   serviceName: process.env.APP_NAME,
+  serverUrl : process.env.SERVER_URL || 'http://localhost:8200',
   environment: 'development',
-  serverUrl: `${process.env.SERVER_URL_APM}:8200` || '0.0.0.0:8200',
   active: useAPM,
 });
 
@@ -179,8 +179,8 @@ app.use('/', otpRouter);
 // handle server error
 app.use(serverError);
 
-const swaggerDocument = require('./docs/docs.json');
-const adminSwaggerDocument = require('./docs/admin_docs.json');
+const swaggerDocument = require('./docs/docs_custom.json');
+const adminSwaggerDocument = require('./docs/admin_docs_custom.json');
 
 app.use(
   '/docs/admin',
