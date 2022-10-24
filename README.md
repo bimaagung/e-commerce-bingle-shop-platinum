@@ -137,13 +137,51 @@ response failed :
 		 }
 		
 ```
-### // TODO : Masih dalam pembahasan
+### Login & Register with Google OAuth
+
+Request:
+
+	- Method : POST
+	- Endpoint : `/login/google`
+	
+Body :
+
+```json
+	{
+		"idToken" : {
+			      "eyJhbGciOiJSUzI1NiIsImtpZCI6ImVlMWI5Zjg4Y2ZlMzE1MWRkZDI4NGE2MWJmOGNlY"
+			    }
+```
+Response success:
+
+```json
+	{
+		    "status": "ok",
+		    "message": "success",
+		    "data": {
+			"user": {
+			    "id": 3,
+			    "name": "customer Name",
+			    "username": "Custmer874",
+			    "image": "https://res.cloudinary.com/dnvltueqb/image/upload/defaultimage",
+			    "email": "customer8@gmail.com",
+			    "is_admin": false,
+			    "updatedAt": "2022-10-24T04:10:05.429Z",
+			    "createdAt": "2022-10-24T04:10:05.429Z",
+			    "telp": null
+			},
+			"token":  "eyJhbGciOiJSUzI1NiIsImtpZCI6ImVlMWI5Zjg4Y2ZlMzE1MWRkZDI4NGE2MWJmOGNlY"
+		    }
+}
+
+
+```
 ### Lihat data user
 
 Request:
 
 	- Method : GET
-	- Endpoint : `api/user/profile/`
+	- Endpoint : `/api/customer/profil/user/`
 
 Header :
 
@@ -153,9 +191,18 @@ Response :
 
 ```json
 	{
-		"status" : "ok"
-		"message": "success"
-		"data" : "{}"
+		  "status": "ok",
+		  "message": "success",
+		  "data": {
+		    "id": 2,
+		    "name": "customer",
+		    "username": "customer",
+		    "image": null,
+		    "telp": "0823111111",
+		    "email": "customer@mail.com",
+		    "createdAt": "2022-10-24T01:33:25.885Z",
+		    "updatedAt": "2022-10-24T01:33:25.885Z"
+ 	 		}
 	}
 ```
 
@@ -164,7 +211,7 @@ Response :
 Request:
 
 	- Method : PUT
-	- Endpoint : `api/user/`
+	- Endpoint : `api/customer/update/`
 	
 Header :
 	
@@ -181,23 +228,93 @@ Body :
 		"telp"     : "08736272767"
 	}
 ```
+### Update password user
+
+Request:
+
+	- Method : PUT
+	- Endpoint : `/api/customer/update-password/`
+	
+Header :
+	
+	- Authorization : Bearer Token
+	
+Body :
+
+```json
+	{
+	  "newPassword": "123456789",
+	  "confirmNewPassword": "123456789"
+	}
+```
 
 Response :
 
 ```json
 	{
-		"status" : "ok"
-		"message": "success"
-		"data" : {
-			"nama"     : "abc"
-			"username" : "abc"
-			"email"    : "abc@domain.com"
-			"alamat"   : "Jakarta"
-			"telp"     : "08736272767"
-		}
+	  "status": "ok",
+	  "message": "success"
+	}
+```
+### Forget password user
+
+Request:
+
+	- Method : PUT
+	- Endpoint : `/api/customer/reset-password/`
+	
+Header :
+	
+	- Authorization : Bearer Token
+	
+Body :
+
+```json
+	{
+	  {
+		  "newPassword": "password",
+		  "confirmNewPassword": "password",
+		  "otp_code": "512315"
+}
 	}
 ```
 
+Response :
+
+```json
+	{
+	  "status": "ok",
+	  "message": "success"
+	}
+```
+### Update Email user
+
+Request:
+
+	- Method : PUT
+	- Endpoint : `/api/update/email/`
+	
+Header :
+	
+	- Authorization : Bearer Token
+	
+Body :
+
+```json
+		{
+		  "email": "newemail@mail.com",
+		  "otp_code": "122351"
+		}
+```
+
+Response :
+
+```json
+	{
+	  "status": "ok",
+	  "message": "success"
+	}
+```
 ### Lihat pesanan
 
 Request:
