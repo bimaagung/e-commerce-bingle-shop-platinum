@@ -13,7 +13,7 @@ module.exports = {
           telp: null,
           is_admin: true,
           email:'admin@mail.com',
-          password: bcrypt.hashSync('123456', 10),
+          password: bcrypt.hashSync('password', 10),
           createdAt: new Date(),
           updatedAt: new Date(),
         },
