@@ -15,6 +15,7 @@ describe("category", () => {
           returnGetAllCategory: true,
           returnAddCategory: true,
           returnDeleteCategory: true,
+          returnGetDefaultCategory: true
         }
 
         productValues = {

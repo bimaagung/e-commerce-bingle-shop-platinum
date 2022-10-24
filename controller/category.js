@@ -61,7 +61,7 @@ module.exports = {
           .json(resData.failed(category.reason, category.data));
       }
 
-      return res.json(resData.success(category.data));
+      return res.status(200).json(resData.success(category.data));
     } catch (e) {
       next(e);
     }
@@ -107,7 +107,7 @@ module.exports = {
       if (addCategory.isSuccess === false) {
         return res
           .status(404)
-          .json(resData.failed(category.reason, category.data));
+          .json(resData.failed(addCategory.reason, addCategory.data));
       }
       return res.status(201).json(resData.success(addCategory.data));
     } catch (e) {
@@ -170,7 +170,7 @@ module.exports = {
           .json(resData.failed(categoryById.reason, null));
       }
 
-      res.json(resData.success());
+      res.status(200).json(resData.success());
     } catch (e) {
       next(e);
     }
