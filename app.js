@@ -4,7 +4,6 @@ const useAPM = process.env.USE_APM || false;
 const apm = require('elastic-apm-node').start({
   serviceName: process.env.APP_NAME,
   environment: 'development',
-  serverUrl: `${process.env.SERVER_URL_APM}:8200` || '0.0.0.0:8200',
   active: useAPM,
 });
 
