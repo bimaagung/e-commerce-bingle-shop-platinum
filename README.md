@@ -1,4 +1,7 @@
 
+[![node.js version](https://badgen.net/npm/node/express)](https://npmjs.com/package/express)
+[![GitHub latest commit](https://badgen.net/github/contributors/bimaagung/e-commerce-bingle-shop-platinum)](https://GitHub.com/bimaagung/e-commerce-bingle-shop-platinum/commit/)
+
 # 🛒 E-Commerce Bingle Shop Platinum
 
 > API E-Commerce App  
