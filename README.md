@@ -1,3 +1,9 @@
+
+# 🛒 E-Commerce Bingle Shop Platinum
+
+> API E-Commerce App  
+
+
 ### Model Aplikasi E-commerce
 
 ![ERD PLATINUM](https://user-images.githubusercontent.com/107734134/197455237-204a9764-d401-4166-9ae9-7e4959f7e723.png)
@@ -5,7 +11,7 @@
 
 Sesuai module / Bingle Shop
 
-### Installation
+## 🛠️ Installation Steps
 
 Installation project - manual
 
@@ -17,6 +23,20 @@ Installation project - manual
 - migrate table `sequelize db:migrate`
 - fill the table with dummy data `sequelize db:seed:all`
 - run docker elk apm and customize .env
+
+Installation project - docker
+
+- customize env in file docker-compose.yml -> platinum
+- run docker compose in project
+- open terminal container platinum in docker app 
+- create db `sequelize db:create`
+- migrate table `sequelize db:migrate`
+- fill the table with dummy data `sequelize db:migrate:all`
+- open kibana `localhost:5601` in browser
+- open app `localhost:3000` in browser
+
+
+## 🚀 Demo
 
 test each endpoint in swagger
 
@@ -43,24 +63,14 @@ testing chat
 - add `sendMessage` in the input next to the send button
 - click send
 
-Installation project - docker
 
-- customize env in file docker-compose.yml -> platinum
-- run docker compose in project
-- open terminal container platinum in docker app 
-- create db `sequelize db:create`
-- migrate table `sequelize db:migrate`
-- fill the table with dummy data `sequelize db:migrate:all`
-- open kibana `localhost:5601` in browser
-- open app `localhost:3000` in browser
+## 💻 Built with
 
-
-### Entity
-
-- User (Customer / Admin)
-- Item 
-- Order
-- OrderDetail
+- Node JS
+- Express JS
+- Postgres
+- Socket IO
+- Nodemailer
 
 ## API Spec
 
