@@ -2,10 +2,15 @@
 [![node.js version](https://badgen.net/npm/node/express)](https://npmjs.com/package/express)
 [![GitHub latest commit](https://badgen.net/github/contributors/bimaagung/e-commerce-bingle-shop-platinum)](https://GitHub.com/bimaagung/e-commerce-bingle-shop-platinum/commit/)
 
-# 🛒 E-Commerce Bingle Shop Platinum
+![ERD PLATINUM](https://raw.githubusercontent.com/bimaagung/e-commerce-bingle-shop-platinum/main/banner_bingle.jpg)
 
-> API E-Commerce App  
+<br>
 
+## 🛒 E-Commerce Bingle Shop Platinum
+
+> API E-Commerce App for provide team frontend for build e-commerce, and this project for final test at binar academy, improve hardskill and and softskill in teamwork  
+
+<br>
 
 ## 🛠️ Installation Steps
 
@@ -81,6 +86,7 @@ open app in browser
 localhost:3000
 ```
 
+<br>
 
 ## 🚀 Demo
 
@@ -109,7 +115,7 @@ testing chat
 - add `sendMessage` in the input next to the send button
 - click send
 
-
+<br>
 
 ## 💻 Built with
 
@@ -121,7 +127,7 @@ testing chat
 - Nodemailer
 - Swagger
 
-
+<br>
 
 ## 📁 Project Structure
 
@@ -155,11 +161,13 @@ testing chat
 	└───views
 ```
 
+<br>
+
 ### Model Aplikasi E-commerce
 
 ![ERD PLATINUM](https://user-images.githubusercontent.com/107734134/197455237-204a9764-d401-4166-9ae9-7e4959f7e723.png)
 
-
+<br>
 
 ## API Spec
 
