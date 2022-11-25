@@ -11,46 +11,76 @@
 
 Installation project - manual
 
-- clone project
+clone project
 ``` bson
 git clone https://github.com/bimaagung/maju-jaya-platinum-kelompok-1-BEJ.git
 ```
 
-- add node modules 
+add node modules 
 ```bson 
 npm install
 ```
 
-- rename file .env.example to .env
-- configuration db in file .env
-- create db 
+rename file 
+```bson
+.env.example -> .env
+```
+
+configuration db in file .env
+
+create db 
 ```bson
 sequelize db:create
 ```
-- migrate table 
+migrate table 
 ```bson
 sequelize db:migrate
 ```
-- fill the table with dummy data 
+fill the table with dummy data 
 ```bson
 sequelize db:seed:all
 ```
+run docker elk apm and customize .env
 
-- run docker elk apm and customize .env
+run applicatiion
+```bson
+npm run start
+```
 
 
 
 Installation project - docker
 
-- customize env in file docker-compose.yml -> platinum
-- run docker compose in project
-- open terminal container platinum in docker app 
-- create db `sequelize db:create`
-- migrate table `sequelize db:migrate`
-- fill the table with dummy data `sequelize db:migrate:all`
-- open kibana `localhost:5601` in browser
-- open app `localhost:3000` in browser
+customize env in file docker-compose.yml -> platinum
+run docker compose in project
+``` bson
+docker-compose up -t
+```
+open terminal container platinum in docker app
 
+create db 
+```bson
+sequelize db:create
+```
+
+migrate table 
+```bson
+sequelize db:migrate
+```
+
+fill the table with dummy data 
+```bson
+sequelize db:migrate:all
+```
+
+open kibana in browser
+```bson
+localhost:5601
+```
+open app in browser
+```bson
+localhost:3000
+```
 
 
 ## 🚀 Demo
