@@ -7,13 +7,6 @@
 > API E-Commerce App  
 
 
-### Model Aplikasi E-commerce
-
-![ERD PLATINUM](https://user-images.githubusercontent.com/107734134/197455237-204a9764-d401-4166-9ae9-7e4959f7e723.png)
-
-
-Sesuai module / Bingle Shop
-
 ## 🛠️ Installation Steps
 
 Installation project - manual
@@ -37,6 +30,7 @@ Installation project - docker
 - fill the table with dummy data `sequelize db:migrate:all`
 - open kibana `localhost:5601` in browser
 - open app `localhost:3000` in browser
+
 
 
 ## 🚀 Demo
@@ -67,6 +61,7 @@ testing chat
 - click send
 
 
+
 ## 💻 Built with
 
 - Node JS
@@ -74,6 +69,46 @@ testing chat
 - Postgres
 - Socket IO
 - Nodemailer
+
+
+
+## 📁 Project Structure
+
+```
+	├───.github
+	│   └───workflows
+	├───config
+	├───controller
+	├───database
+	│   ├───migrations
+	│   └───seeders
+	├───docs
+	│   └───schema
+	│       ├───request
+	│       └───response
+	├───helper
+	├───internal
+	│   └───constant
+	├───libs
+	├───logs
+	├───middleware
+	├───models
+	├───public
+	├───repository
+	├───routes
+	├───test
+	│   ├───controller
+	│   ├───mock
+	│   └───usecase
+	├───usecase
+	└───views
+```
+
+### Model Aplikasi E-commerce
+
+![ERD PLATINUM](https://user-images.githubusercontent.com/107734134/197455237-204a9764-d401-4166-9ae9-7e4959f7e723.png)
+
+
 
 ## API Spec
 
