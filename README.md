@@ -163,13 +163,13 @@ testing chat
 
 <br>
 
-### Model Aplikasi E-commerce
+## 🔍 ERD
 
 ![ERD PLATINUM](https://user-images.githubusercontent.com/107734134/197455237-204a9764-d401-4166-9ae9-7e4959f7e723.png)
 
 <br>
 
-## API Spec
+## 📖 API Spec
 
 ### Customer
 
