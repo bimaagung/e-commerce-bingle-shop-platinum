@@ -11,14 +11,34 @@
 
 Installation project - manual
 
-- clone project `git clone https://github.com/bimaagung/maju-jaya-platinum-kelompok-1-BEJ.git`
-- add node modules `npm install`
+- clone project
+``` bson
+git clone https://github.com/bimaagung/maju-jaya-platinum-kelompok-1-BEJ.git
+```
+
+- add node modules 
+```bson 
+npm install
+```
+
 - rename file .env.example to .env
 - configuration db in file .env
-- create db `sequelize db:create`
-- migrate table `sequelize db:migrate`
-- fill the table with dummy data `sequelize db:seed:all`
+- create db 
+```bson
+sequelize db:create
+```
+- migrate table 
+```bson
+sequelize db:migrate
+```
+- fill the table with dummy data 
+```bson
+sequelize db:seed:all
+```
+
 - run docker elk apm and customize .env
+
+
 
 Installation project - docker
 
