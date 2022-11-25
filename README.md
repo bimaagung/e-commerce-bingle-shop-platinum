@@ -87,8 +87,10 @@ testing chat
 - Node JS
 - Express JS
 - Postgres
+- Sequelize
 - Socket IO
 - Nodemailer
+- Swagger
 
 
 
