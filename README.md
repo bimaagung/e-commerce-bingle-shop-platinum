@@ -40,7 +40,6 @@ fill the table with dummy data
 ```bson
 sequelize db:seed:all
 ```
-run docker elk apm and customize .env
 
 run applicatiion
 ```bson
