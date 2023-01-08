@@ -138,3 +138,6 @@
 127.0.0.1 - - [2022-10-24T22:18:21+07:00] "POST /api/user/login HTTP/1.1" 200 580 "http://localhost:3000/docs/admin/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
 127.0.0.1 - - [2022-10-24T22:18:36+07:00] "PATCH /api/admin/update-password/ HTTP/1.1" 200 35 "http://localhost:3000/docs/admin/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
 127.0.0.1 - - [2022-10-24T22:18:46+07:00] "PATCH /api/admin/update-password/ HTTP/1.1" 200 35 "http://localhost:3000/docs/admin/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+127.0.0.1 - - [2023-01-08T20:34:44+07:00] "GET /api/public/product?record=2&page=1&q=&orderBy=name&orderDir=asc HTTP/1.1" 500 53 "-" "PostmanRuntime/7.30.0"
+127.0.0.1 - - [2023-01-08T20:35:28+07:00] "GET /api/public/product?record=2&page=1&q=&orderBy=name&orderDir=asc HTTP/1.1" 500 53 "-" "PostmanRuntime/7.30.0"
+127.0.0.1 - - [2023-01-08T20:36:50+07:00] "GET /api/public/product?record=2&page=1&q=&orderBy=name&orderDir=asc HTTP/1.1" 200 1099 "-" "PostmanRuntime/7.30.0"

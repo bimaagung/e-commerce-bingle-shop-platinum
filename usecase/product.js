@@ -14,18 +14,58 @@ class ProductUC {
     this._ = _;
   }
 
-  async getAllProducts(filters) {
+  async getAllProducts(params) {
     let result = {
       isSuccess: false,
       status: 404,
-      reason: '',
+      reason: "",
       data: [],
+      paginations: {},
     };
-    let getAllProducts = await this.productRepository.getAllProducts(filters);
+    const page = params.page || 1;
+    const limit = parseInt(params.limit || 10);
+
+    const offset = parseInt((page - 1) * limit);
+    const include = ["productImages"];
+    const orderBy = params.orderBy || "createdAt";
+    const orderDirection = params.orderDir || "DESC";
+
+    const order = [[orderBy, orderDirection]];
+    const products = await this.productRepository.getAllProducts(params, {
+      offset,
+      limit,
+      order,
+      include,
+    });
+
+    const start = 0 + (page - 1) * limit;
+    const end = page * limit;
+    const countFiltered = products.count;
+
+    result.paginations = {
+      totalRow: products.count,
+      totalPage: Math.ceil(countFiltered / limit),
+      page,
+      limit,
+    };
+
+    if (end < countFiltered) {
+      result.paginations.next = {
+        page: page + 1,
+      };
+    }
+
+    if (start > 0) {
+      result.paginations.prev = {
+        page: page - 1,
+      };
+    }
 
     result.isSuccess = true;
     result.status = 200;
-    result.data = getAllProducts;
+    result.data =products.rows
+    console.log(result.paginations)
+
     return result;
   }
 

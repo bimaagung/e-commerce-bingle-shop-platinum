@@ -48,3 +48,5 @@
 127.0.0.1 - - [2022-10-24T20:01:38+07:00] "PATCH /api/customer/order/submit/ HTTP/1.1" 404 47 "http://localhost:3000/docs/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
 127.0.0.1 - - [2022-10-24T21:04:42+07:00] "POST /api/user/login HTTP/1.1" 500 53 "http://localhost:3000/docs/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
 127.0.0.1 - - [2022-10-24T21:05:59+07:00] "POST /api/user/login HTTP/1.1" 404 58 "http://localhost:3000/docs/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+127.0.0.1 - - [2023-01-08T20:34:44+07:00] "GET /api/public/product?record=2&page=1&q=&orderBy=name&orderDir=asc HTTP/1.1" 500 53 "-" "PostmanRuntime/7.30.0"
+127.0.0.1 - - [2023-01-08T20:35:28+07:00] "GET /api/public/product?record=2&page=1&q=&orderBy=name&orderDir=asc HTTP/1.1" 500 53 "-" "PostmanRuntime/7.30.0"

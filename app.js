@@ -1,12 +1,12 @@
 require('dotenv').config();
 
-const useAPM = process.env.USE_APM || false;
-const apm = require('elastic-apm-node').start({
-  serviceName: process.env.APP_NAME,
-  serverUrl : process.env.SERVER_URL || 'http://localhost:8200',
-  environment: 'development',
-  active: useAPM,
-});
+// const useAPM = process.env.USE_APM || false;
+// const apm = require('elastic-apm-node').start({
+//   serviceName: process.env.APP_NAME,
+//   serverUrl : process.env.SERVER_URL || 'http://localhost:8200',
+//   environment: 'development',
+//   active: useAPM,
+// });
 
 const express = require('express');
 

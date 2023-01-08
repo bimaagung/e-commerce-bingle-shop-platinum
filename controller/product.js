@@ -17,14 +17,26 @@ module.exports = {
 
     */
     try {
-      let getAllProduct = await req.productUC.getAllProducts();
+      const limit = parseInt(req.query.record || 10);
+      const page = parseInt(req.query.page || 1);
 
-      res.status(200).json(resData.success(getAllProduct.data));
+      const params = {
+        ...req.query,
+        page,
+        limit,
+      };
+      let getAllProduct = await req.productUC.getAllProducts(params);
+
+      res.status(200).json(
+        resData.success({
+          data: getAllProduct.data,
+          pagination: getAllProduct.paginations,
+        })
+      );
     } catch (e) {
       next(e);
     }
   },
-
   getProductById: async (req, res, next) => {
     /*
       #swagger.tags = ['Product']
@@ -265,7 +277,7 @@ module.exports = {
           .status(404)
           .json(resData.failed(resProduct.reason, resProduct.data));
       }
-      
+
       res.status(200).json(resData.success(resProduct.data));
     } catch (e) {
       next(e);
